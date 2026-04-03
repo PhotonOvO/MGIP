@@ -1,0 +1,5 @@
+[15:51:19.324] Starting ... 
+[15:51:19.552] VulkanDevice::init: begin
+[15:51:19.569] VulkanDevice::initInstance: creating Vulkan instance
+[15:51:19.704] VulkanDevice::initInstance: Vulkan instance created and function pointers loaded
+[15:51:19.828] VulkanDevice::init: completed
