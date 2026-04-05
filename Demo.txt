@@ -1,5 +1,7 @@
-[15:51:19.324] Starting ... 
-[15:51:19.552] VulkanDevice::init: begin
-[15:51:19.569] VulkanDevice::initInstance: creating Vulkan instance
-[15:51:19.704] VulkanDevice::initInstance: Vulkan instance created and function pointers loaded
-[15:51:19.828] VulkanDevice::init: completed
+[20:13:24.148] Starting ... 
+[20:13:24.357] VulkanDevice::init: begin
+[20:13:24.374] VulkanDevice::initInstance: creating Vulkan instance
+[20:13:24.424] VulkanDevice::initInstance: Vulkan instance created and function pointers loaded
+[20:13:24.522] VulkanDevice::init: completed
+[20:13:24.782] Created application descriptor pool: 10000 textures, 15 dynamic UBOs, 20 sets
+[20:13:24.782] Created UI descriptor pool: 20 textures, 20 sets
