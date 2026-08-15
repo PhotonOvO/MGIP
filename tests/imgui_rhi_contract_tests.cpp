@@ -18,15 +18,29 @@ namespace
     assert(demo::ui::decodeTextureId(0u).isNull());
   }
 
-  void testProjectionUsesDisplayOrigin()
+  void testProjectionUsesBackendClipSpaceConvention()
   {
-    const demo::ui::Projection projection = demo::ui::makeProjection(
-      {100.0f, 50.0f}, {800.0f, 600.0f});
+    constexpr demo::ui::Float2 displayPos{100.0f, 50.0f};
+    constexpr demo::ui::Float2 displaySize{800.0f, 600.0f};
+    const demo::ui::Projection vulkanProjection = demo::ui::makeProjection(
+      displayPos, displaySize, demo::rhi::BackendType::vulkan);
 
-    assert(projection.scaleX == 2.0f / 800.0f);
-    assert(projection.scaleY == 2.0f / 600.0f);
-    assert(projection.translateX == -1.0f - 100.0f * projection.scaleX);
-    assert(projection.translateY == -1.0f - 50.0f * projection.scaleY);
+    assert(vulkanProjection.scaleX == 2.0f / displaySize.x);
+    assert(vulkanProjection.scaleY == 2.0f / displaySize.y);
+    assert(vulkanProjection.translateX == -1.0f - displayPos.x * vulkanProjection.scaleX);
+    assert(vulkanProjection.translateY == -1.0f - displayPos.y * vulkanProjection.scaleY);
+
+    const demo::ui::Projection metalProjection = demo::ui::makeProjection(
+      displayPos, displaySize, demo::rhi::BackendType::metal);
+    assert(metalProjection.scaleX == vulkanProjection.scaleX);
+    assert(metalProjection.scaleY == -2.0f / displaySize.y);
+    assert(metalProjection.translateX == vulkanProjection.translateX);
+    assert(metalProjection.translateY == 1.0f - displayPos.y * metalProjection.scaleY);
+
+    const demo::ui::Projection d3d12Projection = demo::ui::makeProjection(
+      displayPos, displaySize, demo::rhi::BackendType::d3d12);
+    assert(d3d12Projection.scaleY == metalProjection.scaleY);
+    assert(d3d12Projection.translateY == metalProjection.translateY);
   }
 
   void testScissorTransformsAndClamps()
@@ -43,6 +57,29 @@ namespace
     assert(scissor->offset.y == 10);
     assert(scissor->extent.width == 128u);
     assert(scissor->extent.height == 86u);
+  }
+
+  void testResizeUsesRenderTargetAsAuthoritativeFramebuffer()
+  {
+    constexpr demo::ui::Float2 staleDisplaySize{1280.0f, 720.0f};
+    constexpr demo::rhi::Extent2D resizedTarget{640u, 360u};
+    const demo::ui::Float2 framebufferScale =
+      demo::ui::makeFramebufferScale(staleDisplaySize, resizedTarget);
+
+    assert(framebufferScale.x == 0.5f);
+    assert(framebufferScale.y == 0.5f);
+
+    const auto scissor = demo::ui::makeScissor(
+      {0.0f, 0.0f, staleDisplaySize.x, staleDisplaySize.y},
+      {0.0f, 0.0f},
+      framebufferScale,
+      resizedTarget.width,
+      resizedTarget.height);
+    assert(scissor.has_value());
+    assert(scissor->offset.x == 0);
+    assert(scissor->offset.y == 0);
+    assert(scissor->extent.width == resizedTarget.width);
+    assert(scissor->extent.height == resizedTarget.height);
   }
 
   void testScissorRejectsEmptyRect()
@@ -82,8 +119,9 @@ int main()
   static_assert(demo::rhi::VertexFormat::r8g8b8a8Unorm != demo::rhi::VertexFormat::undefined);
 
   testTextureIdRoundTrip();
-  testProjectionUsesDisplayOrigin();
+  testProjectionUsesBackendClipSpaceConvention();
   testScissorTransformsAndClamps();
+  testResizeUsesRenderTargetAsAuthoritativeFramebuffer();
   testScissorRejectsEmptyRect();
   testBufferGrowthIsMonotonic();
   testTextureCopyCarriesDestinationOffset();

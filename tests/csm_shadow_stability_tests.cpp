@@ -3170,6 +3170,56 @@ namespace
 		expect(nearlyEqual(vulkanTransform[1][1], 0.5f, 0.0f),
 		       "shadow texture transform must map NDC Y with a positive half scale");
 	}
+
+	void testFramebufferCoordinatesMatchProjectionConvention()
+	{
+		using demo::clipspace::BackendConvention;
+		constexpr std::array backends{
+			BackendConvention::vulkan,
+			BackendConvention::d3d12,
+			BackendConvention::metal,
+		};
+		const glm::vec3 worldPoint(1.25f, 2.0f, -8.0f);
+		glm::vec2 referenceUv(0.0f);
+
+		for (size_t backendIndex = 0; backendIndex < backends.size(); ++backendIndex)
+		{
+			const BackendConvention backend = backends[backendIndex];
+			const auto convention = demo::clipspace::getProjectionConvention(backend);
+			const glm::mat4 projection = demo::clipspace::makePerspectiveProjection(
+				kFieldOfViewRadians, kAspectRatio, kNearPlane, kFarPlane, convention);
+			const glm::vec4 clip = projection * glm::vec4(worldPoint, 1.0f);
+			const glm::vec3 ndc = glm::vec3(clip) / clip.w;
+			const glm::vec2 uv = demo::clipspace::ndcToFramebufferUv(glm::vec2(ndc), backend);
+
+			if (backendIndex == 0u)
+			{
+				referenceUv = uv;
+			}
+			else
+			{
+				expect(nearlyEqual(uv.x, referenceUv.x, 1.0e-6f)
+				       && nearlyEqual(uv.y, referenceUv.y, 1.0e-6f),
+				       "backend projection mapped a world point to a different framebuffer UV");
+			}
+
+			const glm::vec2 reconstructedNdc = demo::clipspace::framebufferUvToNdc(uv, backend);
+			const glm::vec4 reconstructedHomogeneous = glm::inverse(projection)
+				* glm::vec4(reconstructedNdc, ndc.z, 1.0f);
+			const glm::vec3 reconstructedWorld = glm::vec3(reconstructedHomogeneous)
+				/ reconstructedHomogeneous.w;
+			expect(vectorsNearlyEqual(reconstructedWorld, worldPoint, 1.0e-4f),
+			       "framebuffer UV to NDC conversion did not reconstruct the original world point");
+		}
+
+		expect(!demo::clipspace::framebufferUvFlipsNdcY(BackendConvention::vulkan),
+		       "Vulkan unexpectedly flips framebuffer UV Y");
+		expect(demo::clipspace::framebufferUvFlipsNdcY(BackendConvention::d3d12),
+		       "D3D12 framebuffer UV Y flip is missing");
+		expect(demo::clipspace::framebufferUvFlipsNdcY(BackendConvention::metal),
+		       "Metal framebuffer UV Y flip is missing");
+	}
+
 	void testTinyCascadeResolutionClamp()
 	{
 		constexpr uint32_t minimumResolution =
@@ -3222,6 +3272,7 @@ int main()
 		testNormalBiasSanitization();
 		testSafeLightDirectionSnapshot();
 		testShadowTextureTransformIsBackendIndependent();
+		testFramebufferCoordinatesMatchProjectionConvention();
 		testTinyCascadeResolutionClamp();
 		testStableCascadeProjection();
 		testOffCenterProjection();
