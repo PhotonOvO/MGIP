@@ -268,6 +268,16 @@ void runComputeBlitSmoke(MetalDevice& device)
 
 void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
 {
+  struct alignas(16) ReplayRootConstants
+  {
+    uint32_t xorMask;
+    uint32_t reserved[3];
+  };
+  constexpr ReplayRootConstants replayRoot{
+    .xorMask = 0x01020304u,
+    .reserved = {},
+  };
+
   const ShaderLibraryHandle library = compileSmokeLibrary(device);
   const std::array<ArgumentBinding, 2> bindings{{
     ArgumentBinding{
@@ -295,6 +305,13 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
     .layout = layout,
     .visibility = ShaderStage::compute,
   };
+  const RootBindingDesc rootBinding{
+    .slot = 1,
+    .kind = RootBindingKind::constants,
+    .visibility = ShaderStage::compute,
+    .size = sizeof(ReplayRootConstants),
+    .alignment = alignof(ReplayRootConstants),
+  };
   const PipelineHandle pipeline = device.createComputePipeline(ComputePipelineDesc{
     .shaderStage = ShaderEntry{
       .stage = ShaderStage::compute,
@@ -303,6 +320,7 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
     },
     .bindingSchema = PipelineBindingSchemaDesc{
       .argumentSlots = std::span{&tableSlot, 1},
+      .rootBindings = std::span{&rootBinding, 1},
     },
     .threadgroupSize = {1, 1, 1},
   });
@@ -380,6 +398,7 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
   ComputeEncoder* encoder = commands->beginComputePass();
   encoder->setPipeline(pipeline);
   encoder->setArgumentTable(0, table);
+  encoder->setRootConstants(1, std::as_bytes(std::span{&replayRoot, 1}));
   encoder->dispatch(DispatchDesc{.groupCountX = 1, .groupCountY = 1,
                                  .groupCountZ = 1});
   commands->endEncoding();
@@ -402,7 +421,7 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
   });
   queue->wait(completion);
   const auto* result = static_cast<const uint32_t*>(device.mapBuffer(output));
-  if(result == nullptr || *result != 0x2468ace0u)
+  if(result == nullptr || *result != (0x2468ace0u ^ replayRoot.xorMask))
     throw std::runtime_error("Metal4 executable argument-table update used stale data");
   device.unmapBuffer(output);
   const uint64_t allocatedSnapshots =
@@ -417,6 +436,7 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
   encoder = commands->beginComputePass();
   encoder->setPipeline(pipeline);
   encoder->setArgumentTable(0, table);
+  encoder->setRootConstants(1, std::as_bytes(std::span{&replayRoot, 1}));
   encoder->dispatch(DispatchDesc{.groupCountX = 1, .groupCountY = 1,
                                  .groupCountZ = 1});
   commands->endEncoding();
@@ -435,7 +455,7 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
   });
   queue->wait(reusedCompletion);
   result = static_cast<const uint32_t*>(device.mapBuffer(output));
-  if(result == nullptr || *result != 0x13579bdfu)
+  if(result == nullptr || *result != (0x13579bdfu ^ replayRoot.xorMask))
     throw std::runtime_error("Metal4 reused argument-table snapshot used stale data");
   device.unmapBuffer(output);
   allocator->reset(reusedCompletion);

@@ -14,6 +14,12 @@ struct IcbTextureArguments
     SamplerState sampler;
 };
 
+struct ArgumentTableSnapshotRoot
+{
+    uint xorMask;
+    uint3 reserved;
+};
+
 [shader("vertex")]
 SmokeVertexOutput offscreenSmokeVertex(uint vertexId : SV_VertexID)
 {
@@ -147,7 +153,8 @@ void writeIndexedIndirectSmoke(
 void argumentTableSnapshotSmoke(
     StructuredBuffer<uint> snapshotSource,
     RWStructuredBuffer<uint> snapshotDestination,
+    ConstantBuffer<ArgumentTableSnapshotRoot> replayRoot,
     uint3 dispatchThreadId : SV_DispatchThreadID)
 {
-    snapshotDestination[0] = snapshotSource[0];
+    snapshotDestination[0] = snapshotSource[0] ^ replayRoot.xorMask;
 }

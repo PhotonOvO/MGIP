@@ -352,6 +352,26 @@ if(NOT FORBIDDEN_ROOT_PADDING_OFFSET EQUAL -1)
     "Metal root-constant scratch padding retained temporary vector storage")
 endif()
 
+foreach(REQUIRED_ROOT_REPLAY_POOL_TOKEN IN ITEMS
+    "storeRootConstantReplayData"
+    "rootConstantReplayData"
+    "m_rootConstantReplayStorageCount = 0")
+  string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}"
+    "${REQUIRED_ROOT_REPLAY_POOL_TOKEN}"
+    REQUIRED_ROOT_REPLAY_POOL_OFFSET)
+  if(REQUIRED_ROOT_REPLAY_POOL_OFFSET EQUAL -1)
+    message(FATAL_ERROR
+      "Metal root-constant replay pool is missing '${REQUIRED_ROOT_REPLAY_POOL_TOKEN}'")
+  endif()
+endforeach()
+
+string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}"
+  "std::vector<std::byte> replayData" FORBIDDEN_ROOT_REPLAY_VECTOR_OFFSET)
+if(NOT FORBIDDEN_ROOT_REPLAY_VECTOR_OFFSET EQUAL -1)
+  message(FATAL_ERROR
+    "Metal root-constant replay retained per-call vector storage")
+endif()
+
 file(READ "${SOURCE_ROOT}/cmake/CompilerSlangShader.cmake"
   METAL_SLANG_COMPILER_SOURCE)
 foreach(REQUIRED_ICB_LIBRARY_TOKEN IN ITEMS
