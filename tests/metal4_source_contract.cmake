@@ -205,6 +205,8 @@ endforeach()
 
 file(READ "${SOURCE_ROOT}/rhi/metal/MetalCommandBuffer.cpp"
   METAL4_COMMAND_BUFFER_SOURCE)
+file(READ "${SOURCE_ROOT}/rhi/metal/MetalCommandBuffer.h"
+  METAL4_COMMAND_BUFFER_HEADER)
 foreach(REQUIRED_ICB_ABI_TOKEN IN ITEMS
     "toMetalShaderPrimitive"
     ".primitiveType = toMetalShaderPrimitive(desc.topology)")
@@ -274,6 +276,36 @@ foreach(REQUIRED_NESTED_ARGUMENT_TOKEN IN ITEMS
   if(REQUIRED_NESTED_ARGUMENT_OFFSET EQUAL -1)
     message(FATAL_ERROR
       "Metal nested argument-buffer encoding is missing '${REQUIRED_NESTED_ARGUMENT_TOKEN}'")
+  endif()
+endforeach()
+
+foreach(REQUIRED_RESIDENCY_SCRATCH_TOKEN IN ITEMS
+    "m_automaticResidencyScratchAllocations"
+    "m_automaticResidencyRemovalScratch"
+    "m_automaticResidencyAdditionScratch")
+  string(FIND "${METAL4_COMMAND_BUFFER_HEADER}"
+    "${REQUIRED_RESIDENCY_SCRATCH_TOKEN}"
+    REQUIRED_RESIDENCY_SCRATCH_HEADER_OFFSET)
+  string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}"
+    "${REQUIRED_RESIDENCY_SCRATCH_TOKEN}"
+    REQUIRED_RESIDENCY_SCRATCH_SOURCE_OFFSET)
+  if(REQUIRED_RESIDENCY_SCRATCH_HEADER_OFFSET EQUAL -1 OR
+     REQUIRED_RESIDENCY_SCRATCH_SOURCE_OFFSET EQUAL -1)
+    message(FATAL_ERROR
+      "Metal automatic-residency scratch reuse is missing '${REQUIRED_RESIDENCY_SCRATCH_TOKEN}'")
+  endif()
+endforeach()
+
+foreach(FORBIDDEN_RESIDENCY_SCRATCH_TOKEN IN ITEMS
+    "std::vector<const MTL::Allocation*> next;"
+    "std::vector<const MTL::Allocation*> removals;"
+    "std::vector<const MTL::Allocation*> additions;")
+  string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}"
+    "${FORBIDDEN_RESIDENCY_SCRATCH_TOKEN}"
+    FORBIDDEN_RESIDENCY_SCRATCH_OFFSET)
+  if(NOT FORBIDDEN_RESIDENCY_SCRATCH_OFFSET EQUAL -1)
+    message(FATAL_ERROR
+      "Metal automatic-residency rebuild retained per-submit storage '${FORBIDDEN_RESIDENCY_SCRATCH_TOKEN}'")
   endif()
 endforeach()
 
