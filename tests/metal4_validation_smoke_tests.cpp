@@ -1,4 +1,5 @@
 #include "../rhi/RHICommandBuffer.h"
+#include "../rhi/RHIDebugCounters.h"
 #include "../rhi/metal/Metal4Availability.h"
 #include "../rhi/metal/MetalCommon.h"
 #include "../rhi/metal/MetalDevice.h"
@@ -350,7 +351,25 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
       .accessIntent = ArgumentAccessIntent::readWrite,
     },
   }};
+  resetHotPathCounters(BackendType::metal);
   device.updateArgumentTable(table, writes);
+  const auto tableVersion = [&device, table]() {
+    const MetalArgumentTableRecord* record =
+      device.resourceTable().tryGetArgumentTable(table);
+    if(record == nullptr)
+      throw std::runtime_error("Metal4 argument-table record is unavailable");
+    return record->version;
+  };
+  const uint64_t initialVersion = tableVersion();
+  if(snapshotHotPathCounters(BackendType::metal).descriptorUpdates != 2u)
+    throw std::runtime_error("Metal4 initial argument-table writes were not counted");
+  device.updateArgumentTable(table, writes);
+  if(tableVersion() != initialVersion ||
+     snapshotHotPathCounters(BackendType::metal).descriptorUpdates != 2u)
+  {
+    throw std::runtime_error(
+      "Metal4 duplicate argument-table writes changed the table version");
+  }
 
   Queue* queue = device.getQueue(QueueClass::graphics);
   auto allocator = device.createCommandAllocator(QueueClass::graphics);
@@ -366,6 +385,12 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
 
   writes[0].buffer = replacementSource;
   device.updateArgumentTable(table, writes);
+  if(tableVersion() != initialVersion + 1u ||
+     snapshotHotPathCounters(BackendType::metal).descriptorUpdates != 3u)
+  {
+    throw std::runtime_error(
+      "Metal4 argument-table updates did not isolate the changed binding");
+  }
   device.destroyBuffer(oldSource);
 
   CommandBuffer* submitted = commands.get();
