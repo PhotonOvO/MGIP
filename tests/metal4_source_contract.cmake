@@ -277,6 +277,30 @@ foreach(REQUIRED_NESTED_ARGUMENT_TOKEN IN ITEMS
   endif()
 endforeach()
 
+foreach(REQUIRED_INDEXED_INDIRECT_SCRATCH_TOKEN IN ITEMS
+    "allocator().allocateArgumentData(\n      encodedLength"
+    "allocator().allocateArgumentData(\n      clampedArgumentBytes")
+  string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}"
+    "${REQUIRED_INDEXED_INDIRECT_SCRATCH_TOKEN}"
+    REQUIRED_INDEXED_INDIRECT_SCRATCH_OFFSET)
+  if(REQUIRED_INDEXED_INDIRECT_SCRATCH_OFFSET EQUAL -1)
+    message(FATAL_ERROR
+      "Metal indexed-indirect scratch allocation is missing '${REQUIRED_INDEXED_INDIRECT_SCRATCH_TOKEN}'")
+  endif()
+endforeach()
+
+foreach(FORBIDDEN_INDEXED_INDIRECT_SCRATCH_TOKEN IN ITEMS
+    "argumentBytesStorage"
+    "clampedArgumentStorage")
+  string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}"
+    "${FORBIDDEN_INDEXED_INDIRECT_SCRATCH_TOKEN}"
+    FORBIDDEN_INDEXED_INDIRECT_SCRATCH_OFFSET)
+  if(NOT FORBIDDEN_INDEXED_INDIRECT_SCRATCH_OFFSET EQUAL -1)
+    message(FATAL_ERROR
+      "Metal indexed-indirect scratch path retained temporary storage '${FORBIDDEN_INDEXED_INDIRECT_SCRATCH_TOKEN}'")
+  endif()
+endforeach()
+
 file(READ "${SOURCE_ROOT}/cmake/CompilerSlangShader.cmake"
   METAL_SLANG_COMPILER_SOURCE)
 foreach(REQUIRED_ICB_LIBRARY_TOKEN IN ITEMS
