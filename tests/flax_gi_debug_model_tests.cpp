@@ -48,6 +48,17 @@ int main()
 	                 "a small global budget does not become an unlimited cascade update");
 	passed &= expect(demo::computeFlaxGICascadeUpdateBudget(64u, 1024u, 0u, 0u) == 0u,
 	                 "zero cascades produce zero work");
+	passed &= expect(demo::computeFlaxGICascadeUpdatePeriod(1u, 0u) == 1u
+	               && demo::computeFlaxGICascadeUpdatePeriod(1u, 3u) == 8u,
+	                 "coarser DDGI cascades update at power-of-two periods");
+	passed &= expect(demo::shouldUpdateFlaxGICascade(3u, 1u, 0u, false, false)
+	               && !demo::shouldUpdateFlaxGICascade(3u, 1u, 1u, false, false),
+	                 "cascade scheduling updates the inner cascade more frequently");
+	passed &= expect(demo::shouldUpdateFlaxGICascade(3u, 8u, 3u, true, false),
+	                 "dirty probes bypass cascade frequency throttling");
+	passed &= expect(demo::shouldClassifyFlaxGICascade(16u, 1u, 8u, 1u, false, false)
+	               && !demo::shouldClassifyFlaxGICascade(14u, 1u, 8u, 1u, false, false),
+	                 "probe classification runs at its lower scheduled frequency");
 	passed &= expect(empty.trace.x == 0u && empty.distance.x == 0u && empty.irradiance.x == 0u,
 	                 "zero active probes produce zero indirect work");
 
