@@ -333,6 +333,25 @@ foreach(FORBIDDEN_INDEXED_INDIRECT_SCRATCH_TOKEN IN ITEMS
   endif()
 endforeach()
 
+foreach(REQUIRED_ROOT_PADDING_TOKEN IN ITEMS
+    "allocator().allocateArgumentData(\n          placement.size"
+    "value->constants.data(), value->constants.size()")
+  string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}"
+    "${REQUIRED_ROOT_PADDING_TOKEN}"
+    REQUIRED_ROOT_PADDING_OFFSET)
+  if(REQUIRED_ROOT_PADDING_OFFSET EQUAL -1)
+    message(FATAL_ERROR
+      "Metal root-constant scratch padding is missing '${REQUIRED_ROOT_PADDING_TOKEN}'")
+  endif()
+endforeach()
+
+string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}"
+  "std::vector<std::byte> padded" FORBIDDEN_ROOT_PADDING_OFFSET)
+if(NOT FORBIDDEN_ROOT_PADDING_OFFSET EQUAL -1)
+  message(FATAL_ERROR
+    "Metal root-constant scratch padding retained temporary vector storage")
+endif()
+
 file(READ "${SOURCE_ROOT}/cmake/CompilerSlangShader.cmake"
   METAL_SLANG_COMPILER_SOURCE)
 foreach(REQUIRED_ICB_LIBRARY_TOKEN IN ITEMS
