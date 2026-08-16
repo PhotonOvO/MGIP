@@ -1,4 +1,5 @@
 #include "../render/CSMShadowResources.h"
+#include "../render/CSMShadowCache.h"
 #include "../render/ClipSpaceConvention.h"
 #include "../render/RenderTypes.h"
 #include "../render/GPUSceneRegistry.h"
@@ -3234,6 +3235,68 @@ namespace
 		expect(demo::CSMShadowResources::clampCascadeResolution(minimumResolution + 7u) == minimumResolution + 7u,
 		       "valid cascade resolution was unnecessarily changed");
 	}
+
+	void testCSMShadowCacheInvalidation()
+	{
+		demo::CSMShadowResources::FrameData frame{};
+		frame.cascadeCount = shaderio::LCascadeCount;
+		frame.lightDirection = glm::normalize(glm::vec3(0.3f, -1.0f, 0.2f));
+		frame.normalBiasWorld = 0.125f;
+		for (uint32_t cascadeIndex = 0; cascadeIndex < frame.cascadeCount; ++cascadeIndex)
+		{
+			frame.cascades[cascadeIndex].viewProjection =
+				glm::translate(glm::mat4(1.0f), glm::vec3(static_cast<float>(cascadeIndex), 0.0f, 0.0f));
+			frame.cascades[cascadeIndex].cullingViewProjection =
+				glm::scale(frame.cascades[cascadeIndex].viewProjection, glm::vec3(1.01f));
+		}
+
+		const demo::CSMShadowCacheIdentity identity{
+			.cascadeTexture = {1u, 1u},
+			.vertexBuffer = {2u, 1u},
+			.indexBuffer = {3u, 1u},
+			.shadowContentVersion = 7u,
+			.shadowMeshCount = 393u,
+			.opaqueShadowMeshCount = 300u,
+			.cascadeCount = frame.cascadeCount,
+		};
+		constexpr uint32_t allCascades = (1u << shaderio::LCascadeCount) - 1u;
+		demo::CSMShadowCache cache;
+		expect(cache.dirtyCascadeMask(frame, identity) == allCascades,
+		       "an empty CSM cache did not request every cascade");
+		cache.publish(frame, identity, allCascades);
+		expect(cache.dirtyCascadeMask(frame, identity) == 0u,
+		       "an unchanged CSM snapshot was not reused");
+		auto repartitioned = identity;
+		--repartitioned.opaqueShadowMeshCount;
+		expect(cache.dirtyCascadeMask(frame, repartitioned) == allCascades,
+		       "a changed opaque/alpha shadow partition did not invalidate every cascade");
+
+		auto movedFrame = frame;
+		movedFrame.cascades[2].viewProjection[3][0] += 1.0f / 1024.0f;
+		expect(cache.dirtyCascadeMask(movedFrame, identity) == (1u << 2u),
+		       "one changed CSM projection did not invalidate only its cascade");
+		cache.publish(movedFrame, identity, 1u << 2u);
+		expect(cache.dirtyCascadeMask(movedFrame, identity) == 0u,
+		       "a redrawn CSM cascade was not published to the cache");
+
+		auto changedContent = identity;
+		++changedContent.shadowContentVersion;
+		expect(cache.dirtyCascadeMask(movedFrame, changedContent) == allCascades,
+		       "shadow-caster content changes did not invalidate every cascade");
+		cache.publish(movedFrame, changedContent, allCascades);
+		auto changedBiasFrame = movedFrame;
+		changedBiasFrame.normalBiasWorld += 0.01f;
+		expect(cache.dirtyCascadeMask(changedBiasFrame, changedContent) == allCascades,
+		       "caster normal-bias changes did not invalidate every cascade");
+
+		auto unversioned = changedContent;
+		unversioned.shadowContentVersion = 0u;
+		expect(cache.dirtyCascadeMask(movedFrame, unversioned) == allCascades,
+		       "an unversioned external shadow source was incorrectly cached");
+		cache.invalidate();
+		expect(cache.dirtyCascadeMask(movedFrame, changedContent) == allCascades,
+		       "explicit CSM cache invalidation did not request every cascade");
+	}
 } // namespace
 
 int main()
@@ -3274,6 +3337,7 @@ int main()
 		testShadowTextureTransformIsBackendIndependent();
 		testFramebufferCoordinatesMatchProjectionConvention();
 		testTinyCascadeResolutionClamp();
+		testCSMShadowCacheInvalidation();
 		testStableCascadeProjection();
 		testOffCenterProjection();
 		testOffCenterOrthographicProjection();
