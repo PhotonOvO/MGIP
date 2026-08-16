@@ -327,6 +327,8 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
                                                     "Metal4 old table source");
   const BufferHandle replacementSource = createValueBuffer(
     0x2468ace0u, "Metal4 replacement table source");
+  const BufferHandle reusedSource = createValueBuffer(
+    0x13579bdfu, "Metal4 reused table source");
   const BufferHandle output = device.createBuffer(BufferDesc{
     .size = sizeof(uint32_t),
     .usage = BufferUsageFlags::storage,
@@ -403,11 +405,45 @@ void runExecutableArgumentTableUpdateSmoke(MetalDevice& device)
   if(result == nullptr || *result != 0x2468ace0u)
     throw std::runtime_error("Metal4 executable argument-table update used stale data");
   device.unmapBuffer(output);
+  const uint64_t allocatedSnapshots =
+    snapshotHotPathCounters(BackendType::metal).tableVersionAllocations;
+  if(allocatedSnapshots != 2u)
+    throw std::runtime_error("Metal4 executable table replay allocation count changed");
   allocator->reset(completion);
+
+  writes[0].buffer = reusedSource;
+  device.updateArgumentTable(table, writes);
+  commands->begin(*allocator);
+  encoder = commands->beginComputePass();
+  encoder->setPipeline(pipeline);
+  encoder->setArgumentTable(0, table);
+  encoder->dispatch(DispatchDesc{.groupCountX = 1, .groupCountY = 1,
+                                 .groupCountZ = 1});
+  commands->endEncoding();
+  commands->end();
+  if(snapshotHotPathCounters(BackendType::metal).tableVersionAllocations !=
+     allocatedSnapshots)
+  {
+    throw std::runtime_error(
+      "Metal4 allocator reset did not reuse an argument-table snapshot");
+  }
+
+  submitted = commands.get();
+  const SubmissionToken reusedCompletion = queue->submit(SubmitBatch{
+    .commandBuffers = std::span<CommandBuffer* const>{&submitted, 1},
+    .debugLabel = "Metal4 reused argument-table snapshot smoke",
+  });
+  queue->wait(reusedCompletion);
+  result = static_cast<const uint32_t*>(device.mapBuffer(output));
+  if(result == nullptr || *result != 0x13579bdfu)
+    throw std::runtime_error("Metal4 reused argument-table snapshot used stale data");
+  device.unmapBuffer(output);
+  allocator->reset(reusedCompletion);
   commands.reset();
   allocator.reset();
 
   device.destroyBuffer(output);
+  device.destroyBuffer(reusedSource);
   device.destroyBuffer(replacementSource);
   device.destroyPipeline(pipeline);
   device.destroyArgumentTable(table);
