@@ -34,6 +34,18 @@ using namespace demo::rhi::metal;
 
 constexpr int kSkipReturnCode = 77;
 
+void verifyBarrierVisibilityMapping()
+{
+  if(toMetalVisibility(HazardFlags::readBeforeWrite) != MTL4::VisibilityOptionNone)
+    throw std::runtime_error("Metal4 WAR barriers must not flush GPU caches");
+  if(toMetalVisibility(HazardFlags::textureWrites) != MTL4::VisibilityOptionDevice ||
+     toMetalVisibility(HazardFlags::textureWrites | HazardFlags::readBeforeWrite) !=
+       MTL4::VisibilityOptionDevice)
+  {
+    throw std::runtime_error("Metal4 write barriers must flush to device visibility");
+  }
+}
+
 void enableMetalValidation()
 {
   // Metal reads these settings while it creates the first device.
@@ -1311,6 +1323,7 @@ int main()
 
   try
   {
+    verifyBarrierVisibilityMapping();
     MetalDevice device;
     DeviceCreateInfo createInfo{};
     createInfo.enableValidationLayers = true;
