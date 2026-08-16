@@ -68,6 +68,7 @@ foreach(REQUIRED_API IN LISTS REQUIRED_METAL4_APIS)
 endforeach()
 
 file(READ "${SOURCE_ROOT}/rhi/metal/MetalSwapchain.cpp" METAL4_SWAPCHAIN_SOURCE)
+file(READ "${SOURCE_ROOT}/rhi/metal/MetalCommandBuffer.cpp" METAL4_COMMAND_BUFFER_SOURCE)
 foreach(FORBIDDEN_DRAWABLE_RENDER_API IN ITEMS
     "renderCommandEncoder"
     "drawPrimitives"
@@ -79,22 +80,37 @@ foreach(FORBIDDEN_DRAWABLE_RENDER_API IN ITEMS
       "Drawable presentation uses forbidden render API '${FORBIDDEN_DRAWABLE_RENDER_API}'")
   endif()
 endforeach()
-string(FIND "${METAL4_SWAPCHAIN_SOURCE}" "copyFromTexture"
+string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}" "copyFromTexture"
   DRAWABLE_COMPUTE_COPY_OFFSET)
 if(DRAWABLE_COMPUTE_COPY_OFFSET EQUAL -1)
   message(FATAL_ERROR "Drawable presentation is missing its Metal 4 compute copy")
 endif()
+string(FIND "${METAL4_SWAPCHAIN_SOURCE}" "presentCommandBuffer"
+  DEDICATED_PRESENT_COMMAND_BUFFER_OFFSET)
+if(NOT DEDICATED_PRESENT_COMMAND_BUFFER_OFFSET EQUAL -1)
+  message(FATAL_ERROR
+    "Drawable presentation must be folded into the frame command buffer")
+endif()
 foreach(DRAWABLE_RESIDENCY_API IN ITEMS
     "newResidencySet"
     "addAllocation(composition->nativeTexture)"
-    "useResidencySet(image.presentResidencySet)"
     "m_layer->residencySet()"
-    "useResidencySet(drawableResidencySet)")
+    "encodeDrawablePresent")
   string(FIND "${METAL4_SWAPCHAIN_SOURCE}" "${DRAWABLE_RESIDENCY_API}"
     DRAWABLE_RESIDENCY_OFFSET)
   if(DRAWABLE_RESIDENCY_OFFSET EQUAL -1)
     message(FATAL_ERROR
       "Drawable presentation residency is missing '${DRAWABLE_RESIDENCY_API}'")
+  endif()
+endforeach()
+foreach(DRAWABLE_COMMAND_RESIDENCY_API IN ITEMS
+    "useResidencySet(compositionResidencySet)"
+    "useResidencySet(drawableResidencySet)")
+  string(FIND "${METAL4_COMMAND_BUFFER_SOURCE}"
+    "${DRAWABLE_COMMAND_RESIDENCY_API}" DRAWABLE_RESIDENCY_OFFSET)
+  if(DRAWABLE_RESIDENCY_OFFSET EQUAL -1)
+    message(FATAL_ERROR
+      "Drawable command residency is missing '${DRAWABLE_COMMAND_RESIDENCY_API}'")
   endif()
 endforeach()
 
@@ -115,6 +131,17 @@ if(DRAWABLE_SIGNAL_OFFSET EQUAL -1 OR PRESENT_COMPLETION_OFFSET EQUAL -1
    OR NOT DRAWABLE_SIGNAL_OFFSET LESS PRESENT_COMPLETION_OFFSET)
   message(FATAL_ERROR
     "Presentation completion must be signaled after signalDrawable")
+endif()
+
+file(READ "${SOURCE_ROOT}/render/RenderDevice.cpp" RENDER_DEVICE_SOURCE)
+string(FIND "${RENDER_DEVICE_SOURCE}"
+  "swapchain->encodePresent(cmdBuffer)" ENCODE_PRESENT_OFFSET)
+string(FIND "${RENDER_DEVICE_SOURCE}"
+  "frameScheduler.submitFrame(" FRAME_SUBMIT_OFFSET REVERSE)
+if(ENCODE_PRESENT_OFFSET EQUAL -1 OR FRAME_SUBMIT_OFFSET EQUAL -1
+   OR NOT ENCODE_PRESENT_OFFSET LESS FRAME_SUBMIT_OFFSET)
+  message(FATAL_ERROR
+    "Drawable copy must be encoded before the frame command buffer is submitted")
 endif()
 
 # Slang's Metal target assigns direct buffer/texture/sampler indices from
