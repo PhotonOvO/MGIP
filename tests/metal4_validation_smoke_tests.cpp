@@ -654,6 +654,7 @@ void runOffscreenRenderSmoke(MetalDevice& device)
 
 void runIndexedIndirectRenderSmoke(MetalDevice& device)
 {
+  resetHotPathCounters(BackendType::metal);
   constexpr uint32_t width = 96;
   constexpr uint32_t height = 32;
   constexpr uint32_t regionWidth = width / 3u;
@@ -888,6 +889,14 @@ void runIndexedIndirectRenderSmoke(MetalDevice& device)
     .indexFormat = IndexFormat::uint32,
     .topology = PrimitiveTopology::triangleList,
   });
+  const uint64_t allocatedIndirectCommandBuffers =
+    snapshotHotPathCounters(BackendType::metal)
+      .commandRecordingNativeObjectCreations;
+  if(allocatedIndirectCommandBuffers != 2u)
+  {
+    throw std::runtime_error(
+      "Metal4 indexed smoke did not allocate two independent ICBs");
+  }
   const RenderTargetDesc colorTarget{
     .texture = target,
     .state = ResourceState::ColorAttachment,
@@ -970,6 +979,37 @@ void runIndexedIndirectRenderSmoke(MetalDevice& device)
   }
   device.unmapBuffer(readback);
   allocator->reset(completion);
+
+  commands->begin(*allocator);
+  commands->prepareIndexedIndirect(PrepareIndexedIndirectDesc{
+    .draw = fixedDraw,
+    .indexBuffer = indices,
+    .indexBufferOffset = sizeof(uint32_t),
+    .indexFormat = IndexFormat::uint32,
+    .topology = PrimitiveTopology::triangleList,
+  });
+  commands->prepareIndexedIndirectCount(PrepareIndexedIndirectCountDesc{
+    .draw = countDraw,
+    .indexBuffer = indices,
+    .indexBufferOffset = sizeof(uint32_t),
+    .indexFormat = IndexFormat::uint32,
+    .topology = PrimitiveTopology::triangleList,
+  });
+  commands->end();
+  if(snapshotHotPathCounters(BackendType::metal)
+       .commandRecordingNativeObjectCreations !=
+     allocatedIndirectCommandBuffers)
+  {
+    throw std::runtime_error(
+      "Metal4 allocator reset did not reuse indexed indirect command buffers");
+  }
+  submitted = commands.get();
+  const SubmissionToken reuseCompletion = queue->submit(SubmitBatch{
+    .commandBuffers = std::span<CommandBuffer* const>{&submitted, 1},
+    .debugLabel = "Metal4 reused indexed indirect command buffers",
+  });
+  queue->wait(reuseCompletion);
+  allocator->reset(reuseCompletion);
   commands.reset();
   allocator.reset();
 
