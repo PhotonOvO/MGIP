@@ -1,5 +1,4 @@
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3.h>
+#include "../app/GlfwSdl3Compat.h"
 
 #include "../rhi/RHICommandBuffer.h"
 #include "../rhi/RHIDevice.h"
