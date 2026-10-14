@@ -1,0 +1,82 @@
+{
+  "id": "2026-09-29-material-field-switch",
+  "status": "implemented_pending_interactive_reprofile",
+  "baseline": {
+    "trace": "F:/Captures/2026-09-29_14-40-42_Demo.slp",
+    "executable": "G:/MGIF/build/Debug/Demo.exe",
+    "session_duration_ms": 34297.1493,
+    "sample_interval_ms": 0.1221,
+    "thread": {"id": 0, "name": "Main", "os_id": 11776},
+    "thread_count": 19,
+    "resolved_modules": 59,
+    "module_count": 357,
+    "main_executable_resolved_functions": 10989,
+    "main_validation_self_pct": 25.3303,
+    "frame_timeline": {
+      "method": "slp.py timeline --thread Main --frame-func drawFrame",
+      "inferred_frame_count": 1507,
+      "p50_wall_ms": 17.5075,
+      "p95_wall_ms": 29.19433,
+      "p99_wall_ms": 36.274684,
+      "max_wall_ms": 1753.1096,
+      "slow_windows_ms": [[2100.9448, 3854.0544], [4851.0702, 6344.9829], [7492.0177, 9040.5417]]
+    }
+  },
+  "evidence": [
+    {"id": "E1", "tool": "callees", "thread": "Main", "window_ms": [2100, 3854],
+     "function": "finishFieldEdit", "matched_ms": 1383.5151, "child": "commitMaterialDraft"},
+    {"id": "E2", "tool": "callees", "thread": "Main", "window_ms": [2100, 3854],
+     "function": "commitMaterialPropertiesMutation", "matched_ms": 508.4244,
+     "child": "GltfDocument::documentDigest", "child_ms": 493.8945},
+    {"id": "E3", "tool": "callees", "thread": "Main", "window_ms": [2100, 3854],
+     "function": "rebuildProjection", "matched_ms": 573.87,
+     "child": "reprojectMaterialParameters", "child_ms": 497.1912},
+    {"id": "E4", "tool": "callees", "thread": "Main", "window_ms": [2100, 3854],
+     "function": "reprojectMaterialParameters", "copy_ms": 140.0487,
+     "finalize_projection_ms": 344.4441},
+    {"id": "E5", "tool": "callees", "thread": "Main", "window_ms": [2100, 3854],
+     "function": "EditorRendererAdapter::enqueue", "matched_ms": 119.1696,
+     "projection_copy_ms": 119.0475},
+    {"id": "E6", "tool": "callees", "thread": "Main", "window_ms": [2100, 3854],
+     "function": "EditorRendererAdapter::flush", "matched_ms": 307.9362},
+    {"id": "E7", "tool": "callees", "thread": "Main", "window_ms": "entire trace",
+     "function": "GltfLoader::processImages", "matched_samples": 0}
+  ],
+  "diagnosis": {
+    "problem_class": "synchronous CPU publication stall",
+    "png_decode": "previous fix is active; no processImages samples in this trace",
+    "remaining_cost": "authority canonicalization and repeated large projection/payload copies",
+    "unresolved_symbols": "CRT export leaf labels are not trusted; diagnosis uses resolved Demo.exe ancestors",
+    "validation": "large steady-state cost, but not the material-publication root cause"
+  },
+  "patch": [
+    "Share immutable SceneAsset bulk payloads and immutable snapshot storage across owned copies.",
+    "Encode canonical projection snapshots as owned fragments and hash the exact concatenation.",
+    "Retain canonical payload URI owners only across identity-preserving mutations.",
+    "Reuse exact SHA-256/FNV prefix state after checking the unchanged metadata prefix.",
+    "Use pinned TinyGLTF serializers to update one cached material JSON entry; verify cold layout against full serialization.",
+    "Restore cached material metadata along with authority values on every pre-publication failure.",
+    "Include normal/occlusion scalar changes in the material-properties no-op check."
+  ],
+  "verification": {
+    "ctest": {"configuration": "Debug", "passed": 27, "failed": 0},
+    "portable_sha256": "GCC C++20 build and tests passed using the non-Windows implementation",
+    "sponza_mouse_test": {
+      "command": "editor_controller_transaction_tests.exe --profile-material-switch-sponza",
+      "switch_ms": 0.4184,
+      "second_drag_ms": 0.4177,
+      "leave_commit_ms": 100.404,
+      "scope": "real ImGui mouse input and controller; excludes actual GPU publication"
+    },
+    "equivalence": ["complete canonical authority SHA-256", "uncached semantic FNV hash",
+      "incremental/full projection bytes and digest", "runtime mapping", "undo/redo", "fault rollback"],
+    "base_color_picker": {"close_ms": [106.324, 100.319], "max_drag_ms": [0.6591, 1.0159]},
+    "builds": {"external_debug": "passed", "external_release": "passed", "external_profile": "passed", "usual_debug": "passed"},
+    "usual_debug_sha256": "a592e742d2fcac18b712b3f66e19b0fd3a42620474a788da9a155889ef542bcc",
+    "runtime_smoke": {"executable": "G:/MGIF/build/Debug/Demo.exe", "scene": "Sponza", "backend": "Vulkan", "frames": 3, "exit_code": 0, "errors_in_log": 0},
+    "final_key_tests": {"passed": 3, "failed": 0}
+  },
+  "candidate_trace": null,
+  "normalized_compare": null,
+  "verdict": "Seconds-long allocation/canonicalization costs removed in focused tests. Approximately 100 ms synchronous controller commit remains for Sponza; actual Main-thread improvement requires a new same-workflow trace."
+}

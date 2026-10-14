@@ -1,0 +1,41 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "MGIF glTF editor P0 fixture",
+    "extras": {
+      "roundtripSentinel": "asset-extras-must-survive",
+      "nested": { "answer": 42 }
+    }
+  },
+  "extensionsUsed": ["MGIF_test_unknown"],
+  "extensions": {
+    "MGIF_test_unknown": {
+      "scope": "document",
+      "payload": [1, 2, 3]
+    }
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Unknown Extension Scene",
+      "nodes": [0],
+      "extensions": {
+        "MGIF_test_unknown": { "scope": "scene" }
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "name": "UnknownExtensionNode",
+      "extensions": {
+        "MGIF_test_unknown": {
+          "scope": "node",
+          "enabled": true
+        }
+      },
+      "extras": {
+        "roundtripSentinel": "node-extras-must-survive"
+      }
+    }
+  ]
+}

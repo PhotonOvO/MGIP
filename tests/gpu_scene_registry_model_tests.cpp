@@ -1,16 +1,21 @@
 #include "../render/GPUSceneRegistry.h"
 #include "../render/GPUMeshletBuffer.h"
+#include "../render/FrameScheduler.h"
+#include "../render/GPUDrivenLightResources.h"
 #include "../rhi/RHICommandBuffer.h"
 #include "../rhi/RHIDevice.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <functional>
 #include <iostream>
 #include <limits>
+#include <map>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -35,6 +40,95 @@ namespace
 		rhi::HazardFlags hazards{rhi::HazardFlags::none};
 	};
 
+	class FakeQueue final : public rhi::Queue
+	{
+	public:
+		[[nodiscard]] rhi::QueueIdentity identity() const noexcept override { return m_identity; }
+		[[nodiscard]] rhi::QueueInfo info() const noexcept override
+		{
+			return {
+				.queueClass = rhi::QueueClass::graphics,
+				.available = true,
+			};
+		}
+
+		[[nodiscard]] rhi::SubmissionToken submit(const rhi::SubmitBatch& batch) override
+		{
+			if (batch.commandBuffers.size() != 1u || batch.commandBuffers.front() == nullptr)
+			{
+				throw std::runtime_error("fake graphics submit requires one command buffer");
+			}
+			const rhi::SubmissionToken token{m_identity, ++m_lastSubmittedValue};
+			submissions.push_back(token);
+			return token;
+		}
+
+		[[nodiscard]] bool isComplete(rhi::SubmissionToken token) const override
+		{
+			return token.queue == m_identity && token.value != 0u && token.value <= m_completedValue;
+		}
+
+		void wait(rhi::SubmissionToken token) override
+		{
+			if (token.queue != m_identity || token.value == 0u || token.value > m_lastSubmittedValue)
+			{
+				throw std::runtime_error("fake graphics wait received an invalid token");
+			}
+			waits.push_back(token);
+			completeThrough(token.value);
+		}
+
+		void waitIdle() override
+		{
+			++waitIdleCount;
+			completeThrough(m_lastSubmittedValue);
+		}
+
+		[[nodiscard]] rhi::SubmissionToken lastSubmittedToken() const noexcept override
+		{
+			return m_lastSubmittedValue == 0u
+				       ? rhi::SubmissionToken{}
+				       : rhi::SubmissionToken{m_identity, m_lastSubmittedValue};
+		}
+
+		void completeOnWait(rhi::SubmissionToken token, std::function<void()> completion)
+		{
+			if (token.queue != m_identity || token.value == 0u || token.value > m_lastSubmittedValue)
+			{
+				throw std::runtime_error("fake completion received an invalid token");
+			}
+			if (token.value <= m_completedValue)
+			{
+				completion();
+				return;
+			}
+			m_completions.emplace(token.value, std::move(completion));
+		}
+
+		std::vector<rhi::SubmissionToken> submissions;
+		std::vector<rhi::SubmissionToken> waits;
+		uint32_t waitIdleCount{0};
+
+	private:
+		void completeThrough(uint64_t value)
+		{
+			for (auto completion = m_completions.begin();
+			     completion != m_completions.end() && completion->first <= value;)
+			{
+				completion->second();
+				completion = m_completions.erase(completion);
+			}
+			m_completedValue = std::max(m_completedValue, value);
+		}
+
+		rhi::QueueIdentity m_identity{17u, 1u};
+		uint64_t m_lastSubmittedValue{0};
+		uint64_t m_completedValue{0};
+		std::map<uint64_t, std::function<void()>> m_completions;
+	};
+
+	class FakeCommandAllocator;
+
 	class FakeDevice final : public rhi::Device
 	{
 	public:
@@ -57,9 +151,12 @@ namespace
 		rhi::CapabilityReport queryCapabilities() const override { return {}; }
 		bool supports(rhi::CapabilityTier) const override { return false; }
 		const rhi::MemoryProperties& getPhysicalMemoryProperties() const override { return m_memoryProperties; }
-		void waitIdle() override {}
-		rhi::Queue* getQueue(rhi::QueueClass) override { return nullptr; }
-		std::unique_ptr<rhi::CommandAllocator> createCommandAllocator(rhi::QueueClass) override { return nullptr; }
+		void waitIdle() override { ++waitIdleCount; }
+		rhi::Queue* getQueue(rhi::QueueClass queueClass) override
+		{
+			return queueClass == rhi::QueueClass::graphics ? &m_graphicsQueue : nullptr;
+		}
+		std::unique_ptr<rhi::CommandAllocator> createCommandAllocator(rhi::QueueClass queueClass) override;
 		void initSurface(rhi::Surface&, const rhi::WindowHandle&) override {}
 		std::unique_ptr<rhi::Swapchain> createSwapchain(rhi::Surface&, bool) override { return nullptr; }
 
@@ -101,6 +198,10 @@ namespace
 			storage.desc = desc;
 			storage.debugName = desc.debugName != nullptr ? desc.debugName : "";
 			storage.bytes.resize(static_cast<size_t>(desc.size));
+			if (desc.memoryUsage == rhi::MemoryUsage::gpuToCpu)
+			{
+				std::fill(storage.bytes.begin(), storage.bytes.end(), std::byte{0xcd});
+			}
 			m_buffers.push_back(std::move(storage));
 			return handle;
 		}
@@ -174,8 +275,13 @@ namespace
 			return {};
 		}
 
+		FakeQueue& graphicsQueue() { return m_graphicsQueue; }
+
+		uint32_t waitIdleCount{0};
+
 	private:
 		std::vector<BufferStorage> m_buffers{1};
+		FakeQueue m_graphicsQueue;
 		rhi::PhysicalDeviceInfo m_physicalDeviceInfo{};
 		rhi::DeviceFeatureInfo m_featureInfo{};
 		rhi::MemoryProperties m_memoryProperties{};
@@ -219,7 +325,11 @@ namespace
 		{
 		}
 
-		void begin(rhi::CommandAllocator&) override { m_state = rhi::CommandBufferState::recording; }
+		void begin(rhi::CommandAllocator&) override
+		{
+			reset();
+			m_state = rhi::CommandBufferState::recording;
+		}
 		void end() override { m_state = rhi::CommandBufferState::executable; }
 		[[nodiscard]] rhi::CommandBufferState state() const noexcept override { return m_state; }
 
@@ -267,6 +377,42 @@ namespace
 		FakeComputeEncoder m_compute;
 		rhi::CommandBufferState m_state{rhi::CommandBufferState::idle};
 	};
+
+	class FakeCommandAllocator final : public rhi::CommandAllocator
+	{
+	public:
+		explicit FakeCommandAllocator(FakeDevice* device)
+			: m_device(device)
+		{
+		}
+
+		[[nodiscard]] rhi::QueueClass queueClass() const noexcept override
+		{
+			return rhi::QueueClass::graphics;
+		}
+
+		void reset(rhi::SubmissionToken completedToken) override
+		{
+			resetTokens.push_back(completedToken);
+		}
+
+		[[nodiscard]] std::unique_ptr<rhi::CommandBuffer> createCommandBuffer() override
+		{
+			return std::make_unique<FakeCommandBuffer>(m_device);
+		}
+
+		std::vector<rhi::SubmissionToken> resetTokens;
+
+	private:
+		FakeDevice* m_device{nullptr};
+	};
+
+	std::unique_ptr<rhi::CommandAllocator> FakeDevice::createCommandAllocator(rhi::QueueClass queueClass)
+	{
+		return queueClass == rhi::QueueClass::graphics
+		       ? std::make_unique<FakeCommandAllocator>(this)
+		       : nullptr;
+	}
 
 	void FakeComputeEncoder::copyBuffer(rhi::BufferHandle source,
 	                                    uint64_t sourceOffset,
@@ -957,7 +1103,10 @@ namespace
 		commandBuffer.executeCopies();
 		expectRegistryContents(device, registry, secondScene);
 		registry.deinit();
-	}}
+	}
+
+#include "gpu_cluster_stats_ring_model_tests.h"
+}
 
 int main()
 {
@@ -968,6 +1117,7 @@ int main()
 		runDenseRemovalGenerationAndSceneReplacementModel();
 		runMeshletMetadataForceRewriteModel();
 		runConsecutiveSceneReplacementTopologyModel();
+		runClusterStatsRingModel();
 		std::cout << "gpu scene registry model tests passed\n";
 		return 0;
 	}

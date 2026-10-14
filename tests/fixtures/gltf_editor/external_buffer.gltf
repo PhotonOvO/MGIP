@@ -1,0 +1,6 @@
+{
+  "asset": { "version": "2.0", "generator": "MGIF glTF editor P1 fixture" },
+  "buffers": [
+    { "name": "ExternalBuffer", "uri": "external_buffer.bin", "byteLength": 9 }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "origin": "hand-authored for MGIF",
+    "externalBytes": true,
+    "externalBytesOrigin": "hand-authored for MGIF",
+    "thirdPartyBytes": false,
+    "license": "project license (root license declaration pending P0/R24)",
+    "provenance": "docs/editor-parity/LICENSE-SOURCES.md"
+  },
+  "fixtures": [
+    {
+      "path": "invalid_child_index.gltf",
+      "sha256": "0001b1e0773cc698244913b6cf40f5736b38cb5fa1007c5e8aa2e8167dbd347f",
+      "bytes": 290,
+      "expected": "invalid",
+      "covers": ["out-of-range child index", "atomic load rejection"]
+    },
+    {
+      "path": "invalid_cycle.gltf",
+      "sha256": "af078ed743b548f57506c9418011683212d82226624738912f8e77b0c1aab279",
+      "bytes": 246,
+      "expected": "invalid",
+      "covers": ["cycle", "bounded iterative traversal", "atomic load rejection"]
+    },
+    {
+      "path": "invalid_multiparent.gltf",
+      "sha256": "5aa5ede11026ec7369771726d2bc788a7d6643657fbc0de9031fc5de071d0c81",
+      "bytes": 288,
+      "expected": "invalid",
+      "covers": ["multiple node parents", "atomic load rejection"]
+    },
+    {
+      "path": "external_buffer.gltf",
+      "sha256": "a5b220bd01c97fcbfa7403e92a20b5a570fa099078f68f41d93b66444257efa2",
+      "bytes": 180,
+      "expected": "valid",
+      "covers": ["contained external buffer URI", "dependency accounting"]
+    },
+    {
+      "path": "external_buffer.bin",
+      "sha256": "8ea68ee06eb20e3df57c138211e48d567f1324afe0a6b9136375526bea9515af",
+      "bytes": 9,
+      "expected": "binary",
+      "covers": ["original external buffer bytes", "exact dependency byte count"]
+    },
+    {
+      "path": "external_image.gltf",
+      "sha256": "8182561b9194ed55f3682ed7a1b1df267e84f18d95e56bdf683d2a6a3cd0d177",
+      "bytes": 465,
+      "expected": "valid",
+      "covers": ["contained external image URI", "image dependency accounting", "external image Save As staging"]
+    },
+    {
+      "path": "external_image.payload",
+      "sha256": "59bb8fca36907ac23a880c31f660cd6f7529c63b34be089d0ff8f75b78359304",
+      "bytes": 31,
+      "expected": "binary",
+      "covers": ["original external image sentinel bytes", "exact image dependency byte count"]
+    },
+    {
+      "path": "feature_preservation.gltf",
+      "sha256": "d9a8e791152af374828f019624a39236b2e884f2bea41ef0e35172789a865a7c",
+      "bytes": 3772,
+      "expected": "valid",
+      "covers": ["data URI", "bufferView image", "sparse accessor", "morph target", "skin", "animation", "material extension", "camera", "light", "unknown extension and extras"]
+    },
+    {
+      "path": "live_camera_light.gltf",
+      "sha256": "c6716928dda75614f2a2b376a3eb72a4f438e7274049577b36eb42aca2487c26",
+      "bytes": 1587,
+      "expected": "valid",
+      "covers": ["KHR_lights_punctual", "camera", "single-node scene", "U05 camera light visibility live replay"]
+    },
+    {
+      "path": "material_extensions.gltf",
+      "sha256": "a5476202b319955769786e906d8b11a519883f0eeb1bb2838b6498ae5626882f",
+      "bytes": 2978,
+      "expected": "valid",
+      "covers": ["locked material extensions", "texture references", "variants", "camera", "light", "unknown extension and extras"]
+    },
+    {
+      "path": "minimal_scene.gltf",
+      "sha256": "67002e80869880f68495ec4d3593b7e87510482a1094ce13b7b4c54b25021b91",
+      "bytes": 236,
+      "expected": "valid",
+      "covers": ["single scene", "single root", "unique-root delete oracle"]
+    },
+    {
+      "path": "multi_scene_oracle.gltf",
+      "sha256": "db06feb281758dcc8b5b62ea5f54d042a7d9c099ec16551e68477d9590f15196",
+      "bytes": 1317,
+      "expected": "valid",
+      "covers": ["multiple scenes", "per-scene roots", "per-scene children", "shared root", "D20"]
+    },
+    {
+      "path": "r09_shared_mesh.gltf",
+      "sha256": "a0e11df1b875dc9b5512600307c2b2795a3c76e51a13e277715f84fe07e663ca",
+      "bytes": 1913,
+      "expected": "valid",
+      "covers": ["shared mesh", "ordered primitives", "material isolation", "R09 split and merge"]
+    },
+    {
+      "path": "scene_root_matrix.gltf",
+      "sha256": "00f86391a2b9f54f1a0d50da1519892556e68aeca6c1e191caa4b0cc43b9a47e",
+      "bytes": 320,
+      "expected": "valid",
+      "covers": ["matrix-authored root", "TRS-authored root", "multi-root scene projection"]
+    },
+    {
+      "path": "unicode_names.gltf",
+      "sha256": "ecefba4356b20aa69ed38ae92342d9147ac5d17b6420629ebb3abeea5d4e07dd",
+      "bytes": 311,
+      "expected": "valid",
+      "covers": ["CJK", "emoji", "combining sequence"]
+    },
+    {
+      "path": "unknown_extension_roundtrip.gltf",
+      "sha256": "d80299e47bef0ecd8ab509e055a60bb47485fb0e86bb40a3ea41aa81c6a8bff1",
+      "bytes": 816,
+      "expected": "valid",
+      "covers": ["unknown document extension", "unknown scene extension", "unknown node extension", "extras"]
+    }
+  ]
+}

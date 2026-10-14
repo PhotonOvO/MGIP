@@ -1,0 +1,12 @@
+{
+  "asset": { "version": "2.0", "generator": "MGIF glTF editor P1 original fixture" },
+  "scene": 0,
+  "scenes": [{ "name": "External Image", "nodes": [] }],
+  "images": [
+    { "name": "Original External Sentinel", "uri": "external_image.payload", "mimeType": "image/png" }
+  ],
+  "textures": [{ "name": "External Texture", "source": 0 }],
+  "materials": [
+    { "name": "External Material", "pbrMetallicRoughness": { "baseColorTexture": { "index": 0 } } }
+  ]
+}

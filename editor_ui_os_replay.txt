@@ -1,0 +1,34 @@
+[19:54:19.974] VulkanDevice::init: begin
+[19:54:19.994] VulkanDevice::initInstance: creating Vulkan instance
+[19:54:20.093] VulkanDevice::initInstance: Vulkan instance created and function pointers loaded
+[19:54:20.177] VulkanDevice::init: completed
+[19:54:20.178] Static buffer upload: host staging to device-local buffers
+[19:54:20.228] ImGuiRhiRenderer initialized
+[19:54:20.229] RenderDevice::init: scene resources begin
+[19:54:20.238] RenderDevice::init: scene resources completed
+[19:54:20.239] RenderDevice::init: IBL resources begin
+[19:54:20.239] RenderDevice::createIBLResources: checking resources/environment/lilienstein_4k.ktx2
+[19:54:20.258] RenderDevice::createIBLResources: loaded KTX2 payload
+[19:54:20.259] Loaded IBL environment resources/environment/lilienstein_4k.ktx2 (4096x2048, 13 mips, Other, 10.67 MiB)
+[19:54:20.261] RenderDevice::init: IBL resources completed
+[19:54:20.261] RenderDevice::init: GPU culling resources begin
+[19:54:20.261] RenderDevice::init: GPU culling resources completed
+[19:54:20.261] RenderDevice::init: shadow culling resources begin
+[19:54:20.262] RenderDevice::init: shadow culling resources completed
+[19:54:20.262] RenderDevice::init: light resources begin
+[19:54:20.262] RenderDevice::init: light resources completed
+[19:54:20.262] RenderDevice::init: CSM resources begin
+[19:54:20.263] RenderDevice::init: CSM resources completed
+[19:54:20.337] Loaded GPUDriven equirect IBL resources/environment/lilienstein_4k.ktx2 (4096x2048, 13 mips, 10.67 MiB); split-sum ready
+[19:54:21.318] [EDITOR_OS_REPLAY] marker=runtime-created subcase=main steps=0..3
+[19:54:21.324] [CSM_AUTOMATION] marker=config mode=csm-translate-stop fixed_dt=0.016666668 warmup=8 motion=24 hold=8 no_ui=0 no_post=1 no_ddgi=1 taa=0 auto_exit=1 capture_sync=0 capture_control=0 capture_sync_timeout_ms=300000 capture_sync_dir=
+[19:54:21.366] Generated 128 animated random point lights for LightCoarseCulling
+[19:54:21.807] GPU smoke: first frame rendered
+[19:54:21.807] [EDITOR_OS_REPLAY] marker=scene-ready subcase=main
+[19:54:21.808] [CSM_AUTOMATION] marker=scene-ready mode=csm-translate-stop model=G:/MGIF\tests\fixtures\gltf_editor\r09_shared_mesh.gltf
+[19:54:21.808] [EDITOR_OS_REPLAY] marker=warmup-complete
+[19:54:21.809] [EDITOR_OS_REPLAY] marker=pending step=0 phase=0 authority=1 settled=1 adapter_init=1 adapter_pending=0 adapter_rebuild=0 adapter_fence=1 renderer_init=1 renderer_fence=1 focused=1 stable_frames=0 stable_frame_serial=0 ui_modal_pending=0 pending_reason=
+[19:54:21.811] [CSM_AUTOMATION] marker=start mode=csm-translate-stop frame=0
+[19:59:22.342] Frame failed during phase EditorOsReplayPostPlatformRender: timed out waiting for OS replay continue receipt
+[19:59:22.349] ImGuiRhiRenderer shut down
+[19:59:22.472] [EDITOR_OS_REPLAY] marker=process-failed reason=timed out waiting for OS replay continue receipt

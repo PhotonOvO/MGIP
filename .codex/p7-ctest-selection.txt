@@ -1,0 +1,15 @@
+scene_editor.gizmo_math
+scene_editor.grid_math
+scene_editor.overlay
+scene_editor.rhi_contract
+scene_editor.viewport_metrics
+scene_editor.transform_gizmo_cpu
+scene_editor.grid_model
+scene_editor.overlay_rhi
+scene_editor.input_router
+scene_editor.renderer_integration
+rhi_public_contract
+vulkan_conversion
+vulkan_command_buffer_handles
+scene_editor.selection_picking_integration
+scene_editor.gizmo_integration

@@ -1,0 +1,9 @@
+{
+  "asset": { "version": "2.0", "generator": "MGIF glTF editor P1 fixture" },
+  "scene": 0,
+  "scenes": [{ "name": "Cycle", "nodes": [0] }],
+  "nodes": [
+    { "name": "CycleA", "children": [1] },
+    { "name": "CycleB", "children": [0] }
+  ]
+}

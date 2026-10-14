@@ -147,14 +147,27 @@ void verifyImportedScene(const demo::GltfModel& model)
       && nearlyEqual(uniforms.cameraPosition.y, 2.0f)
       && nearlyEqual(uniforms.cameraPosition.z, 3.0f),
       "camera node transform was not applied");
+  // The authored aspectRatio remains document data (asserted above), but the
+  // render projection must match the target it is drawn into. Deriving it from
+  // camera.aspectRatio squashed the image whenever the glTF aspect differed
+  // from the viewport. The projection therefore takes the flight camera's
+  // aspect while keeping the imported yfov/near/far.
+  const float viewportAspect =
+      std::abs(originalProjection[1][1] / originalProjection[0][0]);
   const glm::mat4 expectedProjection = demo::clipspace::makePerspectiveProjection(
       camera.verticalFieldOfViewRadians,
-      camera.aspectRatio,
+      viewportAspect,
       camera.nearPlane,
       camera.farPlane,
       convention);
   expect(matricesNearlyEqual(uniforms.projection, expectedProjection),
          "glTF camera projection parameters were not applied");
+  expect(!matricesNearlyEqual(
+             uniforms.projection,
+             demo::clipspace::makePerspectiveProjection(
+                 camera.verticalFieldOfViewRadians, camera.aspectRatio,
+                 camera.nearPlane, camera.farPlane, convention)),
+         "render projection must not reuse the authored glTF aspectRatio");
 
   demo::DirectionalLightSettings lightSettings{};
   expect(demo::applyPrimarySceneDirectionalLight(

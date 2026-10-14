@@ -1,0 +1,9 @@
+{
+  "asset": { "version": "2.0", "generator": "MGIF scene-root matrix fixture" },
+  "scene": 0,
+  "scenes": [ { "name": "Matrix Roots", "nodes": [0, 1] } ],
+  "nodes": [
+    { "name": "Matrix Root", "matrix": [1, 0, 0, 2, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1] },
+    { "name": "TRS Root", "translation": [0, 3, 0] }
+  ]
+}

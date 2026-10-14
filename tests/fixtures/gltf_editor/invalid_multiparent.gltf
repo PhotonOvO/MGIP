@@ -1,0 +1,10 @@
+{
+  "asset": { "version": "2.0", "generator": "MGIF glTF editor P1 fixture" },
+  "scene": 0,
+  "scenes": [{ "name": "Multiparent", "nodes": [0, 1] }],
+  "nodes": [
+    { "name": "ParentA", "children": [2] },
+    { "name": "ParentB", "children": [2] },
+    { "name": "SharedChild" }
+  ]
+}

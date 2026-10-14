@@ -1,0 +1,4 @@
+interface:
+  display_name: "Superluminal CPU Perf"
+  short_description: "Evidence-first CPU render profiling and before/after verification"
+  default_prompt: "Use $superluminal-perf to profile this Superluminal trace, find the CPU-side rendering hotspot, map it to source, patch it minimally, and verify with a normalized before/after comparison."

@@ -1,0 +1,130 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "MGIF glTF editor P1 original fixture",
+    "extras": { "featureFixture": true }
+  },
+  "extensionsUsed": [
+    "KHR_lights_punctual",
+    "KHR_materials_clearcoat",
+    "MGIF_test_unknown"
+  ],
+  "extensions": {
+    "KHR_lights_punctual": {
+      "lights": [
+        { "name": "Default Color Light", "type": "directional", "intensity": 2.0 }
+      ]
+    },
+    "MGIF_test_unknown": {
+      "nested": { "orderedMeaning": [3, 1, 2], "finite": 1.25 }
+    }
+  },
+  "scene": 0,
+  "scenes": [
+    { "name": "Feature Scene", "nodes": [0, 1] }
+  ],
+  "nodes": [
+    {
+      "name": "Skinned Morph Mesh",
+      "mesh": 0,
+      "skin": 0,
+      "weights": [0.25],
+      "extras": { "unknownNodeValue": "preserve-me" }
+    },
+    {
+      "name": "Camera And Light",
+      "camera": 0,
+      "extensions": { "KHR_lights_punctual": { "light": 0 } }
+    },
+    { "name": "Joint" }
+  ],
+  "meshes": [
+    {
+      "name": "Sparse Triangle",
+      "weights": [0.25],
+      "primitives": [
+        {
+          "attributes": { "POSITION": 0 },
+          "indices": 1,
+          "material": 0,
+          "targets": [{ "POSITION": 0 }]
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "Clearcoat Material",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [0.25, 0.5, 0.75, 1.0],
+        "baseColorTexture": { "index": 0 }
+      },
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.5,
+          "clearcoatTexture": { "index": 0 }
+        },
+        "MGIF_test_unknown": { "materialSentinel": 17 }
+      }
+    }
+  ],
+  "textures": [{ "name": "Embedded Texture", "source": 0 }],
+  "images": [
+    { "name": "Embedded Image", "bufferView": 7, "mimeType": "image/png" }
+  ],
+  "skins": [
+    { "name": "One Joint Skin", "inverseBindMatrices": 2, "skeleton": 2, "joints": [2] }
+  ],
+  "animations": [
+    {
+      "name": "Translate",
+      "samplers": [{ "input": 3, "output": 4, "interpolation": "LINEAR" }],
+      "channels": [{ "sampler": 0, "target": { "node": 0, "path": "translation" } }]
+    }
+  ],
+  "cameras": [
+    { "name": "Perspective", "type": "perspective", "perspective": { "yfov": 0.75, "znear": 0.1 } }
+  ],
+  "buffers": [
+    {
+      "byteLength": 160,
+      "uri": "data:application/octet-stream;base64,AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAABAAIAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAQAAAQEABAAAAAAAAQAAAQEAAAIBATUdJRg=="
+    }
+  ],
+  "bufferViews": [
+    { "buffer": 0, "byteOffset": 0, "byteLength": 36, "target": 34962 },
+    { "buffer": 0, "byteOffset": 36, "byteLength": 6, "target": 34963 },
+    { "buffer": 0, "byteOffset": 44, "byteLength": 64 },
+    { "buffer": 0, "byteOffset": 108, "byteLength": 8 },
+    { "buffer": 0, "byteOffset": 116, "byteLength": 24 },
+    { "buffer": 0, "byteOffset": 140, "byteLength": 1 },
+    { "buffer": 0, "byteOffset": 144, "byteLength": 12 },
+    { "buffer": 0, "byteOffset": 156, "byteLength": 4 }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 3,
+      "type": "VEC3",
+      "min": [0.0, 0.0, 0.0],
+      "max": [2.0, 3.0, 4.0],
+      "sparse": {
+        "count": 1,
+        "indices": { "bufferView": 5, "componentType": 5121 },
+        "values": { "bufferView": 6 }
+      }
+    },
+    { "bufferView": 1, "componentType": 5123, "count": 3, "type": "SCALAR" },
+    { "bufferView": 2, "componentType": 5126, "count": 1, "type": "MAT4" },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 2,
+      "type": "SCALAR",
+      "min": [0.0],
+      "max": [1.0]
+    },
+    { "bufferView": 4, "componentType": 5126, "count": 2, "type": "VEC3" }
+  ]
+}

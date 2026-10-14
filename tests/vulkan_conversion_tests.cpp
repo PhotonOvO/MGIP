@@ -228,6 +228,7 @@ int main()
     TextureFormat::d32SfloatS8,
     TextureFormat::rg16Sfloat,
     TextureFormat::r32Sfloat,
+    TextureFormat::r32Uint,
     TextureFormat::r16Sfloat,
     TextureFormat::rgba8Snorm,
     TextureFormat::r11g11b10Ufloat,
@@ -236,8 +237,14 @@ int main()
     TextureFormat::bc7UnormBlock,
     TextureFormat::bc7SrgbBlock,
   };
+  static_assert(toNativeFormat(TextureFormat::r32Uint) == VK_FORMAT_R32_UINT);
+  if(toPortableTextureFormat(VK_FORMAT_R32_UINT) != TextureFormat::r32Uint)
+    return EXIT_FAILURE;
   for(TextureFormat format : portableFormats)
-    assert(toNativeFormat(format) != VK_FORMAT_UNDEFINED);
+  {
+    if(toNativeFormat(format) == VK_FORMAT_UNDEFINED)
+      return EXIT_FAILURE;
+  }
 
   static_assert(toNativeFormat(TextureFormat::undefined) == VK_FORMAT_UNDEFINED);
   static_assert(toVkSampleCount(SampleCount::count1) == VK_SAMPLE_COUNT_1_BIT);
@@ -274,6 +281,22 @@ int main()
                 (VK_ACCESS_2_SHADER_STORAGE_READ_BIT |
                  VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT |
                  VK_ACCESS_2_INDIRECT_COMMAND_READ_BIT));
+
+  constexpr VkMemoryBarrier2 clusteredStatsBarrier = makeMemoryBarrier2(
+    StageFlags::transfer | StageFlags::compute,
+    StageFlags::fragmentShader | StageFlags::transfer,
+    HazardFlags::bufferWrites);
+  static_assert(clusteredStatsBarrier.srcStageMask ==
+                (VK_PIPELINE_STAGE_2_ALL_TRANSFER_BIT |
+                 VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT));
+  static_assert(clusteredStatsBarrier.srcAccessMask ==
+                (VK_ACCESS_2_TRANSFER_WRITE_BIT |
+                 VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT));
+  static_assert(clusteredStatsBarrier.dstStageMask ==
+                (VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT |
+                 VK_PIPELINE_STAGE_2_ALL_TRANSFER_BIT));
+  static_assert(clusteredStatsBarrier.dstAccessMask ==
+                VK_ACCESS_2_MEMORY_READ_BIT);
   testVulkanEncoderScopeInvalidation();
   testVulkanResourceLifetimeTracking();
   testVulkanResidencySetValidation();

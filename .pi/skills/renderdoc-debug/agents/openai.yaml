@@ -1,0 +1,4 @@
+interface:
+  display_name: "RenderDoc Debug"
+  short_description: "Evidence-first GPU frame diagnosis and verification"
+  default_prompt: "Use $renderdoc-debug to diagnose this rendering defect from RenderDoc evidence, patch it minimally, and verify a new capture."

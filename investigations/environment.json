@@ -1,0 +1,32 @@
+{
+  "pi": "0.84.2",
+  "node": "v24.10.0",
+  "npm": "11.6.1",
+  "rdcCli": "0.6.1",
+  "renderdoc": "1.44",
+  "platform": "Windows x86_64",
+  "demoStrategy": "create-minimal",
+  "demoApi": "D3D11",
+  "replayProbe": {
+    "capture": "captures/rhi-public-contract-refactor/post-refactor/d3d12-marker-check/csm-translate-stop__no-post__no-ddgi/first-still.rdc",
+    "api": "D3D12",
+    "infoJson": true,
+    "drawsJson": true,
+    "closed": true
+  },
+  "commandHelpProbed": [
+    "rdc --help",
+    "rdc open --help",
+    "rdc draws --help",
+    "rdc draw --help",
+    "rdc pixel --help",
+    "rdc pipeline --help",
+    "rdc bindings --help",
+    "rdc shader --help",
+    "rdc diff --help",
+    "rdc assert-pixel --help",
+    "rdc capture --help",
+    "rdc info --help",
+    "rdc close --help"
+  ]
+}
