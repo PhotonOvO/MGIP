@@ -1,0 +1,967 @@
+# MGIF P5 Renderer-Delta and RHI Integration Readiness Audit
+
+**Audit date:** 2026-08-23  
+**MGIF workspace:** G:/MGIF  
+**Behavioral reference:** F:/GitHub/vk_gltf_renderer at fixed commit 50373c7b0ff58078727af2c2aac70e29d5e74752  
+**Audit mode:** Read-only source audit; no build or test entrypoint was invoked  
+**Decision:** BLOCKED for P5 implementation readiness. This report does not claim Gate PASS.
+
+## 1. Executive conclusion
+
+MGIF has several sound foundations for a renderer-delta path:
+
+- Editor object IDs already encode object kind, slot generation, and document authority.
+- Editor mutations are candidate-copy transactions with stale-revision and stale-token rejection.
+- Scene projection is deterministic and retains source identity.
+- The renderer already has a transform-only update path and a dense instance registry with generational handles.
+- RHI handles are owner- and generation-checked.
+- Vulkan and D3D12 already defer physical destruction against per-queue submission dependencies.
+- The RHI already has a backend-neutral error vocabulary suitable for transactional delta results.
+
+Those foundations are not yet joined by a safe end-to-end contract. The current full-scene upload path is index-based, has no document/mapping/device revision fence, can return partial uploads without an explicit failure status, and every SceneAsset commit begins with device idle plus destructive scene replacement. The editor's MutationResult.changedIds currently contains all live resolved IDs rather than the exact changed set. Scene selection and root preview are runtime-only state without document revision advancement, and there is no production Undo/Redo history stack from which to emit renderer changes. Metal is a nonfunctional skeleton, while Android window lifecycle currently destroys the renderer on surface loss and masks zero extent.
+
+The minimum P5 implementation therefore needs a backend-neutral, stable-ID-keyed SceneChangeSet plus an apply envelope carrying renderer/device/mapping/scene fences; exact editor change capture; deterministic coalescing; two-phase renderer publication; explicit RHI status and rollback; reason-coded full rebuilds; incremental counters; and focused CPU/fake-RHI/backend contract tests. An accepted incremental transaction must make zero device-idle calls. Full rebuild remains the conservative initial policy for structural hierarchy edits, scene switch, global Merge, and Compact until their topology and scene-epoch transactions are implemented.
+
+## 2. Scope and method
+
+This audit answers two different questions:
+
+1. What does the fixed reference actually mark dirty or rebuild for each editor operation?
+2. What contract does MGIF need to reproduce the useful behavior without importing the reference's backend coupling, incomplete dirty propagation, or nontransactional failure behavior?
+
+The reference repository was treated strictly as a behavioral reference at commit 50373c7b0ff58078727af2c2aac70e29d5e74752. All reference locations below are relative to F:/GitHub/vk_gltf_renderer. MGIF locations are relative to G:/MGIF.
+
+All source evidence used by this report came from narrow, path-scoped inspection. An earlier root-level file-enumeration attempt encountered access denial at an excluded path; no content from that path or build entrypoint was read or invoked. Repository files were not modified, and no build or test command was run, so this is a source-contract audit rather than an execution result.
+
+Production code must not add dependencies on nvcore, nvpro, nvapp, nvgui, nvvk, nvvkgltf, or any helper library or source copied from the reference renderer. Reference behavior must be re-expressed through MGIF-owned scene, render, and RHI interfaces.
+
+## 3. Fixed-reference dirty model
+
+### 3.1 Dirty state and frame consumption
+
+The reference owns multiple dirty domains rather than one generic dirty bit:
+
+- src/gltf_scene.hpp:380-406 stores dirty raster render nodes, RTX render nodes, materials, lights, and nodes, plus allRenderNodesDirty, primitivesChanged, and tlasVisibilityNeedsCpuSync.
+- src/gltf_scene.hpp:45-47 defines kFullUpdateRatio as 0.3f.
+- src/gltf_scene.cpp:695-824 snapshots render nodes, reparses the scene deterministically, diffs transform/material/primitive/visibility state, and marks primitive-count changes for acceleration-structure work.
+- src/gltf_scene.cpp:834-875 contains the direct material, light, node, raster-render-node, and RTX-render-node marking helpers.
+- src/gltf_scene_vk.cpp:251-305 uploads dirty materials, lights, and render nodes. Render nodes switch to a whole-buffer upload when the dirty ratio is at least 30 percent or the buffer size changed.
+- src/gltf_scene_rtx.cpp:505-522 similarly chooses a full TLAS update when at least 30 percent of RTX render nodes are dirty or allRenderNodesDirty is set.
+- src/renderer.cpp:1781-1857 and 1866-1939 consume the dirty state once per frame, perform CPU/GPU transform branches, stage barriers, update BLAS/TLAS data, invalidate raster command state, and finally clear dirty state.
+
+The 30 percent number is a batching heuristic, not a semantic boundary. MGIF may measure a similar threshold for range-vs-whole-buffer uploads, but correctness, stable-ID resolution, revision fencing, and dependency ordering must be decided before that heuristic is applied.
+
+### 3.2 Exact operation behavior
+
+| Operation | Fixed-reference behavior | Renderer consequence | Important limitation to avoid in MGIF |
+|---|---|---|---|
+| Hierarchy / structural mutation | Structural snapshot restoration calls reparse at src/gltf_scene_editor.cpp:234-242. parseScene rebuilds deterministic render-node views and diffs old/new state at src/gltf_scene.cpp:695-824. Transform propagation walks descendants at src/gltf_scene.cpp:947-1087. | Render-node cardinality or primitive changes can force whole-buffer/BLAS/TLAS work; affected descendant transforms and attached lights are propagated. | Do not infer a precise MGIF delta from a reparse alone. Initial P5 should use an explicit StructuralTopology rebuild reason until exact create/delete/reparent operations are transactional. |
+| Transform | Editor writes TRS, clears the matrix representation, and marks the node at src/gltf_scene_editor.cpp:248-261. Propagation at src/gltf_scene.cpp:947-1087 marks descendants, raster and RTX render nodes, and updates light matrices. | Per-node/per-instance transform upload; descendants are affected through world-transform recomputation. | A local-node dirty record is insufficient. MGIF must deterministically derive effective descendants and attached light/camera transforms. |
+| Material properties | Inspector changes always dirty the material at src/ui_inspector.cpp:908-943. Alpha mode and double-sided changes additionally dirty RTX render nodes. | Material buffer update; pipeline/draw classification or RTX instance flags can also change. | Do not reproduce the raster/RTX asymmetry as separate frontend semantics. Emit one backend-neutral material change and let renderer capability logic derive draw/AS effects. |
+| Primitive material assignment | src/gltf_scene_editor.cpp:881-928 updates affected raster render nodes and increments the scene-graph revision. It does not mark RTX render nodes. | Raster binding changes immediately; RTX can remain stale in the reference path. | Treat this as a reference gap, not desired behavior. MGIF must update every consumer derived from the material binding. |
+| Camera properties and attachment | Inspector camera edits at src/ui_inspector.cpp:500-550 mutate TinyGLTF directly without a dirty marker. Camera attach/clear at src/gltf_scene_editor.cpp:650-676 also has no dirty/reparse signal. | No explicit reference renderer-delta path. Camera consumers rely on other control flow. | Camera property and attachment changes need first-class SceneChangeSet operations and tests. Absence of a reference dirty bit is not permission to omit them. |
+| Light properties | UI writes mark the light dirty at src/ui_inspector.cpp:671-672. Undo/Redo restoration marks it dirty at src/undo_redo.cpp:451-455. Node transform propagation updates light matrices at src/gltf_scene.cpp:947-1087. | Light buffer update, with transform-derived position/direction update when attached to a moved node. | Light properties and light attachment/world-transform effects must be separate logical fields but coalesce into one final runtime record. |
+| Visibility | src/gltf_scene_editor.cpp:189-217 recursively derives inherited visibility, dirties raster and RTX render nodes, marks the subtree root node, and requests CPU synchronization for TLAS visibility. | Instance visibility, raster command state, and RTX visibility are updated. | Store local visibility as the edit; recompute effective visibility parent-before-child. Never make backend-specific RTX visibility a frontend operation. |
+| Material split | src/gltf_scene_editor.cpp:982-1036 reparses, marks the affected raster render node, and marks every material dirty. | Broad material upload plus render-node update. | Initial P5 may classify split as structural/topology rebuild; later implementation should emit exact new material IDs and changed primitive bindings. |
+| Material merge | src/gltf_scene_editor.cpp:1074-1136 reparses and marks affected raster render nodes. | Binding/render-node rebuild for merged material uses. | Keep this distinct from global scene Merge. Exact old-to-new stable-ID remaps must be transactional. |
+| Variant selection | src/gltf_scene.cpp:1359-1393 changes only affected render-node material IDs, marks raster render nodes, and increments the scene-graph revision; it does not mark RTX state. | Raster material bindings update. | Emit a backend-neutral final primitive-material binding and update all consumers. Do not inherit the missing RTX propagation. |
+| Undo / Redo | src/undo_redo.cpp:67-86 invokes each command's undo or execute method, so the command's normal dirty behavior is replayed. Transform restoration is at src/undo_redo.cpp:125-170, material restoration at 363-368, light restoration at 451-455, and structural snapshot restore/reparse at 259-265. | Undo and Redo appear as ordinary forward dirty events from the restored state. | MGIF should not invert submitted GPU commands. A history action must commit a new document revision and derive an ordinary forward SceneChangeSet. MGIF does not yet have the production history stack. |
+| Scene switch | src/gltf_scene.cpp:684-689 reparses the selected scene. src/ui_renderer.cpp:374-390 explicitly waits for the queue to idle and recreates scene resources and textures. | Full replacement with idle. | Initial P5 may full-rebuild, but selection needs a scene epoch independent of document revision. Later surface/view switching must not imply device idle. |
+| Global Merge | src/gltf_scene.cpp:611-669 mutates the model and reparses. src/renderer.cpp:587-618 clears Undo state and performs a full renderer rebuild. SceneMerger::merge only prechecks empty input and texture count before appending in place at src/gltf_scene_merger.cpp:430-495; decompression can fail later at src/gltf_scene.cpp:654-657. | Full rebuild after model merge. | The reference can leave a partially mutated model after a late failure. MGIF Merge must build and validate a candidate document/projection, then atomically publish or leave the old scene untouched. |
+| Compact | src/gltf_compact_scene.cpp:553-634 remaps arrays and compacts geometry but emits no dirty set. Callers reparse and full-rebuild at src/ui_renderer.cpp:1011-1020 and 1681-1691. | Full resource recreation. | Treat Compact as an explicit, reason-coded full snapshot/rebuild. Preserve stable-ID remap evidence and never expose a half-remapped mapping. |
+| Full rebuild mechanics | src/renderer.cpp:1201-1258 and 1281-1288 queue-idle and recreate geometry, scene resources, and textures. | Coarse but simple replacement. | This is allowed as an initial fallback, not as the incremental implementation. Device-idle use must be counted and prohibited for accepted incremental transactions. |
+
+### 3.3 Reference lessons, not reference APIs
+
+The useful patterns are:
+
+- Separate dirty domains.
+- Propagate hierarchy-derived state.
+- Coalesce dirty work once per frame.
+- Switch from sparse ranges to a whole-buffer upload based on measured density.
+- Reparse/full-rebuild for structural operations that do not have a precise transaction.
+
+The reference shortcomings that MGIF must not copy are:
+
+- Missing camera dirty signaling.
+- Raster-only propagation for primitive material assignment and variants.
+- Backend-specific dirty semantics in the editor-facing layer.
+- In-place global Merge with a late-failure partial-mutation window.
+- Queue/device idle as ordinary scene-update control flow.
+- No stable-ID, mapping-epoch, device-generation, or applied-revision fence around renderer publication.
+
+## 4. MGIF readiness inventory
+
+### 4.1 Existing foundations
+
+| Area | Existing MGIF behavior | Source |
+|---|---|---|
+| Stable editor identity | EditorObjectId carries object kind, a 32-bit slot, a 32-bit generation, and document authority. | scene/editor/include/mgif/scene_editor/EditorObjectId.h:11-29, 34-67 |
+| Document revisions | GltfDocument has a monotonic document revision. | scene/editor/GltfDocument.cpp:759-766 |
+| Mutation status | MutationResult distinguishes applied, rejected, and no-op outcomes; exposes stale ID/revision/transaction errors, before/after revision, remaps, changed IDs, and a mutation token. | scene/editor/include/mgif/scene_editor/SceneCommands.h:20-120 |
+| Early stale checks | Mutation guards reject stale expected revision and stale transaction token before work. | scene/editor/SceneCommands.cpp:580-612 |
+| Editor transaction | Mutation operates on a candidate copy, validates, supports a prepublish fault point, commits, and returns a rejection on failure. | scene/editor/SceneCommands.cpp:703-833 |
+| Stable-ID publication | Next registries are built first; removed slots are tombstoned by nonwrapping generation increments; prepublish runs before a nonthrowing atomic publication and revision increment. | scene/editor/GltfDocument.cpp:769-953 |
+| Projected identity | SceneAsset carries source indices, stable-derived runtime identities, visibility, revision/hash, and root-transform metadata. | scene/SceneAsset.h:31-43, 75-98, 146-196 |
+| Immutable view | SceneAssetView exposes immutable spans and validates basic references. | scene/SceneAssetView.h:11-30, 65-168 |
+| Deterministic full projection | SceneProjection records document revision/hash and maps nodes, meshes, materials, textures, cameras, and lights deterministically. | scene/editor/SceneProjection.cpp:50-76, 115-280; validation at 283-305 |
+| Derived runtime identity | Current runtimeIdentity is FNV-derived from editor-ID components. | scene/editor/SceneProjection.cpp:20-32 |
+| Deterministic mapping | SceneRuntimeMapping sorts assignments by stable ID and validates authority, cardinality, source identity, reverse uniqueness, and runtime uniqueness. | scene/editor/SceneRuntimeMapping.cpp:69-138, 206-331 |
+| Transform-only renderer path | GPUDrivenRenderer can update CPU mirrors, registry state, bounds, and dirty ranges without a whole-scene commit. | render/GPUDrivenRenderer.cpp:2194-2288 and following transform-update code |
+| Instance lifecycle model | Instance removal and dense registry mechanics already exist. | render/GPUDrivenRenderer.cpp:2381-2581 |
+| RHI errors | RHIResult includes wrongDevice, invalidState, outOfMemory, deviceLost, and related status values. | rhi/RHIResult.h:7-19 |
+| Generational runtime handles | HandlePool encodes owner and generation and rejects logically stale handles. | common/HandlePool.h:14-27, 31-69, 124-159 |
+| Deferred destruction contract | RHIDevice logically invalidates on destroy while physical retirement is deferred. | rhi/RHIDevice.h:117-138 |
+| Submission-token retirement | Lifetime tracking holds per-queue submission dependencies and a deferred retirement queue. | rhi/RHIResourceLifetime.h:63-109, 154-205 |
+| Vulkan retirement | Vulkan tracks pending-use dependencies and collects retired resources, reserving queue/device idle for drains. | rhi/vulkan/VulkanDevice.cpp:435-527, 1310-1401, 1483-1500 |
+| D3D12 retirement | D3D12 uses the same abstract submission-dependency model for buffers, textures, and views. | rhi/d3d12/D3D12Device.cpp:512-615, 1008-1021, 1182-1195, 1284-1297 |
+
+### 4.2 Blocking gaps
+
+| ID | Blocking gap | Evidence | Required resolution |
+|---|---|---|---|
+| P5-B01 | changedIds is not an exact delta. | scene/editor/SceneCommands.cpp:791-799 appends every live resolved ID to MutationResult.changedIds. | Capture exact field/object changes during candidate mutation or compute a typed before/after projection diff before publication. Do not use the current changedIds as renderer work. |
+| P5-B02 | There is no SceneChangeSet contract. | scene/editor/include/mgif/scene_editor/SceneProjection.h:21-68 only supports full projection; scene/SceneAssetView.h has no delta/revision fence. | Add the logical contract and canonicalizer described in section 5. |
+| P5-B03 | Runtime mapping lacks renderer identity and publication state. | scene/editor/include/mgif/scene_editor/SceneRuntimeMapping.h:20-81 stores only document ID, asset index, and runtime index. | Add mapping epoch, applied document revision, scene epoch, device identity/generation, actual handle identity, and transactional snapshot publication. |
+| P5-B04 | runtimeIndex is not an actual renderer handle. | scene/editor/SceneProjection.cpp:20-32 derives runtimeIdentity by FNV hash; SceneRuntimeMapping validates uniqueness but has no RHI handle generation. | Separate deterministic projected identity from actual RendererObjectHandle/RHI handle owner+generation. Never resolve a GPU resource by hash alone. |
+| P5-B05 | Full upload is index-based and unfenced. | scene/SceneUploadPlan.h:20-115 and scene/SceneUploadPlanner.cpp:109-205 describe a full index-based mesh/texture/material/transform/instance/draw upload. | Add stable IDs and request/result fences; retain index spans only as validated transient payload indices. |
+| P5-B06 | Upload failure can publish a partial-looking result. | render/RenderTypes.h:431-473 returns vectors of runtime handles/draw records without authority, revision, device fence, or status. render/RenderDevice.cpp:5863-6375 can skip invalid/unsupported textures and failed meshes. | Return an explicit atomic transaction result. Unsupported or failed required resources must reject/fail the transaction; optional placeholders must be declared in policy and status. |
+| P5-B07 | Scene commit always idles and destroys active state first. | render/GPUDrivenRenderer.cpp:2146-2177 calls beginSceneReplacement(), which calls waitForIdle(), clears the scene, and rebuilds. | Implement stage-then-publish delta application. Accepted incremental transactions must have deviceIdleCalls delta equal to zero. |
+| P5-B08 | Active scene identity is underfenced. | render/GPUDrivenRenderer.cpp:2584-2611 recognizes synchronized state using mesh-vector equality. | Bind active state to authority, document revision, projection digest, mapping epoch, scene epoch, and renderer device instance/generation. |
+| P5-B09 | Scene selection/root preview are outside document revisioning. | scene/editor/include/mgif/scene_editor/GltfDocument.h:133-135 and scene/editor/GltfDocument.cpp:403-410 make selection runtime-only. Root preview/reset is non-history at SceneCommands.h:113-115 and SceneCommands.cpp:2252-2378. | Introduce a monotonic scene/view epoch and an explicit activation delta; do not overload document revision. |
+| P5-B10 | No production Undo/Redo stack exists. | Narrow source inspection finds historyEligible metadata and tests, but no production replay stack. | Implement history publication so Undo/Redo commits a new forward document revision and yields the same typed change capture as normal commands. |
+| P5-B11 | Incremental observability is absent. | rhi/RHIDebugCounters.h:12-50 covers command, descriptor, and pipeline recording metrics, not scene delta/rebuild/bytes/rollback/device idle. | Add the counters in section 11 and snapshot them per apply transaction. |
+| P5-B12 | Metal cannot satisfy the contract. | rhi/metal/MetalDevice.cpp:13-31 throws on initialization; 112-127 lacks queue, allocator, and wait-idle behavior. rhi/RHIFactory.cpp:27-60 reports Metal unavailable. | Keep the public contract backend-neutral, return Unsupported before mutation on Metal, and add a real implementation before enabling capability. |
+| P5-B13 | Android conflates surface and renderer/device lifetime. | app/AndroidNativeApp.cpp:79-118 initializes/shuts down the entire renderer on window init/term; 120-140 clamps extent to at least 1; 351-369 omits pause/resume handling. | Separate surface generation from renderer device/scene generation; preserve deltas and scene resources across presentation suspension. |
+| P5-B14 | Global Merge/Compact lack a renderer-safe atomic publication contract. | Reference behavior is full rebuild; MGIF currently has only full projection/upload primitives. | Produce a complete candidate SceneAsset, mapping remap, and rebuild transaction; publish only after validation/staging succeeds. |
+
+These gaps are architectural blockers to claiming incremental renderer-delta readiness. They do not mean every backend feature must be implemented before contract work starts; they do mean the contract and its failure semantics must be fixed before operation-specific shortcuts are added.
+
+## 5. Proposed backend-neutral contract
+
+### 5.1 Design boundary
+
+Use two related values:
+
+1. SceneChangeSet is a logical, backend-neutral description of a scene transition. It contains stable IDs and serializable immutable data, never Vulkan, D3D12, Metal, native descriptor, pointer, or RHI handle values.
+2. ApplySceneChangeRequest binds that logical transition to one renderer instance, device generation, mapping snapshot, and active-scene epoch. This prevents backend/device data from contaminating the editor contract while still fencing application.
+
+The same canonical SceneChangeSet can therefore be tested on CPU, applied to Vulkan or D3D12, rejected as unsupported on Metal, and queued while Android presentation is suspended.
+
+### 5.2 Illustrative C++ shape
+
+The following is a contract sketch, not a mandate on exact naming:
+
+~~~cpp
+struct StableSceneId {
+  EditorObjectKind kind;
+  DocumentAuthority authority;
+  uint32_t slot;
+  uint32_t generation;
+
+  auto operator<=>(const StableSceneId&) const = default;
+};
+
+enum class SceneChangeDomain : uint8_t {
+  DocumentMutation,
+  SceneActivation,
+  FullSnapshot
+};
+
+struct SceneChangeHeader {
+  uint32_t schemaVersion;
+  SceneChangeDomain domain;
+  DocumentAuthority authority;
+  uint64_t baseDocumentRevision;
+  uint64_t targetDocumentRevision;
+  uint64_t baseSceneEpoch;
+  uint64_t targetSceneEpoch;
+  StableSceneId activeSceneId;
+  MutationToken mutationToken;
+  uint64_t mutationSerial;
+  ProjectionDigest baseProjectionDigest;
+  ProjectionDigest targetProjectionDigest;
+  ChangeSetDigest canonicalChangeSetId;
+};
+
+struct ImmutableBufferPayload {
+  ContentHash contentHash;
+  BufferSemantic semantic;
+  uint64_t logicalOffset;
+  uint64_t byteSize;
+  SharedImmutableBytes bytes;
+};
+
+struct ImmutableTexturePayload {
+  ContentHash contentHash;
+  TextureSchema schema; // dimensions, format, mip/layer count, color space
+  vector<TextureSubresourcePayload> subresources;
+};
+
+using SceneOperation = variant<
+    SetNodeTransform,
+    SetNodeLocalVisibility,
+    SetMaterialProperties,
+    SetMaterialTextureBinding,
+    SetPrimitiveMaterialBinding,
+    SetVariantSelection,
+    SetCameraProperties,
+    SetCameraAttachment,
+    SetLightProperties,
+    SetLightAttachment,
+    AddInstance,
+    RemoveInstance,
+    ReplaceGeometryRanges,
+    ReplaceTexture,
+    StructuralTopologyChange,
+    RequestFullRebuild>;
+
+struct SceneChangeSet {
+  SceneChangeHeader header;
+  vector<SceneOperation> canonicalOperations;
+};
+
+struct RendererTargetFence {
+  RHIBackend backend;
+  RendererInstanceId rendererInstance;
+  DeviceInstanceId deviceInstance;
+  uint32_t deviceGeneration;
+  uint64_t mappingEpoch;
+  uint64_t appliedDocumentRevision;
+  uint64_t sceneEpoch;
+};
+
+struct ApplySceneChangeRequest {
+  RendererTargetFence expectedTarget;
+  SceneChangeSet changes;
+  ApplyPolicy policy;
+};
+
+enum class SceneApplyDisposition : uint8_t {
+  AcceptedIncremental,
+  AcceptedFullRebuild,
+  Rejected,
+  FailedBeforeSubmit,
+  FailedAfterSubmit
+};
+
+struct SceneApplyResult {
+  SceneApplyDisposition disposition;
+  RHIResult error;
+  string message;
+  ChangeSetDigest changeSetId;
+  uint64_t appliedDocumentRevision;
+  uint64_t sceneEpoch;
+  uint64_t mappingEpoch;
+  uint32_t deviceGeneration;
+  vector<SubmissionToken> uploadSubmissions;
+  vector<RendererObjectHandle> createdObjects;
+  vector<RendererObjectHandle> retiredObjects;
+  SceneDeltaCounterSnapshot counters;
+  optional<FullRebuildReason> requestedFallback;
+};
+~~~
+
+SharedImmutableBytes may be a reference-counted byte owner or immutable blob ID resolved through an MGIF-owned content store. It must not be a raw pointer into a mutable GltfDocument or SceneAsset. The apply request must remain valid if renderer execution is deferred to another frame/thread.
+
+### 5.3 Required operation semantics
+
+Each operation must be keyed by stable IDs and contain a field mask or complete replacement value:
+
+- SetNodeTransform: node ID plus final local TRS/matrix representation and transform-mode metadata. Canonicalization produces one final local transform per node.
+- SetNodeLocalVisibility: node ID plus final local visible value. Effective visibility is renderer-derived from the canonical hierarchy.
+- SetMaterialProperties: material ID, property mask, final scalar/vector/alpha/double-sided values.
+- SetMaterialTextureBinding: material ID, binding semantic, final texture ID/sampler ID/UV set/transform.
+- SetPrimitiveMaterialBinding: primitive ID, final material ID, and optional variant-selection provenance.
+- SetVariantSelection: a convenience input only. Canonical output should resolve to final primitive-material bindings so repeated variant toggles do not leak intermediate states.
+- SetCameraProperties and SetCameraAttachment: camera ID, final projection/exposure values, and final optional node ID.
+- SetLightProperties and SetLightAttachment: light ID, final type/color/intensity/range/cone values, and final optional node ID.
+- AddInstance/RemoveInstance: stable instance/primitive/node references with complete dependency IDs, never transient array indices.
+- ReplaceGeometryRanges: geometry ID, immutable changed byte ranges, full schema/hash, and topology classification.
+- ReplaceTexture: texture ID, immutable subresources, full schema/hash, and replacement policy.
+- StructuralTopologyChange: exact create/delete/reparent/attach/detach/split/merge intent when supported. Initial P5 canonicalization may convert it to RequestFullRebuild with a reason.
+- RequestFullRebuild: reason enum plus a complete target SceneAsset snapshot/digest reference. A reason string alone is not enough to rebuild.
+
+Operations must not contain backend command buffers, native resource handles, descriptor addresses, staging pointers, or callbacks into editor state.
+
+## 6. Stable-ID to runtime mapping requirements
+
+### 6.1 Separate the identity layers
+
+MGIF currently conflates a deterministic projected runtimeIdentity with an actual runtime resource identity. The implementation must maintain three explicit layers:
+
+| Layer | Identity | Lifetime |
+|---|---|---|
+| Editor/document | StableSceneId: kind + authority + slot + generation | Survives index reorder; deleted slot generation never aliases the old object |
+| Projection | SceneAsset index plus deterministic projection digest/identity | Valid only for one projected document revision and active-scene epoch |
+| Renderer/RHI | RendererObjectHandle and typed RHI handles with owner/device generation | Valid only for one renderer/device instance and until logical retirement |
+
+A hash of StableSceneId is suitable as a map key or diagnostic label, not as proof that a renderer object is live.
+
+### 6.2 Mapping snapshot
+
+SceneRuntimeMapping should publish an immutable MappingSnapshot containing at least:
+
+- Document authority.
+- Applied document revision.
+- Active scene ID.
+- Scene epoch.
+- Projection digest.
+- Mapping epoch.
+- Renderer instance ID.
+- RHI backend.
+- Device instance ID and device generation.
+- One entry per live projected object:
+  - StableSceneId.
+  - SceneAsset kind/index.
+  - Renderer object kind/handle including handle generation.
+  - Any typed RHI handles owned by that renderer object.
+  - Optional content hash/schema needed to prove reusable geometry or texture identity.
+- Reverse maps from renderer handle to StableSceneId for diagnostics/removal.
+
+The snapshot is built off to the side and atomically swapped. Readers retain the old immutable snapshot until publication completes. Removed runtime handles become logically invalid at publication and are physically destroyed only through the existing submission-token retirement path.
+
+### 6.3 Stable-generation rejection
+
+Before any side effect, resolve every stable ID against the current editor/projection registry:
+
+1. Authority must match.
+2. Object kind must match the operation field.
+3. Slot must be live.
+4. Generation must exactly equal the live generation.
+5. Referenced parent/material/texture/camera/light IDs must pass the same checks.
+6. The mapping entry, if an update/removal, must point to a live renderer handle owned by the expected renderer/device.
+
+A removed slot reused with generation N+1 is a distinct object. An operation for generation N is rejected as stale generation; it must never update the new object and must make zero RHI calls.
+
+## 7. Revision, mapping, scene, and device fencing
+
+### 7.1 Acceptance predicates
+
+Validate the full request before allocation, descriptor mutation, command recording, upload submission, active-scene mutation, counter publication, or retirement.
+
+Common predicates:
+
+- Request schema is supported.
+- Authority matches the active mapping.
+- Renderer instance and device instance match.
+- Device generation matches and the device is not lost.
+- Mapping epoch matches.
+- Base projection digest matches the active snapshot.
+- Mutation token/change-set ID has not already been applied with different content.
+- Every stable ID generation is live.
+- Backend capabilities cover every requested incremental operation.
+
+For DocumentMutation:
+
+- baseDocumentRevision equals the renderer's appliedDocumentRevision.
+- targetDocumentRevision equals baseDocumentRevision + 1 for an incremental delta.
+- baseSceneEpoch and targetSceneEpoch equal the current scene epoch.
+- A revision gap is rejected with MissedRevision and requests a full snapshot; it is never silently skipped.
+
+For SceneActivation:
+
+- baseDocumentRevision and targetDocumentRevision both equal the current applied document revision.
+- baseSceneEpoch equals the renderer scene epoch.
+- targetSceneEpoch equals baseSceneEpoch + 1.
+- The target active scene ID is live in the anchored document revision.
+- Initial P5 converts the activation to a reason-coded full rebuild.
+
+For FullSnapshot:
+
+- targetDocumentRevision may jump forward, but the complete projected SceneAsset and target digest must accompany it.
+- The request still needs matching authority, renderer instance, device generation, and expected active mapping/scene epoch unless explicitly marked as device recovery.
+- Publication replaces mapping epoch atomically only after staging succeeds.
+
+This split is necessary because MGIF scene selection/root preview currently does not advance document revision. A scene/view epoch gives those transitions an order without fabricating document edits.
+
+### 7.2 Duplicate and out-of-order behavior
+
+- Re-receiving the exact canonicalChangeSetId after successful application returns an idempotent AlreadyApplied result and does no work.
+- Reusing a mutation token/change-set ID with different canonical bytes is InvalidState and a hard diagnostic.
+- A delta older than appliedDocumentRevision is RejectedStaleRevision.
+- A delta newer than appliedDocumentRevision + 1 is RejectedRevisionGap and requests a full snapshot.
+- A request for an old mapping epoch or scene epoch is rejected before side effects.
+- A request for an old device generation is RejectedWrongDevice; device recovery requires a full snapshot.
+
+Do not automatically apply a full rebuild on receipt of a stale delta. Rejection and the request for a separately validated full snapshot are distinct events.
+
+## 8. Deterministic coalescing and ordering
+
+### 8.1 Canonicalization pipeline
+
+Canonicalize on CPU before renderer submission:
+
+1. Validate syntax, payload hashes/sizes, authority, revision envelope, and per-operation type compatibility.
+2. Resolve convenience operations such as variant selection into explicit final bindings.
+3. Group scalar/property updates by stable object ID and field.
+4. Apply coalescing rules.
+5. Derive hierarchy effects using a deterministic parent-before-child walk.
+6. Validate dependency closure and structural conflicts.
+7. Sort by canonical dependency phase and stable key.
+8. Serialize the canonical logical form and compute canonicalChangeSetId.
+9. Submit only that immutable canonical form.
+
+### 8.2 Coalescing rules
+
+- Repeated scalar/property writes to the same object field are last-write-wins according to mutation serial, not input container order.
+- Repeated transforms coalesce to the final local transform.
+- Repeated visibility edits coalesce to the final local visibility; effective visibility is then recomputed parent-before-child.
+- Repeated material/texture binding or primitive-material edits coalesce to the final binding.
+- Create followed by updates folds the updates into the create.
+- Create followed by delete cancels if the object was never published and no surviving operation references it.
+- Update followed by delete becomes delete.
+- Delete followed by create with a new stable generation remains two ordered operations; it must not become an update.
+- Multiple immutable geometry ranges for the same buffer may merge only when overlap resolution is deterministic and final bytes/hash agree.
+- Texture replacements for one target coalesce to the final complete replacement. Partial subresource updates may coalesce only after nonoverlap/last-write ordering is proven.
+- Duplicate commutative invalidations may collapse to one.
+- Conflicting same-revision generations, duplicate creates, multiple reparents without a mutation serial, or other noncommutative structural ambiguity reject the whole change set.
+
+### 8.3 Canonical order
+
+Within each phase, sort by:
+
+1. Object kind enum.
+2. Document authority.
+3. Slot.
+4. Generation.
+5. Operation opcode.
+6. Opcode-specific field/binding/subresource/range key.
+
+Use dependency phases in this order:
+
+1. Validate-only declarations and immutable payload metadata.
+2. Create/upload textures, geometry, samplers, and material backing records.
+3. Create nodes/objects and establish hierarchy parent-before-child.
+4. Apply local transforms and derive world transforms parent-before-child.
+5. Apply material properties and texture bindings.
+6. Apply primitive-material/variant bindings.
+7. Apply camera/light properties and attachments.
+8. Add/update instances and draw/AS records.
+9. Apply visibility and final draw-bucket/AS participation.
+10. Remove instances and bindings.
+11. Remove hierarchy objects child-before-parent.
+12. Retire materials, textures, geometry, views, and buffers in reverse dependency order.
+
+Backend command generation may batch compatible operations, but it may not change this logical dependency outcome. Identical input state and logically identical changes must produce identical canonical operations, mapping publication, upload ranges, and counter deltas on every run.
+
+### 8.4 Sparse-vs-full buffer policy
+
+After canonical work is known, the renderer may choose sparse ranges, merged dirty ranges, or a full buffer replacement. The reference's 30 percent threshold is a reasonable starting measurement for a dense buffer, subject to profiling. It must be:
+
+- Per buffer/resource class, not one global scene percentage.
+- Based on bytes/ranges and command overhead, not only object count.
+- Observable through counters.
+- Deterministic for the same inputs/configuration.
+- A batching decision only; it does not turn a hierarchy edit into an unfenced whole-scene replacement.
+
+## 9. Transaction, rollback, and failure behavior
+
+### 9.1 Two-phase renderer transaction
+
+ApplySceneChanges should use the following state machine:
+
+1. **Validate and resolve:** Check all fences, IDs, capabilities, payloads, and dependencies against immutable active snapshots. No RHI calls.
+2. **Stage CPU state:** Clone or copy-on-write the affected CPU mirrors, renderer registry entries, bounds, draw records, mapping entries, and descriptors. Build a rollback journal.
+3. **Stage resources:** Allocate new buffers/textures/views/descriptors and staging storage without exposing them to active state.
+4. **Record and submit:** Record transfers/barriers and submit them, capturing queue-specific SubmissionTokens.
+5. **Publish atomically:** Only after all required staging and submission setup succeeds, swap the CPU active scene/mapping/revision/scene epoch as one nonthrowing publication. Descriptor visibility must obey upload dependencies.
+6. **Retire superseded resources:** Logically invalidate old handles and enqueue physical destruction against every relevant submission token.
+7. **Publish counters/result:** Commit counters and return the exact applied fence/result.
+
+No intermediate renderer state may be visible to render/update threads. Publication needs a single synchronization point or immutable generation pointer, not a sequence of independently observable vector mutations.
+
+### 9.2 Failure classes
+
+**Validation failure**
+
+- No allocation, recording, submission, descriptor update, active-state mutation, retirement, or applied counter change.
+- Increment only the appropriate rejected counter.
+- Preserve the old mapping, document revision, scene epoch, and projection digest exactly.
+
+**Pre-submit staging failure**
+
+- Destroy staged resources that have no GPU use.
+- Roll back staged CPU state.
+- Return FailedBeforeSubmit with RHIResult.
+- Old active state remains authoritative.
+- partialPublicationCount remains zero.
+
+**Post-submit, prepublication failure**
+
+- Old active state remains authoritative.
+- Orphan staged resources are retired after their captured submission tokens complete.
+- Return FailedAfterSubmit and request a reason-coded full snapshot/rebuild.
+- Never expose staged handles through the mapping or descriptor-visible active state.
+- Do not wait for device idle merely to clean up.
+
+**Publication failure**
+
+Publication must be designed as nonthrowing. If implementation allows it to fail, that is a correctness defect: preserve the old immutable generation, retire staged resources, increment rollback and publicationFailure counters, and request full rebuild. partialPublicationCount must remain zero in tests and production telemetry.
+
+**Device loss**
+
+- Mark the current device generation invalid.
+- Reject all pending/queued requests for that generation.
+- Do not publish mappings to handles from the lost device.
+- Device recreation increments device generation.
+- Recovery requires a complete full snapshot; old deltas cannot be replayed merely because document revisions line up.
+
+### 9.3 Full rebuild must also be transactional
+
+Full rebuild is not permission to clear the active scene before discovering an allocation or upload failure. The implementation should stage a complete replacement generation, publish it after success, then retire the old generation. If the initial implementation must retain the existing idle-and-clear path, it must:
+
+- Be invoked only through an explicit FullRebuildReason.
+- Validate the complete snapshot before clear.
+- Report failure explicitly.
+- Count device-idle use.
+- Never claim rollback guarantees that it does not provide.
+
+Global Merge and Compact specifically require candidate-document and candidate-projection publication before renderer replacement. They must not inherit the reference's partial in-place failure behavior.
+
+## 10. Incremental vs full-rebuild trigger matrix
+
+| Change class | Initial P5 policy | Later optimized policy | Reason / required effects |
+|---|---|---|---|
+| Node local transform | Incremental | Incremental | Recompute descendants parent-before-child; update instance bounds, camera/light attachment transforms, raster and AS instance data. |
+| Local visibility | Incremental | Incremental | Recompute effective visibility; update draw participation and AS mask/instance state. |
+| Material scalar/vector values | Incremental | Incremental | Update material ranges only. |
+| Alpha mode, double-sided, pipeline-key material fields | Incremental if draw-bucket/pipeline classification update is atomic; otherwise MaterialSchema rebuild | Incremental | All raster/RT consumers must see the same final classification. |
+| Material texture binding with unchanged descriptor schema | Incremental | Incremental | Establish texture upload/use dependency before descriptor publication. |
+| Primitive material assignment / variant | Incremental | Incremental | Update final binding and every raster/AS consumer; do not reproduce reference RTX omission. |
+| Camera properties | Incremental | Incremental | Update active camera record/uniform source; no geometry or texture upload. |
+| Light properties | Incremental | Incremental | Update light record; derived transform when attached. |
+| Instance add/remove with existing topology/resources | Incremental only after atomic registry/mapping publish is implemented; otherwise StructuralTopology rebuild | Incremental | Existing dense removal/generation code is a foundation, but failure fallback must not clear active state. |
+| Geometry bytes with unchanged vertex/index schema and topology | Specialized incremental if immutable range transaction exists; otherwise GeometrySchema rebuild | Incremental ranges | Upload only changed ranges and synchronize all vertex/index/shader/AS consumers. |
+| Texture pixels with unchanged dimensions/format/mips/layers | Specialized incremental if full subresource transaction exists; otherwise TextureSchema rebuild | Incremental replacement | Create/upload new image/view, publish binding after dependency, retire old resources. |
+| Add/delete/reparent/duplicate node | StructuralTopology full rebuild | Transactional topology delta | Stable mapping cardinality, world-transform order, instance/draw/AS topology change. |
+| Attach/detach mesh, camera, or light | StructuralTopology full rebuild | Transactional topology delta | Dependency and runtime-object cardinality changes. |
+| Create/delete light or camera | StructuralTopology full rebuild | Transactional topology delta | Mapping and packed-buffer cardinality change. |
+| Material split or material merge/split workflow | StructuralTopology full rebuild | Exact create/remap/delete delta | Needs stable-ID remaps and binding closure. |
+| Mesh split/merge | StructuralTopology full rebuild | Exact geometry/topology transaction | Geometry and primitive/instance cardinality change. |
+| Scene switch | SceneSwitch full rebuild | Scene-epoch-aware activation transaction | Existing selection is runtime-only; initial rebuild is conservative and reason-coded. |
+| Global Merge | GlobalMerge full rebuild | Potentially remains full snapshot | Candidate model/projection/mapping must publish atomically. |
+| Compact | Compact full rebuild | Potentially remains full snapshot | Array/index/geometry remap; requires complete target digest and stable-ID remap evidence. |
+| Vertex layout, index format, topology, or buffer schema change | GeometrySchema full rebuild | Specialized resource-generation replacement | Consumer pipeline/AS compatibility changes. |
+| Texture dimensions, format, mip/layer count, or descriptor schema change | TextureSchema full rebuild | Specialized resource-generation replacement | Requires new image/view/descriptors and possibly pipeline schema. |
+| Acceleration-structure topology change | AccelerationStructureTopology full rebuild | Backend capability-specific BLAS/TLAS transaction | Backend-neutral logical change, backend-specific lowering. |
+| Mapping cardinality/order/source-identity mismatch | Reject delta; request MappingMismatch full snapshot | Same | Never guess a mapping. |
+| Missed document revision | Reject delta; request MissedRevision full snapshot | Same | Revision fence must remain strict. |
+| Scene/mapping epoch mismatch | Reject delta; request appropriate current snapshot | Same | Stale request must have zero side effects. |
+| Device generation mismatch/device loss | Reject; DeviceRecovery full snapshot on new device | Same | Handles and submissions from old device are invalid. |
+| Unsupported backend capability | Reject before mutation or reason-coded full rebuild when supported | Capability-dependent | Metal currently must reject cleanly. |
+
+The renderer should expose FullRebuildReason as a stable enum, including at least SceneSwitch, GlobalMerge, Compact, StructuralTopology, GeometrySchema, TextureSchema, AccelerationStructureTopology, MappingMismatch, MissedRevision, DeviceRecovery, UnsupportedIncrementalCapability, and ExplicitCallerRequest.
+
+## 11. Geometry, texture, synchronization, and lifetime rules
+
+### 11.1 Zero-byte classes
+
+Transform, visibility, material property/binding, camera, light, and variant/material reassignment deltas must upload:
+
+- Zero geometry bytes.
+- Zero texture bytes.
+- Only their affected packed-buffer/descriptor/draw/instance ranges.
+
+Tests must assert the zero-byte invariants, not infer them from code review.
+
+### 11.2 Geometry updates
+
+For an accepted geometry-range transaction:
+
+- Validate stable geometry ID, content hash, bounds, alignment, vertex/index schema, and nonoverlapping canonical ranges.
+- Allocate/stage only the changed bytes or a deterministic full-buffer replacement selected by policy.
+- Record copy operations through BatchUploadContext.
+- Establish transfer-write to vertex-input/index-input/shader-read/acceleration-structure consumers as applicable.
+- Capture every queue SubmissionToken that can still use the old resource.
+- Publish new renderer/RHI handles or range-generation state atomically.
+- Retire old buffers only after all captured dependencies complete.
+- Increment geometryBytesUploaded and bufferRangesUploaded by actual submitted work.
+
+render/BatchUploadContext.cpp:144-168 already records copy commands plus a transfer-to-all barrier, and 182-195 gives staging cleanup RAII. The delta design should refine stage/access and queue ownership where needed rather than bypassing this abstraction.
+
+### 11.3 Texture replacement
+
+For an accepted texture transaction:
+
+1. Validate schema and every required subresource.
+2. Create a new texture and view off to the side.
+3. Transition Undefined to TransferDst for the required subresources.
+4. Copy all declared mip/layer payloads.
+5. Transition to ShaderRead with the appropriate destination stages/access.
+6. Capture upload submission dependencies.
+7. Prepare descriptor/bindless changes in the staged descriptor generation.
+8. Publish descriptors/mapping only when the resource dependency is established.
+9. Logically invalidate and defer-retire the old view and texture.
+
+The existing full path performs Undefined -> TransferDst -> ShaderRead at render/RenderDevice.cpp:5947-5969 and 6331-6350, then defers staging buffers at 6352-6361. The incremental path must preserve those state guarantees while adding status, atomic publication, exact subresource accounting, and rollback.
+
+Silently skipping an unsupported or failed required texture, as the current full upload can do in render/RenderDevice.cpp:5863-6375, is not a successful transaction. Either:
+
+- Reject/fail the transaction, or
+- Apply an explicitly configured placeholder policy represented in SceneApplyResult and counters.
+
+### 11.4 Device-idle zero rule
+
+For every AcceptedIncremental result:
+
+- SceneApplyResult.counters.deviceIdleCalls must equal zero for the transaction.
+- The global deviceIdleCalls counter delta must equal zero.
+- RendererFacade::waitForIdle and RHIDevice::waitForIdle must not be reached.
+- Queue submissions, timeline/fence waits expressed as dependencies, and deferred retirement are allowed.
+- CPU blocking on full device completion merely to reuse or destroy a resource is not allowed.
+
+render/RenderDevice.cpp:5815-5819 flushes upload work and then device-idles; it cannot be an incremental helper. Device idle is confined to explicit full rebuild fallback in the initial implementation, shutdown, device-loss recovery/drain, and surface/device teardown. Every allowed call must have an observable reason. Even for those scopes, submission-aware generation replacement is the preferred long-term design.
+
+## 12. Backend and platform boundaries
+
+### 12.1 Vulkan
+
+The Vulkan lowering must:
+
+- Translate backend-neutral resource states to precise pipeline stages, access masks, layouts, and queue ownership.
+- Preserve TransferDst and ShaderRead texture transitions and geometry consumer visibility.
+- Attach retirement to actual graphics/compute/transfer submission dependencies.
+- Handle bindless/descriptor publication only after resource-use dependencies are valid.
+- Keep old resources usable by already-submitted command buffers until their tokens complete.
+- Produce no Vulkan Validation Layer errors in delta, rollback, scene-switch, and device-loss tests.
+
+rhi/vulkan/VulkanDevice.cpp:435-527 already models pending dependencies and collection. Resource destruction sites at 1310-1401 and 1483-1500 should remain the only backend-specific physical-retirement implementation used by the new scene transaction.
+
+### 12.2 D3D12
+
+The D3D12 lowering must implement the same abstract contract using:
+
+- Copy queue/direct queue command ordering as configured.
+- Correct resource-state transitions for copy destination to vertex/index/nonpixel/pixel shader use.
+- Fence values represented by the common SubmissionToken model.
+- Descriptor heap generation/retirement that cannot expose a descriptor for an incomplete or rolled-back resource.
+- Retirement across every queue that used the old resource.
+
+rhi/d3d12/D3D12Device.cpp:512-615 and destruction paths at 1008-1021, 1182-1195, and 1284-1297 already establish the submission-dependency pattern. Tests should assert equivalent logical results/counters to Vulkan rather than byte-for-byte backend command sequences.
+
+### 12.3 Metal
+
+The public SceneChangeSet, apply request/result, mapping snapshot, counters, and tests must compile without Vulkan or D3D12 types. However, Metal must advertise incremental scene updates as unsupported until all of the following exist:
+
+- Functional device initialization.
+- Queue and allocator creation.
+- Blit/copy recording.
+- Command-buffer completion tokens mapped to SubmissionToken.
+- Texture/buffer state and synchronization policy.
+- Descriptor/argument-buffer staging and atomic publication.
+- Deferred resource retirement.
+- Wait-idle/device-loss behavior.
+
+Current evidence is a blocker: rhi/metal/MetalDevice.cpp:13-31 throws during initialization, 112-127 lacks core queue/allocator/wait-idle behavior, and rhi/RHIFactory.cpp:27-60 reports Metal unavailable. Rejection must occur before any renderer mutation and return Unsupported, not a partial fallback.
+
+### 12.4 Android surface lifecycle
+
+Surface generation is not document revision, scene epoch, mapping epoch, renderer instance, or device generation. Treat it as a separate presentation fence.
+
+Required behavior:
+
+- APP_CMD_TERM_WINDOW destroys/suspends surface/swapchain presentation state, not the editor document, renderer scene mapping, or device solely because the surface disappeared.
+- Zero extent is represented as zero and suppresses acquire/submit/present. Do not clamp to 1x1.
+- APP_CMD_PAUSE/RESUME and focus/window transitions advance or validate surface presentation state.
+- Editor changes received during zero extent/pause/surface loss may be validated and coalesced. They may update persistent scene resources if the device remains valid, or remain queued until rendering resumes.
+- No swapchain acquire, graphics submit targeting the lost surface, or present occurs after surface loss.
+- On a recreated surface, swapchain generation changes; the renderer resumes from the latest applied/queued canonical scene state.
+- Device loss is separate and still requires a new device generation plus full snapshot.
+
+app/AndroidNativeApp.cpp:79-118 currently initializes and shuts down the whole renderer on window create/term, 120-140 clamps dimensions to at least 1, and 351-369 only handles INIT_WINDOW/TERM_WINDOW. rhi/vulkan/VulkanSwapchain.cpp:181-204 already defers rebuild at true zero extent, but the app layer currently masks that state. This lifecycle split is required before an Android incremental path can be considered reliable.
+
+## 13. Renderer facade and upload API changes
+
+RendererFacade currently exposes full commit, transform updates, runtime synchronization, and explicit waitForIdle at render/RendererFacade.h:39-54. Add an entrypoint conceptually equivalent to:
+
+~~~cpp
+SceneApplyResult RendererFacade::applySceneChanges(
+    const ApplySceneChangeRequest& request);
+~~~
+
+Rules:
+
+- The facade accepts only canonical immutable changes or invokes the shared CPU canonicalizer before crossing to renderer execution.
+- It returns a value; assertions are not the validation/error contract.
+- It never calls beginSceneReplacement for AcceptedIncremental.
+- It snapshots counters at entry/exit and returns the delta.
+- It serializes or otherwise orders requests by renderer target fence.
+- It exposes a separate applyFullSceneSnapshot path or a FullSnapshot domain using the same transaction result and fencing.
+- It makes Unsupported/Rejected distinguishable from Failed.
+
+SceneUploadPlan may remain as the payload for a full snapshot, but it needs:
+
+- Document authority/revision and scene epoch.
+- Projection digest.
+- Stable IDs parallel to transient indices.
+- Renderer/device target fence.
+- Explicit required/optional resource policy.
+- Validation result rather than assertion-only enforcement.
+- Atomic SceneUploadResult with disposition/error and mapping publication.
+
+RenderTypes SceneUploadResult must stop representing a vector of whatever uploads happened to succeed as a successful commit. Required mesh/texture/resource failure rejects the staged generation.
+
+## 14. Incremental counters and diagnostics
+
+Extend the debug/telemetry surface with monotonic counters and per-transaction snapshots:
+
+### Intake and rejection
+
+- sceneChangeSetsReceived
+- sceneChangeSetsAcceptedIncremental
+- sceneChangeSetsAcceptedFullRebuild
+- sceneChangeSetsRejectedStaleRevision
+- sceneChangeSetsRejectedRevisionGap
+- sceneChangeSetsRejectedAuthority
+- sceneChangeSetsRejectedMappingEpoch
+- sceneChangeSetsRejectedSceneEpoch
+- sceneChangeSetsRejectedDevice
+- sceneChangeSetsRejectedStaleGeneration
+- sceneChangeSetsRejectedUnsupported
+- sceneOperationsReceived
+- sceneOperationsCoalesced
+
+### Applied logical work
+
+- nodeTransformOpsApplied
+- visibilityOpsApplied
+- materialOpsApplied
+- primitiveBindingOpsApplied
+- cameraOpsApplied
+- lightOpsApplied
+- structuralOpsApplied
+- instancesAdded
+- instancesRemoved
+
+### Upload/resource work
+
+- geometryBytesUploaded
+- textureBytesUploaded
+- uniformOrStorageBytesUploaded
+- bufferRangesUploaded
+- textureSubresourcesUploaded
+- resourcesCreated
+- resourcesLogicallyRetired
+- resourcesPhysicallyDestroyed
+- retirementBacklog
+- incrementalSubmissions
+
+### Rebuild/failure/lifetime
+
+- fullRebuildCount by FullRebuildReason
+- rollbackCount
+- failedBeforeSubmitCount
+- failedAfterSubmitCount
+- publicationFailureCount
+- partialPublicationCount
+- placeholderResourceCount
+- deviceIdleCalls by reason
+
+### Current fences
+
+- appliedDocumentRevision
+- mappingEpoch
+- sceneEpoch
+- deviceGeneration
+- activeProjectionDigest
+
+partialPublicationCount is a sentinel and must remain zero. deviceIdleCalls must have zero delta for every AcceptedIncremental transaction. Counters should be updated only at the defined transaction phase so a rejected or rolled-back operation cannot appear applied.
+
+rhi/RHIDebugCounters.h:12-50 currently covers recording/descriptor/pipeline metrics only; it can be extended or paired with a scene-delta counter structure. Do not force editor-layer code to depend on backend counter types.
+
+## 15. Focused contract-test matrix
+
+### 15.1 Pure CPU canonicalization tests
+
+| Test | Setup | Required assertion |
+|---|---|---|
+| Shuffled input determinism | Generate the same logical edits in many input permutations. | Canonical bytes, canonicalChangeSetId, operation order, derived dirty ranges, and counters are identical. |
+| Last-write coalescing | Repeated transform/material/light/camera/visibility writes with explicit mutation serials. | One final field update per target; sceneOperationsCoalesced is exact. |
+| Create/update/delete algebra | Exercise create+update, create+delete, update+delete, and delete+create at new generation. | Folding/cancellation follows section 8; generation-changing recreate is never collapsed. |
+| Hierarchy transform propagation | Edit parent and child in one change set. | Final world transforms are computed once in parent-before-child order; affected instance/light/camera records are deterministic. |
+| Visibility inheritance | Toggle ancestor and descendant local visibility. | Effective values match hierarchy semantics and are ordered parent-before-child. |
+| Material/variant binding | Toggle variants and reassign a primitive repeatedly. | Canonical form contains the final primitive-material binding and all renderer consumer classifications. |
+| Geometry range merge | Supply adjacent, overlapping, and conflicting byte ranges. | Compatible ranges merge deterministically; ambiguous/conflicting payloads reject. |
+| Texture subresource validation | Missing mip, duplicate layer, schema mismatch, and complete replacement cases. | Invalid sets reject before renderer calls; complete set has deterministic order/hash. |
+
+### 15.2 Fence and mapping tests with a no-call fake RHI
+
+For each mismatch, assert disposition Rejected, exact error/counter, unchanged active mapping/revision/epoch/digest, and zero allocations, recordings, submits, descriptor writes, destroys, and idle calls:
+
+- Wrong document authority.
+- Stale document revision.
+- Revision gap.
+- Wrong base projection digest.
+- Wrong mapping epoch.
+- Wrong scene epoch.
+- Wrong renderer instance.
+- Wrong device instance.
+- Stale device generation.
+- Stale stable-ID generation after slot deletion/reuse.
+- Wrong object kind for an operation.
+- Duplicate mutation token with different content.
+- Unsupported backend capability.
+
+### 15.3 Editor-to-change-capture tests
+
+- An exact one-field mutation does not report every live object.
+- Transform mutation includes the edited local node and deterministically derived runtime effects.
+- Material split/merge produces stable create/remap/delete evidence or an explicit StructuralTopology rebuild request.
+- Scene activation increments scene epoch without fabricating a document revision.
+- Root preview/reset uses a view/root-transform epoch or explicit activation-domain operation.
+- Global Merge failure before publication leaves the old document, revision, projection digest, and mapping unchanged.
+- Compact emits a FullSnapshot with Compact reason and complete stable-ID remap evidence.
+- Undo emits a new forward revision-fenced change set to the restored state.
+- Redo emits another new forward revision-fenced change set; neither replays inverse GPU commands.
+
+The last two tests remain blocked until a production Undo/Redo history publisher exists.
+
+### 15.4 Renderer transaction and fault-injection tests
+
+Inject failure at:
+
+- Fence validation.
+- CPU staging allocation.
+- Buffer/texture allocation.
+- Descriptor staging.
+- Upload recording.
+- First and later queue submission.
+- Immediately before atomic publication.
+- Retirement enqueue.
+
+For all prepublication failures:
+
+- Old mapping, renderer active generation, applied revision, scene epoch, and digest remain exact.
+- No staged handle is discoverable from active state.
+- Pre-submit resources are destroyed immediately.
+- Post-submit orphan resources are retired after tokens.
+- partialPublicationCount remains zero.
+- rollbackCount and failure class are exact.
+- No device idle occurs.
+
+### 15.5 Operation-specific fake-RHI tests
+
+- Transform: expected packed transform/instance/bounds ranges only; zero geometry bytes, zero texture bytes, zero idle.
+- Visibility: expected draw/instance/AS visibility records only; zero geometry/texture bytes, zero idle.
+- Material property: expected material range and, when needed, draw-bucket classification only.
+- Primitive material/variant: final binding reaches raster and ray/AS model consumers.
+- Camera/light property: expected packed record only; attached transform derives correctly.
+- Instance add/remove: stable renderer handle generation, dense-compaction mapping update, stale removed handle rejection.
+- Geometry range: exact copy bytes/ranges and transfer-to-consumer barrier model.
+- Texture replacement: exact subresource bytes, Undefined -> TransferDst -> ShaderRead state sequence, descriptor publish ordering, deferred old view/image retirement.
+- Full rebuild reason: scene switch, Global Merge, Compact, StructuralTopology, MappingMismatch, MissedRevision, and DeviceRecovery each increment only their reason bucket.
+
+### 15.6 Existing tests to extend
+
+- tests/rhi_public_contract_tests.cpp:149-201 already verifies submission-token retirement; extend with multi-queue old-resource retirement for delta replacement.
+- tests/rhi_public_contract_tests.cpp:304-318 already verifies hot-path counters; add transaction-scoped delta/device-idle assertions.
+- tests/gpu_scene_registry_model_tests.cpp:570 and following tests dirty ranges; add canonical range order and sparse/full threshold cases.
+- tests/gpu_scene_registry_model_tests.cpp:717-818 already covers dense removal, generation reuse, stale handles, and scene replacement; extend it to mapping-epoch publication and prepublication rollback.
+- Existing editor stale-revision, rollback, stable-mapping, projection-digest, and root-transform non-history tests should become fixtures for change capture rather than be duplicated.
+
+### 15.7 Backend/platform integration tests
+
+**Vulkan**
+
+- Run each incremental class with validation layers enabled.
+- Assert no validation errors, zero device idle, correct submission-token retirement, and correct output scene.
+- Exercise graphics/compute/transfer queue use of the resource being replaced.
+
+**D3D12**
+
+- Exercise copy/direct queue transitions and retirement fences.
+- Assert the same logical result/counters as Vulkan.
+- Verify descriptor retirement does not reuse a slot while an old queue submission can reference it.
+
+**Metal**
+
+- Until implemented, factory/capability test returns Unsupported before any renderer mutation.
+- Once implemented, run the same abstract contract suite against Metal command-buffer completion and argument-buffer publication.
+
+**Android**
+
+- Drive zero extent, pause, TERM_WINDOW, queued/coalesced editor deltas, INIT_WINDOW, and resume.
+- Assert no acquire/submit/present against a destroyed surface.
+- Assert scene/device mapping survives when the device survives.
+- Assert the latest coalesced delta is visible after resume.
+- Separately inject device loss and require a new device generation plus full snapshot.
+
+## 16. Implementation sequence
+
+1. **Contract and canonicalizer**
+   - Add MGIF-owned StableSceneId transport, SceneChangeSet, ApplySceneChangeRequest, SceneApplyResult, FullRebuildReason, and pure CPU canonicalization.
+   - Keep all types free of native/backend helper dependencies.
+   - Land determinism/coalescing/fence syntax tests first.
+
+2. **Exact editor change capture**
+   - Replace the all-live changedIds behavior at scene/editor/SceneCommands.cpp:791-799 with typed exact changes or a typed before/after projection diff.
+   - Add scene/view epoch publication for scene selection and root preview.
+   - Preserve candidate-copy/no-throw publication guarantees.
+
+3. **Transactional runtime mapping**
+   - Extend SceneRuntimeMapping to immutable mapping snapshots with authority, revisions/epochs/digest, renderer/device identity, actual handle generations, and atomic swap.
+   - Add stale-generation/epoch/device no-side-effect tests.
+
+4. **Renderer facade transaction**
+   - Add applySceneChanges and a transactional full-snapshot path.
+   - Reuse the existing transform and registry dirty-range machinery behind the new fences.
+   - Stop using mesh-vector equality as scene identity.
+
+5. **RHI upload status and rollback**
+   - Make required-resource failure explicit.
+   - Add staged resource journal, submission-token capture, orphan retirement, descriptor generation publication, and transaction counters.
+   - Enforce zero device idle for accepted incremental work.
+
+6. **Incremental logical classes**
+   - Implement transform and visibility first.
+   - Add material/primitive binding/variant.
+   - Add camera/light.
+   - Enable instance add/remove only after atomic mapping publication is proven.
+   - Add geometry/texture replacements last because they have the broadest synchronization and rollback surface.
+
+7. **Reason-coded conservative rebuilds**
+   - Route hierarchy topology, split/merge, scene switch, global Merge, and Compact through validated full snapshots with explicit reasons.
+   - Do not silently upgrade a stale delta; request and validate a snapshot.
+
+8. **Backend and lifecycle completion**
+   - Verify Vulkan and D3D12 lowering/retirement.
+   - Keep Metal capability-disabled until its RHI implementation meets the same contract.
+   - Split Android surface lifetime from renderer scene/device lifetime.
+
+9. **Undo/Redo integration**
+   - When production history is added, publish each Undo/Redo as an ordinary forward document transaction with a fresh revision and canonical SceneChangeSet.
+
+## 17. Acceptance criteria for P5 readiness
+
+P5 renderer-delta readiness requires all of the following:
+
+- Exact typed editor changes; no use of the current all-live changedIds as a precise delta.
+- Stable-ID-keyed canonical SceneChangeSet with deterministic serialization/digest.
+- Authority, revision, projection digest, mapping epoch, scene epoch, renderer instance, device instance, and device-generation fences.
+- Stale generation rejection before any renderer/RHI side effect.
+- Immutable, atomically published stable-ID-to-actual-runtime-handle mapping.
+- Deterministic coalescing and dependency ordering with CPU tests under shuffled input.
+- Incremental transform, visibility, material/binding/variant, camera, and light paths.
+- Explicit, transactional full snapshot for scene switch, global Merge, Compact, and unsupported topology cases.
+- Geometry and texture upload contracts with exact byte/subresource counters, correct barriers/states, and submission-aware retirement.
+- Explicit apply status and complete pre-submit/post-submit rollback behavior.
+- partialPublicationCount remains zero under every fault-injection point.
+- deviceIdleCalls delta is zero for every AcceptedIncremental transaction.
+- Vulkan and D3D12 satisfy the common lifetime/fence contract.
+- Metal rejects before mutation until implemented.
+- Android zero-extent/pause/surface-loss behavior is separated from persistent scene/device state.
+- Undo/Redo emits ordinary forward revision-fenced changes once production history exists.
+- No production dependency on nvcore, nvpro, nvapp, nvgui, nvvk, nvvkgltf, or any reference helper.
+- Focused CPU, fake-RHI, Vulkan, D3D12, Metal-capability, and Android lifecycle contract tests pass.
+
+Until these criteria are implemented and executed, readiness remains BLOCKED. This report deliberately does not claim Gate PASS.
+
+## 18. Audit limitations
+
+- This was a read-only source audit.
+- No build or test command was run.
+- Build entrypoints were outside the task scope; no build-entrypoint content was read or invoked.
+- One root-level file-enumeration attempt encountered access denial at an excluded path; no excluded content was read.
+- Runtime validation-layer, D3D12 debug-layer, Android lifecycle, and counter evidence therefore remains future verification work.
+- Line references describe the audited workspace and the fixed reference commit stated at the top of this report.

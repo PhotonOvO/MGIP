@@ -1,0 +1,40 @@
+{
+  "authorities": [
+    {
+      "bytes": 151486,
+      "casPath": "docs/editor-parity/progress-ledger/evidence/sha256/1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84",
+      "metadataBytes": 146,
+      "metadataCasPath": "docs/editor-parity/progress-ledger/evidence/sha256/b5c861645fb13e09a82564ea9c8d919fe9d1fabcdd46eaaf91e22d900ed8f617",
+      "metadataSha256": "b5c861645fb13e09a82564ea9c8d919fe9d1fabcdd46eaaf91e22d900ed8f617",
+      "originalPath": "C:\\Temp\\MGIF-P5-P10-successor-dag-blueprint-v2-20260824.md",
+      "recycleDataPath": "C:\\$Recycle.Bin\\S-1-5-21-628921809-127329029-1934030757-1001\\$RNM8YWP.md",
+      "recycleMetadataPath": "C:\\$Recycle.Bin\\S-1-5-21-628921809-127329029-1934030757-1001\\$INM8YWP.md",
+      "sha256": "1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84"
+    },
+    {
+      "bytes": 50844,
+      "casPath": "docs/editor-parity/progress-ledger/evidence/sha256/5912fb9b0d0adadac122249a6698bf4a603592e474346e8d18c10c41a4f6578c",
+      "metadataBytes": 122,
+      "metadataCasPath": "docs/editor-parity/progress-ledger/evidence/sha256/447ac3c384e499632229e334a02986de55218624b722841030dae852a328970e",
+      "metadataSha256": "447ac3c384e499632229e334a02986de55218624b722841030dae852a328970e",
+      "originalPath": "C:\\Temp\\MGIF-P6-selection-picking-readiness.md",
+      "recycleDataPath": "C:\\$Recycle.Bin\\S-1-5-21-628921809-127329029-1934030757-1001\\$REKQDB3.md",
+      "recycleMetadataPath": "C:\\$Recycle.Bin\\S-1-5-21-628921809-127329029-1934030757-1001\\$IEKQDB3.md",
+      "sha256": "5912fb9b0d0adadac122249a6698bf4a603592e474346e8d18c10c41a4f6578c"
+    },
+    {
+      "bytes": 74408,
+      "casPath": "docs/editor-parity/progress-ledger/evidence/sha256/1e2ce3ac038e8ead39f5634caeda1fc22a4c3e1a8ac383d915130b5c462616ac",
+      "metadataBytes": 108,
+      "metadataCasPath": "docs/editor-parity/progress-ledger/evidence/sha256/cbaabd5184414c2c7eeb47154826318e03d5d9264604b15e66d0408c1eaaab42",
+      "metadataSha256": "cbaabd5184414c2c7eeb47154826318e03d5d9264604b15e66d0408c1eaaab42",
+      "originalPath": "C:\\Temp\\MGIF-P7-gizmo-grid-readiness.md",
+      "recycleDataPath": "C:\\$Recycle.Bin\\S-1-5-21-628921809-127329029-1934030757-1001\\$R43ZE1O.md",
+      "recycleMetadataPath": "C:\\$Recycle.Bin\\S-1-5-21-628921809-127329029-1934030757-1001\\$I43ZE1O.md",
+      "sha256": "1e2ce3ac038e8ead39f5634caeda1fc22a4c3e1a8ac383d915130b5c462616ac"
+    }
+  ],
+  "documentKind": "o06-authority-recovery",
+  "recoveryMethod": "byte-for-byte copy while preserving recycle-bin source evidence",
+  "schemaVersion": 1
+}

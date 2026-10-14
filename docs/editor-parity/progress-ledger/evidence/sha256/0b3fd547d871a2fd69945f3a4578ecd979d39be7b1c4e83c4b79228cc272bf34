@@ -1,0 +1,31 @@
+{
+  "documentKind": "gate-receipt",
+  "schemaVersion": 1,
+  "runId": "run_ede89c4421e9",
+  "phase": "P4",
+  "gateTaskId": "task_d73712d125c5",
+  "dispatchId": "ctx_4d2387adadac",
+  "workerMessageId": "msg_de66e012762d",
+  "completedAtUtc": "2026-08-24T12:40:36.303Z",
+  "reviewExecutionOutcome": "succeeded",
+  "gateVerdict": "GATE P4 ENGINEERING PASS",
+  "gateScope": "engineering",
+  "supersedesGateTaskId": "task_c346ebff90f2",
+  "report": {
+    "path": "C:\\Temp\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\p4-independent-regate-report.md",
+    "bytes": 18742,
+    "sha256": "300a1e8b05a77ee50736a570d919e00e9e33c4c407bfb12c960364e5865c3290"
+  },
+  "verdictArtifact": {
+    "path": "C:\\Temp\\mgif-progress-ledger-task_ab822a872485-20260825T043308623Z\\evidence\\verdict-07-p4-pass.json",
+    "bytes": 437,
+    "sha256": "58de94c9b78650960ef4cf76b6ad4477e0bff6d04342ecc698a833eda1381dad"
+  },
+  "inputFingerprintSha256": "c444e221536bbb81c73ec2a768ed73dbf570efc3c5e7cb20c56d53d05e148a75",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "r24": "BLOCKED",
+    "metal": "Not Verified",
+    "releaseDistribution": "NOT PASS"
+  }
+}

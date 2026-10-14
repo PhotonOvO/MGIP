@@ -1,0 +1,244 @@
+{
+  "accepted": [
+    {
+      "caseId": "A01-bootstrap-p0-authority",
+      "expected": "accepted",
+      "kind": "gateAuthority",
+      "phase": "P0",
+      "taskId": "task_ba8ade72d3e9"
+    },
+    {
+      "caseId": "A02-bootstrap-p1-regate-authority",
+      "expected": "accepted",
+      "kind": "gateAuthority",
+      "phase": "P1",
+      "taskId": "task_831f45f22072"
+    },
+    {
+      "caseId": "A03-materialized-g5-authority",
+      "expected": "accepted",
+      "kind": "gateAuthority",
+      "phase": "P5",
+      "taskId": "task_bd6e62faa588"
+    },
+    {
+      "caseId": "A04-p5-pass-verdict",
+      "expected": "accepted",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P5 ENGINEERING PASS",
+      "kind": "phaseVerdict",
+      "phase": "P5"
+    },
+    {
+      "caseId": "A05-negative-gate-verdict-is-closed",
+      "expected": "accepted",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P5 FAIL/BLOCKED",
+      "kind": "phaseVerdict",
+      "phase": "P5"
+    },
+    {
+      "caseId": "A06-r2f-acceptance",
+      "expected": "accepted",
+      "gateId": "gate_b66203c11b10",
+      "kind": "decisionOutcome",
+      "resolution": "accept_verified_r2f"
+    },
+    {
+      "caseId": "A07-completed-success-lifecycle",
+      "dispatchStatus": "completed",
+      "expected": "accepted",
+      "hasCompletion": true,
+      "hasDispatch": true,
+      "hasWorkerResult": true,
+      "kind": "lifecycle",
+      "taskStatus": "completed",
+      "workerOutcome": "succeeded"
+    },
+    {
+      "caseId": "A08-materialized-g6-authority",
+      "expected": "accepted",
+      "kind": "gateAuthority",
+      "phase": "P6",
+      "taskId": "task_4af12cfad98a"
+    },
+    {
+      "caseId": "A09-materialized-g7-authority",
+      "expected": "accepted",
+      "kind": "gateAuthority",
+      "phase": "P7",
+      "taskId": "task_3f216d250677"
+    },
+    {
+      "caseId": "A10-materialized-g8-authority",
+      "expected": "accepted",
+      "kind": "gateAuthority",
+      "phase": "P8",
+      "taskId": "task_eb85190ed1ac"
+    },
+    {
+      "caseId": "A11-materialized-g9-authority",
+      "expected": "accepted",
+      "kind": "gateAuthority",
+      "phase": "P9",
+      "taskId": "task_e6d16b19af18"
+    },
+    {
+      "caseId": "A12-materialized-g10-authority",
+      "expected": "accepted",
+      "kind": "gateAuthority",
+      "phase": "P10",
+      "taskId": "task_04e52d906959"
+    }
+  ],
+  "documentKind": "progress-ledger-protocol-vectors",
+  "protocolId": "mgif-editor-progress-ledger-v2",
+  "rejected": [
+    {
+      "caseId": "R01-ordinary-leaf-cannot-promote-p5",
+      "expected": "rejected",
+      "kind": "gateAuthority",
+      "phase": "P5",
+      "taskId": "task_116c32740787"
+    },
+    {
+      "caseId": "R02-g5-cannot-promote-p6",
+      "expected": "rejected",
+      "kind": "gateAuthority",
+      "phase": "P6",
+      "taskId": "task_bd6e62faa588"
+    },
+    {
+      "caseId": "R03-arbitrary-pass-text",
+      "expected": "rejected",
+      "gateScope": "engineering",
+      "gateVerdict": "UNAUTHENTICATED PASS",
+      "kind": "phaseVerdict",
+      "phase": "P5"
+    },
+    {
+      "caseId": "R04-phase-verdict-mismatch",
+      "expected": "rejected",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P5 ENGINEERING PASS",
+      "kind": "phaseVerdict",
+      "phase": "P6"
+    },
+    {
+      "caseId": "R05-final-release-scope-mismatch",
+      "expected": "rejected",
+      "gateScope": "final-release",
+      "gateVerdict": "GATE P10 ENGINEERING PASS",
+      "kind": "phaseVerdict",
+      "phase": "P10"
+    },
+    {
+      "caseId": "R06-r2f-negative-resolution",
+      "expected": "rejected",
+      "gateId": "gate_b66203c11b10",
+      "kind": "decisionOutcome",
+      "resolution": "reject_or_repair"
+    },
+    {
+      "caseId": "R07-unknown-resolved-gate",
+      "expected": "rejected",
+      "gateId": "gate_unknown",
+      "kind": "decisionOutcome",
+      "resolution": "yes"
+    },
+    {
+      "caseId": "R08-alternate-run",
+      "expected": "rejected",
+      "kind": "runIdentity",
+      "runId": "run_forged"
+    },
+    {
+      "caseId": "R09-completed-without-worker-result",
+      "dispatchStatus": "completed",
+      "expected": "rejected",
+      "hasCompletion": true,
+      "hasDispatch": true,
+      "hasWorkerResult": false,
+      "kind": "lifecycle",
+      "taskStatus": "completed",
+      "workerOutcome": null
+    },
+    {
+      "caseId": "R10-pending-with-completion",
+      "dispatchStatus": null,
+      "expected": "rejected",
+      "hasCompletion": true,
+      "hasDispatch": false,
+      "hasWorkerResult": false,
+      "kind": "lifecycle",
+      "taskStatus": "pending",
+      "workerOutcome": null
+    },
+    {
+      "caseId": "R11-dispatched-without-dispatch",
+      "dispatchStatus": null,
+      "expected": "rejected",
+      "hasCompletion": false,
+      "hasDispatch": false,
+      "hasWorkerResult": false,
+      "kind": "lifecycle",
+      "taskStatus": "dispatched",
+      "workerOutcome": null
+    },
+    {
+      "caseId": "R12-failed-with-success-result",
+      "dispatchStatus": "failed",
+      "expected": "rejected",
+      "hasCompletion": true,
+      "hasDispatch": true,
+      "hasWorkerResult": true,
+      "kind": "lifecycle",
+      "taskStatus": "failed",
+      "workerOutcome": "succeeded"
+    },
+    {
+      "caseId": "R13-ordinary-leaf-cannot-promote-p6",
+      "expected": "rejected",
+      "kind": "gateAuthority",
+      "phase": "P6",
+      "taskId": "task_116c32740787"
+    },
+    {
+      "caseId": "R14-ordinary-leaf-cannot-promote-p7",
+      "expected": "rejected",
+      "kind": "gateAuthority",
+      "phase": "P7",
+      "taskId": "task_116c32740787"
+    },
+    {
+      "caseId": "R15-ordinary-leaf-cannot-promote-p8",
+      "expected": "rejected",
+      "kind": "gateAuthority",
+      "phase": "P8",
+      "taskId": "task_116c32740787"
+    },
+    {
+      "caseId": "R16-ordinary-leaf-cannot-promote-p9",
+      "expected": "rejected",
+      "kind": "gateAuthority",
+      "phase": "P9",
+      "taskId": "task_116c32740787"
+    },
+    {
+      "caseId": "R17-ordinary-leaf-cannot-promote-p10",
+      "expected": "rejected",
+      "kind": "gateAuthority",
+      "phase": "P10",
+      "taskId": "task_116c32740787"
+    },
+    {
+      "caseId": "R18-prohibited-final-release-pass",
+      "expected": "rejected",
+      "gateScope": "final-release",
+      "gateVerdict": "GATE P10 FINAL RELEASE PASS",
+      "kind": "phaseVerdict",
+      "phase": "P10"
+    }
+  ],
+  "schemaVersion": 2
+}

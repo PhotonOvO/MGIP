@@ -1,0 +1,51 @@
+{
+  "authorityArtifact": {
+    "bytes": 572,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/e3475db0149b08151ee475ab7fad729d0153841f1d5a4814514a4c9055ce07f1",
+    "sha256": "e3475db0149b08151ee475ab7fad729d0153841f1d5a4814514a4c9055ce07f1"
+  },
+  "beforeTaskSha256": "d1c1efa7e3a8d4be71d9b55a915b14b783e230eeb919d894eab6ec8347d2d957",
+  "completedAtUtc": "2026-09-03T05:55:58.179Z",
+  "dependencyReplacements": [],
+  "displayName": "P7-PRESENT-LAYOUT-R1",
+  "documentKind": "local-task-transition-receipt",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "fromStatus": "ready",
+  "gateEvent": null,
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "0c921a74649995d3a8b45433c50b19c04ff8c8dfd55a9a433c8db7c490c2b6f5",
+  "parentSnapshotSha256": "f5f121cfca3afc4b363ae6452f0ac7b62b3daa4647de46cf29c5c61ae3311ae2",
+  "previousTransitionSha256": "e2f94fc7b1d53e20ce856e229fab99e900448410a69062c947662cf129d927b0",
+  "report": {
+    "bytes": 3049,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/0504a29f6b948277ab36bd6402eb019c0cd089f4f17eadb58ebe28a20effce8f",
+    "sha256": "0504a29f6b948277ab36bd6402eb019c0cd089f4f17eadb58ebe28a20effce8f"
+  },
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskDefinition": {
+    "createdAtUtc": "2026-09-02T14:40:00.000Z",
+    "dependencies": [
+      "task_0f3e7c8a6d22"
+    ],
+    "displayName": "P7-PRESENT-LAYOUT-R1",
+    "phase": "P7",
+    "role": "repair",
+    "supersedesTaskId": null,
+    "taskId": "task_p7_present_layout_repair_20260902"
+  },
+  "taskId": "task_p7_present_layout_repair_20260902",
+  "toStatus": "completed",
+  "verdictArtifact": {
+    "bytes": 1136,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/220fa9e2f15ebdfe8009df04df0f253edf7ee302b25f23156c89c0e4b77dea6a",
+    "sha256": "220fa9e2f15ebdfe8009df04df0f253edf7ee302b25f23156c89c0e4b77dea6a"
+  }
+}

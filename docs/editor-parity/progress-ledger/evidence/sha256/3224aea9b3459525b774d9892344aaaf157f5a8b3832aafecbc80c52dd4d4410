@@ -1,0 +1,86 @@
+# P7-90 Completion Report
+
+## Decision
+
+Task `task_395d3d07b807` (P7-90) is complete with outcome `succeeded` for the P7 integration scope. The local transition moves P7-90 from `ready` to `completed` and G7 to `ready`.
+
+This report does not claim Gate P7, release/distribution PASS, Metal verification, or visual parity PASS. F42 remains BLOCKED, R24 remains BLOCKED, Metal remains Not Verified, and release/distribution remains NOT PASS.
+
+Completed at: 2026-09-02T02:40:00.000Z
+
+## Bound parent and inputs
+
+- Parent local bundle: `d76501137d1df8e1e21fa99e4f6d5da475bf4b84d032f9fc50faea97ee6b6e65`
+- Parent pointer SHA-256: `9b9f5ca6c19664fd5c55e698d4aa70e08f2557aeb8d85d51113c636cc552233e`
+- Parent snapshot SHA-256: `edf265266f37d0d23bf6328ad37502161ebd00b37c1e9c22ff8ea4ebe1a0fc69`
+- Previous transition SHA-256: `add4ebda766979c3b847d0c9d5e8906b2f222c6236fd13b1c93cc28872501257`
+- P7-90 pre-edit binding SHA-256: `671c9f81cf76428474cb6b59f1ea7a6c1c4f0a05a6a1aa86ccc69904a9149555`
+- Before-task hash: `061de255565ea25effbb891a9ff0c4b0de27b66107ec55c6c2954ba26d034383`
+
+## Implemented integration
+
+- `EditorOverlayFrameSnapshot` is CPU-owned, immutable, and bound to frame serial, document revision, selection revision, mapping epoch, viewport generation, projection revision, and view revision.
+- `DesktopGizmoIntegrationAdapter` owns the desktop Gizmo priority domain and falls back to the P6 router for unconsumed events. Primitive selection resolves to its owning node; the scene root never enters the node Gizmo route.
+- Camera input runs before adapter snapshot construction. Camera navigation and picking are suppressed only during an active adapter drag. Modal/ImGui-captured hover moves do not consume input.
+- Snap is conditional on `snapEnabled`; translation uses grid-unit snap. Drag previews use immutable drag-start TRS. Node, selection, and mapping fence changes detach stale drags fail-closed. Stable Gizmo IDs mix the complete 64-bit document authority.
+- Production order is `FinalColor -> EditorHighlight -> EditorOverlay -> Present -> ImGui`; the legacy ImGui overlay producer is disabled.
+- Overlay preparation is slot-ready and queue-token bound. Prepare, resolve, abandon, resize, and shutdown reconcile tickets without device idle; shutdown runs before pass graph destruction while the RHI device is alive.
+- CMake wires CPU Gizmo/Grid, RHI overlay, desktop input, focused tests, shader generation, and Android exclusion. Android shader isolation covers both `.slang` and `.glsl`.
+- Vulkan sparse logical argument slots use one lazily-created empty descriptor-set layout in `rhi/vulkan/VulkanDevice.h/.cpp`. This fixed the real `VUID-VkPipelineLayoutCreateInfo-graphicsPipelineLibrary-06753` found by the first smoke.
+- A second real finding, `VUID-vkCmdDraw-None-09600`, showed read-only ImGui views registered as `readWrite`. `render/SceneResources.cpp:539-548` now registers them as `sampledRead`, matching their ShaderRead layout.
+
+## Source scope and hashes
+
+The exact 17-path P7-90 write set is sealed in:
+
+`G:/Temp/mgif-p7-90-final-20260902T104500+0800/p7-90-post-hash-manifest.json`
+
+Manifest SHA-256: `7ebf6ffe81adbf5a13661c9130f07f4fa28be3763c4c6181cb827a62e832b02a`.
+
+Required scope expansions, also sealed in the manifest:
+
+| Path | Reason |
+|---|---|
+| `render/SceneResources.cpp` | ImGui sampled-read descriptor correction after VUID 09600 |
+| `rhi/vulkan/VulkanDevice.h` | Empty descriptor-set layout declaration/member |
+| `rhi/vulkan/VulkanDevice.cpp` | Sparse Vulkan slot lowering and lifecycle |
+
+## Windows/MSVC verification
+
+All native builds and runtime checks ran on Windows/MSVC-generated Ninja trees. WSL only orchestrated and hashed evidence.
+
+| Check | Result |
+|---|---|
+| Release focused CTest | 4/4: rhi_contract, android_viewer_contract, overlay_rhi, gizmo_integration |
+| Debug focused CTest | 4/4: rhi_contract, android_viewer_contract, overlay_rhi, gizmo_integration |
+| Release direct tests | Editor overlay RHI and Gizmo integration passed |
+| Android viewer contract | 9/9 passed |
+| RHI boundary guard | 0 blocking findings |
+| Release Vulkan, no UI | 40 frames, exit 0, zero VUID/SYNC-HAZARD |
+| Debug Vulkan, no UI | 40 frames, exit 0, zero VUID/SYNC-HAZARD |
+| Release Vulkan, UI enabled | 40 frames, exit 0, zero VUID/SYNC-HAZARD |
+| Release D3D12, no UI | 40 frames, exit 0 |
+| Debug D3D12, no UI | 40 frames, exit 0 |
+
+Vulkan validation used `mgif-vk-layer-settings-p7.txt` with `validate_sync=true` and `syncval_submit_time_validation=true`.
+
+Final executable hashes:
+
+- Release `Demo.exe`: 6,146,048 bytes, SHA-256 `cc62a29355369d1dbfb3819af0a8580e019365178bc79926460ad89a60dd9097`
+- Debug `Demo.exe`: 21,144,576 bytes, SHA-256 `da5da05da67dc63dff448fca2dc011b64ea2a7a0f5dc212c20cbba454de82b52`
+
+## Findings and residual evidence
+
+1. The first long Release validation run exposed VUID 09600 on sampled swapchain images. After the `sampledRead` fix, repeated Release and Debug long runs completed with zero VUID and zero SYNC-HAZARD.
+2. The static P0 validator still reports its known custom-target line-position mismatch at `CMakeLists.txt:338`; scaffold mode independently reports the pre-existing D20 hierarchy trace mismatch. These are residual validator evidence, not overlay runtime failures.
+3. Full D3D12 UI mode remains outside the passing claim because the existing `ddgi_gi_sdf_rays.slang` `Ptr` DXIL compile fails; a reduced UI run also reports the existing unequal present-blit extent error. D3D12 no-UI runtime and public contracts pass.
+4. Required visual V01/V02/V03/V04/V07 screenshots, canvas-pixel checks, and full interactive editor capture were not produced in this transition. They remain explicit G7 evidence debt and are not PASS.
+5. Metal has no macOS evidence and remains Not Verified.
+
+## Fixed policy
+
+- F42: BLOCKED
+- R24: BLOCKED
+- Metal: Not Verified
+- release/distribution: NOT PASS
+

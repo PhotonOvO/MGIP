@@ -1,0 +1,25 @@
+{
+  "authoritySha256": "e29c7bc069697b22f64f31bd764c9f486a4edbd2264981f8b7e312c08bcaa705",
+  "beforeTaskSha256": "f18c4760e2f973d7910382bc28890575071606dd04ff4f7f0d99d963a8168d84",
+  "decision": "completed",
+  "dependencyReplacementsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "displayName": "P7-VISUAL-R1",
+  "documentKind": "local-task-verdict",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "gateEvent": null,
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "8158ea9e19fd3c518050e3cbd935a0d09df0816aae2a70c4b8196b3d4ee30b89",
+  "parentSnapshotSha256": "6eefc19cc2e7619d69cd78f8309ae3209f726c12efb4b615dd1b4b64c41935b5",
+  "reportSha256": "9782d57d3711fa0066fe3768f9563a6c09b6b9c51e62f0df3824fa2b507cf2b6",
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskDefinitionSha256": "589a48b9538a8570feabb8897cecd7b76a5ee69297cb739f5042b71399668222",
+  "taskId": "task_0f3e7c8a6d21"
+}

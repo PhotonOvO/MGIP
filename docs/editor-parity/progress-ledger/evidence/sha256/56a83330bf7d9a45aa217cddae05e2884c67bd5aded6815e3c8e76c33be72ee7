@@ -1,0 +1,51 @@
+{
+  "authorityArtifact": {
+    "bytes": 572,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/e29c7bc069697b22f64f31bd764c9f486a4edbd2264981f8b7e312c08bcaa705",
+    "sha256": "e29c7bc069697b22f64f31bd764c9f486a4edbd2264981f8b7e312c08bcaa705"
+  },
+  "beforeTaskSha256": "f18c4760e2f973d7910382bc28890575071606dd04ff4f7f0d99d963a8168d84",
+  "completedAtUtc": "2026-09-02T14:10:00.000Z",
+  "dependencyReplacements": [],
+  "displayName": "P7-VISUAL-R1",
+  "documentKind": "local-task-transition-receipt",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "fromStatus": "ready",
+  "gateEvent": null,
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "8158ea9e19fd3c518050e3cbd935a0d09df0816aae2a70c4b8196b3d4ee30b89",
+  "parentSnapshotSha256": "6eefc19cc2e7619d69cd78f8309ae3209f726c12efb4b615dd1b4b64c41935b5",
+  "previousTransitionSha256": "e297bd471f5f7a5441abe7bb9e645736b6085987d9e452f4168de71445aca7cd",
+  "report": {
+    "bytes": 4209,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/9782d57d3711fa0066fe3768f9563a6c09b6b9c51e62f0df3824fa2b507cf2b6",
+    "sha256": "9782d57d3711fa0066fe3768f9563a6c09b6b9c51e62f0df3824fa2b507cf2b6"
+  },
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskDefinition": {
+    "createdAtUtc": "2026-09-02T04:16:00.000Z",
+    "dependencies": [
+      "task_395d3d07b807"
+    ],
+    "displayName": "P7-VISUAL-R1",
+    "phase": "P7",
+    "role": "integration",
+    "supersedesTaskId": "task_3f216d250677",
+    "taskId": "task_0f3e7c8a6d21"
+  },
+  "taskId": "task_0f3e7c8a6d21",
+  "toStatus": "completed",
+  "verdictArtifact": {
+    "bytes": 1107,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/32df71e49d9ec13e4ce076bde84c6859f58e2e9ff9522db6fcb2252e10f276fb",
+    "sha256": "32df71e49d9ec13e4ce076bde84c6859f58e2e9ff9522db6fcb2252e10f276fb"
+  }
+}

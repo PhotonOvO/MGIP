@@ -1,0 +1,64 @@
+{
+  "authorityArtifact": {
+    "bytes": 572,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/5a716081e588fbd12a1d157490c77a9d77f87cbc2fc555c80a81e5c71ef5cd22",
+    "sha256": "5a716081e588fbd12a1d157490c77a9d77f87cbc2fc555c80a81e5c71ef5cd22"
+  },
+  "beforeTaskSha256": "d7e1762ddde5c31595c6d21531cb69d6560af7948a716549ba88aba0b493d875",
+  "completedAtUtc": "2026-09-01T04:52:54.321Z",
+  "dependencyReplacements": [
+    {
+      "acceptedGate": {
+        "gateVerdict": "ENGINEERING PASS",
+        "phase": "P6"
+      },
+      "replacedDependencyTaskId": "task_4af12cfad98a",
+      "taskId": "task_1a40c0d302ae"
+    }
+  ],
+  "displayName": "G6-R1",
+  "documentKind": "local-task-transition-receipt",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "fromStatus": "ready",
+  "gateEvent": {
+    "gateVerdict": "ENGINEERING PASS",
+    "phase": "P6",
+    "supersedesEventId": "00c79c551eb7fe71101971d74ceb05a80a11ae3e661da273a7bf3a428babdde4"
+  },
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "f7c9d5377328243fe409d926e32b0575acc33231842317c6a56e58544074b946",
+  "parentSnapshotSha256": "67ac9d81fadfaea2157e8e14f79692dbfb8ad18afaf943c283cbe31ac001bc34",
+  "previousTransitionSha256": "00c79c551eb7fe71101971d74ceb05a80a11ae3e661da273a7bf3a428babdde4",
+  "report": {
+    "bytes": 10088,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/b3b3cee5214e493ae2675a38730a3d84363ec3ca48115995929b4d87b8250d8d",
+    "sha256": "b3b3cee5214e493ae2675a38730a3d84363ec3ca48115995929b4d87b8250d8d"
+  },
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskDefinition": {
+    "createdAtUtc": "2026-08-31T13:40:02.179Z",
+    "dependencies": [
+      "task_c4958ebe56e4"
+    ],
+    "displayName": "G6-R1",
+    "phase": "P6",
+    "role": "gate",
+    "supersedesTaskId": "task_4af12cfad98a",
+    "taskId": "task_c627c917ddb9"
+  },
+  "taskId": "task_c627c917ddb9",
+  "toStatus": "completed",
+  "verdictArtifact": {
+    "bytes": 1251,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/7b13a68ff2e5215c660cf57126492298da5dbdd63dbecdb40af43968880abc84",
+    "sha256": "7b13a68ff2e5215c660cf57126492298da5dbdd63dbecdb40af43968880abc84"
+  }
+}

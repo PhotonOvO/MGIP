@@ -1,0 +1,39 @@
+# P8-90-R1 Recovery Integration Report
+
+Decision: COMPLETED bounded P8 integration recovery; this is not an independent P8 Gate verdict.
+
+The historical P8-90 failure remains immutable. This recovery integrates the three completed P8 leaves,
+the controller-owned lifecycle producers, and the acceptance-only typed UI driver at the application boundary.
+
+Parent bundle: ff9636881a6ae8b32526dce3d6aac152a2bc503d5556d1e518a8aa281061409a
+Parent snapshot: 793546271f340709baf6aed70dce6e4baf78915d569764d017b0464bd4d1e3ff
+Parent transition head: e54cf4cbbdf9a972d87142856d61f41f113ce4db858cc8c3824855a47e515f5e
+Source identity: c8afe99762c7a26c747f377f81a2a75b1a0c51cdbde693b6d86f4dfbaddee4e7
+Aggregate manifest: G:\Temp\mgif-p8-final-20260905T081711Z\visual-v2-evidence-manifest.json; sha256=40fbd367dac57ee0845210ac8cbe1080d4474b790505c36c3c0fdcc1d1b3bc70
+Integration audit: G:\Temp\mgif-p8-final-20260905T081711Z\p8-90-r1-ledger-draft\P8-90-R1-integration-audit.json; sha256=b18367f3b61b2e0d6e2ecb75a8574decd749a87489f3819bcbe9a6a9e7edf191
+
+## Windows/MSVC Evidence
+
+Windows/MSVC Vulkan is authoritative; WSL only orchestrated and read artifacts.
+Debug and Release Demo were rebuilt after the lifecycle/driver changes.
+Visual matrix: 62/62 (base 24 per configuration plus 14 DPI extension traces).
+Runtime matrix: 8/8 (unfiltered/filtered and UI/no-UI cases).
+Focused controller/selection/renderer CTest: 14/14 in Debug and 14/14 in Release.
+Acceptance UI state/action tests: 57 and 40 checks respectively in Debug and Release.
+P0 scaffold: 42 features, 10 traces, 110 edges; visual and present contracts: 7/7 and 4/4.
+Configured production-editor dependency preflight: PASS with skip disabled; RHI boundary guard: PASS.
+
+## Integration Boundary
+
+EditorController is constructed at startup and is the only editor command/document authority.
+openModelWithEditor() sends candidates through controller preparation/publication; failed candidates do not reset the active document.
+MinimalLatestApp retains the legacy loader only for viewer/runtime compatibility when no controller exists; it is not a second editor mutation entry point.
+EditorTestDriver is a BUILD_TESTING-only target and is not linked by the production Demo target.
+The lifecycle producer exposes exactly nine closed-world states, with save/merge/compact collapsed to the required presentation state.
+
+## Explicit Non-Claims
+
+No complete U01-U08 real action/state replay, context-menu manifest, or independent P8 Gate verdict is claimed.
+P9/P10 remain blocked until the independent Gate chain is executed.
+F42 and R24 remain BLOCKED; Metal remains Not Verified; release/distribution remains NOT PASS.
+No Linux build or runtime claim is made, and Orca is not used.

@@ -1,0 +1,1370 @@
+{
+  "authority": {
+    "bytes": 8877,
+    "path": "docs/editor-parity/progress-ledger/authority.json",
+    "sha256": "4ae61046c7d5c64eefd361f66df1ecf8eccf8c59a0c8fe20a60473fb751cbbf5"
+  },
+  "decisionHistory": [
+    {
+      "createdAtUtc": "2026-08-22T08:00:01.000Z",
+      "gateId": "gate_ca804cbec712",
+      "observedAtUtc": "2026-08-25T06:48:21.860Z",
+      "options": [
+        "mgif_safety_exception",
+        "exact_defect_parity"
+      ],
+      "outcome": "accepted",
+      "question": "D20\uff1a\u591a\u573a\u666f\u7ed3\u6784\u7f16\u8f91\u9047\u5230\u53c2\u8003\u9879\u76ee\u5df2\u8bc1\u5b9e\u7684\u6570\u636e\u635f\u574f\u4e0e\u5d29\u6e83\u65f6\uff0cMGIF \u5e94\u91c7\u7528\u54ea\u79cd\u7ed3\u679c\u8bed\u4e49\uff1f",
+      "resolution": "mgif_safety_exception",
+      "resolvedAtUtc": "2026-08-25T05:55:48.000Z",
+      "status": "resolved",
+      "taskId": "task_5e9fa075e9c5"
+    },
+    {
+      "createdAtUtc": "2026-08-25T04:36:54.000Z",
+      "gateId": "gate_b66203c11b10",
+      "observedAtUtc": "2026-08-25T06:48:21.860Z",
+      "options": [
+        "accept_verified_r2f",
+        "reject_or_repair"
+      ],
+      "outcome": "accepted",
+      "question": "R2-F prerequisite: has task_2115abdff446 completed, been independently verified, and been accepted with duplicate_primitive, multi-primitive, shared-mesh, SceneUploadPlanner reverse-coordinate, Debug/Release, and forbidden-dependency checks passing? Do not dispatch replacement P5-90 until yes.",
+      "resolution": "accept_verified_r2f",
+      "resolvedAtUtc": "2026-08-25T05:54:54.000Z",
+      "status": "resolved",
+      "taskId": "task_8c29dd510a99"
+    }
+  ],
+  "documentKind": "progress-ledger-state",
+  "gateHistory": {
+    "dispatchIds": [
+      "ctx_9b13deebb72e",
+      "ctx_f3f0d5f01b11",
+      "ctx_265a270d4083",
+      "ctx_539e52156e31",
+      "ctx_650d09db7f42",
+      "ctx_8ec615efdce5",
+      "ctx_9ce95ad9385d",
+      "ctx_4d2387adadac",
+      "ctx_ce23febf6608"
+    ],
+    "messageIds": [
+      "msg_e52d94131f2f",
+      "msg_b5e6c373c0d0",
+      "msg_99390f407e73",
+      "msg_dae85c78b385",
+      "msg_999b7a9ace7e",
+      "msg_ae4c303a7e0a",
+      "msg_9bcee099addf",
+      "msg_de66e012762d",
+      "msg_ebb1a751fe74"
+    ],
+    "orcaArtifactSha256s": [
+      "9c752ee945963712c93e7e26c4a90f96b7a99c3447126f5bb008568a2b2d5993",
+      "bcab434b6ddd5d4a3e0c83ed4b36de79059aac600c34a8270a1c19a27c7fa771",
+      "d927124797f9749fa83fd8dab90edebc127e7c6950bca6b5a5d9e23a4ad2b646",
+      "b8869b981fa074fe95b1735f93a74f77992032485fd0d5372941b065f2fcf18f",
+      "5ae53f9025caaf7d0e7e39bd79b4cb8d1e154dfc7c1ba51b702f24063cd5207d",
+      "74802ef211bd7229f9e810fbca036eb2b3f92c4b7122bcb05f85c709b679ccbd",
+      "1e912301b9c550ddd2a52314a6c21c57427bfd647510996f155619826e498de0",
+      "c6f0eba8b41227d86570d75a705732bb1d1cc597f8c076551422bf0f94ba9b8a",
+      "130c970dedc4360fab17c76578ac9a72041cafd4c6e7b43ff4f340bd18c13190"
+    ],
+    "orcaResultMetadata": [
+      {
+        "bodySha256": "bf5cea7512026eea8dead48f2ad3f4bb8ba6d5c37b10cfe27e9bd7cc61fabd85",
+        "bytes": 1025,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/9c752ee945963712c93e7e26c4a90f96b7a99c3447126f5bb008568a2b2d5993",
+        "reportedBy": "term_e15737d6-1fcc-4ba9-a9f8-0fa9eb7c1ef8",
+        "subjectSha256": "2bf015aeb865bf3fc095e08295776da1483ac3979f1ee1935112740f6368d96e"
+      },
+      {
+        "bodySha256": "ee663882be3687c8327620ff0b4efff95eab0977dd4fa6f582b537baf900e2a0",
+        "bytes": 1074,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/bcab434b6ddd5d4a3e0c83ed4b36de79059aac600c34a8270a1c19a27c7fa771",
+        "reportedBy": "term_1b17d76f-01dc-4f8e-b848-df6d68aae4b9",
+        "subjectSha256": "00caad6baacecede2f7046bcaf9a34a9d50aba66c0a4338d54ef3b76be7531f7"
+      },
+      {
+        "bodySha256": "af6a2269c6f7bae5fedc7dce466c14a193694fefb892f27b7bfbcd9ab031e5f4",
+        "bytes": 1516,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/d927124797f9749fa83fd8dab90edebc127e7c6950bca6b5a5d9e23a4ad2b646",
+        "reportedBy": "term_eeafb57f-2bf6-4a3b-b8af-7bb8d73701b9",
+        "subjectSha256": "cbb464f96587318243fb2526875a6343487f6098565360918d948bf49d9afacf"
+      },
+      {
+        "bodySha256": "09b3a8dfc534cac3b8c8aa8619f81e9a20a4d8aa1a01c6fc842582f4795436e9",
+        "bytes": 1139,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/b8869b981fa074fe95b1735f93a74f77992032485fd0d5372941b065f2fcf18f",
+        "reportedBy": "term_26255e4b-2670-45dc-af72-6627677bea47",
+        "subjectSha256": "76d850c5fd93183231276be0eb9d235eb5673e82201f8ae18dc43574769fa8e0"
+      },
+      {
+        "bodySha256": "342aca8b31d34dfbc6200e38e78232dc3f1cb7d6c43c276dac7f4c6aee9c792b",
+        "bytes": 1441,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/5ae53f9025caaf7d0e7e39bd79b4cb8d1e154dfc7c1ba51b702f24063cd5207d",
+        "reportedBy": "term_585274f0-9aa2-41e0-b7fb-ceaff68c03e2",
+        "subjectSha256": "32afda2cbcf977bb07993f3fafff625901ef2ded3c576e22478d20675fac1f17"
+      },
+      {
+        "bodySha256": "7f571dca5afe9c05dbd209db8ef5ba89a5435050947883ef9016965681fa4c7b",
+        "bytes": 1940,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/74802ef211bd7229f9e810fbca036eb2b3f92c4b7122bcb05f85c709b679ccbd",
+        "reportedBy": "term_143c75c6-893a-4a05-b5fe-17a8420b5675",
+        "subjectSha256": "844e5e9e6531a30d0bc55da30a0bd4376eb675b1d25aab03cab21447abd66833"
+      },
+      {
+        "bodySha256": "975dafe3abb996a89918df83dc0814e85484f4ed0540151e05f0437e49b6759f",
+        "bytes": 1667,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/1e912301b9c550ddd2a52314a6c21c57427bfd647510996f155619826e498de0",
+        "reportedBy": "term_2036ff30-e3c4-485e-9926-43add6e9991b",
+        "subjectSha256": "09e1519733e11e1698af7cb82f1909914ea3db8087afa232db5ece9e04c52937"
+      },
+      {
+        "bodySha256": "1788bf2960e2333e43938650e2d50fa25923f83cfc3a243dd527123c38fddf5a",
+        "bytes": 2026,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/c6f0eba8b41227d86570d75a705732bb1d1cc597f8c076551422bf0f94ba9b8a",
+        "reportedBy": "term_0b037987-7e53-46e8-b451-475c455f3316",
+        "subjectSha256": "e8738412d748feabfb6fe6b2b5fe80fe92c1ccf5906ff31988e9c6e4c5dfa20b"
+      },
+      {
+        "bodySha256": "fe6e3e687598bdc1041524a4774c3c608ad1ae06f7d095a993d44624e4d7ecc5",
+        "bytes": 1158,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/130c970dedc4360fab17c76578ac9a72041cafd4c6e7b43ff4f340bd18c13190",
+        "reportedBy": "term_ee513982-82f6-48c1-b9f4-149591833037",
+        "subjectSha256": "b4e6a482c1a4b47a1a0a8f5dd3150edf82e911e3adadf9aa654a3ddae89ee0c8"
+      }
+    ],
+    "receiptMetadata": [
+      {
+        "bytes": 1197,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/e25923b9f91633947c5bd2d44147572ca053b9662b3b4fdd669762fbd4ce2916"
+      },
+      {
+        "bytes": 1147,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/e2c79fabc0a7bdc6f05436f816861556c587fb10241e988e864344770ac8259f"
+      },
+      {
+        "bytes": 1171,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/bca0371373446ea35d3b541610c04401e3963e86d9fad870a9c568296d24b33d"
+      },
+      {
+        "bytes": 1055,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/61edd61e822f3d1bb6dc51f1dbf2e2b53e323b9e0f49f8c33112c605c05dd20c"
+      },
+      {
+        "bytes": 1096,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/03c60649d3c62d4820ffa95fa59952751c2d30a647f393eee9890e5899f971f9"
+      },
+      {
+        "bytes": 1138,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/9d78174715c8cd9a246c7e949570906d2f355cb82c1954cea4062fe868d1bcc6"
+      },
+      {
+        "bytes": 1126,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/6d621e7cac4fab8d7b283ee3a4f014eb97042fe6ed6aa37dbf6f0ee8ba1ba792"
+      },
+      {
+        "bytes": 1149,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/0b3fd547d871a2fd69945f3a4578ecd979d39be7b1c4e83c4b79228cc272bf34"
+      },
+      {
+        "bytes": 1114,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/c54ac4bfec9dd72471a291c39682a698e66e4ba80aaea0519eedb0e31a218595"
+      }
+    ],
+    "receiptSha256s": [
+      "e25923b9f91633947c5bd2d44147572ca053b9662b3b4fdd669762fbd4ce2916",
+      "e2c79fabc0a7bdc6f05436f816861556c587fb10241e988e864344770ac8259f",
+      "bca0371373446ea35d3b541610c04401e3963e86d9fad870a9c568296d24b33d",
+      "61edd61e822f3d1bb6dc51f1dbf2e2b53e323b9e0f49f8c33112c605c05dd20c",
+      "03c60649d3c62d4820ffa95fa59952751c2d30a647f393eee9890e5899f971f9",
+      "9d78174715c8cd9a246c7e949570906d2f355cb82c1954cea4062fe868d1bcc6",
+      "6d621e7cac4fab8d7b283ee3a4f014eb97042fe6ed6aa37dbf6f0ee8ba1ba792",
+      "0b3fd547d871a2fd69945f3a4578ecd979d39be7b1c4e83c4b79228cc272bf34",
+      "c54ac4bfec9dd72471a291c39682a698e66e4ba80aaea0519eedb0e31a218595"
+    ],
+    "reportMetadata": [
+      {
+        "bytes": 21846,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/63bcdefebf3853e35a3f7294d045271fd24e0e22761430e043db899788bcc201"
+      },
+      {
+        "bytes": 15493,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/f003fbbadbdd83ef58063e6a0ec807a9fd75f8c397f104100d0a62c4627d8f86"
+      },
+      {
+        "bytes": 10413,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/cdb7d028b5d1293f9cb68e0a7f9755063b041752294baff01ae72ceec486d115"
+      },
+      {
+        "bytes": 4577,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/520ca1dcbb405755b1a328a510f791399e89f080a6d7ca8e3d88eb0090d23b1b"
+      },
+      {
+        "bytes": 17843,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/455c006dec87a74bc00986ad882b73380f9813539558a32a0435b879c4adea7f"
+      },
+      {
+        "bytes": 20028,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/800be151ff3a38f765b722fda7cbabd245addcdfe730859899364d6eb12ef5ed"
+      },
+      {
+        "bytes": 24073,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/1c6d9eb4df859c0d95657964228d14a5963236bd23158bb41180c14e7df8c647"
+      },
+      {
+        "bytes": 18742,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/300a1e8b05a77ee50736a570d919e00e9e33c4c407bfb12c960364e5865c3290"
+      },
+      {
+        "bytes": 22276,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/53229abecf410e6311c42ad40666073dd615d720281197bd96526898bce76fee"
+      }
+    ],
+    "reportSha256s": [
+      "63bcdefebf3853e35a3f7294d045271fd24e0e22761430e043db899788bcc201",
+      "f003fbbadbdd83ef58063e6a0ec807a9fd75f8c397f104100d0a62c4627d8f86",
+      "cdb7d028b5d1293f9cb68e0a7f9755063b041752294baff01ae72ceec486d115",
+      "520ca1dcbb405755b1a328a510f791399e89f080a6d7ca8e3d88eb0090d23b1b",
+      "455c006dec87a74bc00986ad882b73380f9813539558a32a0435b879c4adea7f",
+      "800be151ff3a38f765b722fda7cbabd245addcdfe730859899364d6eb12ef5ed",
+      "1c6d9eb4df859c0d95657964228d14a5963236bd23158bb41180c14e7df8c647",
+      "300a1e8b05a77ee50736a570d919e00e9e33c4c407bfb12c960364e5865c3290",
+      "53229abecf410e6311c42ad40666073dd615d720281197bd96526898bce76fee"
+    ],
+    "resultSha256s": [
+      "9c752ee945963712c93e7e26c4a90f96b7a99c3447126f5bb008568a2b2d5993",
+      "bcab434b6ddd5d4a3e0c83ed4b36de79059aac600c34a8270a1c19a27c7fa771",
+      "d927124797f9749fa83fd8dab90edebc127e7c6950bca6b5a5d9e23a4ad2b646",
+      "b8869b981fa074fe95b1735f93a74f77992032485fd0d5372941b065f2fcf18f",
+      "5ae53f9025caaf7d0e7e39bd79b4cb8d1e154dfc7c1ba51b702f24063cd5207d",
+      "74802ef211bd7229f9e810fbca036eb2b3f92c4b7122bcb05f85c709b679ccbd",
+      "1e912301b9c550ddd2a52314a6c21c57427bfd647510996f155619826e498de0",
+      "c6f0eba8b41227d86570d75a705732bb1d1cc597f8c076551422bf0f94ba9b8a",
+      "130c970dedc4360fab17c76578ac9a72041cafd4c6e7b43ff4f340bd18c13190"
+    ],
+    "rows": [
+      {
+        "authorityClass": "immutable-bootstrap",
+        "completedAtUtc": "2026-08-23T03:41:42.845Z",
+        "gateScope": "engineering",
+        "gateTaskId": "task_ba8ade72d3e9",
+        "gateVerdict": "P1 ENGINEERING READINESS: READY",
+        "inputFingerprintSha256": "ad1e5afcdcfe00f72a4199f886fb6f9ff9e70c7418a751a4596f227bcfa7294b",
+        "phase": "P0"
+      },
+      {
+        "authorityClass": "immutable-bootstrap",
+        "completedAtUtc": "2026-08-23T07:17:11.105Z",
+        "gateScope": "engineering",
+        "gateTaskId": "task_92d30650c179",
+        "gateVerdict": "GATE P1 FAIL/BLOCKED",
+        "inputFingerprintSha256": "90aab6620631ce63b94dafd419e5d75fca532fe9b922a335a1fbd02aa05c54c2",
+        "phase": "P1"
+      },
+      {
+        "authorityClass": "immutable-bootstrap",
+        "completedAtUtc": "2026-08-23T09:11:05.746Z",
+        "gateScope": "engineering",
+        "gateTaskId": "task_831f45f22072",
+        "gateVerdict": "GATE P1 ENGINEERING PASS",
+        "inputFingerprintSha256": "cec9775980fb45bdba5282e40792c134ba5ab586a9e48b52ac0a064541f07231",
+        "phase": "P1"
+      },
+      {
+        "authorityClass": "immutable-bootstrap",
+        "completedAtUtc": "2026-08-23T10:37:14.830Z",
+        "gateScope": "engineering",
+        "gateTaskId": "task_8261f1595760",
+        "gateVerdict": "GATE P2 ENGINEERING PASS",
+        "inputFingerprintSha256": "cdd106f012be579ce4eb91bdda796ca872dd4bdbed907a97631939b4a006acc5",
+        "phase": "P2"
+      },
+      {
+        "authorityClass": "immutable-bootstrap",
+        "completedAtUtc": "2026-08-23T15:33:30.096Z",
+        "gateScope": "engineering",
+        "gateTaskId": "task_958b7d42d0a2",
+        "gateVerdict": "GATE P3 FAIL/BLOCKED",
+        "inputFingerprintSha256": "dbd5b5a7a10ac744aa51671523cf5228da8d56c6277100ac6a1d14199950f5a8",
+        "phase": "P3"
+      },
+      {
+        "authorityClass": "immutable-bootstrap",
+        "completedAtUtc": "2026-08-23T21:09:13.237Z",
+        "gateScope": "engineering",
+        "gateTaskId": "task_a4832b5ed3e6",
+        "gateVerdict": "GATE P3 ENGINEERING PASS",
+        "inputFingerprintSha256": "88c185b12565b50717c1dea558f5d86fb8d466ddf267fc0b750b3826414d20c4",
+        "phase": "P3"
+      },
+      {
+        "authorityClass": "immutable-bootstrap",
+        "completedAtUtc": "2026-08-24T09:27:37.853Z",
+        "gateScope": "engineering",
+        "gateTaskId": "task_c346ebff90f2",
+        "gateVerdict": "GATE P4 FAIL/BLOCKED",
+        "inputFingerprintSha256": "63c0e9fd6a4f88c2ef08b99f6f8d5492fa24d5f6e3233ec20e4a8fe7e33dbb6c",
+        "phase": "P4"
+      },
+      {
+        "authorityClass": "immutable-bootstrap",
+        "completedAtUtc": "2026-08-24T12:40:36.303Z",
+        "gateScope": "engineering",
+        "gateTaskId": "task_d73712d125c5",
+        "gateVerdict": "GATE P4 ENGINEERING PASS",
+        "inputFingerprintSha256": "c444e221536bbb81c73ec2a768ed73dbf570efc3c5e7cb20c56d53d05e148a75",
+        "phase": "P4"
+      },
+      {
+        "authorityClass": "materialized-gate",
+        "completedAtUtc": "2026-08-27T00:47:40.587Z",
+        "gateScope": "engineering",
+        "gateTaskId": "task_bd6e62faa588",
+        "gateVerdict": "GATE P5 FAIL/BLOCKED",
+        "inputFingerprintSha256": "36c5488b11e5578c072939225461d81d544fa1dd83540dc4e29325d7115377a9",
+        "phase": "P5"
+      }
+    ],
+    "verdictMetadata": [
+      {
+        "bytes": 429,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/6027f365d8f5e7d6cdbc008408a0fb1e57139c6379e2c9e7ad5ea7dba64561c4"
+      },
+      {
+        "bytes": 418,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/ab1511454780b51b9076b2ad99af679f34c9bb944dcb90a803d71b1fa5ed5a7f"
+      },
+      {
+        "bytes": 437,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/6647f3d93c949b36231704e313eb64f270991069e15d91300c6be67231dee904"
+      },
+      {
+        "bytes": 422,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/f3504720823df0ac1c02ef720b4d1af2a1c7f28e13413a4b0cabff66a3dce541"
+      },
+      {
+        "bytes": 418,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/0eec553e84a4228c62222e2b343e55174cdf5698f277bea73e6342a6c63a7be9"
+      },
+      {
+        "bytes": 437,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/2d1af82dd8ed1fa8e15ea77b866f0990cb19f029ebbc98abcd00638326e93710"
+      },
+      {
+        "bytes": 418,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/916d3514f10e0ae19720ce7c60ad13fee2ccbfc7a771eb550c862b7b94507eda"
+      },
+      {
+        "bytes": 437,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/58de94c9b78650960ef4cf76b6ad4477e0bff6d04342ecc698a833eda1381dad"
+      },
+      {
+        "bytes": 421,
+        "path": "docs/editor-parity/progress-ledger/evidence/sha256/20e06a2fdf0a909fe7fcae2ed2a81171c4448373e0c9328f194880efb7f375ed"
+      }
+    ],
+    "verdictSha256s": [
+      "6027f365d8f5e7d6cdbc008408a0fb1e57139c6379e2c9e7ad5ea7dba64561c4",
+      "ab1511454780b51b9076b2ad99af679f34c9bb944dcb90a803d71b1fa5ed5a7f",
+      "6647f3d93c949b36231704e313eb64f270991069e15d91300c6be67231dee904",
+      "f3504720823df0ac1c02ef720b4d1af2a1c7f28e13413a4b0cabff66a3dce541",
+      "0eec553e84a4228c62222e2b343e55174cdf5698f277bea73e6342a6c63a7be9",
+      "2d1af82dd8ed1fa8e15ea77b866f0990cb19f029ebbc98abcd00638326e93710",
+      "916d3514f10e0ae19720ce7c60ad13fee2ccbfc7a771eb550c862b7b94507eda",
+      "58de94c9b78650960ef4cf76b6ad4477e0bff6d04342ecc698a833eda1381dad",
+      "20e06a2fdf0a909fe7fcae2ed2a81171c4448373e0c9328f194880efb7f375ed"
+    ]
+  },
+  "generator": {
+    "name": "tools/update_editor_progress_ledger.py",
+    "version": 4
+  },
+  "inputs": {
+    "licenseSources": {
+      "bytes": 9644,
+      "path": "docs/editor-parity/LICENSE-SOURCES.md",
+      "sha256": "b302ff87a11192a284b23dad7baa493826473b98aaf34f288994ee39ffcd3971"
+    },
+    "manifest": {
+      "bytes": 56527,
+      "path": "docs/editor-parity/manifest.json",
+      "sha256": "a5182ddaeb88368b293ee55931e6dd7deec989eb62cda57d5c9c09c65b38b053"
+    },
+    "specification": {
+      "bytes": 165772,
+      "path": "docs/gltf-scene-editor-parity-task.md",
+      "sha256": "bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e"
+    }
+  },
+  "materialization": {
+    "deferredLedgerDefinitions": [
+      "L5",
+      "L6",
+      "L7",
+      "L8",
+      "L9",
+      "L10"
+    ],
+    "initialTaskCount": 33,
+    "initialTasks": {
+      "task_04e52d906959": {
+        "displayName": "G10",
+        "status": "pending"
+      },
+      "task_0b7c23eadc59": {
+        "displayName": "P9-90",
+        "status": "pending"
+      },
+      "task_1040525304c0": {
+        "displayName": "P6-10",
+        "status": "pending"
+      },
+      "task_1254fa47b9b7": {
+        "displayName": "P6-00",
+        "status": "pending"
+      },
+      "task_13824a1991ff": {
+        "displayName": "P5-10",
+        "status": "completed"
+      },
+      "task_15f206f912f6": {
+        "displayName": "P8-00",
+        "status": "pending"
+      },
+      "task_1a40c0d302ae": {
+        "displayName": "P7-10",
+        "status": "pending"
+      },
+      "task_2c5f762c2290": {
+        "displayName": "P8-12",
+        "status": "pending"
+      },
+      "task_2ebaf90139c5": {
+        "displayName": "O06-BIND",
+        "status": "ready"
+      },
+      "task_31d89ded7754": {
+        "displayName": "P5-20",
+        "status": "completed"
+      },
+      "task_395d3d07b807": {
+        "displayName": "P7-90",
+        "status": "pending"
+      },
+      "task_3f216d250677": {
+        "displayName": "G7",
+        "status": "pending"
+      },
+      "task_421b4c55e3f7": {
+        "displayName": "P9-10",
+        "status": "pending"
+      },
+      "task_44edc62a635f": {
+        "displayName": "P9-12",
+        "status": "pending"
+      },
+      "task_469ac0bc570d": {
+        "displayName": "P8-10",
+        "status": "pending"
+      },
+      "task_4af12cfad98a": {
+        "displayName": "G6",
+        "status": "pending"
+      },
+      "task_4f88b986a42c": {
+        "displayName": "P6-20",
+        "status": "pending"
+      },
+      "task_5fd375237112": {
+        "displayName": "P10-90",
+        "status": "pending"
+      },
+      "task_64f2460b590a": {
+        "displayName": "P9-11",
+        "status": "pending"
+      },
+      "task_65c1d2014a21": {
+        "displayName": "P9-00",
+        "status": "pending"
+      },
+      "task_6c9acf605f14": {
+        "displayName": "P10-00",
+        "status": "pending"
+      },
+      "task_759e96a51910": {
+        "displayName": "P5-00",
+        "status": "completed"
+      },
+      "task_942fc9e4f987": {
+        "displayName": "P10-EXEC",
+        "status": "pending"
+      },
+      "task_994266e103b5": {
+        "displayName": "P5-90",
+        "status": "failed"
+      },
+      "task_99a11c23bb9a": {
+        "displayName": "P8-90",
+        "status": "pending"
+      },
+      "task_9c7cb2a4eb42": {
+        "displayName": "P10-10",
+        "status": "pending"
+      },
+      "task_b59fd290ead0": {
+        "displayName": "P7-00",
+        "status": "pending"
+      },
+      "task_bd6e62faa588": {
+        "displayName": "G5",
+        "status": "completed"
+      },
+      "task_c4958ebe56e4": {
+        "displayName": "P6-90",
+        "status": "pending"
+      },
+      "task_c52f54a8f799": {
+        "displayName": "P8-11",
+        "status": "pending"
+      },
+      "task_e6d16b19af18": {
+        "displayName": "G9",
+        "status": "pending"
+      },
+      "task_eb85190ed1ac": {
+        "displayName": "G8",
+        "status": "pending"
+      },
+      "task_f5ecbcda47dd": {
+        "displayName": "P10-11",
+        "status": "pending"
+      }
+    },
+    "status": "MATERIALIZED"
+  },
+  "phases": {
+    "P0": {
+      "summary": "P0 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": [
+        "task_ba8ade72d3e9"
+      ]
+    },
+    "P1": {
+      "summary": "P1 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": [
+        "task_92d30650c179",
+        "task_831f45f22072"
+      ]
+    },
+    "P10": {
+      "summary": "P10 is materialized; no authoritative Gate receipt exists.",
+      "taskIds": [
+        "task_6c9acf605f14",
+        "task_9c7cb2a4eb42",
+        "task_f5ecbcda47dd",
+        "task_5fd375237112",
+        "task_942fc9e4f987",
+        "task_04e52d906959"
+      ]
+    },
+    "P2": {
+      "summary": "P2 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": [
+        "task_8261f1595760"
+      ]
+    },
+    "P3": {
+      "summary": "P3 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": [
+        "task_958b7d42d0a2",
+        "task_a4832b5ed3e6"
+      ]
+    },
+    "P4": {
+      "summary": "P4 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": [
+        "task_c346ebff90f2",
+        "task_d73712d125c5"
+      ]
+    },
+    "P5": {
+      "summary": "P5 Gate is FAIL/BLOCKED and retained in immutable history.",
+      "taskIds": [
+        "task_759e96a51910",
+        "task_13824a1991ff",
+        "task_31d89ded7754",
+        "task_994266e103b5",
+        "task_bd6e62faa588",
+        "task_5a83b3160e05",
+        "task_70fc431e8856",
+        "task_087d11fd5641",
+        "task_116c32740787",
+        "task_84444c60deda",
+        "task_20e1045fff5b",
+        "task_6a73be623ed1",
+        "task_2115abdff446",
+        "task_88ee1f6fe4b5"
+      ]
+    },
+    "P6": {
+      "summary": "P6 is materialized; no authoritative Gate receipt exists.",
+      "taskIds": [
+        "task_1254fa47b9b7",
+        "task_1040525304c0",
+        "task_4f88b986a42c",
+        "task_c4958ebe56e4",
+        "task_4af12cfad98a"
+      ]
+    },
+    "P7": {
+      "summary": "P7 is materialized; no authoritative Gate receipt exists.",
+      "taskIds": [
+        "task_b59fd290ead0",
+        "task_1a40c0d302ae",
+        "task_395d3d07b807",
+        "task_3f216d250677"
+      ]
+    },
+    "P8": {
+      "summary": "P8 is materialized; no authoritative Gate receipt exists.",
+      "taskIds": [
+        "task_15f206f912f6",
+        "task_469ac0bc570d",
+        "task_c52f54a8f799",
+        "task_2c5f762c2290",
+        "task_99a11c23bb9a",
+        "task_eb85190ed1ac"
+      ]
+    },
+    "P9": {
+      "summary": "P9 is materialized; no authoritative Gate receipt exists.",
+      "taskIds": [
+        "task_65c1d2014a21",
+        "task_421b4c55e3f7",
+        "task_64f2460b590a",
+        "task_44edc62a635f",
+        "task_0b7c23eadc59",
+        "task_e6d16b19af18"
+      ]
+    }
+  },
+  "policy": {
+    "basis": {
+      "finalAcceptanceComplete": false,
+      "manifestPassClaimAllowed": false,
+      "manifestReleaseGateStatus": "blocked_pending_owner_root_license_selection",
+      "metalArtifactAccepted": false,
+      "rootLicenseSelected": false
+    },
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "protocolVectors": {
+    "bytes": 6487,
+    "path": "docs/editor-parity/progress-ledger/protocol-vectors.json",
+    "sha256": "7e27003d2cde3ac6df5341575a1422432876178d2c6cb9f10df2258251ac8097"
+  },
+  "publication": {
+    "ledgerPath": "docs/gltf-scene-editor-parity-progress.md",
+    "markdownSha256": "37fac4b1df9fde13445ff7fb2b784107fc0b06b18e9c8812c6a39fc95d0a4e3a",
+    "pointerPath": "docs/editor-parity/progress-ledger-current.json",
+    "sourceFingerprintSha256": "5bc052ab97bf1eb8542b8958ae39ccf6dc95674e2c2dba550f5af0e72ee8a7bc"
+  },
+  "runId": "run_ede89c4421e9",
+  "schemaVersion": 4,
+  "snapshot": {
+    "capturedAtUtc": "2026-08-27T00:52:31.387Z",
+    "relevantProjectionSha256": "c48a3d379583d0fee7eac66935a7fd2d428affe1371565434bfee7c87d671b26",
+    "revisionSha256": "acc9020963ae240329a7e5ffc4c6c057d2fb3c4dd9381e45af8891adb646ee01",
+    "runGeneration": 1,
+    "runTaskCount": 307,
+    "runtimeId": "c08d3cea-461a-4e44-9bcf-7ecfa372dd83",
+    "snapshotSha256": "e8115612321ee76fdfa4b52224285836d60f0930eade2fed9629e20d7ffe7bdd",
+    "trackedTaskCount": 52
+  },
+  "sourceFingerprintSha256": "5bc052ab97bf1eb8542b8958ae39ccf6dc95674e2c2dba550f5af0e72ee8a7bc",
+  "tasks": {
+    "task_04e52d906959": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_942fc9e4f987"
+      ],
+      "dispatchId": null,
+      "displayName": "G10",
+      "label": "G10",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_087d11fd5641": {
+      "completedAtUtc": "2026-08-25T05:43:25.000Z",
+      "dependencies": [],
+      "dispatchId": "ctx_6291dc0d9536",
+      "displayName": "P5-R2-A",
+      "label": "P5-R2-A",
+      "reportPath": "C:\\Temp\\mgif-p5-r2-a-20260825T025954Z-task_087d11fd5641\\p5-r2-a-completion-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_b1edd19af230",
+      "workerOutcome": "succeeded"
+    },
+    "task_0b7c23eadc59": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_421b4c55e3f7",
+        "task_44edc62a635f",
+        "task_64f2460b590a"
+      ],
+      "dispatchId": null,
+      "displayName": "P9-90",
+      "label": "P9-90",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_1040525304c0": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_1254fa47b9b7"
+      ],
+      "dispatchId": null,
+      "displayName": "P6-10",
+      "label": "P6-10",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_116c32740787": {
+      "completedAtUtc": "2026-08-25T03:15:50.000Z",
+      "dependencies": [],
+      "dispatchId": "ctx_8887407c4c42",
+      "displayName": "P5-R2-B",
+      "label": "P5-R2-B",
+      "reportPath": "C:\\Temp\\mgif-p5-r2-b-20260825T030133Z-task_116c32740787\\p5-90-r2-b-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_82970e4a9f63",
+      "workerOutcome": "succeeded"
+    },
+    "task_1254fa47b9b7": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_2ebaf90139c5",
+        "task_bd6e62faa588"
+      ],
+      "dispatchId": null,
+      "displayName": "P6-00",
+      "label": "P6-00",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_13824a1991ff": {
+      "completedAtUtc": "2026-08-25T00:24:35.000Z",
+      "dependencies": [
+        "task_759e96a51910"
+      ],
+      "dispatchId": "ctx_637dd0ab2e5f",
+      "displayName": "P5-10",
+      "label": "P5-10",
+      "reportPath": "C:\\Temp\\mgif-p5-10-20260824T225730Z-13824a19\\p5-10-completion-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_d056738cdc1e",
+      "workerOutcome": "succeeded"
+    },
+    "task_15f206f912f6": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_3f216d250677"
+      ],
+      "dispatchId": null,
+      "displayName": "P8-00",
+      "label": "P8-00",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_1a40c0d302ae": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_4af12cfad98a",
+        "task_b59fd290ead0"
+      ],
+      "dispatchId": null,
+      "displayName": "P7-10",
+      "label": "P7-10",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_20e1045fff5b": {
+      "completedAtUtc": "2026-08-25T03:55:38.000Z",
+      "dependencies": [],
+      "dispatchId": "ctx_c557c02b90d9",
+      "displayName": "P5-90-R2-D: close the newly exposed Android NDK r23 C++20 library portability...",
+      "label": "P5-R2-D",
+      "reportPath": "C:\\Temp\\mgif-p5-r2-d-20260825T032400Z-task_20e1045fff5b\\p5-90-r2-d-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_890fc148b29c",
+      "workerOutcome": "succeeded"
+    },
+    "task_2115abdff446": {
+      "completedAtUtc": "2026-08-25T05:38:26.000Z",
+      "dependencies": [],
+      "dispatchId": "ctx_a614bb500b09",
+      "displayName": "P5-90-R2-F: repair the deterministic projection/runtime-mapping identity mode...",
+      "label": "P5-R2-F",
+      "reportPath": "C:\\Temp\\mgif-p5-r2-f-20260825T044225Z-task_2115abdff446\\p5-90-r2-f-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_04243027129d",
+      "workerOutcome": "succeeded"
+    },
+    "task_2c5f762c2290": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_15f206f912f6"
+      ],
+      "dispatchId": null,
+      "displayName": "P8-12",
+      "label": "P8-12",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_2ebaf90139c5": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_bd6e62faa588",
+        "task_d73712d125c5"
+      ],
+      "dispatchId": null,
+      "displayName": "O06-BIND",
+      "label": "O06-BIND",
+      "reportPath": null,
+      "status": "ready",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_31d89ded7754": {
+      "completedAtUtc": "2026-08-24T23:54:49.000Z",
+      "dependencies": [
+        "task_759e96a51910"
+      ],
+      "dispatchId": "ctx_a311b663ef6c",
+      "displayName": "P5-20",
+      "label": "P5-20",
+      "reportPath": "C:\\Temp\\mgif-p5-20-20260824T225258Z-task_31d89ded7754\\p5-20-completion-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_3ceea787de67",
+      "workerOutcome": "succeeded"
+    },
+    "task_395d3d07b807": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_1a40c0d302ae"
+      ],
+      "dispatchId": null,
+      "displayName": "P7-90",
+      "label": "P7-90",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_3f216d250677": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_395d3d07b807"
+      ],
+      "dispatchId": null,
+      "displayName": "G7",
+      "label": "G7",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_421b4c55e3f7": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_65c1d2014a21"
+      ],
+      "dispatchId": null,
+      "displayName": "P9-10",
+      "label": "P9-10",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_44edc62a635f": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_65c1d2014a21"
+      ],
+      "dispatchId": null,
+      "displayName": "P9-12",
+      "label": "P9-12",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_469ac0bc570d": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_15f206f912f6"
+      ],
+      "dispatchId": null,
+      "displayName": "P8-10",
+      "label": "P8-10",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_4af12cfad98a": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_c4958ebe56e4"
+      ],
+      "dispatchId": null,
+      "displayName": "G6",
+      "label": "G6",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_4f88b986a42c": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_1040525304c0"
+      ],
+      "dispatchId": null,
+      "displayName": "P6-20",
+      "label": "P6-20",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_5a83b3160e05": {
+      "completedAtUtc": "2026-08-24T22:39:40.000Z",
+      "dependencies": [
+        "task_759e96a51910"
+      ],
+      "dispatchId": "ctx_5a2e20557d50",
+      "displayName": "P5-00-R1 coordinator-review correction for the frozen SceneChangeSet canonica...",
+      "label": "P5-00-R1",
+      "reportPath": "C:/Temp/mgif-p5-00-r1-20260825-task_5a83b3160e05/p5-00-r1-correction-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_54198d16d802",
+      "workerOutcome": "succeeded"
+    },
+    "task_5e9fa075e9c5": {
+      "completedAtUtc": "2026-08-25T05:56:11.046Z",
+      "dependencies": [],
+      "dispatchId": null,
+      "displayName": "D20 user decision gate for MGIF glTF scene editor. No worker may implement P1...",
+      "label": "D20 user decision gate for MGIF glTF scene editor. No worker may implement P1...",
+      "reportPath": null,
+      "status": "completed",
+      "workerMessageId": "decision:gate_ca804cbec712",
+      "workerOutcome": "succeeded"
+    },
+    "task_5fd375237112": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_9c7cb2a4eb42",
+        "task_f5ecbcda47dd"
+      ],
+      "dispatchId": null,
+      "displayName": "P10-90",
+      "label": "P10-90",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_64f2460b590a": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_65c1d2014a21"
+      ],
+      "dispatchId": null,
+      "displayName": "P9-11",
+      "label": "P9-11",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_65c1d2014a21": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_eb85190ed1ac"
+      ],
+      "dispatchId": null,
+      "displayName": "P9-00",
+      "label": "P9-00",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_6a73be623ed1": {
+      "completedAtUtc": "2026-08-25T08:36:55.000Z",
+      "dependencies": [
+        "task_087d11fd5641",
+        "task_20e1045fff5b"
+      ],
+      "dispatchId": "ctx_3c83422d75ff",
+      "displayName": "P5-90-R2-E Android final link-closure and portable-test wiring repair in shar...",
+      "label": "P5-R2-E",
+      "reportPath": "C:\\Temp\\mgif-p5-r2-e-20260825T060623Z-task_6a73be623ed1\\p5-90-r2-e-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_afe5728a4f7c",
+      "workerOutcome": "succeeded"
+    },
+    "task_6c9acf605f14": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_e6d16b19af18"
+      ],
+      "dispatchId": null,
+      "displayName": "P10-00",
+      "label": "P10-00",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_70fc431e8856": {
+      "completedAtUtc": "2026-08-25T02:09:38.000Z",
+      "dependencies": [],
+      "dispatchId": "ctx_5045d3bc55fc",
+      "displayName": "P5-90-R1 narrow SceneAssetView leaf-contract correction in the shared G:\\MGIF...",
+      "label": "P5-90-R1",
+      "reportPath": "C:\\Temp\\mgif-p5-90-r1-20260825T100433413\\repair-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_6df41d1abe53",
+      "workerOutcome": "succeeded"
+    },
+    "task_759e96a51910": {
+      "completedAtUtc": "2026-08-24T22:23:33.000Z",
+      "dependencies": [
+        "task_d73712d125c5"
+      ],
+      "dispatchId": "ctx_343c8f02ed6f",
+      "displayName": "P5-00",
+      "label": "P5-00",
+      "reportPath": "C:/Temp/mgif-p5-00-20260824T212858Z-759e96a5/p5-00-completion-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_289b6ef5ad67",
+      "workerOutcome": "succeeded"
+    },
+    "task_8261f1595760": {
+      "completedAtUtc": "2026-08-23T10:37:14.000Z",
+      "dependencies": [],
+      "dispatchId": "ctx_539e52156e31",
+      "displayName": "P2 Gate repair and verification for MGIF glTF Scene Editor. Work in the share...",
+      "label": "P2 Gate repair and verification for MGIF glTF Scene Editor. Work in the share...",
+      "reportPath": "G:\\MGIF-p2-gate-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_dae85c78b385",
+      "workerOutcome": "succeeded"
+    },
+    "task_831f45f22072": {
+      "completedAtUtc": "2026-08-23T09:11:05.000Z",
+      "dependencies": [
+        "task_4ba0168de807"
+      ],
+      "dispatchId": "ctx_265a270d4083",
+      "displayName": "Independent Gate P1 re-review after remediation and combined integration veri...",
+      "label": "Independent Gate P1 re-review after remediation and combined integration veri...",
+      "reportPath": "C:\\Users\\happyelements\\AppData\\Local\\Temp\\mgif-p1-independent-580c5282867b4889bf5a65842ea34c68\\P1-INDEPENDENT-REVIEW.md",
+      "status": "completed",
+      "workerMessageId": "msg_99390f407e73",
+      "workerOutcome": "succeeded"
+    },
+    "task_84444c60deda": {
+      "completedAtUtc": "2026-08-25T03:15:00.000Z",
+      "dependencies": [],
+      "dispatchId": "ctx_95ca05601ba5",
+      "displayName": "P5-R2-C",
+      "label": "P5-R2-C",
+      "reportPath": "C:\\Temp\\mgif-p5-r2-c-20260825T110013Z-task_84444c60deda\\p5-90-r2-c-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_d732ef80c73a",
+      "workerOutcome": "succeeded"
+    },
+    "task_88ee1f6fe4b5": {
+      "completedAtUtc": "2026-08-26T23:32:45.000Z",
+      "dependencies": [
+        "task_bd6e62faa588"
+      ],
+      "dispatchId": "ctx_f70403754bca",
+      "displayName": "P5-R3 production repair after the fresh Gate P5 FAIL/BLOCKED. This is a super...",
+      "label": "P5-R3",
+      "reportPath": "G:\\Temp\\mgif-p5-r3-production-repair-task_88ee1f6fe4b5-20260827T053449211\\P5-R3-PRODUCTION-REPAIR-REPORT.md",
+      "status": "completed",
+      "workerMessageId": "msg_b59f4e750d50",
+      "workerOutcome": "succeeded"
+    },
+    "task_8c29dd510a99": {
+      "completedAtUtc": "2026-08-25T09:56:30.598Z",
+      "completionProvenance": "coordinator_review_settlement",
+      "dependencies": [
+        "task_087d11fd5641",
+        "task_116c32740787",
+        "task_20e1045fff5b",
+        "task_6a73be623ed1",
+        "task_84444c60deda"
+      ],
+      "dispatchId": "ctx_3cc9e9bc9f70",
+      "displayName": "Replacement P5-90-R2 unified integration and Gate-preparation verification, r...",
+      "label": "Replacement P5-90-R2 unified integration and Gate-preparation verification, r...",
+      "reportPath": "C:\\Temp\\mgif-p5-90-r2-gateprep-20260825T084731034Z-task_8c29dd510a99-7a1ae6ea\\p5-90-r2-gate-preparation-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_341ac0d9d94f",
+      "workerOutcome": "failed"
+    },
+    "task_92d30650c179": {
+      "completedAtUtc": "2026-08-23T07:17:11.000Z",
+      "dependencies": [
+        "task_cdfed52a30dd"
+      ],
+      "dispatchId": "ctx_f3f0d5f01b11",
+      "displayName": "P1 replacement independent READ-ONLY review after discarded dispatch ctx_beee...",
+      "label": "P1 replacement independent READ-ONLY review after discarded dispatch ctx_beee...",
+      "reportPath": "C:\\Users\\happyelements\\AppData\\Local\\Temp\\mgif-p1-review-2bba9259f9e44a1f8ee13e1afb84c396\\P1-INDEPENDENT-REVIEW.md",
+      "status": "completed",
+      "workerMessageId": "msg_b5e6c373c0d0",
+      "workerOutcome": "succeeded"
+    },
+    "task_942fc9e4f987": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_5fd375237112"
+      ],
+      "dispatchId": null,
+      "displayName": "P10-EXEC",
+      "label": "P10-EXEC",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_958b7d42d0a2": {
+      "completedAtUtc": "2026-08-23T15:33:30.000Z",
+      "dependencies": [
+        "task_8c180abec38c"
+      ],
+      "dispatchId": "ctx_650d09db7f42",
+      "displayName": "FRESH INDEPENDENT READ-ONLY Gate P3 adversarial review after remediation task...",
+      "label": "FRESH INDEPENDENT READ-ONLY Gate P3 adversarial review after remediation task...",
+      "reportPath": "C:\\Temp\\mgif-gate-p3-ctx_650d09db7f42\\gate-p3-adversarial-review.md",
+      "status": "completed",
+      "workerMessageId": "msg_999b7a9ace7e",
+      "workerOutcome": "succeeded"
+    },
+    "task_994266e103b5": {
+      "completedAtUtc": "2026-08-25T02:48:23.000Z",
+      "dependencies": [
+        "task_13824a1991ff",
+        "task_31d89ded7754"
+      ],
+      "dispatchId": "ctx_49b1d8c5d36b",
+      "displayName": "P5-90",
+      "label": "P5-90",
+      "reportPath": "C:\\Temp\\mgif-p5-90-20260825T003100Z-task_994266e103b5\\p5-90-integration-report.md",
+      "status": "failed",
+      "workerMessageId": "msg_73a6ed8d8bd1",
+      "workerOutcome": "failed"
+    },
+    "task_99a11c23bb9a": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_2c5f762c2290",
+        "task_469ac0bc570d",
+        "task_c52f54a8f799"
+      ],
+      "dispatchId": null,
+      "displayName": "P8-90",
+      "label": "P8-90",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_9c7cb2a4eb42": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_6c9acf605f14"
+      ],
+      "dispatchId": null,
+      "displayName": "P10-10",
+      "label": "P10-10",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_a4832b5ed3e6": {
+      "completedAtUtc": "2026-08-23T21:09:13.000Z",
+      "dependencies": [
+        "task_789be0b0cf1d"
+      ],
+      "dispatchId": "ctx_8ec615efdce5",
+      "displayName": "Fresh final independent Gate P3 review after the Unicode/moderately-long Wind...",
+      "label": "Fresh final independent Gate P3 review after the Unicode/moderately-long Wind...",
+      "reportPath": "C:\\Temp\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\p3-final-independent-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_ae4c303a7e0a",
+      "workerOutcome": "succeeded"
+    },
+    "task_b59fd290ead0": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_1254fa47b9b7"
+      ],
+      "dispatchId": null,
+      "displayName": "P7-00",
+      "label": "P7-00",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_ba8ade72d3e9": {
+      "completedAtUtc": "2026-08-23T03:41:42.000Z",
+      "dependencies": [
+        "task_12f00023b657",
+        "task_23a955fd8b96"
+      ],
+      "dispatchId": "ctx_9b13deebb72e",
+      "displayName": "P0 fresh post-remediation independent adversarial READ-ONLY re-audit. Depends...",
+      "label": "P0 fresh post-remediation independent adversarial READ-ONLY re-audit. Depends...",
+      "reportPath": "C:\\Users\\happyelements\\AppData\\Local\\Temp\\mgif-p0-post-remediation-audit-d07a3a2004bc4016a8049cbc1362b1be\\P0-POST-REMEDIATION-INDEPENDENT-ADVERSARIAL-AUDIT.md",
+      "status": "completed",
+      "workerMessageId": "msg_e52d94131f2f",
+      "workerOutcome": "succeeded"
+    },
+    "task_bd6e62faa588": {
+      "completedAtUtc": "2026-08-27T00:47:40.000Z",
+      "dependencies": [
+        "task_994266e103b5"
+      ],
+      "dispatchId": "ctx_ce23febf6608",
+      "displayName": "G5",
+      "label": "G5",
+      "reportPath": "G:\\Temp\\mgif-p5-independent-regate-5133878191f54f4698273d0bdc7220ab\\GATE-P5-INDEPENDENT-REPORT.md",
+      "status": "completed",
+      "workerMessageId": "msg_ebb1a751fe74",
+      "workerOutcome": "succeeded"
+    },
+    "task_c346ebff90f2": {
+      "completedAtUtc": "2026-08-24T09:27:37.000Z",
+      "dependencies": [
+        "task_8b91a0a76fa8"
+      ],
+      "dispatchId": "ctx_9ce95ad9385d",
+      "displayName": "Gate P4 fresh independent implementation review, READ-ONLY. Depends on comple...",
+      "label": "Gate P4 fresh independent implementation review, READ-ONLY. Depends on comple...",
+      "reportPath": "C:\\Temp\\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\\p4-independent-gate-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_9bcee099addf",
+      "workerOutcome": "succeeded"
+    },
+    "task_c4958ebe56e4": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_1040525304c0",
+        "task_4f88b986a42c"
+      ],
+      "dispatchId": null,
+      "displayName": "P6-90",
+      "label": "P6-90",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_c52f54a8f799": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_15f206f912f6"
+      ],
+      "dispatchId": null,
+      "displayName": "P8-11",
+      "label": "P8-11",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_d73712d125c5": {
+      "completedAtUtc": "2026-08-24T12:40:36.000Z",
+      "dependencies": [
+        "task_4154babfd00a"
+      ],
+      "dispatchId": "ctx_4d2387adadac",
+      "displayName": "Fresh independent P4 re-Gate reviewer after post-repair integration. Dependen...",
+      "label": "Fresh independent P4 re-Gate reviewer after post-repair integration. Dependen...",
+      "reportPath": "C:\\Temp\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\p4-independent-regate-report.md",
+      "status": "completed",
+      "workerMessageId": "msg_de66e012762d",
+      "workerOutcome": "succeeded"
+    },
+    "task_e6d16b19af18": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_0b7c23eadc59"
+      ],
+      "dispatchId": null,
+      "displayName": "G9",
+      "label": "G9",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_eb85190ed1ac": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_99a11c23bb9a"
+      ],
+      "dispatchId": null,
+      "displayName": "G8",
+      "label": "G8",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    },
+    "task_f5ecbcda47dd": {
+      "completedAtUtc": null,
+      "dependencies": [
+        "task_6c9acf605f14"
+      ],
+      "dispatchId": null,
+      "displayName": "P10-11",
+      "label": "P10-11",
+      "reportPath": null,
+      "status": "pending",
+      "workerMessageId": null,
+      "workerOutcome": "not_reported"
+    }
+  }
+}

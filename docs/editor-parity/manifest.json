@@ -1,0 +1,1727 @@
+{
+  "$schema": "schemas/parity-manifest.schema.json",
+  "schemaVersion": 1,
+  "status": "p1_engineering_ready",
+  "specification": {
+    "path": "docs/gltf-scene-editor-parity-task.md",
+    "sha256": "bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e"
+  },
+  "reference": {
+    "path": "F:/GitHub/vk_gltf_renderer",
+    "commit": "50373c7b0ff58078727af2c2aac70e29d5e74752"
+  },
+  "target": {
+    "path": "G:/MGIF",
+    "commit": "6c36567625b305286755a734a66188a22df18e77"
+  },
+  "dependencyBoundary": {
+    "status": "locked_no_exceptions",
+    "requirements": [
+      "R21",
+      "R24"
+    ],
+    "productionEditorRoots": [
+      "scene/editor",
+      "app/editor",
+      "render/editor"
+    ],
+    "allowedUiFoundation": [
+      "repository_upstream_dear_imgui",
+      "mgif_owned_app_adapters",
+      "mgif_owned_rhi_adapters",
+      "mgif_owned_scene_adapters"
+    ],
+    "forbiddenDependencyFamilies": [
+      "nvpro_core",
+      "nvcore",
+      "nvapp",
+      "nvgui",
+      "nvvk",
+      "nvvkgltf",
+      "reference_vulkan_helpers"
+    ],
+    "externalEvidencePolicy": "Reference executables and probes may retain native nvpro dependencies only in isolated external evidence graphs and must never become MGIF source, target, include, link, or transitive production dependencies.",
+    "exceptionApprovalRequirements": [
+      "prior_explicit_user_approval",
+      "minimality",
+      "alternatives_considered",
+      "platform_impact",
+      "license_impact",
+      "binary_size_impact",
+      "exact_symbols_and_targets",
+      "owned_dated_removal_plan"
+    ],
+    "approvedExceptions": [],
+    "targetEvidence": [
+      "T-RHI-01",
+      "T-RHI-02",
+      "T-RHI-03",
+      "T-LIC-01"
+    ],
+    "allowedOutOfScopeSentinels": [
+      "NVVK_SEMAPHORE_DEBUG in unrelated existing renderer declarations outside editor scope"
+    ]
+  },
+  "upstreamBuildIdentityContract": {
+    "dearImGui": {
+      "repository": "https://github.com/ocornut/imgui.git",
+      "pinnedCommit": "fd13a1e8923a0a7077b404fc36fd063b25a0c0b5",
+      "pinnedTree": "0c8986ccb662ea838c04f7bed4cc56d3379132ef",
+      "sourceMode": "fetchcontent_git_outside_repository",
+      "repositoryCopyAllowed": false,
+      "sourceOverrideAllowed": false,
+      "targetName": "imgui_demo",
+      "compiledCoreSources": [
+        "imgui.cpp",
+        "imgui.h",
+        "imgui_draw.cpp",
+        "imgui_tables.cpp",
+        "imgui_widgets.cpp"
+      ],
+      "targetSourceVariants": {
+        "android": [
+          "backends/imgui_impl_android.cpp",
+          "backends/imgui_impl_android.h",
+          "imgui.cpp",
+          "imgui.h",
+          "imgui_demo.cpp",
+          "imgui_draw.cpp",
+          "imgui_tables.cpp",
+          "imgui_widgets.cpp"
+        ],
+        "glfw": [
+          "backends/imgui_impl_glfw.cpp",
+          "backends/imgui_impl_glfw.h",
+          "imgui.cpp",
+          "imgui.h",
+          "imgui_demo.cpp",
+          "imgui_draw.cpp",
+          "imgui_tables.cpp",
+          "imgui_widgets.cpp"
+        ]
+      },
+      "compiledSourceVariants": {
+        "android": [
+          "backends/imgui_impl_android.cpp",
+          "imgui.cpp",
+          "imgui_demo.cpp",
+          "imgui_draw.cpp",
+          "imgui_tables.cpp",
+          "imgui_widgets.cpp"
+        ],
+        "glfw": [
+          "backends/imgui_impl_glfw.cpp",
+          "imgui.cpp",
+          "imgui_demo.cpp",
+          "imgui_draw.cpp",
+          "imgui_tables.cpp",
+          "imgui_widgets.cpp"
+        ]
+      },
+      "resolvedIdentityArtifactKind": "mgif.editor-dependency-build-identity",
+      "resolvedIdentityRequiredForP1": true,
+      "hashProofsRequired": [
+        "resolvedGitCommit",
+        "resolvedGitTree",
+        "targetSourceRelativePaths",
+        "targetSourceSha256",
+        "compiledSourceRelativePaths",
+        "compiledSourceSha256",
+        "configuredBuildEvidence"
+      ]
+    }
+  },
+  "licensePolicy": {
+    "status": "development_rights_reserved",
+    "selectedSpdxId": null,
+    "selectedFile": null,
+    "acceptedSha256": null,
+    "approvedBy": null,
+    "approvedAt": null,
+    "developmentPolicy": {
+      "distributionStatus": "unlicensed_rights_reserved",
+      "engineeringImplementation": "original_clean_room_unless_provenance_ledger_says_otherwise",
+      "upstreamApacheSourceCopied": false,
+      "preserveThirdPartyNotices": true,
+      "p1EngineeringReadinessIndependent": true
+    },
+    "releaseGate": {
+      "status": "blocked_pending_owner_root_license_selection",
+      "blockedFeatureIds": [
+        "F42"
+      ],
+      "blockedRequirementIds": [
+        "R24"
+      ],
+      "passClaimAllowed": false
+    },
+    "validation": {
+      "utf8Required": true,
+      "nonWhitespaceRequired": true,
+      "minimumBytes": 256,
+      "exactAcceptedDigestRequired": true
+    }
+  },
+  "evidenceGrades": [
+    "executable: observation from a hash-bound reference executable or executable probe",
+    "test: observation from a test built from the fixed reference commit",
+    "source: fixed-commit source or documentation evidence; provisional where runtime is required"
+  ],
+  "decisionGates": {
+    "D20": {
+      "status": "resolved",
+      "allowedResolutions": [
+        "exact_defect_parity",
+        "mgif_safety_exception"
+      ],
+      "selectedResolution": "mgif_safety_exception",
+      "blocks": [],
+      "requiredTraceIds": [
+        "O09-multi-scene-structural-matrix"
+      ],
+      "approvedBy": "MGIF project owner (user)",
+      "approvedAt": "2026-08-22T16:55:24Z",
+      "approvalEvidenceText": "参考你的建议",
+      "approvalTimestampProvenance": {
+        "originalUserMessageTimestamp": null,
+        "durableCoordinatorAttestationAt": "2026-08-22T16:55:24Z",
+        "note": "The original user-message timestamp is unavailable and was not fabricated; approvedAt is the first durable coordinator recording/attestation time."
+      },
+      "selectedPolicyContract": {
+        "schemaVersion": 1,
+        "resolution": "mgif_safety_exception",
+        "sceneRouting": "clicked_scene_id",
+        "occurrenceRouting": "clicked_scene_occurrence",
+        "snapshotScope": "all_scenes",
+        "sharedNodeHandling": "preserve_shared_node_occurrence_consistency",
+        "preflightRejections": [
+          "cycle",
+          "multiparent",
+          "stale_occurrence"
+        ],
+        "rejectionTiming": "before_command_or_history_entry",
+        "traversal": "bounded_iterative",
+        "uiParitySurface": [
+          "entry",
+          "label",
+          "layout",
+          "shortcut",
+          "modal",
+          "focus",
+          "enablement",
+          "history_description"
+        ],
+        "boundOracleIds": [
+          "O09-multi-scene-structural-matrix"
+        ],
+        "acceptanceIds": [
+          "T-EDIT-07",
+          "T-UI-15",
+          "U01-empty-new-open",
+          "U02-hierarchy",
+          "V05-delta-edit",
+          "V06-topology-swap",
+          "P10-T01",
+          "P10-T05"
+        ]
+      },
+      "notes": "Hash-bound domain and real-UI execution confirms unsafe current-scene routing, cross-scene loss/overwrite, multi-parent/cycle paths, two deterministic 0xC00000FD exits, and six selected 0xC0000005 exits. The owner explicitly selected the bounded MGIF safety exception; this does not waive UI parity or later acceptance."
+    }
+  },
+  "oracleTraces": [
+    {
+      "id": "O01-same-parent-move-noop",
+      "behavior": "Dropping a node onto its current parent preserves the document but clears redo and pushes exactly one Move command.",
+      "requiredEvidence": [
+        "document digest",
+        "selection",
+        "undo count and description",
+        "redo count",
+        "execute/undo/redo order"
+      ],
+      "status": "captured",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/D20-HIERARCHY-REPORT.md",
+        "docs/editor-parity/reference-traces/d20-hierarchy-index.json"
+      ],
+      "notes": "Executed in a fresh process against the fixed reference domain and exact UI command envelope; semantic and runtime hashes remain invariant while redo is cleared and one Move command is recorded."
+    },
+    {
+      "id": "O02-root-to-root-move-noop",
+      "behavior": "Dropping a root onto the current scene root preserves root order but records the reference Move command envelope.",
+      "requiredEvidence": [
+        "scene root order",
+        "document digest",
+        "selection",
+        "undo count and description",
+        "redo count"
+      ],
+      "status": "captured",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/D20-HIERARCHY-REPORT.md",
+        "docs/editor-parity/reference-traces/d20-hierarchy-index.json"
+      ],
+      "notes": "Both current and non-current root-row command envelopes were executed in fresh processes; clicked sceneID is not passed and both are document/runtime no-ops with Move history."
+    },
+    {
+      "id": "O03-reparent-undo-append-order",
+      "behavior": "Cross-parent execute appends to the target tail; Undo appends to the old collection tail rather than restoring the original sibling slot.",
+      "requiredEvidence": [
+        "old collection order",
+        "new collection order",
+        "execute order",
+        "undo order",
+        "redo order"
+      ],
+      "status": "captured",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/D20-HIERARCHY-REPORT.md",
+        "docs/editor-parity/reference-traces/d20-hierarchy-index.json"
+      ],
+      "notes": "Fresh-process domain execution confirms target-tail execute, old-parent-tail Undo, and target-tail Redo ordering."
+    },
+    {
+      "id": "O04-unique-root-delete",
+      "behavior": "Deleting the only current-scene root keeps the node while clearing selection/redo and pushing Delete history; Undo restores selection and Redo clears it again.",
+      "requiredEvidence": [
+        "document digest",
+        "root order",
+        "selection",
+        "undo/redo descriptions and counts",
+        "modal close state"
+      ],
+      "status": "conflict",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/D20-HIERARCHY-REPORT.md",
+        "docs/editor-parity/reference-traces/d20-hierarchy-index.json"
+      ],
+      "conflictDisposition": {
+        "status": "disposed_with_debt",
+        "observedBehavior": "reference_preserves_semantic_document_and_advances_scene_graph_revision_2_3_4_5",
+        "targetBehavior": "mgif_preserves_semantic_document_without_revision_advance",
+        "disposition": "target_behavior_authoritative",
+        "evidenceDebt": {
+          "uiIds": [
+            "T-UI-06",
+            "U02-hierarchy"
+          ],
+          "vulkanIds": [
+            "V05-delta-edit"
+          ],
+          "p10Ids": [
+            "P10-T01",
+            "P10-T05"
+          ]
+        }
+      },
+      "notes": "The true unique-root command preserves the semantic glTF and matches selection/history, but contradicts the locked task prediction: sceneGraphRevision is 2 -> 3 -> 4 -> 5 and runtime SHA-256 changes at every checkpoint. The modal itself was not executed."
+    },
+    {
+      "id": "O05-gizmo-escape-only",
+      "behavior": "Escape while dragging, without same-frame release, clears selection and detaches while retaining preview TRS and adding no history entry.",
+      "requiredEvidence": [
+        "frame event order",
+        "selection",
+        "preview TRS",
+        "attachment",
+        "history count and next description"
+      ],
+      "status": "native_partial",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/INPUT-CLIPBOARD-REPORT.md",
+        "docs/editor-parity/reference-traces/input-clipboard-index.json",
+        "docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md",
+        "docs/editor-parity/reference-traces/ui-semantic-index.json"
+      ],
+      "readinessDebt": {
+        "uiIds": [
+          "T-UI-13",
+          "U03-transform-gizmo"
+        ],
+        "vulkanIds": [
+          "V02-gizmo-components",
+          "V07-dpi-resize"
+        ],
+        "p10Ids": [
+          "P10-T01",
+          "P10-T05"
+        ]
+      },
+      "notes": "Native UI evidence confirms visible Escape-only selection clearing, gizmo detach, retained preview TRS, and no visible Undo entry. Private gizmo state and definitive history-stack mutation remain later acceptance debt."
+    },
+    {
+      "id": "O06-gizmo-escape-release-same-frame",
+      "behavior": "Escape and left-button release in either same-frame order visibly clear selection, retain preview TRS, and leave Undo disabled; this conflicts with the earlier source prediction of one transform command.",
+      "requiredEvidence": [
+        "callback order",
+        "frame event order",
+        "selection",
+        "preview TRS",
+        "history count and description"
+      ],
+      "status": "conflict",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/INPUT-CLIPBOARD-REPORT.md",
+        "docs/editor-parity/reference-traces/input-clipboard-index.json",
+        "docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md",
+        "docs/editor-parity/reference-traces/ui-semantic-index.json"
+      ],
+      "conflictDisposition": {
+        "status": "disposed_with_debt",
+        "observedBehavior": "both_native_orders_clear_selection_retain_transformed_scene_and_leave_undo_disabled",
+        "targetBehavior": "mgif_matches_native_visible_result_without_predicted_transform_history_entry",
+        "disposition": "observed_behavior_authoritative",
+        "evidenceDebt": {
+          "uiIds": [
+            "T-UI-13",
+            "U03-transform-gizmo"
+          ],
+          "vulkanIds": [
+            "V02-gizmo-components",
+            "V07-dpi-resize"
+          ],
+          "p10Ids": [
+            "P10-T01",
+            "P10-T05"
+          ]
+        }
+      },
+      "notes": "Native execution of both event orders refutes the one-command source prediction. The visible result is authoritative, while private callback order and direct history memory remain bounded debt."
+    },
+    {
+      "id": "O07-gizmo-focus-loss",
+      "behavior": "Focus loss is traced separately for platforms that emit a synthetic release and platforms that do not.",
+      "requiredEvidence": [
+        "OS/window events",
+        "synthetic release presence",
+        "selection",
+        "preview TRS",
+        "history",
+        "late release behavior"
+      ],
+      "status": "native_partial",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/INPUT-CLIPBOARD-REPORT.md",
+        "docs/editor-parity/reference-traces/input-clipboard-index.json",
+        "docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md",
+        "docs/editor-parity/reference-traces/ui-semantic-index.json"
+      ],
+      "readinessDebt": {
+        "uiIds": [
+          "T-UI-13",
+          "U03-transform-gizmo"
+        ],
+        "vulkanIds": [
+          "V02-gizmo-components",
+          "V07-dpi-resize"
+        ],
+        "p10Ids": [
+          "P10-T01",
+          "P10-T05"
+        ]
+      },
+      "notes": "Native GLFW/Win32 UI evidence covers real focus loss with no release, late release, synthetic renderer release, and release-before-loss partitions. Release recipient, private drag state, and definitive history remain bounded debt."
+    },
+    {
+      "id": "O08-viewport-click-classifier",
+      "behavior": "Delayed single click, same-primitive toggle, blank click, and double click camera center/speed follow the reference timing and focus behavior.",
+      "requiredEvidence": [
+        "timestamps/frames",
+        "pick result",
+        "selection",
+        "Scene Browser tab",
+        "camera center",
+        "camera speed"
+      ],
+      "status": "native_partial",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/INPUT-CLIPBOARD-REPORT.md",
+        "docs/editor-parity/reference-traces/input-clipboard-index.json",
+        "docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md",
+        "docs/editor-parity/reference-traces/ui-semantic-index.json"
+      ],
+      "readinessDebt": {
+        "uiIds": [
+          "T-UI-03",
+          "U03-transform-gizmo"
+        ],
+        "vulkanIds": [
+          "V05-delta-edit",
+          "V07-dpi-resize"
+        ],
+        "p10Ids": [
+          "P10-T01",
+          "P10-T05"
+        ]
+      },
+      "notes": "Native UI evidence covers delayed single, same-primitive toggle, blank clear, Scene Graph focus, valid double-click reframe, and hit position/distance. Invalid/stale/hidden hits and numeric camera center/speed remain bounded debt."
+    },
+    {
+      "id": "O09-multi-scene-structural-matrix",
+      "behavior": "Every current/non-current scene row and node operation is traced from a pristine fixture for active scene 0 and active scene 1.",
+      "requiredEvidence": [
+        "Add Node",
+        "Add Point/Directional/Spot Light",
+        "Duplicate",
+        "Delete",
+        "Rename",
+        "Add Child",
+        "node drop",
+        "root drop",
+        "Undo",
+        "Redo",
+        "scene switch",
+        "all scene roots/children",
+        "selection",
+        "history",
+        "runtime digest"
+      ],
+      "status": "native_partial",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/D20-HIERARCHY-REPORT.md",
+        "docs/editor-parity/reference-traces/d20-hierarchy-index.json",
+        "docs/editor-parity/reference-traces/O09-REAL-UI-REPORT.md",
+        "docs/editor-parity/reference-traces/o09-real-ui-index.json"
+      ],
+      "p1Readiness": {
+        "status": "eligible_with_debt",
+        "coverageBinding": {
+          "artifactPath": "docs/editor-parity/reference-traces/d20-hierarchy-index.json",
+          "artifactSha256": "b49deaf8a08a378c3162de6166bf3646e1d91d3e52a85c1779a974bac747be91",
+          "matrixCellCount": 298,
+          "executedCellCount": 298,
+          "notExecutedCellCount": 0,
+          "caseIdSetSha256": "948f9a74ce6b47e5af7df988c55a584a907c8614fe3b038daf1bd9d9b4582046"
+        },
+        "nativeUiBinding": {
+          "artifactPath": "docs/editor-parity/reference-traces/o09-real-ui-index.json",
+          "artifactSha256": "b30b1d173a4f63733bfdad068e49a91d405763b8f7b6581839905ca34177280e",
+          "actionPathCells": 298,
+          "numericExitCells": 298,
+          "fullVisibleHistoryCells": 290,
+          "exactSerializedTopologyCells": 7,
+          "exactSerializedTopologyCheckpoints": 20
+        },
+        "coverageCeiling": {
+          "realUiActionPathsCaptured": 298,
+          "fullStateUiReplays": 0,
+          "privateStateReadbacks": 0,
+          "visibleOnlyCurrentSceneCells": 298,
+          "visibleOnlySelectionCells": 294,
+          "domainMatrixRelabeledAsUiReplays": false,
+          "referenceFailuresPreserved": true
+        },
+        "evidenceDebt": {
+          "uiIds": [
+            "T-UI-15",
+            "U01-empty-new-open",
+            "U02-hierarchy"
+          ],
+          "vulkanIds": [
+            "V05-delta-edit",
+            "V06-topology-swap"
+          ],
+          "p10Ids": [
+            "P10-T01",
+            "P10-T05"
+          ]
+        }
+      },
+      "notes": "All 298 domain cells and all 298 fresh-process real GLFW/Win32 + Dear ImGui + Vulkan action paths are hash-bound, with 290 clean visible history sequences, two preserved stack overflows, six preserved access violations, and numeric exits for every cell. This is not 298 full UI state replays: exact serializer topology exists for only 7 cells/20 checkpoints and private state readbacks are zero."
+    },
+    {
+      "id": "O10-material-clipboard",
+      "behavior": "OS clipboard uses canonical gltf_material:<index> text with exact valid, malformed, out-of-range, and cross-document states.",
+      "requiredEvidence": [
+        "clipboard bytes",
+        "tooltip",
+        "enabled state",
+        "document digest",
+        "history"
+      ],
+      "status": "native_partial",
+      "artifacts": [
+        "docs/editor-parity/reference-traces/INPUT-CLIPBOARD-REPORT.md",
+        "docs/editor-parity/reference-traces/input-clipboard-index.json",
+        "docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md",
+        "docs/editor-parity/reference-traces/ui-semantic-index.json"
+      ],
+      "readinessDebt": {
+        "uiIds": [
+          "T-UI-13",
+          "U04-material"
+        ],
+        "vulkanIds": [
+          "V05-delta-edit"
+        ],
+        "p10Ids": [
+          "P10-T01",
+          "P10-T05"
+        ]
+      },
+      "notes": "Native UI evidence covers canonical copy/paste, named/wrong-prefix/nonnumeric tooltips, range and cross-document validation, Inspector assignment, and visibly disabled Undo. Decimal overflow and exact restoration of the pre-task clipboard remain bounded debt; D16's malformed-input safety rule remains authoritative for MGIF."
+    }
+  ],
+  "features": [
+    {
+      "id": "F01",
+      "behavior": ".gltf/.glb complete model load and direct in-memory glTF editing",
+      "baselineStatus": "partial",
+      "baselineDetail": "Current loading retains only lossy GltfModel/SceneAsset projections.",
+      "requirements": [
+        "R01"
+      ],
+      "targetEvidence": [
+        "T-DOC-01"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "test",
+        "status": "provisional",
+        "artifacts": [
+          "tests/editor/gltf_document_load_tests.cpp",
+          "tests/editor/gltf_document_roundtrip_tests.cpp",
+          "tests/editor/gltf_validator_tests.cpp",
+          "tests/fixtures/gltf_editor/corpus.json"
+        ],
+        "notes": "P1 T-DOC-01 authority/load/validation/no-op round-trip coverage passes; direct domain editing operations remain assigned to P3 and later gates."
+      }
+    },
+    {
+      "id": "F02",
+      "behavior": "Multiple scenes, roots/current scene preservation, Settings selector, and cross-scene operation target",
+      "baselineStatus": "partial",
+      "baselineDetail": "Root nodes are projected, but there is no authoritative multi-scene editing or switch UI.",
+      "requirements": [
+        "R01",
+        "R05",
+        "R19",
+        "R20"
+      ],
+      "targetEvidence": [
+        "T-DOC-02",
+        "T-EDIT-01",
+        "T-UI-15",
+        "O09-multi-scene-structural-matrix"
+      ],
+    "referenceEvidence": {
+      "grade": "executable",
+      "status": "provisional",
+      "artifacts": [
+        "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+        "docs/editor-parity/reference-traces/D20-HIERARCHY-REPORT.md",
+        "docs/editor-parity/reference-traces/d20-hierarchy-index.json",
+        "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+        "docs/editor-parity/reference-traces/ui-runtime-index.json",
+        "docs/editor-parity/reference-traces/O09-REAL-UI-REPORT.md",
+        "docs/editor-parity/reference-traces/o09-real-ui-index.json"
+      ],
+      "notes": "Fixed-commit source, 298 domain cells, and 298 real UI action paths confirm unsafe reference routing and failures. D20 is resolved to the bounded MGIF safety exception; exact topology/private-state gaps remain later acceptance debt."
+      },
+      "mgifEvidence": {
+        "grade": "test",
+        "status": "provisional",
+        "artifacts": [
+          "tests/editor/gltf_document_load_tests.cpp",
+          "tests/editor/gltf_document_roundtrip_tests.cpp",
+          "tests/fixtures/gltf_editor/multi_scene_oracle.gltf"
+        ],
+        "notes": "P1 T-DOC-02 proves multi-scene roots, shared nodes, current-scene state, stable IDs, and semantic digest preservation; Settings UI and edit-operation matrices remain later-phase work."
+      }
+    },
+    {
+      "id": "F03",
+      "behavior": "Asset Info, extensions, and XMP metadata",
+      "baselineStatus": "missing",
+      "baselineDetail": "No target editor panel exists.",
+      "requirements": [
+        "R03"
+      ],
+      "targetEvidence": [
+        "T-UI-01"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F04",
+      "behavior": "Animation select, playback, pause, step, reset, speed, and timeline",
+      "baselineStatus": "missing",
+      "baselineDetail": "No editor animation controls exist.",
+      "requirements": [
+        "R03",
+        "R15"
+      ],
+      "targetEvidence": [
+        "T-ANIM-01",
+        "T-UI-02"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F05",
+      "behavior": "KHR_materials_variants list and global variant application",
+      "baselineStatus": "missing",
+      "baselineDetail": "No variant editor workflow exists.",
+      "requirements": [
+        "R03",
+        "R08",
+        "R15"
+      ],
+      "targetEvidence": [
+        "T-MAT-06"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F06",
+      "behavior": "Complete Scene Graph hierarchy, type icons, expansion, and focus",
+      "baselineStatus": "partial",
+      "baselineDetail": "A basic node tree exists without parity interactions.",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "targetEvidence": [
+        "T-UI-03"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F07",
+      "behavior": "Scene List with eight resource groups, counts, and selection rules",
+      "baselineStatus": "missing",
+      "baselineDetail": "No resource list tab exists.",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "targetEvidence": [
+        "T-UI-04"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F08",
+      "behavior": "Debug tab for document/projection/draw counts and mapping diagnostics",
+      "baselineStatus": "missing",
+      "baselineDetail": "No editor diagnostic tab exists.",
+      "requirements": [
+        "R03",
+        "R15"
+      ],
+      "targetEvidence": [
+        "T-UI-05"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F09",
+      "behavior": "Single selection context for Node, Primitive, Mesh, Material, Camera, and Light",
+      "baselineStatus": "partial",
+      "baselineDetail": "Only a node vector index is selected today.",
+      "requirements": [
+        "R02",
+        "R04"
+      ],
+      "targetEvidence": [
+        "T-SEL-01"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F10",
+      "behavior": "Delayed viewport picking, toggle/blank/double-click semantics, focus, highlight, and Fit Object",
+      "baselineStatus": "missing",
+      "baselineDetail": "No editor viewport picking or selection highlight exists.",
+      "requirements": [
+        "R04",
+        "R16"
+      ],
+      "targetEvidence": [
+        "T-SEL-02",
+        "V05",
+        "O08-viewport-click-classifier"
+      ],
+      "referenceEvidence": {
+        "grade": "executable",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-semantic-index.json"
+        ],
+        "notes": "Native UI covers delayed single/toggle/blank/focus/valid double-click behavior; invalid/stale/hidden hit and exact numeric camera state remain bounded debt."
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F11",
+      "behavior": "Scene-root creation of empty nodes and three punctual light types",
+      "baselineStatus": "missing",
+      "baselineDetail": "No structure creation commands exist.",
+      "requirements": [
+        "R05",
+        "R11"
+      ],
+      "targetEvidence": [
+        "T-EDIT-02"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F12",
+      "behavior": "Node Add Child for empty nodes and three punctual light types",
+      "baselineStatus": "missing",
+      "baselineDetail": "No child creation command exists.",
+      "requirements": [
+        "R05",
+        "R11"
+      ],
+      "targetEvidence": [
+        "T-EDIT-03"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F13",
+      "behavior": "Subtree duplication with skin and animation node remapping",
+      "baselineStatus": "missing",
+      "baselineDetail": "No duplicate or stable remapping support exists.",
+      "requirements": [
+        "R02",
+        "R05"
+      ],
+      "targetEvidence": [
+        "T-EDIT-04",
+        "T-ID-01"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F14",
+      "behavior": "Recursive delete, confirmation modal, and unique-root no-op history side effects",
+      "baselineStatus": "missing",
+      "baselineDetail": "No delete command, modal, or history exists.",
+      "requirements": [
+        "R05",
+        "R14"
+      ],
+      "targetEvidence": [
+        "T-EDIT-05",
+        "T-UI-06",
+        "O04-unique-root-delete"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F15",
+      "behavior": "Node, Mesh, and Material rename workflows",
+      "baselineStatus": "missing",
+      "baselineDetail": "No parity rename modal or document mutation exists.",
+      "requirements": [
+        "R05",
+        "R20"
+      ],
+      "targetEvidence": [
+        "T-EDIT-06",
+        "T-UI-07"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F16",
+      "behavior": "Append-only drag reparent, cycle rejection, root drop, no-op history, and reference Undo order",
+      "baselineStatus": "missing",
+      "baselineDetail": "No hierarchy drag/drop mutation or command history exists.",
+      "requirements": [
+        "R05",
+        "R14"
+      ],
+      "targetEvidence": [
+        "T-EDIT-07",
+        "T-ID-01",
+        "O01-same-parent-move-noop",
+        "O02-root-to-root-move-noop",
+        "O03-reparent-undo-append-order"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F17",
+      "behavior": "Inspector numeric TRS with quaternion-backed Euler continuity",
+      "baselineStatus": "partial",
+      "baselineDetail": "Runtime TRS can be edited directly without a document command.",
+      "requirements": [
+        "R06"
+      ],
+      "targetEvidence": [
+        "T-TRS-01",
+        "T-CMD-02"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F18",
+      "behavior": "Scene Transform popup, baseline, reset, and freeze",
+      "baselineStatus": "missing",
+      "baselineDetail": "No scene-level transform editor exists.",
+      "requirements": [
+        "R13"
+      ],
+      "targetEvidence": [
+        "T-TRS-02",
+        "T-UI-08"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F19",
+      "behavior": "Translate, Rotate, and Scale Gizmo with hover, active, and picking",
+      "baselineStatus": "missing",
+      "baselineDetail": "No transform Gizmo exists.",
+      "requirements": [
+        "R07",
+        "R16"
+      ],
+      "targetEvidence": [
+        "T-GIZMO-01",
+        "T-GIZMO-02",
+        "T-GIZMO-03",
+        "T-GIZMO-04",
+        "V02",
+        "O05-gizmo-escape-only",
+        "O06-gizmo-escape-release-same-frame",
+        "O07-gizmo-focus-loss"
+      ],
+      "referenceEvidence": {
+        "grade": "executable",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-semantic-index.json"
+        ],
+        "notes": "Native UI covers bounded O05/O07 states and exposes the O06 source-vs-runtime conflict; private callbacks/history and complete visual acceptance remain later debt."
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F20",
+      "behavior": "Infinite Grid, Grid Unit, Snap settings, and toolbar state",
+      "baselineStatus": "missing",
+      "baselineDetail": "No editor grid/Gizmo toolbar controls exist.",
+      "requirements": [
+        "R07",
+        "R20"
+      ],
+      "targetEvidence": [
+        "T-GIZMO-05",
+        "T-UI-09"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F21",
+      "behavior": "Core metallic-roughness and texture editing",
+      "baselineStatus": "partial",
+      "baselineDetail": "Materials load but cannot be authoritatively edited and saved.",
+      "requirements": [
+        "R08"
+      ],
+      "targetEvidence": [
+        "T-MAT-01"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F22",
+      "behavior": "Specular-glossiness and the reference material extension set",
+      "baselineStatus": "partial",
+      "baselineDetail": "Only approximate runtime projection exists.",
+      "requirements": [
+        "R08"
+      ],
+      "targetEvidence": [
+        "T-MAT-02",
+        "T-MAT-03",
+        "T-MAT-04"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F23",
+      "behavior": "Material extension add/remove and immediate renderer updates",
+      "baselineStatus": "missing",
+      "baselineDetail": "No authoritative extension mutation exists.",
+      "requirements": [
+        "R08",
+        "R15"
+      ],
+      "targetEvidence": [
+        "T-MAT-04",
+        "T-DELTA-02"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F24",
+      "behavior": "Primitive material assignment and canonical OS clipboard Copy/Paste states",
+      "baselineStatus": "missing",
+      "baselineDetail": "No material assignment or clipboard workflow exists.",
+      "requirements": [
+        "R09"
+      ],
+      "targetEvidence": [
+        "T-MAT-05",
+        "O10-material-clipboard"
+      ],
+      "referenceEvidence": {
+        "grade": "executable",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-semantic-index.json"
+        ],
+        "notes": "Native UI covers canonical and bounded malformed/cross-document material clipboard paths; decimal overflow and exact clipboard restoration remain later debt."
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F25",
+      "behavior": "Duplicate Material, Split, and Merge equivalent mesh",
+      "baselineStatus": "missing",
+      "baselineDetail": "No primitive/material structural workflow exists.",
+      "requirements": [
+        "R09"
+      ],
+      "targetEvidence": [
+        "T-MAT-07"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F26",
+      "behavior": "Perspective and orthographic camera Inspector",
+      "baselineStatus": "partial",
+      "baselineDetail": "Camera data loads and navigation exists, but authoritative editing does not.",
+      "requirements": [
+        "R10"
+      ],
+      "targetEvidence": [
+        "T-CAM-01"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F27",
+      "behavior": "Apply to Current View and Set from Current View",
+      "baselineStatus": "partial",
+      "baselineDetail": "A partial apply path exists without the complete editor contract.",
+      "requirements": [
+        "R10"
+      ],
+      "targetEvidence": [
+        "T-CAM-02",
+        "T-UI-10"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F28",
+      "behavior": "Create, transform, edit, and delete all three punctual light types",
+      "baselineStatus": "partial",
+      "baselineDetail": "Runtime light vectors are directly editable without a document lifecycle.",
+      "requirements": [
+        "R11"
+      ],
+      "targetEvidence": [
+        "T-LIGHT-01",
+        "T-LIGHT-02",
+        "T-LIGHT-03"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F29",
+      "behavior": "KHR_node_visibility authored and effective visibility",
+      "baselineStatus": "missing",
+      "baselineDetail": "No visibility authoring or inheritance exists.",
+      "requirements": [
+        "R12"
+      ],
+      "targetEvidence": [
+        "T-VIS-01",
+        "T-DELTA-04"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F30",
+      "behavior": "Linear Undo/Redo with descriptions, 100-entry limit, and 500 ms merging",
+      "baselineStatus": "missing",
+      "baselineDetail": "No command history exists.",
+      "requirements": [
+        "R14"
+      ],
+      "targetEvidence": [
+        "T-CMD-01",
+        "T-CMD-02",
+        "T-CMD-03",
+        "T-CMD-04",
+        "T-CMD-05",
+        "T-CMD-06"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F31",
+      "behavior": "Incremental dirty updates for transform, material, and light edits",
+      "baselineStatus": "partial",
+      "baselineDetail": "Only transform updates have an existing runtime entrypoint.",
+      "requirements": [
+        "R15"
+      ],
+      "targetEvidence": [
+        "T-DELTA-01",
+        "T-DELTA-02",
+        "T-DELTA-03",
+        "T-DELTA-04"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F32",
+      "behavior": "Frame-safe hierarchy/topology rebuild and deferred retirement",
+      "baselineStatus": "missing",
+      "baselineDetail": "No editor topology transaction contract exists.",
+      "requirements": [
+        "R15"
+      ],
+      "targetEvidence": [
+        "T-DELTA-05",
+        "V06"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F33",
+      "behavior": "New, Open, Open Recent, and drag/drop replacement",
+      "baselineStatus": "partial",
+      "baselineDetail": "Basic load entrypoints exist without the reference lifecycle contract.",
+      "requirements": [
+        "R19"
+      ],
+      "targetEvidence": [
+        "T-LIFE-01",
+        "T-UI-11"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F34",
+      "behavior": "Shift-drop and File Import/Merge Scene",
+      "baselineStatus": "missing",
+      "baselineDetail": "No merge workflow exists.",
+      "requirements": [
+        "R18",
+        "R19"
+      ],
+      "targetEvidence": [
+        "T-MERGE-01",
+        "T-UI-12"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F35",
+      "behavior": "Save As, external resource handling, GLB embedding, and reload",
+      "baselineStatus": "missing",
+      "baselineDetail": "No glTF/GLB save pipeline exists.",
+      "requirements": [
+        "R17"
+      ],
+      "targetEvidence": [
+        "T-IO-01",
+        "T-IO-02",
+        "T-IO-03",
+        "T-IO-04"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "test",
+        "status": "provisional",
+        "artifacts": [
+          "tests/editor/gltf_document_roundtrip_tests.cpp",
+          "tests/editor/gltf_document_io_tests.cpp",
+          "tests/editor/gltf_validator_tests.cpp",
+          "tests/fixtures/gltf_editor/corpus.json"
+        ],
+        "notes": "P1 T-IO-01..04 prove staged .gltf resources, GLB embedding, repeated/overwrite/cross-volume publication, Unicode paths, reload, and injected failure rollback. Save As UI integration remains assigned to P9."
+      }
+    },
+    {
+      "id": "F36",
+      "behavior": "Compact orphaned resources with complete reference remapping",
+      "baselineStatus": "missing",
+      "baselineDetail": "No compaction workflow exists.",
+      "requirements": [
+        "R18"
+      ],
+      "targetEvidence": [
+        "T-COMPACT-01",
+        "T-COMPACT-02",
+        "T-COMPACT-03"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F37",
+      "behavior": "Busy, disabled, error, and modal states without extra unsaved or Compact dialogs",
+      "baselineStatus": "missing",
+      "baselineDetail": "No unified editor transaction/UI state machine exists.",
+      "requirements": [
+        "R19",
+        "R20"
+      ],
+      "targetEvidence": [
+        "T-LIFE-02",
+        "T-LIFE-03",
+        "T-LIFE-04",
+        "T-LIFE-05",
+        "T-UI-13"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F38",
+      "behavior": "Reference menu, shortcuts, context menus, and toolbar",
+      "baselineStatus": "mixed",
+      "baselineDetail": "Some MGIF shell controls exist, but editor command parity is missing.",
+      "requirements": [
+        "R20"
+      ],
+      "targetEvidence": [
+        "T-UI-14"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F39",
+      "behavior": "Windows Vulkan validation and screenshot parity",
+      "baselineStatus": "existing_foundation",
+      "baselineDetail": "Validation infrastructure exists, but the fixed unmodified baseline fails all five Vulkan smoke cases before scene-ready with one deterministic synchronization hazard.",
+      "requirements": [
+        "R21",
+        "R23"
+      ],
+      "targetEvidence": [
+        "V01",
+        "V02",
+        "V03",
+        "V04",
+        "V05",
+        "V06",
+        "V07"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/reference-traces/UI-RUNTIME-REPORT.md",
+          "docs/editor-parity/reference-traces/ui-runtime-index.json"
+        ]
+      },
+    "mgifEvidence": {
+      "grade": "executable",
+      "status": "provisional",
+      "artifacts": [
+        "docs/editor-parity/MGIF-BASELINE.md",
+        "docs/editor-parity/F39-REPAIR.md",
+        "docs/editor-parity/f39-repair-index.json"
+      ],
+      "notes": "Historical fixed baseline Demo 92226d901a95d0e6b2abbcb5c33acc788f081473ae7dca11d45e8ababb1f08c8 remains 0/5 with SYNC-HAZARD-READ-AFTER-WRITE and is not waived. Current repair Demo 789518c264c43d8426345576e43a7c138082eed9c67466c37c8562c5d8e26f1a passes the focused 5/5 smoke; full F39 editor visual acceptance remains later work."
+      }
+    },
+    {
+      "id": "F40",
+      "behavior": "D3D12/Metal contract compilation, Android editor isolation, and an nvpro/reference-helper-free production editor dependency graph",
+      "baselineStatus": "existing_foundation",
+      "baselineDetail": "Cross-backend contract targets exist and must absorb editor public APIs; the locked target state also requires repository upstream Dear ImGui plus MGIF-owned adapters only, with no approved dependency exception.",
+      "requirements": [
+        "R21"
+      ],
+      "targetEvidence": [
+        "T-RHI-01",
+        "T-RHI-02",
+        "T-RHI-03",
+        "T-LIC-01"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "not_implemented",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ],
+        "notes": "Negative source evidence: this is an MGIF platform contract, not a reference runtime capability."
+      },
+      "mgifEvidence": {
+        "grade": "test",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/MGIF-BASELINE.md"
+        ],
+        "notes": "Windows public and D3D12 object contracts pass. Metal and Android were not run, so the composite feature is not marked pass."
+      }
+    },
+    {
+      "id": "F41",
+      "behavior": "Large-scene clipping/virtualization and bounded incremental editing",
+      "baselineStatus": "missing",
+      "baselineDetail": "Editor list and mutation performance budgets are not implemented.",
+      "requirements": [
+        "R22"
+      ],
+      "targetEvidence": [
+        "T-PERF-01",
+        "T-PERF-02",
+        "T-PERF-03"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "none",
+        "status": "not_implemented",
+        "artifacts": []
+      }
+    },
+    {
+      "id": "F42",
+      "behavior": "Apache-2.0 notices, immutable upstream provenance, and isolation of reference-native dependencies from MGIF production targets",
+      "baselineStatus": "missing",
+      "baselineDetail": "The editor provenance ledger did not exist before P0; root license disclosure remains blocked and no production dependency exception is approved.",
+      "requirements": [
+        "R24"
+      ],
+      "targetEvidence": [
+        "T-LIC-01"
+      ],
+      "referenceEvidence": {
+        "grade": "source",
+        "status": "provisional",
+        "artifacts": [
+          "docs/editor-parity/REFERENCE-SOURCE-EVIDENCE.md",
+          "docs/editor-parity/LICENSE-SOURCES.md"
+        ]
+      },
+      "mgifEvidence": {
+        "grade": "source",
+        "status": "blocked",
+        "artifacts": [
+          "docs/editor-parity/LICENSE-SOURCES.md"
+        ],
+      "notes": "The root remains unlicensed/rights-reserved for distribution. P1 engineering readiness is independent, but F42 and R24 remain blocked until the owner explicitly selects a root license; no release PASS is claimed."
+      }
+    }
+  ]
+}

@@ -1,0 +1,440 @@
+{
+  "schemaVersion": 1,
+  "schema": "mgif.editor-parity.native-ui-semantic-reference-index",
+  "indexId": "UI-SEMANTIC",
+  "evidenceKind": "external-reference-pointer-mirror",
+  "sealedEvidenceRoot": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z",
+  "repositoryMirrorReport": "docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md",
+  "largeArtifactsCopiedIntoMgif": false,
+  "copiedArtifacts": [],
+  "notCopiedArtifactClasses": [
+    "screenshots",
+    "source",
+    "executables-and-binaries",
+    "runtime-logs",
+    "fixtures",
+    "nvpro_core2-nvcore-nvapp-nvgui-nvvk-nvvkgltf-artifacts"
+  ],
+  "reference": {
+    "application": {
+      "repository": "vk_gltf_renderer",
+      "checkoutPath": "F:\\GitHub\\vk_gltf_renderer",
+      "commit": "50373c7b0ff58078727af2c2aac70e29d5e74752",
+      "tree": "03e44de44217b109ab71dfbf6aee3989593d76b0",
+      "checkoutCommitAndTreeVerified": true
+    },
+    "companionProvenance": {
+      "repository": "nvpro_core2",
+      "checkoutPath": "F:\\GitHub\\nvpro_core2",
+      "commit": "9b482eb8961433c51b77e04ac48964f4eb585481",
+      "tree": "d9881fe4bfed55f8d9238e4ae16ac44d00bcaaf8",
+      "checkoutCommitAndTreeVerified": true
+    },
+    "executable": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-runtime\\runtime-exact-name\\_bin\\RelWithDebInfo\\vk_gltf_renderer.exe",
+      "semanticRuntimeMasterPath": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\runtime-master\\_bin\\RelWithDebInfo\\vk_gltf_renderer.exe",
+      "bytes": 16502784,
+      "sha256": "a02572b63f4af50bbaa26cf1909e1938bf7d72a7ae28904766d7e83394fd326b",
+      "configuration": "RelWithDebInfo",
+      "runtimeValidationEnabled": true
+    }
+  },
+  "externalArtifacts": {
+    "report": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\REPORT.md",
+      "bytes": 16657,
+      "sha256": "4c25c26505e9d3beecf45064a1ba9feeed8eda7e9072a35333a20bcfa0a20554"
+    },
+    "index": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\INDEX.json",
+      "bytes": 9638,
+      "sha256": "91ffb73304c0b23747f83511dee179296e922df1e4bcc843d5c220278a6aaf53"
+    },
+    "artifactIndex": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\ARTIFACT-INDEX.json",
+      "bytes": 267715,
+      "sha256": "ac6d2b6b129d62f4429459ee80675df65ee857ffa00e43fc0d70676fa28de202"
+    },
+    "sha256Manifest": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\SHA256SUMS.txt",
+      "bytes": 104622,
+      "sha256": "44af679974916cdef5d3727427d05e20e7fd2a2480abf76a5b30733ef5ed8327"
+    },
+    "identity": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\provenance\\identity.json",
+      "bytes": 715,
+      "sha256": "80ce6f08712ac066e13a2d090343b46973ba444c1c3c1b5298fbfe51111dfbcd"
+    },
+    "classification": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\provenance\\evidence-classification.json",
+      "bytes": 9019,
+      "sha256": "49a392d511beb79c07eb03d00ffe1d25a93b7d814a2cc554b20c8216b44c996b"
+    },
+    "finalSafetyAudit": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\provenance\\final-safety-audit.json",
+      "bytes": 3658,
+      "sha256": "e5705a96b106d724d330ef9866e70fddb2584f15dfd319e0ace1eed4d26bb06b"
+    },
+    "clipboardCleanup": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\provenance\\clipboard-cleanup.json",
+      "bytes": 396,
+      "sha256": "c9b6dd55a4752c080939a8ee535c69ed04c512eadcc7ad3fdfd11ed7fefe42a2"
+    },
+    "nativeLogScan": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\provenance\\native-log-scan.json",
+      "bytes": 10633,
+      "sha256": "305d8332468cb90df296f923bbf27da861d073313db4098e6280b83afe02d136"
+    },
+    "sealedPriorRunRestorationAudit": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\provenance\\sealed-prior-run-restoration-audit.json",
+      "bytes": 1730,
+      "sha256": "3b03c329e3923967f48f344b2bf83968ef1d2f91cfeca70227683a4dc695c638"
+    },
+    "sourceEvidence": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\provenance\\source-evidence.json",
+      "bytes": 3006,
+      "sha256": "651f9be9285d0f434c93795467dc6b3f81ad65d47a4fead4b4dafb6df463d193"
+    }
+  },
+  "integrity": {
+    "verifiedAtUtc": "2026-08-22T12:01:45.0672103Z",
+    "verificationMode": "read-only parsing, full SHA-256 recalculation, filesystem/path reconciliation, Git identity comparison, launch-sidecar comparison, native-log scan, and live-process query",
+    "externalJsonParsed": [
+      "INDEX.json",
+      "ARTIFACT-INDEX.json",
+      "provenance/identity.json",
+      "provenance/evidence-classification.json",
+      "provenance/final-safety-audit.json",
+      "provenance/clipboard-cleanup.json",
+      "provenance/native-log-scan.json",
+      "provenance/sealed-prior-run-restoration-audit.json",
+      "provenance/source-evidence.json"
+    ],
+    "filesystem": {
+      "files": 769,
+      "filesExpectedInManifest": 768,
+      "unmanifestedFiles": 0,
+      "manifestOnlyPaths": 0
+    },
+    "sha256Manifest": {
+      "entries": 768,
+      "parsed": 768,
+      "verified": 768,
+      "malformed": 0,
+      "outOfRoot": 0,
+      "missing": 0,
+      "mismatched": 0,
+      "duplicatePaths": 0,
+      "selfHashComputedSeparately": true,
+      "passed": true
+    },
+    "artifactIndex": {
+      "declaredRecords": 767,
+      "parsedRecords": 767,
+      "duplicatePaths": 0,
+      "pathHashByteMismatches": 0,
+      "missingFromIndex": 0,
+      "extraInIndex": 0,
+      "declaredTotalBytes": 2379064568,
+      "excludes": [
+        "ARTIFACT-INDEX.json",
+        "SHA256SUMS.txt"
+      ],
+      "passed": true
+    },
+    "classifications": {
+      "nativeCitableCases": 20,
+      "uniqueNativeCitableCaseIds": 20,
+      "diagnosticCases": 21,
+      "uniqueDiagnosticCaseIds": 21,
+      "caseDirectories": 41,
+      "unclassifiedCaseDirectories": 0,
+      "classifiedIdsWithoutDirectory": 0,
+      "passed": true
+    },
+    "launchSidecars": {
+      "checked": 20,
+      "exactExecutableHashMatches": 20,
+      "caseLocalHardLinkRuntimeSetsMatch": 20,
+      "fixtureHashSetsMatch": 20,
+      "processCommandWorkingDirectoryAndInitialWindowRecordsMatch": 20,
+      "sealedDirectoryLaunches": 0,
+      "passed": true
+    },
+    "nativeLogs": {
+      "checked": 20,
+      "present": 20,
+      "patterns": [
+        "VUID",
+        "validation error",
+        "ERROR",
+        "WARNING"
+      ],
+      "logsWithMatches": 0,
+      "totalMatches": 0,
+      "interpretation": "Zero retained-log text matches is not proof that every validation path executed.",
+      "passed": true
+    },
+    "liveProcesses": {
+      "referenceRenderer": 0,
+      "focusSink": 0,
+      "passed": true
+    }
+  },
+  "sealedRuntime": {
+    "directory": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-runtime\\runtime-exact-name\\_bin\\RelWithDebInfo",
+    "fileCount": 4,
+    "unexpectedFiles": 0,
+    "allHashesMatch": true,
+    "files": [
+      {
+        "name": "slang-compiler.dll",
+        "bytes": 26345472,
+        "sha256": "531feaa16939f06bbf32b2a0a6bc01158e9ce1c7210d80e78ac983d5b97e2d00"
+      },
+      {
+        "name": "slang-glslang.dll",
+        "bytes": 11006464,
+        "sha256": "4e9681bd1a8a2f9e21ffaa987973df14efb58d63d8c995eb4696e0c07a8ed91b"
+      },
+      {
+        "name": "vk_gltf_renderer.exe",
+        "bytes": 16502784,
+        "sha256": "a02572b63f4af50bbaa26cf1909e1938bf7d72a7ae28904766d7e83394fd326b"
+      },
+      {
+        "name": "vk_gltf_renderer.pdb",
+        "bytes": 84807680,
+        "sha256": "6185aea9eb3b2fb7c27adf7db96443a69a478340f9a15a98f4c5d60aef693273"
+      }
+    ],
+    "semanticRuntimeMaster": {
+      "directory": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-ui-semantic-20260822T100212Z\\runtime-master\\_bin\\RelWithDebInfo",
+      "fileCount": 3,
+      "hardLinkedFiles": [
+        "slang-compiler.dll",
+        "slang-glslang.dll",
+        "vk_gltf_renderer.exe"
+      ],
+      "allHashesMatchSealedRuntime": true
+    }
+  },
+  "caseClassification": {
+    "nativeCitable": {
+      "count": 20,
+      "caseIds": [
+        "O05-escape-only-v2",
+        "O06-escape-then-release-v3",
+        "O06-release-then-escape-v3",
+        "O07-focus-loss-no-release-v3",
+        "O07-focus-loss-late-release-to-sink",
+        "O07-focus-loss-synthetic-release",
+        "O07-release-before-focus-loss",
+        "O08-delayed-single",
+        "O08-same-primitive-toggle",
+        "O08-blank-clear",
+        "O08-browser-focus",
+        "O08-valid-double-camera",
+        "O10-canonical-copy",
+        "O10-valid-paste-material-1",
+        "O10-crossdoc-source-copy-material-1-v2",
+        "O10-crossdoc-target-one-material-v2",
+        "O10-inspector-assignment",
+        "O10-malformed-wrong-prefix",
+        "O10-malformed-nonnumeric-suffix",
+        "runtime-vulkan-gpu-corroboration"
+      ]
+    },
+    "diagnostic": {
+      "count": 21,
+      "excludedFromSemanticConclusions": true,
+      "caseIds": [
+        "explore-00",
+        "O05-escape-only",
+        "O06-escape-then-release",
+        "O06-escape-then-release-v2",
+        "O06-release-then-escape-v2",
+        "O07-focus-loss-no-release",
+        "O07-focus-loss-no-release-v2",
+        "O10-crossdoc-source-copy-material-1",
+        "O10-crossdoc-target-one-material",
+        "O10-divider-cursor-probe",
+        "O10-overflow-decimal",
+        "O10-overflow-decimal-v2",
+        "O10-overflow-decimal-v3",
+        "O10-out-of-range-index",
+        "O10-out-of-range-index-v2",
+        "O10-ui-locate-diagnostic",
+        "O10-ui-locate-diagnostic-v2",
+        "O10-ui-locate-diagnostic-v3",
+        "O10-ui-locate-diagnostic-v4",
+        "O10-ui-locate-diagnostic-v5",
+        "O10-ui-locate-diagnostic-v6"
+      ]
+    }
+  },
+  "coverageCeiling": [
+    {
+      "oracle": "O05",
+      "status": "native-observed-partial",
+      "achieved": [
+        "active visible gizmo drag",
+        "Escape only while physical left remained down",
+        "visible selection/gizmo detach",
+        "late release did not restore selection"
+      ],
+      "gaps": [
+        "private gizmo dragging flag",
+        "definitive history-stack mutation"
+      ],
+      "cases": [
+        "O05-escape-only-v2"
+      ]
+    },
+    {
+      "oracle": "O06",
+      "status": "native-observed-both-orders",
+      "achieved": [
+        "Escape-then-release with no intervening renderer frame",
+        "release-then-Escape with no intervening renderer frame",
+        "same visible cleared-selection/transformed-scene result",
+        "Undo visibly disabled in both"
+      ],
+      "gaps": [
+        "private callback trace",
+        "direct history-stack memory"
+      ],
+      "cases": [
+        "O06-escape-then-release-v3",
+        "O06-release-then-escape-v3"
+      ]
+    },
+    {
+      "oracle": "O07",
+      "status": "native-observed-partitions-partial",
+      "achieved": [
+        "real focus loss with no release",
+        "real focus loss plus late physical release",
+        "real focus loss plus synthetic renderer release while physical left stayed down",
+        "physical release before real focus loss"
+      ],
+      "gaps": [
+        "actual recipient of late physical release",
+        "private gizmo dragging flag",
+        "definitive history-stack state"
+      ],
+      "cases": [
+        "O07-focus-loss-no-release-v3",
+        "O07-focus-loss-late-release-to-sink",
+        "O07-focus-loss-synthetic-release",
+        "O07-release-before-focus-loss"
+      ]
+    },
+    {
+      "oracle": "O08",
+      "status": "native-observed-partial",
+      "achieved": [
+        "delayed single dispatch",
+        "same-primitive second single clears",
+        "blank clears",
+        "valid hit focuses Scene Graph",
+        "valid double visibly reframes camera",
+        "native hit world position and distance"
+      ],
+      "gaps": [
+        "invalid render-node hit",
+        "stale hit",
+        "hidden-object hit",
+        "numeric camera center",
+        "numeric manipulator speed"
+      ],
+      "cases": [
+        "O08-delayed-single",
+        "O08-same-primitive-toggle",
+        "O08-blank-clear",
+        "O08-browser-focus",
+        "O08-valid-double-camera"
+      ]
+    },
+    {
+      "oracle": "O10",
+      "status": "native-observed-partial",
+      "achieved": [
+        "canonical OS clipboard Copy index 0",
+        "canonical Paste index 1",
+        "named valid tooltip",
+        "wrong-prefix no-material tooltip",
+        "nonnumeric suffix coerced to material 0",
+        "active-document range rejection",
+        "cross-document native source copy and target validation",
+        "Inspector assignment modal",
+        "Paste and Assign leave Undo disabled"
+      ],
+      "gaps": [
+        "native decimal-overflow result",
+        "exact restoration of pre-task OS clipboard contents"
+      ],
+      "cases": [
+        "O10-canonical-copy",
+        "O10-valid-paste-material-1",
+        "O10-crossdoc-source-copy-material-1-v2",
+        "O10-crossdoc-target-one-material-v2",
+        "O10-inspector-assignment",
+        "O10-malformed-wrong-prefix",
+        "O10-malformed-nonnumeric-suffix"
+      ]
+    },
+    {
+      "oracle": "D20",
+      "status": "not-evaluated-unresolved",
+      "achieved": [],
+      "gaps": [
+        "Intentionally outside this evidence attempt"
+      ],
+      "cases": []
+    }
+  ],
+  "clipboardCleanupLimitation": {
+    "citableSuitesPreservedAndRestoredOriginalDataObject": true,
+    "laterManualOverflowDiagnosticCrossedRestorationBoundary": true,
+    "cleanupAttempts": 20,
+    "clipboardOpened": false,
+    "clipboardEmptied": false,
+    "finalTestPayloadAbsenceVerified": false,
+    "exactPreTaskClipboardRestorationVerified": false,
+    "claim": "The OS clipboard remained locked for every cleanup attempt; neither final test-payload removal nor exact pre-task restoration can be verified or claimed."
+  },
+  "d20DecisionBoundary": {
+    "status": "not-evaluated-unresolved",
+    "evaluatedByThisRun": false,
+    "resolvedByThisRun": false,
+    "policySelectedByThisRun": false,
+    "selectedPolicy": null,
+    "candidatePolicies": [
+      "exact_defect_parity",
+      "mgif_safety_exception"
+    ],
+    "sourceOrCpuEvidenceUpgradedToNativeUiVulkanOrGpu": false
+  },
+  "dependencyBoundary": {
+    "externalReferenceProvenanceOnly": [
+      "nvpro_core2",
+      "nvcore",
+      "nvapp",
+      "nvgui",
+      "nvvk",
+      "nvvkgltf"
+    ],
+    "forbiddenMgifProductionDependencies": [
+      "nvpro_core2",
+      "nvcore",
+      "nvapp",
+      "nvgui",
+      "nvvk",
+      "nvvkgltf"
+    ],
+    "copyLinkAdaptOrIntroduceReferenceArtifactsOrInterfacesAuthorized": false,
+    "mgifArchitecture": "Direct Dear ImGui plus MGIF-owned application, RHI, and scene abstractions."
+  },
+  "closureRule": "Only states explicitly listed under coverageCeiling.achieved are native-observed. Source evidence cannot promote a listed gap, diagnostics are excluded from semantic conclusions, and D20 remains unresolved."
+}

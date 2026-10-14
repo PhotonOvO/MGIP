@@ -1,0 +1,27 @@
+# G7-R1 Recovery Gate Report
+
+Decision: ENGINEERING PASS for the bounded Windows/MSVC Vulkan editor parity contract.
+
+This explicit schema-2 recovery Gate bridges the historical ordinary failed G7 receipt; it does not rewrite that event.
+
+Parent bundle: abe868298415dd263871f499e3d63e73f2046382dabf22dc2131fd2349052500
+Parent snapshot: 330e7d5aca1ef81ef67d77beaefe23bcff70601ae5e8ae0c0aa34db9007e04ad
+Parent transition head: afa8a5f59922c984073d07f5f873a4b9bfe7f956f173534e22d1a3e46e2e9109
+P7 R4 receipt: afa8a5f59922c984073d07f5f873a4b9bfe7f956f173534e22d1a3e46e2e9109
+Historical G7 receipt superseded by gateEvent: e297bd471f5f7a5441abe7bb9e645736b6085987d9e452f4168de71445aca7cd
+
+## Evidence
+
+R4 aggregate manifest: G:\Temp\mgif-p7-visual-r4-20260904T223000Z\visual-v2-evidence-manifest.json; sha256=fba4a4c659da910e40796ca97f50323a76b5fdc8fc9b67e35d69daefc985bece
+Windows MSVC Debug and Release builds were used for all runtime evidence.
+Visual matrix: 62/62 traces; V04 gizmo-crop depth proof: proven (135 pixels, threshold 8, minimum 32).
+Runtime matrix: 8/8; focused CTest: 15/15 Debug and 15/15 Release; visual contract 7/7; present contract 4/4; P0 scaffold 42 features/10 traces/110 edges.
+No unexpected validation error, sync hazard, assertion, or device-lost diagnostic was observed.
+
+## Dependency Bridge
+
+The accepted Gate replaces task_3f216d250677 as the dependency of task_15f206f912f6. The historical failed receipt remains immutable and is referenced exactly by gateEvent.supersedesEventId.
+
+## Policy And Non-Claims
+
+F42/R24 remain BLOCKED, Metal remains Not Verified, and release/distribution remains NOT PASS. No Linux build or runtime claim is made; WSL only orchestrated and aggregated Windows evidence.

@@ -1,0 +1,369 @@
+# Gate P3 Fresh Adversarial Review
+
+## Verdict
+
+**FAIL / BLOCKED.** Five Gate P3 blockers remain after remediation task
+`task_8c180abec38c`: a reproducible projection stack overflow, the locked D20
+`all_scenes` behavior is explicitly rejected, Split/Merge do not implement the
+locked R09 workflow, locked material-extension ranges are not validated, and
+the randomized test is not the required semantic/projection/all-ID oracle.
+
+This was a fresh, independent, read-only review of the repository. No
+repository file was modified, and no conclusion from the implementer was used
+as evidence. The only files created by this review are under
+`C:\Temp\mgif-gate-p3-ctx_650d09db7f42`.
+
+## Review Identity
+
+- Dependency: `task_8c180abec38c`, independently observed `completed` at
+  `2026-08-23 14:57:42` before repository inspection.
+- Repository HEAD: `6c36567625b305286755a734a66188a22df18e77`.
+- Locked task SHA-256 observed twice, including after testing:
+  `bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e`.
+- Expected task SHA-256:
+  `bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e`.
+- Authoritative fresh build tree:
+  `C:\Temp\mgif-gate-p3-ctx_650d09db7f42\build-ninja-clang`.
+- Toolchain: CMake 4.1.2, Ninja 1.13.2, clang-cl 19.1.5 with the MSVC ABI,
+  Debug configuration.
+
+## Blocking Findings
+
+### P3-B01 - Critical - An accepted deep document crashes projection after a successful mutation
+
+The locked contract requires bounded iterative traversal and requires every
+successful semantic mutation to remain projectable:
+
+- `docs/gltf-scene-editor-parity-task.md:815`
+- `docs/gltf-scene-editor-parity-task.md:860`
+- `docs/gltf-scene-editor-parity-task.md:1184`
+- `docs/gltf-scene-editor-parity-task.md:1329`
+
+The public limit is configurable, but the implementation itself records that
+projection still uses native recursion:
+
+- `scene/editor/include/mgif/scene_editor/EditorLimits.h:15-18`
+
+`SceneProjection` delegates to `GltfLoader`:
+
+- `scene/editor/SceneProjection.cpp:52-76`
+
+`GltfLoader::processNode` recursively calls itself for every child:
+
+- `loader/GltfLoader.cpp:837-845`
+
+The existing boundary test expressly accepts a 4,096-node chain when the
+configured depth budget is 4,096, but it does not project that document:
+
+- `tests/editor/gltf_document_load_tests.cpp:615-623`
+
+Independent reproduction:
+
+```powershell
+& 'C:\Temp\mgif-gate-p3-ctx_650d09db7f42\depth_projection_probe.exe' 512
+& 'C:\Temp\mgif-gate-p3-ctx_650d09db7f42\depth_projection_probe.exe' 4096
+```
+
+Observed output:
+
+```text
+mutation=1 revision=1
+projection=1 nodes=512
+exit=0
+
+mutation=1 revision=1
+exit=-1073741571
+```
+
+`-1073741571` is Windows `0xC00000FD` (`STATUS_STACK_OVERFLOW`). The second
+probe proves that the document loads within its configured boundary, a real
+semantic mutation commits at revision 1, and the immediately required
+projection crashes the process instead of returning a bounded typed failure.
+Probe source:
+`C:\Temp\mgif-gate-p3-ctx_650d09db7f42\depth_projection_probe.cpp`.
+
+### P3-B02 - High - Locked D20 `all_scenes` behavior is deliberately not implemented
+
+The locked decision requires clicked-scene occurrence routing, complete
+`all_scenes` snapshot/restore, shared-occurrence consistency, atomic
+cycle/multiparent/stale rejection, and bounded iterative traversal:
+
+- `docs/gltf-scene-editor-parity-task.md:815`
+- `docs/gltf-scene-editor-parity-task.md:1329`
+
+The public API instead documents a narrower contract and says shared roots or
+parents must wait for a future command layer:
+
+- `scene/editor/include/mgif/scene_editor/SceneCommands.h:202-208`
+
+The three occurrence-aware structural operations reject the shared cases that
+D20 requires them to handle:
+
+- `scene/editor/SceneCommands.cpp:1149-1155`
+- `scene/editor/SceneCommands.cpp:1174-1178`
+- `scene/editor/SceneCommands.cpp:1203-1212`
+
+No all-scenes snapshot/restore implementation exists in `scene/editor`; the
+only matching production text is the future-work comment above. The regression
+test blesses the noncompliant behavior by expecting `multiScenePolicy`:
+
+- `tests/editor/scene_editor_p3_regression_tests.cpp:422-443`
+
+Independent reproduction:
+
+```powershell
+& 'C:\Temp\mgif-gate-p3-ctx_650d09db7f42\d20_probe.exe'
+```
+
+Observed output:
+
+```text
+status=1 error=14 before=0 after=0
+exit=42
+```
+
+`MutationErrorCode` value 14 is `multiScenePolicy`
+(`SceneCommands.h:27-44`). The probe intentionally exits 42 when the locked
+operation is rejected. Probe source:
+`C:\Temp\mgif-gate-p3-ctx_650d09db7f42\d20_probe.cpp`.
+
+### P3-B03 - High - Split/Merge preserve IDs around the wrong document operation
+
+R09 requires Split to copy the selected node's mesh and target material for
+independent editing, and Merge to rejoin only an equivalent shared mesh while
+safely deleting an orphan copy:
+
+- `docs/gltf-scene-editor-parity-task.md:426-430`
+- `docs/gltf-scene-editor-parity-task.md:554`
+
+The current `splitPrimitive(PrimitiveId)` has no node context and only appends a
+new mesh containing a copied primitive. It does not redirect a node and does
+not duplicate the target material:
+
+- `scene/editor/SceneCommands.cpp:1964-1982`
+
+The current `mergeMeshes` does not test equivalence. It concatenates the source
+primitives into the target, redirects every source-mesh node, and erases the
+source mesh:
+
+- `scene/editor/SceneCommands.cpp:1986-2005`
+
+The built-in regression checks only fresh/preserved primitive IDs and their
+addresses, so it passes while missing node references, material independence,
+equivalence, and orphan handling:
+
+- `tests/editor/scene_editor_p3_regression_tests.cpp:293-307`
+
+Independent reproduction:
+
+```powershell
+& 'C:\Temp\mgif-gate-p3-ctx_650d09db7f42\split_probe.exe'
+$json = Get-Content -LiteralPath `
+  'C:\Temp\mgif-gate-p3-ctx_650d09db7f42\split_probe_output.gltf' `
+  -Raw | ConvertFrom-Json
+$refs = @($json.nodes | ForEach-Object { if($null -ne $_.mesh) { [int]$_.mesh } })
+0..($json.meshes.Count - 1) | Where-Object { $_ -notin $refs }
+```
+
+Observed output:
+
+```text
+split_applied=1 meshes=2 primitives=2 save=1
+node_mesh_refs=0
+orphaned_meshes=1
+```
+
+The command reports success, advances the authoritative document, and saves a
+new mesh that no node references. Primitive-ID remapping itself is stable, but
+that does not satisfy the locked Split/Merge semantics. Probe source:
+`C:\Temp\mgif-gate-p3-ctx_650d09db7f42\split_probe.cpp`.
+
+### P3-B04 - High - Locked KHR material-extension values can be invalid, saved, and reloaded
+
+The material contract requires the exposed extensions and their values to obey
+the glTF extension constraints, including min/mid/max boundary coverage:
+
+- `docs/gltf-scene-editor-parity-task.md:420-424`
+- `docs/gltf-scene-editor-parity-task.md:647`
+- `docs/gltf-scene-editor-parity-task.md:1159`
+
+`setMaterialExtension` validates only a generic finite/depth-bounded JSON value
+tree and extension-name length before publication:
+
+- `scene/editor/SceneCommands.cpp:375-435`
+- `scene/editor/SceneCommands.cpp:1869-1903`
+
+The validator's material-extension-specific pass checks selected texture-info
+references, but it does not validate scalar ranges such as
+`KHR_materials_clearcoat.clearcoatFactor`:
+
+- `scene/editor/GltfValidator.cpp:2416-2475`
+
+The deterministic regression uses an unconstrained private
+`MGIF_test_edit` extension and therefore does not exercise a locked KHR range:
+
+- `tests/editor/scene_editor_p3_regression_tests.cpp:326-340`
+
+Independent reproduction:
+
+```powershell
+& 'C:\Temp\mgif-gate-p3-ctx_650d09db7f42\material_extension_probe.exe'
+```
+
+The probe authors `KHR_materials_clearcoat: {"clearcoatFactor": -1.0}`.
+Observed output:
+
+```text
+status=0 error=0 revision=1 save=1 reload=1
+exit=42
+```
+
+The probe intentionally exits 42 when the invalid value is accepted, saved,
+and reloaded. Probe source:
+`C:\Temp\mgif-gate-p3-ctx_650d09db7f42\material_extension_probe.cpp`.
+
+### P3-B05 - High gate-evidence gap - The randomized test is not the required semantic oracle
+
+Gate P3 requires at least 10 fixed seeds by 1,000 operations, core invariants
+after every mutation, projection refresh, all-scene roots/children, and no
+dangling typed ID:
+
+- `docs/gltf-scene-editor-parity-task.md:860`
+- `docs/gltf-scene-editor-parity-task.md:1023`
+
+The existing random loop does execute 10 by 1,000 iterations, but:
+
+- It mutates one cumulative document rather than loading an independent seed
+  oracle (`tests/editor/scene_commands_tests.cpp:89-123`).
+- It covers only query, node rename/TRS/visibility/add/reparent/duplicate/delete
+  (`scene_commands_tests.cpp:100-117`).
+- Its graph helper checks validator success, scene roots, and only each root's
+  immediate children (`scene_commands_tests.cpp:25-39`).
+- It never calls `SceneProjection::project` in the random loop.
+- It never validates complete `SceneRuntimeMapping` or every typed ID in the
+  random loop.
+- It checks exact before-state only for rejected operations
+  (`scene_commands_tests.cpp:120-122`); it has no independent semantic state
+  model for successful operations.
+
+The only all-typed-ID/projection assertion is after one deterministic sequence,
+not after randomized mutations:
+
+- `tests/editor/scene_editor_p3_regression_tests.cpp:87-113`
+- `tests/editor/scene_editor_p3_regression_tests.cpp:369-379`
+
+This is a required Gate P3 evidence failure, and P3-B01 demonstrates the kind
+of projection failure the current randomized test cannot detect.
+
+## Requested Re-audit Matrix
+
+| Area | Result | Independent evidence |
+|---|---|---|
+| Failure-atomic preflight/result preparation/publication | PASS | Candidate and plan are private through validation and result preparation (`SceneCommands.cpp:721-844`); document builds registries/root state before non-throwing swaps (`GltfDocument.cpp:797-999`); allocation fault tests preserve revision/digest/all IDs (`scene_editor_p3_regression_tests.cpp:153-200`). |
+| Rejection zero-change and domain no-op recognition | PASS | Generic mutation returns before commit for `noOp`/`uniqueRootDeleteNoop` and other preflight errors (`SceneCommands.cpp:741-759`); randomized rejected operations check revision+digest (`scene_commands_tests.cpp:95-123`); deterministic snapshots cover representative no-ops/rejections. |
+| Authoritative `KHR_node_visibility` load/edit/save/reload/projection | PASS | Edit/remove (`SceneCommands.cpp:1663-1705`), authority query (`GltfDocument.cpp:513-537`), projection decode/effective inheritance (`GltfLoader.cpp:754-769`), and save/reload test (`scene_editor_p3_regression_tests.cpp:203-248`). |
+| D20 clicked occurrence / `all_scenes` / shared consistency | **FAIL** | P3-B02. Occurrence capture itself is iterative and bounded (`SceneCommands.cpp:1011-1065`), but locked shared/all-scenes mutations are rejected and no snapshot/restore exists. |
+| Scene-root identity/shared-root/freeze/rebuild | PASS | Shared-root bake conflict detection and per-scene frozen root indices (`SceneCommands.cpp:171-245`); prebuilt next states and publish (`GltfDocument.cpp:923-989`); deterministic shared-root, mismatch, matrix, and new-root tests (`scene_editor_p3_regression_tests.cpp:487-543`). |
+| Skin and animation remap | PASS | Duplicate remaps cloned skin joints/skeleton and animation targets (`SceneCommands.cpp:1323-1381`); delete compacts/remaps/removes empty skins and animations (`SceneCommands.cpp:1438-1479`); tests at `scene_editor_p3_regression_tests.cpp:251-291`. |
+| Primitive stable-ID remap and cross-document error | PARTIAL / **FAIL workflow** | ID/address preservation across current split/merge and cross-document atomic rejection pass (`scene_editor_p3_regression_tests.cpp:293-314`, `SceneCommands.cpp:866-919`), but P3-B03 shows that the underlying Split/Merge operation is not R09-compliant. |
+| Real monotonic transaction tokens | PASS | Process-global atomic serial allocator (`SceneCommands.cpp:47-63`), distinct owner serial allocation (`SceneCommands.cpp:971-980`), and advancement only after successful publication (`SceneCommands.cpp:785-844`); replay/owner tests at `scene_editor_p3_regression_tests.cpp:153-200`. Gaps after failed publication are harmless; serials are not reused. |
+| Material texture/extension, light create/delete, variant replace/remove | PARTIAL / **FAIL extension** | Texture slot constraints and add/remove are present (`SceneCommands.cpp:1748-1820`); light lifecycle (`SceneCommands.cpp:2073-2174`) and variant replacement/removal (`SceneCommands.cpp:2177-2324`) have deterministic tests. P3-B04 blocks the extension surface. |
+| Complete `SceneRuntimeMapping` and non-quadratic lookup | PASS | Projection preallocates every typed ID (`SceneProjection.cpp:117-135`); mapping builds sorted ID/reverse/runtime indices (`SceneRuntimeMapping.cpp:94-143`) and uses binary search (`SceneRuntimeMapping.cpp:170-210`); complete validation at `SceneRuntimeMapping.cpp:220-338`. |
+| Capacity/depth boundaries | **FAIL** | Exact depth load acceptance/rejection exists (`gltf_document_load_tests.cpp:615-623`) and max-node mutation rejection is atomic (`scene_editor_p3_regression_tests.cpp:545-553`), but P3-B01 shows the accepted depth cannot be projected safely. |
+| Semantic randomized oracle, projection after mutation, all typed IDs | **FAIL** | P3-B05. |
+| Revision/dirty/Save As snapshot evidence | PASS | Full document failure snapshot includes source path, format, revision, clean revision, current scene, digest, all IDs, and dependencies (`gltf_document_io_tests.cpp:484-547`); fault matrix at `gltf_document_io_tests.cpp:787-842`; successful authority/path/clean behavior at `gltf_document_roundtrip_tests.cpp:198-245`. |
+| Guard-suite remediation and forbidden dependency boundary | PASS | P0 guard suites passed; configured production dependency preflight passed both as a build dependency and direct target; manual editor-source forbidden/debug scans returned no findings. |
+
+## Build And Test Evidence
+
+Successful configure:
+
+```powershell
+cmake -S G:\MGIF `
+  -B C:\Temp\mgif-gate-p3-ctx_650d09db7f42\build-ninja-clang `
+  -G Ninja `
+  -DCMAKE_C_COMPILER='C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\x64\bin\clang-cl.exe' `
+  -DCMAKE_CXX_COMPILER='C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\x64\bin\clang-cl.exe' `
+  -DDEMO_EDITOR_CORE_ONLY=ON -DBUILD_TESTING=ON
+```
+
+Successful build:
+
+```powershell
+cmake --build C:\Temp\mgif-gate-p3-ctx_650d09db7f42\build-ninja-clang `
+  --target scene_editor_tests --parallel 4
+```
+
+The build completed all 47 steps. Its first step ran the configured production
+editor dependency preflight and printed:
+
+```text
+Final configured production-editor dependency preflight passed
+```
+
+Focused test results:
+
+| Invocation | Result |
+|---|---|
+| `ctest -L scene-editor-p0-scaffold --output-on-failure` | 6/6 passed |
+| `ctest -L scene-editor-p1-document --output-on-failure` | 7/7 passed |
+| `ctest -R ^scene_editor\.scene_projection$ --output-on-failure` | 1/1 passed |
+| `ctest -L scene-editor-p3-mutation --output-on-failure` | 4/4 passed; randomized test took 33.63 s |
+| Direct focused regex for P0 support, document I/O, projection, P3 regression | 4/4 passed |
+| Direct `scene_editor_p3_regression_tests.exe` | exit 0 |
+| Direct `scene_editor_scene_commands_tests.exe` | exit 0 |
+| Direct `scene_editor_mutation_tests.exe` | exit 0 |
+| Direct build target `scene_editor_dependency_preflight` | passed |
+
+Verbose document-I/O test output included:
+
+```text
+Windows atomic replacement interruption: 12 terminated writers,
+492 complete target observations (452 old, 40 new)
+```
+
+The built-in suite being green does not override the independently reproduced
+blockers above. In two cases, the built-in tests explicitly bless or omit the
+noncompliant behavior.
+
+## Scans And Repository Hygiene
+
+- Configured dependency preflight: PASS.
+- P0 artifact/dependency/Android guard labels: PASS.
+- Narrow production editor forbidden native/framework token scan: no matches.
+- Narrow production editor TODO/FIXME/HACK/stub/debug-break token scan: no matches.
+- Narrow trailing-whitespace scan across `scene/editor`, `tests/editor`, and
+  `CMakeLists.txt`: no matches.
+- P3-scoped `git diff --check` over `CMakeLists.txt`, `scene/editor`, loader
+  projection files, `tests/editor`, task doc, and tools: exit 0.
+- Repository-wide `git diff --check`: exit 2 only because of the unrelated,
+  pre-existing `Demo.txt:1` trailing space:
+
+```text
+Demo.txt:1: trailing whitespace.
++[22:07:20.277] Starting ... 
+```
+
+The P3 implementation and tests are largely untracked. `git diff --check` does
+not inspect untracked files, so the explicit narrow trailing-whitespace scan was
+also run and found none.
+
+## Required Remediation Before Re-review
+
+1. Replace recursive projection graph traversal with a bounded iterative
+   implementation, and add a post-mutation projection test at the exact accepted
+   depth boundary plus one-over rejection.
+2. Implement the locked D20 `clickedScene` and `allScenes` semantics, including
+   complete all-scene snapshot/restore and shared-occurrence consistency; replace
+   the regression that currently expects rejection.
+3. Implement R09 Split/Merge around the selected node/mesh/material sharing
+   graph, preserve stable IDs through the real operation, check equivalence, and
+   test node references, materials, orphan deletion, primitive order, reload,
+   no-candidate no-op, and cross-document failure.
+4. Add schema-aware validation for every locked material extension and run
+   min/mid/max/add/remove/save/reload cases; generic JSON validity is not enough.
+5. Replace or supplement the random loop with a replayable independent semantic
+   oracle that checks every scene hierarchy, revision/result semantics, a fresh
+   projection, complete runtime mapping, and all typed IDs after every operation,
+   across the complete P3 mutation surface.
+

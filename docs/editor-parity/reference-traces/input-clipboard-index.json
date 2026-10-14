@@ -1,0 +1,315 @@
+{
+  "schemaVersion": 1,
+  "kind": "mgif.editor-parity.input-clipboard-reference-index",
+  "oracleIds": [
+    "O05",
+    "O06",
+    "O07",
+    "O08",
+    "O10"
+  ],
+  "manifestOracleIds": [
+    "O05-gizmo-escape-only",
+    "O06-gizmo-escape-release-same-frame",
+    "O07-gizmo-focus-loss",
+    "O08-viewport-click-classifier",
+    "O10-material-clipboard"
+  ],
+  "reference": {
+    "commit": "50373c7b0ff58078727af2c2aac70e29d5e74752",
+    "tree": "03e44de44217b109ab71dfbf6aee3989593d76b0",
+    "isolatedWorktree": "C:\\Users\\happyelements\\orca\\workspaces\\vk_gltf_renderer\\vkgr-p0-input-trace",
+    "headAndTreeVerifiedDirectly": true,
+    "worktreeClean": false,
+    "sourceTreeDiffFileCount": 0,
+    "probeOverlayFiles": [
+      "CMakeLists.txt",
+      "tools/p0_input_trace_probe/README.md",
+      "tools/p0_input_trace_probe/p0_input_trace_probe.cpp",
+      "tools/p0_input_trace_probe/vma_implementation.cpp"
+    ],
+    "dependency": {
+      "root": "F:\\GitHub\\nvpro_core2",
+      "commit": "9b482eb8961433c51b77e04ac48964f4eb585481",
+      "dirtyFile": "nvapp/elem_inspector.cpp",
+      "dirtyPatchSha256": "6A9121FA30D02DAE34A5FCD45233D01F20A982DD9BA468A7820E6B014588D401",
+      "scopeNote": "The unrelated early return is linked into the hash-bound executable but is not on a directly exercised probe path."
+    }
+  },
+  "externalEvidenceRoot": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe",
+  "rawArtifacts": [
+    {
+      "role": "sealedReport",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\REPORT.md",
+      "bytes": 16302,
+      "sha256": "8305D258858BBD72768A743CBBB305244E60EA8FB0415AA525EE483229DAE856",
+      "coveredByChecksumIndex": true
+    },
+    {
+      "role": "checksumIndex",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\SHA256SUMS.txt",
+      "bytes": 6716,
+      "sha256": "0F691CBEA80776AFF10A95CB2CBCD7BE6A4EC171837F25A7940FAECE560905A1",
+      "coveredByChecksumIndex": false
+    },
+    {
+      "role": "identity",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\identity.json",
+      "bytes": 3319,
+      "sha256": "4483652C5174C627298AA6699AECA59363D7D9C918CB3F90CB4382BB8C85732F",
+      "coveredByChecksumIndex": true
+    },
+    {
+      "role": "primaryTrace",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\trace.jsonl",
+      "bytes": 72534,
+      "sha256": "28A1F1AED76D5A07D121ED87E6370FD3F9EC570507592927D8B7C6E885F1C184",
+      "coveredByChecksumIndex": true
+    },
+    {
+      "role": "repeatTrace",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\trace-repeat.jsonl",
+      "bytes": 72534,
+      "sha256": "E280C87392E482E4CEB644052A16026784C9B87D2816249DF66D9A3D63A37B07",
+      "coveredByChecksumIndex": true
+    },
+    {
+      "role": "probeExecutable",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\bin\\vkgr_p0_input_trace_probe.exe",
+      "bytes": 7391232,
+      "sha256": "E96024230565E6B1823879D39FA74A052E241EE2DA47A03B707C855727744AA4",
+      "coveredByChecksumIndex": true,
+      "matchesIsolatedWorktreeArtifact": true
+    },
+    {
+      "role": "probeSource",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\probe-source\\p0_input_trace_probe.cpp",
+      "bytes": 43068,
+      "sha256": "0E13DB85182A04F885DE36A7589BB50AB59624808A2B559AB682C5F45B828842",
+      "coveredByChecksumIndex": true,
+      "matchesIsolatedWorktreeArtifact": true
+    },
+    {
+      "role": "traceValidation",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\trace-validation.txt",
+      "bytes": 359,
+      "sha256": "BEF7151F3267752E218F139C1E9EFCDF184B4E6FCC858E10216C01C2A42B841A",
+      "coveredByChecksumIndex": true
+    },
+    {
+      "role": "repeatCheck",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\repeat-check.txt",
+      "bytes": 374,
+      "sha256": "5DF50D42B7FD892ABF032F45038E379C3D87349E1711B03EF4C164A2AB9802BC",
+      "coveredByChecksumIndex": true
+    },
+    {
+      "role": "recordedCommands",
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\COMMANDS.md",
+      "bytes": 2711,
+      "sha256": "730389701EB83802B63FA2F8AB946E10993477D24832C5CB43AC177499F9CF76",
+      "coveredByChecksumIndex": true
+    }
+  ],
+  "integrity": {
+    "checksumIndexEntries": 68,
+    "checksumIndexParsedEntries": 68,
+    "missingFiles": 0,
+    "hashMismatches": 0,
+    "allIndexedFilesMatch": true,
+    "checksumIndexSelfHashWasComputedSeparately": true,
+    "frozenReferenceSourcesComparedToWorktree": 7,
+    "frozenReferenceSourceMismatches": 0
+  },
+  "commands": {
+    "provenance": "Recorded by the sealed COMMANDS.md and REPORT.md; this MGIF integration verified artifacts without rebuilding or rerunning the clipboard-mutating probe.",
+    "workingDirectory": "C:\\Users\\happyelements\\orca\\workspaces\\vk_gltf_renderer\\vkgr-p0-input-trace",
+    "configureProbe": "cmake -S . -B \"G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\build\" -G \"Visual Studio 17 2022\" -A x64 -T \"v143,version=14.38\" -DNvproCore2_ROOT=F:/GitHub -DBUILD_P0_INPUT_TRACE_PROBE=ON -DBUILD_TESTING=OFF -DUSE_DLSS=OFF -DUSE_OPTIX_DENOISER=OFF -DUSE_DRACO=OFF -DUSE_DEFAULT_SCENE=OFF",
+    "buildProbe": "cmake --build \"G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\build\" --config Debug --target vkgr_p0_input_trace_probe -- /m",
+    "runPrimary": "& \".\\_bin\\Debug\\vkgr_p0_input_trace_probe.exe\" 1> \"G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\trace.jsonl\" 2> \"G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\trace.stderr.log\"",
+    "runRepeat": "& \".\\_bin\\Debug\\vkgr_p0_input_trace_probe.exe\" 1> \"G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\trace-repeat.jsonl\" 2> \"G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\trace-repeat.stderr.log\"",
+    "configureExistingTests": "cmake -S . -B \"G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\test-build\" -G \"Visual Studio 17 2022\" -A x64 -T \"v143,version=14.38\" -DNvproCore2_ROOT=F:/GitHub -DBUILD_P0_INPUT_TRACE_PROBE=OFF -DBUILD_TESTING=ON -DUSE_DLSS=OFF -DUSE_OPTIX_DENOISER=OFF -DUSE_DRACO=OFF -DUSE_DEFAULT_SCENE=OFF",
+    "buildExistingTests": "cmake --build \"G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\test-build\" --config Debug --target vkgr-p0-input-trace_tests -- /m",
+    "runExistingTests": "ctest --test-dir \"G:\\ReferenceOracleRuns\\vkgr-50373c7b-input-probe\\test-build\" -C Debug --output-on-failure"
+  },
+  "coverage": {
+    "validatedCaseIdCount": 30,
+    "traceUniqueCaseValueCount": 32,
+    "umbrellaCaseValuesExcludedFromValidatedCount": [
+      "O08",
+      "O10"
+    ],
+    "caseIds": [
+      "O05",
+      "O06",
+      "O06-release-before-escape-queue",
+      "O07-no-delivered-release",
+      "O07-same-frame-release-focus-loss",
+      "O07-delivered-release",
+      "O08-single-hit",
+      "O08-single-same-toggle",
+      "O08-single-blank",
+      "O08-single-invalid-instance",
+      "O08-double-hit",
+      "O08-double-blank",
+      "O10-copy",
+      "O10-no-prefix",
+      "O10-empty-suffix",
+      "O10-negative",
+      "O10-leading-space",
+      "O10-leading-plus",
+      "O10-nondigit",
+      "O10-trailing",
+      "O10-decimal",
+      "O10-overflow-positive",
+      "O10-overflow-long",
+      "O10-canonical-zero",
+      "O10-canonical-one",
+      "O10-canonical-out-of-range",
+      "O10-cross-document-A",
+      "O10-cross-document-B",
+      "O10-cross-document-C",
+      "O10-cross-document"
+    ]
+  },
+  "recordSummary": {
+    "primary": {
+      "records": 144,
+      "jsonParseErrors": 0,
+      "headers": 1,
+      "summaries": 1,
+      "assertions": 40,
+      "assertionFailures": 0,
+      "summaryExitCode": 0,
+      "stderrBytes": 0
+    },
+    "repeat": {
+      "records": 144,
+      "jsonParseErrors": 0,
+      "assertions": 40,
+      "assertionFailures": 0,
+      "summaryExitCode": 0,
+      "stderrBytes": 0
+    },
+    "primaryRecordTypes": {
+      "header": 1,
+      "event_sequence": 8,
+      "gizmo_frame": 51,
+      "viewport_click_frame": 24,
+      "clipboard_transport": 1,
+      "material_copy": 1,
+      "material_clipboard": 16,
+      "clipboard_restore": 1,
+      "assertion": 40,
+      "summary": 1
+    },
+    "assertionsByOracle": {
+      "O05": 4,
+      "O06": 8,
+      "O07": 11,
+      "O08": 12,
+      "O10": 5
+    },
+    "evidenceGradeRecordCounts": {
+      "EXECUTED_SOURCE_LEVEL_PROBE": 3,
+      "EXECUTED_FIXED_CORE_PLUS_SOURCE_ORDER_MODEL": 82,
+      "EXECUTED_FIXED_PARSER_PLUS_SOURCE_UI_MODEL": 17
+    },
+    "existingTests": {
+      "registered": 123,
+      "passed": 43,
+      "skipped": 80,
+      "failed": 0,
+      "exitCode": 0,
+      "coverageCaveat": "The 80 asset-dependent skips and the absence of existing UiMouseState, SceneSelection clipboard, and gizmo-input tests mean this suite does not independently cover O05-O08 or O10."
+    }
+  },
+  "repeatability": {
+    "rawTraceHashesEqual": false,
+    "rawDifferingRecordCount": 6,
+    "normalization": "Replace only Win32 clipboard sequence-number integers and bounded retry-count integers.",
+    "normalizedFields": [
+      "sequence_before",
+      "sequence_after_cases",
+      "backup_attempts",
+      "transport_attempts",
+      "restore_attempts"
+    ],
+    "sealedNormalizedPrimarySha256": "A008988DD8D1A8FE4CFB978A14853887C919BE539A97FA14435B1A1EAE83E4D5",
+    "sealedNormalizedRepeatSha256": "A008988DD8D1A8FE4CFB978A14853887C919BE539A97FA14435B1A1EAE83E4D5",
+    "normalizedEqual": true,
+    "independentStructuralNormalizationDifferentRecords": 0
+  },
+  "osClipboard": {
+    "transport": "Dear ImGui default Win32 OS clipboard",
+    "backupAvailable": true,
+    "copyText": "gltf_material:2",
+    "primaryRestoreHresult": 0,
+    "primaryRestoreAttempts": 1,
+    "primaryRestored": true,
+    "repeatRestored": true,
+    "restoredObject": "original OS IDataObject",
+    "sequenceAndRetryFieldsAreTransportMetadata": true
+  },
+  "evidenceScope": {
+    "fullInteractiveApplicationObservation": false,
+    "ceiling": "Source-level executable probe with explicitly labeled source-order models.",
+    "grades": {
+      "EXECUTED_SOURCE_LEVEL_PROBE": "The named fixed function or Win32 clipboard transport ran directly; used for material copy and clipboard backup/restore.",
+      "EXECUTED_FIXED_CORE_PLUS_SOURCE_ORDER_MODEL": "Fixed Dear ImGui input processing, UiMouseState, SceneSelection, and/or TransformHelperVk ran; surrounding application phase, renderer, history, selection, focus, pick, or camera consequences are fixed-source-order models.",
+      "EXECUTED_FIXED_PARSER_PLUS_SOURCE_UI_MODEL": "The fixed material parser ran against the OS clipboard; active-document range, assignment, tooltip, and history consequences are fixed-source UI models."
+    }
+  },
+  "oracleFindings": {
+    "O05": "Escape-only clears selection, permits one final real gizmo preview update, then modeled render attachment sync calls real clearAttachment; no end callback or modeled history entry is emitted.",
+    "O06": {
+      "escapeThenRelease": "Both callbacks are visible in frame N: menu clear precedes viewport MouseReleased/endDrag, exactly one modeled Transform history entry is produced, and render sync detaches.",
+      "releaseThenEscape": "With ConfigInputTrickleEventQueue=true, frame N sees release and commits exactly once while retaining selection/attachment; Escape is exposed in frame N+1, which clears selection and detaches."
+    },
+    "O07": {
+      "noDeliveredRelease": "Focus loss clears ImGui mouse state without MouseReleased; the real drag remains latched, a later physical up is not classified as release, and later modeled selection detach discards it without history.",
+      "sameFrameReleaseThenFocusLoss": "Even when mouse-up is queued before focus loss in one input queue, focus clearing prevents application-visible MouseReleased; selection and the latched attachment remain, with no history.",
+      "releaseDeliveredBeforeFocusLoss": "A release delivered in the preceding application frame runs real endDrag once and produces one modeled history entry; next-frame focus loss adds no callback and does not clear selection or detach."
+    },
+    "O08": {
+      "executed": "Dear ImGui timing, UiMouseState::update, and SceneSelection methods.",
+      "modeled": "Supplied pick results and application selection, Browser focus, and camera consequences.",
+      "boundary": "No real Vulkan ray picker, scene, camera manipulator, GLFW window hover/focus, or Browser widget was driven."
+    },
+    "O10": {
+      "directlyExecuted": "SceneSelection material copy/parser/availability, Dear ImGui Win32 clipboard transport, and OLE backup/restore.",
+      "modeled": "Active-document range, assignment, tooltip, and history consequences.",
+      "atoiResults": [
+        { "text": "material:1", "parsed": -1, "pasteEnabled": false, "inRangeForTwoMaterials": false, "modeledMutation": false },
+        { "text": "gltf_material:", "parsed": 0, "pasteEnabled": true, "inRangeForTwoMaterials": true, "modeledMutation": true },
+        { "text": "gltf_material:-1", "parsed": -1, "pasteEnabled": false, "inRangeForTwoMaterials": false, "modeledMutation": false },
+        { "text": "gltf_material: 1", "parsed": 1, "pasteEnabled": true, "inRangeForTwoMaterials": true, "modeledMutation": true },
+        { "text": "gltf_material:+1", "parsed": 1, "pasteEnabled": true, "inRangeForTwoMaterials": true, "modeledMutation": true },
+        { "text": "gltf_material:abc", "parsed": 0, "pasteEnabled": true, "inRangeForTwoMaterials": true, "modeledMutation": true },
+        { "text": "gltf_material:1tail", "parsed": 1, "pasteEnabled": true, "inRangeForTwoMaterials": true, "modeledMutation": true },
+        { "text": "gltf_material:1.5", "parsed": 1, "pasteEnabled": true, "inRangeForTwoMaterials": true, "modeledMutation": true },
+        { "text": "gltf_material:2147483648", "parsed": 2147483647, "pasteEnabled": true, "inRangeForTwoMaterials": false, "modeledMutation": false },
+        { "text": "gltf_material:999999999999999999999999", "parsed": 2147483647, "pasteEnabled": true, "inRangeForTwoMaterials": false, "modeledMutation": false },
+        { "text": "gltf_material:0", "parsed": 0, "pasteEnabled": true, "inRangeForTwoMaterials": true, "modeledMutation": true },
+        { "text": "gltf_material:1", "parsed": 1, "pasteEnabled": true, "inRangeForTwoMaterials": true, "modeledMutation": true },
+        { "text": "gltf_material:7", "parsed": 7, "pasteEnabled": true, "inRangeForTwoMaterials": false, "modeledMutation": false }
+      ],
+      "crossDocument": "Index 1 resolves in documents with 2 or 3 materials and is an enabled no-op in a document with only 1 material; it is a document-local integer, not a cross-document stable identity.",
+      "modeledHistoryDelta": 0
+    }
+  },
+  "safetyDecision": {
+    "id": "D16",
+    "classification": "MGIF safety exception",
+    "rule": "Use OS text gltf_material:<document index> for parity, keep stable IDs in-process only, validate the index against the active document on every Paste, keep Paste out of history, and reject malformed suffixes fail-closed.",
+    "referenceCaveat": "The fixed reference uses std::atoi and accepts several malformed suffixes. Those results, including MSVC-specific overflow saturation to 2147483647, do not override D16."
+  },
+  "runtimeGaps": [
+    "No full GLFW window or full ImGui application UI was launched.",
+    "No Vulkan renderer, GPU draw, real scene ray query, or real camera manipulator was driven.",
+    "No Inspector or Browser widget was clicked, focused, or visually observed.",
+    "No real material binding or renderer undo stack was mutated.",
+    "No UI screenshot, DPI, hover, modal, viewport-outside, or GPU validation evidence was captured.",
+    "This evidence does not close full P0 readiness or the D20 multi-scene gate."
+  ]
+}

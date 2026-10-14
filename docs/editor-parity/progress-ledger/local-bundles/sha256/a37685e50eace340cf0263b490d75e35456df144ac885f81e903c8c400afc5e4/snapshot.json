@@ -1,0 +1,37 @@
+{
+  "base": {
+    "bundleId": "799241f0ff60eee1b37949b17c9118a1fa2fcda8f2f9f001a30bc336198d0eef",
+    "pointerSha256": "5bd098ee508b592a8230a856cef4e5fa7642ad787a578d6d60386a8cb3de3e1b",
+    "revisionSha256": "69d5704951677d35fb7e2925a04bd5b01a95729ded27338e772632c66455d7ac",
+    "snapshotSha256": "82d0c43caa88d8cd70d7c654aa305742e17f72ad57e4211e9f6465b22a3e5ae0",
+    "stateSha256": "31ca0ba7db488f46eb3f8483960e9410ea03db9dfaead4cf6cc9d8e953d17bca"
+  },
+  "consistencyMode": "frozen-origin-plus-receipt-chain",
+  "documentKind": "local-progress-snapshot",
+  "ledgerId": "mgif-editor-parity",
+  "parent": null,
+  "revisionSha256": "378b14915045798320980cee8012044ea420b8cf6c44a08e26a83e98a32376da",
+  "schemaVersion": 1,
+  "sealedAtUtc": "2026-08-28T11:00:00.000Z",
+  "taskOverrides": {
+    "task_2ebaf90139c5": {
+      "completedAtUtc": "2026-08-28T11:00:00.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88",
+        "reportSha256": "8d8d35c3aae38e7ad08b1fe7502383027218ad5cbcf1f26172f10ad614a1c456",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "0bfd94be6214742bbc35c92054bc6aacf251675b482a35c3cb412eb0cd78e0cb"
+      },
+      "status": "completed"
+    }
+  },
+  "transitionHeadSha256": "1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88",
+  "transitionReceipts": [
+    {
+      "bytes": 1339,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88",
+      "sha256": "1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88"
+    }
+  ]
+}

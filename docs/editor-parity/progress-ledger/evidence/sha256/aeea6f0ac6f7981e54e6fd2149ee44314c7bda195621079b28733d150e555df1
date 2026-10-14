@@ -1,0 +1,192 @@
+# P6-20 Completion Report
+
+## Verdict
+
+P6-20 (`task_4f88b986a42c`) is complete as the delayed click classifier,
+serial-order picking controller, camera/focus effect, and single-owner input
+router leaf.
+
+This is not integrated P6 and is not Gate P6. Runtime, UI, selection-authority
+cutover, concrete camera/browser adapters, renderer facade, RHI composition,
+history integration, and CMake wiring remain P6-90 work.
+
+Completed at: `2026-08-29T02:16:52.000Z`
+
+## Selected Parent
+
+- Pointer SHA-256: `e26a1097cdb5640173711e5f03922ddf33519b76739a5c8f548f172bc6822c72`.
+- Parent bundle: `e5f2c2ace1e85efe2972123cd8df1855f7a347b2bd417015747289b998e549c8`.
+- Parent snapshot SHA-256: `bf3bade267d830c03b93ca26caaa61e015e03691958f5d07390bad87e9902260`.
+- Previous transition SHA-256: `e6b8aa65967b3afb19f8fce76c830f1317a5ecc0fb7ce4c709c14da2053b3701`.
+- Before-task SHA-256: `45c2dd7c440e371d1ad11951c1f61476bce39583661a468b50b0c20e38ca7e00`.
+- Before state: `ready`.
+
+## Write-Set Rebind Authority
+
+The recovered blueprint's old 13-path app-layer write set had materially
+drifted: twelve paths were absent, while the used classifier/router already
+existed in `scene/editor`; layering the old paths would create duplicate
+request/result types and a second router authority.
+
+The separately authorized and independently reviewed replacement is:
+
+- `docs/editor-parity/p6-20-write-set-rebind.json`
+- 6628 bytes
+- File SHA-256 `82186704fa231ec265436da913b5ad973ab8fa7f190c7ecb9e6ef41c2cdb4935`
+- Canonical body revision
+  `06f2d2ba35d77604012b4488e00afcd089fb954bb2637b904046aac452989f8e`
+
+That authority closes P6-20 to six existing paths. It does not supersede the
+original P6-90 paths omitted from its `reservedForP690` summary; every path not
+in `newWriteSet` remains unauthorized for P6-20.
+
+## Dependency Bindings
+
+- P6-10 report: SHA-256
+  `d01d7b451593f5ff017c78a06883400f096c81a1d265b1165abd19a6070d6726`.
+- P6-10 receipt: SHA-256
+  `5db1193abb4b0ba55bb40a0e07da8ca2dab595c2215758a4e048697a4bd00c36`.
+- Frozen `EditorPickingTypes.h`: 7580 bytes, SHA-256
+  `d8f566959e8b8e7a8a0703164e625bcb16e7deb271f67a74ff43deb314694004`.
+- Frozen `EditorSelectionTypes.h`: SHA-256
+  `e61645ef7b3daa1043adc4c89e3f2b6002a18ea162a3abc4c4a4ffe9dd6c1ff8`.
+- Frozen `EditorViewportMetrics.h`: SHA-256
+  `daffc513756e4a71ef8734e87234627bbfc8d7cb0788119d15ff48c5355227aa`.
+- O06 report: SHA-256
+  `8d8d35c3aae38e7ad08b1fe7502383027218ad5cbcf1f26172f10ad614a1c456`.
+
+## Pre-Edit Binding
+
+The six exact existing paths and their preimages are sealed in the rebind
+authority. Immediately before first write, the writer rechecked all bytes and
+hashes against that authority; no drift was present.
+
+## Final Write Set
+
+| Path | Bytes | SHA-256 |
+|---|---:|---|
+| `scene/editor/include/mgif/scene_editor/EditorPicking.h` | 6962 | `9a1d11edeab76b9263365f5189f48e235cf0940ac03541137cbb91494d539d81` |
+| `scene/editor/EditorPicking.cpp` | 15288 | `fb22efd451c8ebaa26285cb33790167e63a40ef047f1aacef5b626cf22ca4a6d` |
+| `scene/editor/include/mgif/scene_editor/EditorInputRouter.h` | 9553 | `909a672ae39e65a511528ba32c249582d9a33ab008ace752c10fdaa002412715` |
+| `scene/editor/EditorInputRouter.cpp` | 24157 | `970dc7c0e97bba360a50f3147c66fa1d60bbbbcf91f1658412179c182db0ec94` |
+| `tests/editor/editor_picking_contract_tests.cpp` | 23803 | `94142c535633596b47c96d9c5dfb39026c425c6db67cc28192eea8a61de5a94d` |
+| `tests/editor/editor_input_router_tests.cpp` | 20087 | `49a75ffc52ff05d80264edf7398f430f4db61d3c424efe8e7015fbc3a1f05006` |
+
+No runtime, UI, controller, facade, renderer, history, CMake, ledger, or other
+path was changed by this leaf.
+
+## Implemented Contract
+
+Classifier and request emission:
+
+- First release creates one pending single; no eager request is emitted.
+- Single emits only when elapsed is strictly greater than the configured
+  interval. `T-epsilon`, `T`, and `T+epsilon` are distinct tested partitions.
+- A recognized second press emits double immediately and suppresses the
+  delayed single.
+- Drag emits neither action. Ineligible frames pause emission, while document,
+  scene, viewport, or explicit lifecycle reset clears stale physical intent.
+- Pointer position and immutable viewport metrics are sampled at emission.
+- Request construction binds current logical sample, physical attachment
+  sample, projection/view/viewport identities, full P6-10 fence, occurrence
+  generation, serial, intent, and normalized world ray.
+
+Controller and effects:
+
+- Terminal arrival is stored separately from commit. Ready heads commit in
+  accepted serial order, one per caller update, so the caller can refresh the
+  one selection authority context between commits.
+- Out-of-order 3/1/2 completion, cancel/error head-of-line release,
+  duplicate/unknown suppression, and lifecycle reset are covered.
+- Every full fence field and occurrence generation participates in stale
+  no-effect rejection.
+- Single hit emits typed set/clear-capable exact-occurrence toggle and no-tab
+  Browser reveal/scroll effects. Blank/current-invalid/hidden clears; stale,
+  error, and cancellation do not overwrite newer state.
+- Exact same `PrimitiveOccurrenceKey` always emits a clear-capable toggle,
+  independent of the separate sole-highlight Node edge flag.
+- Double hit emits finite camera center, positive speed, keep-eye, and exactly
+  one view-revision successor. The modeled `[1,2,-2]` center and speed `5` are
+  covered. Invalid/miss/stale/error/cancelled double results are no-ops.
+- The controller stores no selection, camera, Browser, renderer, or UI
+  authority; it emits immutable effects only.
+
+Router and O06:
+
+- One router owns classifier input, priority, capture, and batch terminal
+  arbitration: modal, active/latched Gizmo, captured widget, picking, camera.
+- DPI conversion consumes frozen `EditorViewportMetrics` once and preserves
+  half-open boundaries at 100/125/150/200 percent scale.
+- Gizmo capture remains owned outside viewport until delivered release or
+  terminal detach/latch.
+- A physical release is deferred until explicit frame close. Ordinary release
+  with no Escape commits exactly once.
+- O06 Escape/release in either same-batch order reaches the same clear,
+  detach, release-capture, no-commit/no-history effect.
+- O05 Escape-only is no-history. O07 focus loss latches retained preview with
+  no manufactured commit. Late/repeated release cannot commit again.
+- Prior-frame delivered ordinary release remains committed exactly once;
+  later Escape does not retract or duplicate it.
+
+## Windows MSVC Verification
+
+The completion decision uses native Windows builds and execution.
+
+- Microsoft Visual C++ 19.44.35217.0.
+- C++20, `/permissive-`, `/W4`, `/WX`.
+- Debug: `/MDd /Od`; Release: `/MD /O2 /DNDEBUG`.
+- Output root: `G:/Temp/mgif-p6-20-msvc-tests-20260829`.
+
+| Test | Config | Bytes | SHA-256 | Result |
+|---|---|---:|---|---|
+| `editor_picking_contract_tests.exe` | Debug | 177664 | `120e1dc170db33229bc9e26815a0d7e1ee4c5a338881a077caf9eac57c8bad82` | PASS |
+| `editor_picking_contract_tests_release.exe` | Release | 56832 | `02e67848c4c51ecfab132f5af39ca51b8f990b0ba6d5e6bf475d8b81942326dd` | PASS |
+| `editor_input_router_tests.exe` | Debug | 192512 | `d8399bb7aecb4a8265854228bad4e1f8459646cd987e1722383807744b78a2a7` | PASS |
+| `editor_input_router_tests_release.exe` | Release | 45056 | `a441432fa334ecd04ca8d94b84dfc31ba6d3e930861306473430a2ff7fc4d859` | PASS |
+
+Header probes:
+
+| Probe | Bytes | SHA-256 | Result |
+|---|---:|---|---|
+| `editor_picking_header_probe.obj` | 2733 | `b6b25830fcc96084a08d512ccfcf876c5db550e4a508f16c85b0272284363d87` | PASS |
+| `editor_input_router_header_probe.obj` | 2737 | `abb19930c0b5e9f24f825c7adb52e40b2ca2dcafd645072ad820837f78ee8c56` | PASS |
+
+Additional final Windows gates:
+
+- Configured production-editor dependency preflight: PASS.
+- P0 scaffold/dependency scan: PASS, 42 features, 10 traces, 110 edges.
+- Production boundary scan: no old `SceneRuntimeMapping`, duplicate request /
+  result types, old viewport metrics, selection snapshot authority, ImGui,
+  GLFW, native handle, synchronous wait, or orchestration dependency.
+- Independent final review: the exact same Primitive toggle blocker was fixed
+  and covered; O06 frame-close order and all other focused contracts have no
+  remaining signing blocker.
+
+## Deferred Work
+
+1. P6-90 must adapt `EditorViewportRuntime`, `EditorController`,
+   `SceneEditorUi`, `MinimalLatestApp`, RendererFacade/GPU renderer, projection,
+   clipboard adapter, and CMake to these breaking leaf APIs.
+2. P6-90 must remove the CPU AABB picking producer, perform the production
+   selection-authority cutover, wire concrete camera/focus effects, async RHI
+   enqueue/poll/cancel, real highlight, and frame-end delivery.
+3. P6-90 must prove the runtime no longer independently applies the old
+   release-wins O06 branch; P6-20 has frozen the owner semantics, but runtime
+   history evidence is integration work.
+4. This rebind does not supersede or release any original P6-90 write path
+   omitted from its key-path summary.
+5. Gate P6 remains not run. Vulkan/D3D12/Android/runtime screenshot and
+   independent Gate evidence remain required.
+
+## Fixed Policy
+
+- F42: `BLOCKED`
+- R24: `BLOCKED`
+- Metal: `Not Verified`
+- release/distribution: `NOT PASS`
+
+## Local Review Decision
+
+The automatic local review decision is `completed` with outcome `succeeded`
+for P6-20 only. P6-90 is expected to become ready after receipt replay. G6 and
+Gate P6 remain pending/not run.

@@ -1,0 +1,644 @@
+# MGIF P6 Selection and Picking Readiness Oracle
+
+Date: 2026-08-23 (Asia/Shanghai)  
+Mode: read-only audit; no build, test execution, or repository modification  
+MGIF worktree: `G:\MGIF`  
+MGIF audited HEAD: `6c36567625b305286755a734a66188a22df18e77`  
+Reference repository: `F:\GitHub\vk_gltf_renderer`  
+Reference HEAD verified: `50373c7b0ff58078727af2c2aac70e29d5e74752`
+
+## 1. Executive Verdict
+
+**Integrated P6 is not ready to implement on the current MGIF snapshot, and Gate P6 is not passed.** The reference behavior and locked P6 requirements are sufficiently understood to implement the pure CPU selection service, clipboard codec, click classifier, and coordinate conversion. The renderer-facing portion is blocked by missing P5 contracts and production wiring: `RendererFacade` has no revisioned scene-delta/publication contract, the editor projection is not linked into `demo_core`, the current mapping cannot identify render occurrences, and neither scene/device/viewport lifecycle generations nor a camera-center bridge exist.
+
+The minimum preconditions before integrated P6 work starts are:
+
+1. Freeze and implement the P5 `SceneChangeSet`/projection publication contract in production.
+2. Add an immutable, one-to-many document-to-render-occurrence table at publication time.
+3. Expose monotonically increasing projection, scene-epoch, device-generation, viewport-generation, and view-revision stamps.
+4. Provide an asynchronous, backend-neutral pick API that always returns a terminal completion.
+5. Provide app-owned camera and input adapters that can be faked without importing reference helpers.
+6. Reconcile the R16 same-frame Escape+release history contradiction between the locked prose and manifest O06 before freezing the shared input router.
+
+This is a readiness oracle. It is not an implementation, a build result, a runtime verification, or a Gate PASS.
+
+## 2. Locked Inputs and Evidence Integrity
+
+| Artifact | Audited identity/status |
+|---|---|
+| Locked specification | `docs/gltf-scene-editor-parity-task.md`; SHA-256 `BFD4B5FFE8D73B9BB887047A8CAD5AD96C7184D182EEB752AA47028B05BD679E` |
+| Evidence manifest | `docs/editor-parity/manifest.json`; SHA-256 `A5182DDAEB88368B293EE55931E6DD7DEEC989EB62CDA57D5C9C09C65B38B053` |
+| Edge registry | `docs/editor-parity/edge-obligations.json`; SHA-256 `617C4731C20FF1264D0BEFA36FD6347D94CBE22B8B30F09906F2A5A88CDE0F33` |
+| Reference source | Git HEAD exactly `50373c7b0ff58078727af2c2aac70e29d5e74752` |
+| MGIF source baseline | Git HEAD `6c36567625b305286755a734a66188a22df18e77`; relevant worktree content is dirty/untracked, so this report describes the observed filesystem snapshot, not only committed HEAD |
+| Manifest phase status | `p1_engineering_ready`; it is not a P6 readiness or pass declaration |
+
+The exact manifest fields relevant to this oracle are:
+
+| JSON selector in `manifest.json` | Value/evidence meaning |
+|---|---|
+| `/status` | `p1_engineering_ready`; no P6 readiness claim |
+| `/reference/commit` | `50373c7b0ff58078727af2c2aac70e29d5e74752` |
+| `/target/commit` | `6c36567625b305286755a734a66188a22df18e77` |
+| `/features[id=F09]/baselineStatus` and `/mgifEvidence/status` | `partial`; `not_implemented` for unified six-type selection |
+| `/features[id=F10]/baselineStatus` and `/mgifEvidence/status` | `missing`; `not_implemented` for delayed picking/highlight/focus |
+| `/features[id=F24]/baselineStatus` and `/mgifEvidence/status` | `missing`; `not_implemented` for material assignment/clipboard |
+| `/oracleTraces[id=O08-viewport-click-classifier]/status` | `native_partial`; invalid/stale/hidden hits and numeric camera state remain debt |
+| `/oracleTraces[id=O10-material-clipboard]/status` | `native_partial`; decimal overflow and exact clipboard restoration remain debt |
+| `/oracleTraces[id=O06-gizmo-escape-release-same-frame]/status` | `conflict`; native visible no-history result conflicts with the source-derived R16 prose |
+
+F09 is therefore only a partial baseline and all three MGIF feature evidence records are `not_implemented`. O08 and O10 are `native_partial`, not closure. The edge registry contains 110 assigned obligations and no executed or passed obligations, so assignment must not be reported as coverage.
+
+There is also a material cross-artifact conflict in the R16 input boundary. Locked R16 prose says Escape+left-release in one ImGui frame runs `endDrag` and creates exactly one transform history entry. Manifest `O06-gizmo-escape-release-same-frame` records native execution of both event orders with cleared selection, retained transformed scene, and visibly disabled Undo; its conflict disposition says the MGIF target should match that native visible no-history result. D11 says executable behavior outranks source/tests, while R16 says its prose must be updated before implementation if runtime refutes the source prediction. That update has not occurred in the audited specification. P6 can define event ownership and selection clearing, but the shared P6/P7 router cannot be called exact or Gate-ready until R16, O06, U03, and their acceptance expectations name one history outcome.
+
+The locked P6 scope is:
+
+- P6-T01: unified `SceneSelection`, canonical OS material clipboard validation, selection revision/event, browser focus and camera bridge.
+- P6-T02: backend-neutral request/result, delayed single/double classifier, editor picking pass, world hit/distance, and rejection of stale, hidden, or deleted instances.
+- P6-T03: Node subtree highlight and one-Primitive target highlight.
+- P6-T04: input arbitration and logical-viewport-to-render-pixel conversion with camera suppression.
+- Gate P6: all selection entry points synchronized; cross-frame pick; timeout, same-Primitive, blank, double-camera, browser-focus, Escape, hidden/deleted, clipboard partitions, and screenshot/Inspector agreement all verified.
+
+## 3. Exact Reference Source Evidence
+
+All source observations below are from the fixed reference commit, not a moving branch.
+
+| Reference source | Observed contract | MGIF consequence |
+|---|---|---|
+| `src/scene_selection.hpp:32-112` | One context represents Node, Primitive, Material, Mesh, Camera, or Light. Storage uses reference vector/render indices. Events exist only for Node, Primitive, Material, and camera actions. | Preserve the six visible selection kinds, but replace indices with MGIF stable IDs and emit one coherent event contract for every kind and clear. |
+| `src/scene_selection.cpp:35-114` | Selection replacement is immediate. `clearSelection()` does not emit a reference event. | MGIF must intentionally diverge on notification completeness because R04 requires all consumers to synchronize, including on clear. |
+| `src/scene_selection.cpp:119-147` | Copy writes exact text `gltf_material:<index>` through the Dear ImGui OS clipboard. Parsing is prefix check plus `std::atoi`, which accepts malformed suffixes. | Keep the wire text, but D16 overrides permissive parsing: fail closed on malformed input and overflow. Never place stable IDs on the clipboard. |
+| `src/ui_mouse_state.hpp:48-117` | Per-button states are IDLE, SINGLE_PENDING, and DOUBLE. First release enters pending; a Dear ImGui-recognized second press emits double; strict `>` timeout emits single; a drag emits no click. | Implement a fake-clock-testable classifier with the same exclusivity and strict boundary. Do not dispatch the first single eagerly. |
+| `src/ui_renderer.cpp:52-180` | Input is admitted only for a hovered viewport root or active gizmo, with a valid non-busy scene. Gizmo handling precedes picking. At classification time, picking samples the current mouse position and current viewport rectangle. | Router eligibility and action-time sampling are part of the contract. The reference's synchronous Vulkan picker must be replaced by an asynchronous MGIF API and lifecycle fences. |
+| `src/ui_renderer.cpp:52-180` | Single hit selects Primitive; if the sole selected render node is the same hit render node it clears; miss/environment clears. Double hit changes camera center/speed and does not run single selection. Double miss changes neither camera nor selection. | Make same-Primitive toggle an explicit controller operation. Partition single blank from double blank. Test the reference edge where a one-draw Node selection can satisfy the same sole-render-node comparison. |
+| `src/ui_renderer.cpp:290-327` | Node selection recursively expands to all descendant render nodes for silhouette; Primitive selects one render node. | Derive a highlight occurrence set from selection. Never store draw indices in selection state. |
+| `src/ui_scene_browser.cpp:181-209`, `1602-1623` | Focus expands the parent path and requests scroll. Although `m_currentTab` is assigned, `BeginTabItem` is not passed a forced-selected flag. | Browser focus must reveal/scroll without changing the active tab. A pending reveal may be consumed when the user later opens the graph tab. |
+| `src/ui_inspector.cpp:975-1076` | Paste availability is based on syntactic parse. A canonical out-of-range index remains enabled, shows invalid feedback, and no-ops on click. Valid paste resolves a document-local material index and does not enter history. | Separate syntax from active-document range. Revalidate on the click, not only while drawing the menu. |
+| `src/renderer.cpp:799-860`, `src/resources.hpp:259-282` | Highlight uses an ObjectID image plus a CPU bit mask and Sobel-style silhouette. | ObjectID plus outline is evidence for behavior, not a required implementation. Any MGIF RHI implementation is acceptable if selection-to-highlight semantics and screenshots match. |
+| Reference `CMakeLists.txt` | Reference directly depends on `nvpro2::nvapp`, `nvpro2::nvgui`, and `nvpro2::nvvk`. | These dependencies and their helper types are evidence-only and forbidden in MGIF. |
+
+The source/core input trace adds the following numeric evidence:
+
+- With a 0.30-second configured double-click window, a single is dispatched at `t=0.33`; the boundary is strict `elapsed > threshold`, not `>=`.
+- A second press at `t=0.12` emits one double with no preceding single.
+- The modeled double hit has center `[1, 2, -2]` and navigation speed `5`.
+- Copy emits exact text `gltf_material:2`.
+
+Native UI evidence remains partial. O08 did not natively establish invalid/stale/hidden-hit behavior or exact numeric camera center/speed. O10 did not establish native overflow behavior or exact final restoration of the pre-task clipboard. Those gaps remain gaps; source and D16 supply the implementation contract where explicitly locked.
+
+## 4. Applicable Edge Obligations
+
+| ID | Category | Required behavior | Evidence target/status |
+|---|---|---|---|
+| E002 | adjacency | Delete/Compact must never alias a removed stable ID to an adjacent survivor or later generation. | `T-ID-01`, `T-DOC-02`, `T-SEL-01`; assigned only |
+| E026 | concurrency | A pick, selection, command, or renderer handle captured before delete/Merge/Compact/document replacement must be rejected when authority, generation, or revision is stale. | deterministic property model; assigned only |
+| E047 | empty | Empty registries/mappings return typed absence and never manufacture object/index zero. | explicit empty fixture; assigned only |
+| E067 | idempotency | Repeated stale-ID lookup remains invalid across generation reuse, Undo restore, Merge, and Compact. | property state digest; assigned only |
+| E088 | ordering | Forward/reverse mappings remain deterministic across mutation, Undo/Redo, Merge, and Compact. | exact-sequence property model; assigned only |
+| E028 | concurrency | Within the double window exactly one delayed single or one double camera action occurs, and consumers observe one end-of-frame selection revision. | fake-clock UI plus executable trace; assigned only |
+| E069 | idempotency | Re-setting the same payload emits nothing; the explicit second viewport click on the unique same Primitive clears exactly once. | selection event plus UI trace; assigned only |
+| E040 | concurrency | Escape-only, Escape+release, focus loss, synthetic release, and late release take mutually exclusive commit/no-history branches. | input state machine plus executable trace; assigned only |
+| E081 | idempotency | After Escape-only detaches an active drag, repeated Escape/late release preserve cleared selection, preview TRS, and unchanged history. | input state machine plus executable trace; assigned only |
+| E006 | adjacency | Material Assign/Split/Merge preserve neighboring primitive order and shared geometry/accessor relationships. | R09 property model; assigned only |
+| E033 | concurrency | Paste revalidates the material index against the active document at click time. | UI semantic plus executable trace; assigned only |
+| E051 | empty | Empty clipboard/no material/no merge candidate is a disabled or informed no-op with no history/resource mutation. | unit plus UI trace; assigned only |
+| E074 | idempotency | Repeated Copy, invalid Paste, same-material Assign, or no-candidate Merge changes neither document nor history. | state digest plus UI trace; assigned only |
+| E092 | ordering | Material operations preserve exact primitive order and remap selection before orphan deletion. | exact-sequence property model; assigned only |
+
+P6 directly owns R02/R04/R16 selection and input portions. The R09 material obligations are included because P6-T01 explicitly owns clipboard codec and paste validation, even though material assignment itself remains R09-owned.
+
+## 5. Current MGIF Audit
+
+### 5.1 Capabilities already present
+
+- `EditorObjectId` and typed Node/Primitive/Mesh/Material/Camera/Light IDs carry kind, slot, generation, and `EditorDocumentAuthority`.
+- `GltfDocument` exposes authority, semantic revision, clean revision, current `SceneId`, containment/index lookup, primitive addresses, hierarchy queries, and visibility queries.
+- `GPUSceneRegistry` has a generation-bearing `GPUSceneObjectHandle`, rejects stale slot reuse, and reports dense-index movement on removal.
+- `SceneProjectionResult` records a document revision, and the projection produces a deterministic mapping/digest for CPU tests.
+- The locked evidence gives a usable classifier and clipboard behavioral baseline.
+
+These are useful foundations, but they do not close the asynchronous occurrence-to-document identity path.
+
+### 5.2 Blocking gaps
+
+1. **The P5 public renderer contract is absent.** `render/RendererFacade.h/.cpp` has upload/render/resize operations but no `SceneChangeSet`, revisioned atomic projection publication, pick request/result, highlight state, or editor lifecycle stamp.
+2. **Editor projection is not production-wired.** `SceneProjection.cpp` and `SceneRuntimeMapping.cpp` occur in CPU-test source lists; `demo_core` links the document target but not a production projection/mapping target.
+3. **The mapping cardinality is wrong for picking.** `SceneRuntimeMappingEntry` stores one `sceneAssetIndex` and one `runtimeIndex` per `EditorObjectId`, and runtime indices must be globally unique. A glTF primitive definition can be reused by multiple nodes and can expand to multiple renderer/GPU instances or draw records. One Primitive ID is therefore not a selectable render occurrence.
+4. **Projection identity is definition-level, not occurrence-level.** `SceneProjection.cpp` derives a runtime identity from `EditorObjectId`; reused instances share the same definition identity. There is no immutable reverse table from a pick token to `(scene, node, primitive, instance ordinal)`.
+5. **Lifecycle fencing is incomplete.** `SceneProjectionResult` has document revision but no projection generation, scene epoch, device generation, viewport generation, or camera/view revision. Current-scene changes are runtime state and need their own epoch because they need not advance document semantic revision.
+6. **Renderer handles are not a public editor contract.** `GPUSceneRegistry` safely manages its own handles, but `RendererFacade` does not publish an editor occurrence token or immutable lookup snapshot. Dense indices move on delete and must never escape into delayed results.
+7. **There is no picking/highlight pass.** The current GBuffer exposes material/depth attachments, with no ObjectID attachment, editor pick readback/ray-query path, or selection outline path.
+8. **There is no unified selection service.** `MinimalLatestApp.h` stores raw `int m_selectedSceneNode`; hierarchy/Inspector code directly mutates either `SceneAsset` or a legacy `GltfModel` branch. It cannot represent six stable selection kinds or a Primitive occurrence.
+9. **Input is not arbitrated after ImGui state is known.** Camera keys/right-button movement are polled directly before the ImGui frame. There is no modal/gizmo/widget/pick/camera ownership router, and global right-button capture can move the camera outside an eligible viewport.
+10. **DPI coordinates have no explicit contract.** The UI image rectangle is in Dear ImGui logical screen coordinates, while the renderer is resized from a GLFW framebuffer size. The actual viewport attachment extent is not paired with the image rectangle for picking.
+11. **The camera lacks the required abstraction.** `render/Camera.h` exposes position/yaw/pitch but no focus center or navigation-speed API; application movement speed is a raw `m_moveSpeed` float.
+12. **Focused P6 tests do not exist.** There is no MGIF selection, picking, clipboard, focus, camera-center, highlight, or input-router suite. Existing evidence tests validate artifacts rather than implemented MGIF behavior.
+
+## 6. Proposed MGIF-Owned Public Contracts
+
+Public contracts should be plain MGIF types and must not expose Dear ImGui, native Vulkan/D3D handles, reference classes, or renderer dense indices.
+
+### 6.1 Stable selection payload
+
+```cpp
+namespace demo::editor {
+
+using SelectionRevision = std::uint64_t;
+
+struct PrimitiveOccurrenceKey {
+  SceneId scene;
+  NodeId node;
+  PrimitiveId primitive;
+  std::uint32_t instanceOrdinal;
+  friend bool operator==(const PrimitiveOccurrenceKey&,
+                         const PrimitiveOccurrenceKey&) = default;
+};
+
+using SceneSelectionValue = std::variant<
+  std::monostate,
+  NodeId,
+  PrimitiveOccurrenceKey,
+  MeshId,
+  MaterialId,
+  CameraId,
+  LightId>;
+
+enum class SelectionCause : std::uint8_t {
+  hierarchy,
+  sceneList,
+  inspector,
+  viewportSingle,
+  viewportSamePrimitiveToggle,
+  escape,
+  documentMutation,
+  documentReplacement,
+  undoRedoRestore,
+  programmatic
+};
+
+struct SceneBrowserFocusRequest {
+  SelectionRevision selectionRevision;
+  SceneSelectionValue target;
+  bool revealParents{true};
+  bool scrollToTarget{true};
+  bool selectTab{false};
+};
+
+struct SelectionChanged {
+  SelectionRevision revision;
+  SceneSelectionValue before;
+  SceneSelectionValue after;
+  SelectionCause cause;
+  std::optional<SceneBrowserFocusRequest> browserFocus;
+};
+
+class SceneSelection {
+public:
+  const SceneSelectionValue& value() const noexcept;
+  SelectionRevision revision() const noexcept;
+  bool set(SceneSelectionValue, SelectionCause,
+           bool requestBrowserFocus = false);
+  bool clear(SelectionCause);
+  bool toggleViewportPrimitive(PrimitiveOccurrenceKey,
+                               bool soleHighlightedOccurrenceMatches);
+  std::vector<SelectionChanged> drainChanges();
+  void reconcile(const GltfDocument&, const SelectionRemap* explicitRemap);
+};
+
+} // namespace demo::editor
+```
+
+Contract rules:
+
+- IDs retain document authority. A payload from another authority is invalid even if slot/generation numbers match.
+- `set()` with an identical valid payload and `clear()` while already empty return false, do not increment the selection revision, and enqueue no event.
+- Same-Primitive clearing is not implemented by making `set()` non-idempotent. It is an explicit viewport controller action that clears once.
+- Every accepted change, including clear and mutation reconciliation, increments exactly once and produces one ordered event. Consumers drain at one deterministic end-of-frame synchronization point.
+- A viewport selection event may request browser reveal/scroll, but `selectTab` is always false for P6.
+- Mutation reconciliation first uses an explicit stable-ID remap supplied by the owning command/Undo path. Without a valid remap, deleted/stale selection clears. It never falls back by vector index.
+- Hiding an otherwise live selected object retains selection and Inspector context but derives an empty highlight. Picking can never newly select a hidden occurrence.
+- A `PrimitiveOccurrenceKey` is stable only within the indicated scene topology. It distinguishes reuse of one primitive definition by different nodes and renderer-created instances.
+
+### 6.2 Render occurrence identity and mapping
+
+Keep the existing object-definition mapping for document/resource queries, and add a separate occurrence mapping rather than overloading its one-to-one invariants.
+
+```cpp
+struct RenderOccurrenceId {
+  std::uint32_t slot{0};
+  std::uint32_t generation{0};
+  friend bool operator==(RenderOccurrenceId, RenderOccurrenceId) = default;
+};
+
+struct RenderOccurrenceRecord {
+  RenderOccurrenceId id;
+  PrimitiveOccurrenceKey key;
+  bool visible{false};
+  // Renderer-private draw/object handles are not part of this public record.
+};
+
+class SceneRenderOccurrenceMapping {
+public:
+  std::optional<RenderOccurrenceRecord> resolve(RenderOccurrenceId) const;
+  std::span<const RenderOccurrenceId> occurrences(NodeId) const;
+  std::optional<RenderOccurrenceId> occurrence(PrimitiveOccurrenceKey) const;
+};
+```
+
+The renderer builds this immutable table while publishing a projection. A table remains alive until all pick readbacks for its publication complete or are cancelled. A framebuffer ObjectID/pick token is only an index into that immutable publication; it is never treated as a document or dense draw index. `instanceOrdinal` is deterministic within a scene epoch and is recomputed only when occurrence membership/topology changes.
+
+### 6.3 Full pick fence
+
+```cpp
+struct EditorSceneFence {
+  EditorDocumentAuthority authority;
+  std::uint64_t documentRevision;
+  std::uint64_t projectionRevision;
+  SceneId scene;
+  std::uint64_t sceneEpoch;
+  std::uint64_t deviceGeneration;
+};
+
+struct EditorPickFence {
+  EditorSceneFence scene;
+  std::uint64_t viewportGeneration;
+  std::uint64_t viewRevision;
+};
+
+struct ViewportSample {
+  std::uint32_t pixelX;
+  std::uint32_t pixelY;
+  std::uint32_t pixelWidth;
+  std::uint32_t pixelHeight;
+};
+
+struct WorldRay {
+  EditorWorldPoint origin;
+  EditorWorldVector direction; // normalized
+};
+
+enum class PickIntent : std::uint8_t { singleSelect, doubleFocus };
+
+struct EditorPickRequest {
+  std::uint64_t serial;
+  PickIntent intent;
+  EditorPickFence fence;
+  ViewportSample sample;
+  WorldRay ray;
+};
+
+enum class PickCompletion : std::uint8_t { hit, miss, error, cancelled };
+
+struct EditorPickResult {
+  std::uint64_t serial;
+  PickIntent intent;
+  EditorPickFence fence;
+  PickCompletion completion;
+  std::optional<RenderOccurrenceId> occurrence;
+  std::optional<EditorWorldPoint> worldHit;
+  std::optional<double> rayDistance;
+};
+```
+
+Required `RendererFacade` surface:
+
+```cpp
+EditorPickFence editorPickFence() const noexcept;
+PickSubmitResult enqueueEditorPick(const EditorPickRequest&);
+void pollEditorPickResults(std::vector<EditorPickResult>& out);
+void cancelEditorPicks(EditorDocumentAuthority);
+void setEditorHighlight(const EditorHighlightState&);
+```
+
+Submission must not wait for device idle or synchronously block on readback. Every accepted request must eventually yield exactly one terminal hit/miss/error/cancelled result. Results may complete out of order; the controller buffers them and commits terminal results in request-serial order. Cancellation is itself terminal so an abandoned oldest request cannot block later results indefinitely.
+
+Fence ownership and increment rules:
+
+| Field | Owner | Increment/replacement rule | Rejection prevented |
+|---|---|---|---|
+| authority | `GltfDocument` lifecycle | New/Open/replace/unload creates a different authority | cross-document alias |
+| documentRevision | `GltfDocument` | Every accepted semantic mutation | pre-mutation hit applied after edit |
+| projectionRevision | projection publisher/P5 | Every successful atomic renderer publication | hit resolved through a different mapping |
+| scene + sceneEpoch | editor scene publication | Epoch increments on current-scene change and occurrence-membership/topology rebuild | same document, wrong scene/instance |
+| deviceGeneration | renderer lifecycle | Increments on device/backend destruction-recreation | completion from dead device/resources |
+| viewportGeneration | viewport attachment owner | Increments on resize or attachment replacement | readback from old size/image |
+| viewRevision | camera/viewport controller | Increments when view/projection matrices change | delayed result from a different camera image |
+| serial | picking controller | Strictly monotonic for an app session | out-of-order state reversal |
+
+A result whose full pick fence differs from the current published pick fence is stale and is discarded with no selection, focus, or camera effect. The result's occurrence must then resolve in its retained immutable mapping, match scene/node/primitive identity, still exist in the current document, and be visible. No raw draw index is dereferenced after readback. Highlight state uses only `EditorSceneFence`: camera motion and viewport resizing do not change occurrence identity, while scene/projection/device replacement does.
+
+Behavior partitions are intentionally distinct:
+
+- Current-fence hit resolving to a live visible occurrence: apply the intent.
+- Current-fence miss, unknown token, missing occurrence, hidden occurrence, non-finite hit, or non-positive distance: single treats it as blank and clears; double no-ops.
+- Delete/hide/scene switch/projection swap/device recreation after submission: the changed fence makes the result stale; discard it without clearing a newer selection or moving the camera.
+- Selected object later deleted: mutation reconciliation clears it independently of the stale pick result.
+- Selected object later hidden: keep the selection, derive no highlight, and reject it as a future pick target.
+
+## 7. Delayed Click and Pick State Machine
+
+Use the Dear ImGui configured `MouseDoubleClickTime`; do not hardcode the observed 0.30 seconds. The strict comparison remains `elapsed > doubleClickTime`.
+
+```text
+IDLE
+  dragging detected         -> DRAG
+  release detected          -> SINGLE_PENDING
+SINGLE_PENDING
+  Dear ImGui reports double -> emit DoubleFocus now; DOUBLE
+  elapsed > threshold       -> emit SingleSelect now; IDLE
+DOUBLE or DRAG
+  button no longer down     -> IDLE
+```
+
+Detailed timeline:
+
+| Time/event | Classifier action | Pick/camera consequence |
+|---|---|---|
+| `t0`: first eligible press | Dear ImGui records click time; classifier remains IDLE unless dragging is detected | none |
+| `t1`: release without drag | Enter `SinglePending`; no pick yet | none |
+| before strict timeout: second press is an ImGui double | Emit one `DoubleFocus`, enter DOUBLE until release, and suppress the pending single; use the pointer, viewport, view, and scene snapshot at emission | enqueue one double request; no selection action |
+| first eligible tick where `elapsed > threshold` | Emit one `SingleSelect` using the pointer, viewport, view, and scene snapshot at emission | enqueue one single request |
+| drag before release | Suppress both actions | none |
+| later renderer frame | Validate full result fence and occurrence, then apply in serial order | single select/toggle/clear, or double camera update |
+
+The reference samples the current pointer and current viewport when the action is emitted, not a stored first-release coordinate. MGIF should preserve that evidenced behavior. The reference calls `update()` only after viewport-hover/drag and valid/non-busy-scene admission; an ineligible frame therefore pauses the classifier rather than cancelling or expiring it, and the first later eligible update can emit a timed-out single at the then-current pointer. Modal/widget/gizmo arbitration must prevent dispatch while that owner is active without inventing a second consumer. Authority replacement, scene switch, or viewport destruction explicitly resets pending state as an internal lifecycle fence so an old physical click cannot become a new-document action. Cursor-leave/re-entry and modal-open-during-pending were not closed by native evidence, so their source-order behavior must remain named tests and may only be changed after the locked oracle is updated.
+
+Single-hit controller behavior:
+
+1. Resolve and validate the current-fence occurrence.
+2. If it is the explicitly selected same `PrimitiveOccurrenceKey`, clear once.
+3. Also preserve the reference sole-highlight edge as a focused test: a Node selection resolving to exactly one same occurrence may clear if the locked expected trace confirms this source-level behavior.
+4. Otherwise select the Primitive occurrence and issue browser reveal/scroll without tab change.
+5. Current-fence blank/invalid/hidden clears; stale-fence result does nothing.
+
+Double-hit controller behavior:
+
+1. Do not run single selection or same-Primitive toggle.
+2. Require finite world hit and finite positive ray distance.
+3. Compute/verify `center = ray.origin + ray.direction * rayDistance` and set navigation speed exactly to `rayDistance` through the app camera bridge.
+4. Keep the camera eye, point the manipulator center at the hit, and publish one view revision.
+5. Miss, invalid, hidden, stale, error, or cancelled completion changes neither camera nor selection.
+
+## 8. Camera, Focus, and Clipboard Contracts
+
+### 8.1 Camera and browser adapters
+
+```cpp
+class IEditorCameraBridge {
+public:
+  virtual ~IEditorCameraBridge() = default;
+  virtual std::uint64_t viewRevision() const noexcept = 0;
+  virtual bool centerOnHit(EditorWorldPoint center,
+                           double navigationSpeed) = 0;
+  virtual bool fitBounds(const EditorBounds&) = 0;
+};
+
+class ISceneBrowserFocusSink {
+public:
+  virtual ~ISceneBrowserFocusSink() = default;
+  virtual void reveal(const SceneBrowserFocusRequest&) = 0;
+};
+```
+
+Both are MGIF-owned and fakeable. `IEditorCameraBridge` adapts the current FPS-style camera to an editor manipulator without exposing any reference manipulator. `ISceneBrowserFocusSink` expands parents and scrolls only. It must assert that the active tab before and after `reveal()` is identical.
+
+### 8.2 Material clipboard
+
+```cpp
+enum class MaterialClipboardSyntax : std::uint8_t {
+  absent,
+  malformed,
+  parsed
+};
+
+struct ParsedMaterialClipboard {
+  MaterialClipboardSyntax syntax;
+  std::optional<std::uint64_t> documentIndex;
+};
+
+struct MaterialPasteAvailability {
+  ParsedMaterialClipboard parsed;
+  bool menuEnabled;
+  bool indexInActiveDocument;
+  std::optional<MaterialId> activeDocumentMaterial;
+};
+
+class IOsTextClipboard {
+public:
+  virtual ~IOsTextClipboard() = default;
+  virtual std::optional<std::string> readText() const = 0;
+  virtual bool writeText(std::string_view) = 0;
+};
+```
+
+Codec and UI rules:
+
+- Copy resolves `MaterialId` to its current document index at copy time and writes exact ASCII `gltf_material:<unsigned decimal>`, with no whitespace or stable identity.
+- Parse requires the exact prefix and a nonempty, complete ASCII decimal suffix. Reject signs, leading/trailing spaces, junk, decimal points, non-ASCII digits, and checked-integer overflow. Leading zeroes are accepted by the D16 complete-decimal grammar but are never emitted by Copy.
+- Wrong prefix, empty clipboard, empty suffix, malformed suffix, or overflow produces disabled Paste and no state change.
+- A syntactically valid index enables Paste even when out of range, matching the reference UI. It shows invalid feedback and no-ops on click.
+- On every click, resolve the index again against the currently active document. A document switch may make the same number valid, invalid, or refer to a different material; no prior `MaterialId` may be retained.
+- Valid Paste/Assign uses the active-document material and remains outside editor history per the locked reference behavior. Same-material assignment is an idempotent no-op.
+- Clipboard adapter code may call upstream Dear ImGui clipboard functions. The codec, selection service, and tests do not depend on Dear ImGui.
+
+## 9. Highlight Contract
+
+`EditorHighlightState` is derived renderer state, never selection authority:
+
+```cpp
+struct EditorHighlightState {
+  EditorSceneFence fence;
+  SelectionRevision selectionRevision;
+  std::vector<RenderOccurrenceId> occurrences;
+};
+```
+
+Rules:
+
+- Node: recursively enumerate the selected Node and descendants in document child order, then include every live visible render occurrence.
+- Primitive: include exactly the selected `PrimitiveOccurrenceKey`. If one logical occurrence expands to multiple internal draw fragments, all fragments share its pick/highlight token but remain one selected occurrence.
+- Mesh, Material, Camera, Light, and empty selection: no silhouette in P6 unless a later locked requirement adds one.
+- Hidden selected object: selection/Inspector may remain, but occurrence list is empty.
+- Deleted/stale selection: reconciliation clears it; an old highlight fence is rejected.
+- A highlight update is accepted only when both the scene-publication fence and selection revision match current state. Device/scene/projection swaps clear old highlight before the new publication is displayed; view motion and viewport resize do not invalidate the logical occurrence set.
+- ObjectID plus post-process outline, a dedicated selection mask, or an equivalent RHI implementation is allowed. The behavioral contract is the occurrence set and resulting visible outline, not the reference Vulkan implementation.
+
+## 10. Input Arbitration and DPI Coordinates
+
+One MGIF-owned router receives an input snapshot after Dear ImGui has begun its frame and established capture state. Each event has at most one owner, in this fixed order:
+
+1. modal/dialog;
+2. active gizmo;
+3. Dear ImGui captured widget/text input;
+4. eligible viewport picking;
+5. viewport camera navigation.
+
+Router rules:
+
+- A gizmo gesture that begins inside the viewport retains pointer capture outside it and receives the actual or explicitly synthesized release.
+- Escape always clears selection. Escape-only detaches while retaining preview TRS and adds no transform-end history. Escape+release in one frame must deliver release/end-drag at most once and finish with empty selection, but its transform-history postcondition is blocked by the R16/O06 conflict documented in Section 2; the router must expose deterministic event order without hard-coding either disputed history result until the locked artifacts are reconciled.
+- Right/middle buttons, wheel, and W/A/S/D/Q/E camera navigation run only when the viewport is eligible, no higher owner consumed the event, and text/keyboard capture is false.
+- Picking never runs while the gizmo is active/dragging or while a modal/widget owns the pointer.
+- Move current pre-ImGui GLFW camera polling behind the ImGui input snapshot. Do not infer capture from stale prior-frame `WantCapture*` values.
+
+Coordinate conversion uses two explicit spaces:
+
+```cpp
+struct ViewportPresentation {
+  double logicalMinX, logicalMinY;
+  double logicalWidth, logicalHeight; // Dear ImGui screen coordinates
+  std::uint32_t pixelWidth, pixelHeight; // actual rendered attachment
+  std::uint64_t viewportGeneration;
+  ViewportSurfaceTransform surfaceTransform;
+};
+```
+
+For a pointer inside the half-open logical rectangle:
+
+```text
+u = (mouseX - logicalMinX) / logicalWidth
+v = (mouseY - logicalMinY) / logicalHeight
+pixelX = min(floor(u * pixelWidth),  pixelWidth  - 1)
+pixelY = min(floor(v * pixelHeight), pixelHeight - 1)
+```
+
+Reject zero/non-finite logical dimensions, zero pixel extent, and points outside the half-open rectangle. Do not multiply by OS DPI after normalizing; the attachment extent already incorporates pixel density. Y inversion, rotation, or backend origin conventions belong to `ViewportSurfaceTransform` inside the RHI pick path, not app conditionals. A resize or attachment replacement increments `viewportGeneration`; a result from the prior extent is stale.
+
+## 11. Implementation Ownership
+
+Suggested ownership keeps CPU/editor contracts independent from UI and RHI details. Names are proposed and may be adjusted to existing naming conventions, but dependency direction is mandatory.
+
+| Owner/files | Responsibility |
+|---|---|
+| `scene/editor/include/mgif/scene_editor/EditorSelectionTypes.h` | Backend-neutral six-kind payload, Primitive occurrence key, revisions, causes, and immutable event value types |
+| `scene/editor/include/mgif/scene_editor/EditorPickingTypes.h` | Backend-neutral points/rays, occurrence IDs, scene/pick fences, request/result/highlight types |
+| `scene/editor/include/mgif/scene_editor/SceneRenderOccurrenceMapping.h`, corresponding `.cpp` | Immutable one-to-many occurrence/reverse mapping and validation |
+| `scene/editor/SceneProjection.cpp`, `SceneRuntimeMapping.*` | Preserve object mapping; populate occurrence source keys and projection revision inputs without weakening existing validation |
+| `scene/SceneUploadPlanner.*` | Carry deterministic node+primitive+instance metadata into draw planning |
+| `render/RendererFacade.*` | Public async enqueue/poll/cancel, current lifecycle fence, atomic highlight handoff |
+| `render/GPUSceneRegistry.*` | Renderer-private occurrence handle binding; generation reuse remains internal |
+| renderer/RHI pass and shader files selected by the render owner | Pick token output/readback or ray query, terminal completion, outline/mask rendering, device/viewport generation integration |
+| `app/editor/SceneSelection.h/.cpp` | Stable six-kind state service, revisions, event batching, explicit same-Primitive operation, mutation reconciliation |
+| `app/editor/MaterialClipboardCodec.h/.cpp` | Pure canonical text codec and checked integer parse; no OS/ImGui calls |
+| `app/editor/EditorPickingController.*` | Classifier-to-request flow, serial ordering, result validation, selection/focus/camera consequences |
+| `app/editor/EditorInputRouter.*` | Fixed priority, capture ownership, Escape/release ordering, camera suppression, DPI conversion |
+| `app/editor/ImGuiClipboardAdapter.*` | Upstream Dear ImGui OS text clipboard implementation of `IOsTextClipboard` |
+| `app/editor/EditorCameraBridge.*`, `SceneBrowserFocusAdapter.*` | Adapt current app camera/browser without reference helpers or forced tab changes |
+| `app/MinimalLatestApp.*` | Composition root; replace raw node index and pre-ImGui camera polling; collapse both scene UI branches onto the document/projection path |
+| `CMakeLists.txt` | Production target wiring and dependency/link boundary assertions |
+
+The shared selection/picking value-type target may depend on the MGIF editor ID/document API and C++ standard library only. The app-owned selection service and clipboard codec may depend on those values but remain free of Dear ImGui and RHI. Render may depend only on shared public types; app composes render, input, camera, browser, and Dear ImGui. The editor core and renderer must never depend upward on app or ImGui.
+
+## 12. Focused Test Matrix
+
+### 12.1 CPU and fake-clock tests
+
+| Test group | Required cases |
+|---|---|
+| `scene_selection_tests` | All six kinds; clear; identical set/clear idempotence; exact revision/event counts; different authority; stale generation; delete/Compact/Merge/replace; explicit remap; empty registry; stable-ID reuse never aliases |
+| Primitive occurrence | Same Primitive definition on two nodes; two instance ordinals; selecting/toggling one never affects the other; one-draw Node sole-occurrence edge; deterministic occurrence order |
+| classifier boundaries | Configured threshold at `T-epsilon`, `T`, `T+epsilon`; first release pending; second press double; no earlier single; drag no action; repeated frame ticks no duplicate; modal/widget/gizmo takeover; cursor motion/leave; busy/invalid scene |
+| clipboard codec | Exact copy for 0 and max in-range index; empty/wrong prefix/empty suffix; `-1`, `+1`, spaces, letters, trailing junk, decimal, non-ASCII digit; checked positive/long overflow; leading zero; canonical out-of-range; repeat Copy; same-material no-op |
+| cross-document clipboard | Copy in A, switch to B before drawing; switch after drawing but before click; valid same index resolves B's ID; out-of-range B no-op; switch to C and retry; no stable ID survives switch |
+| viewport conversion | Corners and last pixel; half-open right/bottom; non-integer logical sizes; 1.0/1.25/1.5/2.0 DPI; zero/non-finite extent; resize generation; backend surface transforms; no double DPI multiplication |
+| highlight derivation | Node recursive preorder; hidden ancestor/child; Primitive exactly one occurrence; no outline for other kinds; stale selection/fence; empty scene |
+
+### 12.2 Fake-renderer/controller tests
+
+| Test group | Required cases |
+|---|---|
+| cross-frame completion | Hit/miss one or more frames later; no synchronous wait; exactly one terminal result per request |
+| ordering | Requests 1/2/3 complete 3/1/2; state commits 1/2/3; cancellation/error releases head-of-line; duplicate completion ignored |
+| fence matrix | Independently mismatch authority, document revision, projection revision, scene ID, scene epoch, device generation, viewport generation, and view revision; each is a no-effect discard |
+| occurrence validation | Unknown token; stale occurrence generation; deleted lookup; hidden occurrence; wrong node/primitive; reused primitive instance; non-finite world hit/distance; non-positive distance |
+| single semantics | New Primitive selects; exact same occurrence clears once; different instance selects; blank/current-invalid clears; stale result preserves newer selection; browser reveal generated only for valid select |
+| double semantics | Valid hit updates center/speed once and never selection; modeled `[1,2,-2]`/`5` case; miss/invalid/stale leaves both unchanged; exact view revision increment |
+| camera/fit | Keep eye while changing center; finite precision; Fit Object bounds for Node subtree and Primitive occurrence; empty/hidden/stale selection no-op |
+| highlight handoff | Selection revision and scene fence must both match; projection/device switch clears old state; Node and Primitive occurrence sets reach fake renderer exactly |
+
+### 12.3 RHI integration tests
+
+| Test group | Required cases |
+|---|---|
+| public contract | Compile a consumer using only public MGIF headers; no Vulkan/D3D/native/reference/ImGui type leaks from editor picking headers |
+| pick target | Known frontmost opaque and alpha-tested draw, depth occlusion, blank/environment, edge pixels, resized target, and reused Primitive occurrences return the correct immutable token |
+| async readback | Multiple frames in flight, out-of-order readiness, cancellation during projection/device replacement, no `waitForIdle()` on normal pick |
+| backend parity | Vulkan and every enabled RHI backend use the same pixel/fence/result semantics, including Y/surface transform and high-DPI viewport extent |
+| device lifecycle | Recreate backend/device while readback is pending; old generation completes only as cancelled/stale and never accesses freed resources |
+| outline | Node subtree and Primitive occurrence mask, hidden suppression, no old-frame flash after scene swap, stable visual thickness at tested viewport/DPI sizes |
+
+### 12.4 UI/state and screenshot tests
+
+| Test group | Required cases |
+|---|---|
+| entry synchronization | Hierarchy, Scene List, Inspector, viewport, Escape, mutation fallback, Gizmo attachment, focus/Fit Object all observe the same selection revision |
+| browser focus | Viewport select expands parents and scrolls; Graph/List/Debug active tab is unchanged; pending reveal works after user changes tab |
+| input priority | Modal, text edit, active gizmo, ImGui widget, picking, and camera partitions; left/right concurrency; viewport-exit drag release; focus-loss with/without synthetic release; Escape-only exact branch; both Escape+release orders with one release delivery and the reconciled R16/O06 history expectation |
+| delayed pick | Visible pending interval, timeout single, second-press double, same-Primitive clear, blank clear, hidden/deleted/stale result, and camera no-jump under suppressed inputs |
+| clipboard UI | Disabled malformed/empty; enabled valid; enabled-but-invalid canonical out-of-range tooltip/no-op; cross-document click-time validation; assignment and Paste leave Undo/Redo counts unchanged |
+| visual agreement | Captured frame proves the outlined Node subtree or Primitive occurrence is exactly the item named by Inspector and selected in Browser; no outline for blank/hidden/stale selection |
+
+Property tests should allocate randomized IDs/occurrences and interleave delete, visibility, scene switch, projection republish, Undo/Redo, Merge, and Compact while delayed requests remain outstanding. The invariant is that no completion can select or highlight an identity other than the one recorded in its immutable occurrence snapshot and validated against the current full fence.
+
+## 13. Gate P6 Acceptance Criteria
+
+Gate P6 may be marked PASS only when all of the following are true:
+
+1. P5 projection/delta publication and error behavior are implemented and verified in the production renderer path.
+2. Every selectable entry point uses one `SceneSelection`; raw node-index selection and dual legacy/editor mutation branches are removed from the P6 path.
+3. Six selection kinds, idempotent event rules, explicit same-Primitive toggle, Escape, mutation fallback, and one end-of-frame revision are covered by CPU/UI tests.
+4. A Primitive selection identifies a scene render occurrence, not merely a mesh primitive definition or mutable draw index.
+5. Picks complete across frames without normal-path device idle waits; every request terminates and serial ordering prevents state reversal.
+6. All authority/revision/scene-epoch/projection/device/viewport/view fence mismatch tests pass with no effect.
+7. Current-fence blank/invalid/hidden and post-submit hidden/deleted/stale partitions have the explicitly specified single-versus-double behavior.
+8. Single timeout, double exclusivity, drag suppression, same-Primitive clear, blank clear, and the strict timeout boundary pass under a fake clock.
+9. Double hit produces exact finite camera center and speed, while double miss/stale does not touch camera or selection.
+10. Browser focus expands/scrolls without forcing an active-tab change.
+11. Node highlights exactly its visible subtree occurrences; Primitive highlights exactly its target occurrence; Inspector, Browser, and screenshot agree.
+12. Logical-to-pixel conversion passes high-DPI, resize, edge, and backend surface-transform tests without double scaling.
+13. Modal/gizmo/ImGui/pick/camera priority and R16 Escape/release partitions pass; each input event has at most one consumer, and the R16/O06 history contradiction has first been reconciled in the locked artifacts.
+14. Clipboard Copy/parse/range/cross-document/overflow/no-history partitions pass D16 and the locked reference UI semantics.
+15. Public include/link scans and build metadata prove only upstream Dear ImGui plus MGIF-owned adapters are used; no forbidden reference framework/helper dependency is introduced.
+
+On the audited snapshot, items 1-15 are unverified or missing. The correct gate status is **NOT EVALUATED / NOT PASS**, not partial PASS.
+
+## 14. Dependency Boundary
+
+Allowed:
+
+- Upstream Dear ImGui only in MGIF app/UI adapters, including OS clipboard access and input capture state.
+- Existing MGIF `scene/editor`, `render`, `rhi`, app, math, and standard-library facilities.
+- MGIF-owned backend-neutral interfaces and fake implementations for tests.
+
+Forbidden:
+
+- `nvcore`, `nvpro_core`, `nvapp`, `nvgui`, `nvvk`, any `nvvk*` variant, `nvvkgltf`, and any copied/linked reference helper API.
+- Reference `SceneSelection`, `UiMouseState`, camera manipulator, ray picker, ObjectID helper, application framework, or renderer wrapper as a dependency.
+- Public editor headers containing `Vk*`, `ID3D12*`, `ImTextureID`, reference namespaces, renderer dense indices, or raw reference render-node IDs.
+
+Behavior may be clean-room reimplemented from the locked evidence. Source file names and helper architecture are not an API license.
+
+## 15. Explicit Non-Claims
+
+- No MGIF repository file was changed by this audit.
+- No build, unit test, UI harness, Vulkan/D3D execution, screenshot capture, or performance measurement was run.
+- This report does not claim P5 is implemented, P6 is implementation-ready end to end, or Gate P6 passes.
+- It does not upgrade O08/O10 `native_partial` evidence to closure or count assigned edge obligations as executed.
+- It does not prescribe ObjectID versus ray query as the only renderer implementation; it prescribes backend-neutral observable behavior and fences.
+- It does not claim exact native behavior for cursor leave/re-entry during the delayed window, invalid/stale reference picks, or numeric native camera state; the deterministic MGIF contracts above close those implementation hazards and require explicit tests.
+- It intentionally does not reproduce reference `std::atoi` coercion or overflow. D16's fail-closed parser is authoritative.
+- It does not claim full Gizmo implementation or P7 completion. It specifies only the P6 input-router boundary needed to preserve locked R16 behavior.
+- It does not resolve the R16/O06 same-frame Escape+release history conflict by fiat; current locked artifacts disagree and require an owner-visible specification/manifest reconciliation.
+- It does not claim highlight pixel equivalence before the required UI screenshots and backend tests exist.
+- It does not claim the current dirty/untracked worktree content is committed or reproducible from MGIF HEAD alone.
+
+## 16. Recommended Execution Order
+
+1. Reconcile R16 and manifest O06 for same-frame Escape+release history before freezing router acceptance.
+2. Close the P5 production publication contract and add lifecycle generations.
+3. Implement/validate render occurrence mapping through projection and upload planning.
+4. Land pure CPU selection, clipboard, classifier, coordinate, and fence tests.
+5. Add fake-renderer picking controller, camera/focus adapters, and ordered result handling.
+6. Add RHI pick completion and highlight implementation behind `RendererFacade`.
+7. Replace app raw selection/pre-ImGui camera polling and integrate the fixed input router.
+8. Run the full CPU/fake/RHI/UI matrix, capture Inspector/highlight screenshots, and only then evaluate Gate P6.

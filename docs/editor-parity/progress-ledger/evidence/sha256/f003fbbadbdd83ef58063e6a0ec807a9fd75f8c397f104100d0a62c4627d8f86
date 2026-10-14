@@ -1,0 +1,168 @@
+# Gate P1 Independent Read-Only Review
+
+Review task: `task_92d30650c179`  
+Dispatch: `ctx_f3f0d5f01b11`  
+Review date: 2026-08-23 (Asia/Shanghai)  
+Repository: `G:\MGIF`  
+Evidence root: `C:\Users\happyelements\AppData\Local\Temp\mgif-p1-review-2bba9259f9e44a1f8ee13e1afb84c396`
+
+**Verdict: FAIL - remediation required before Gate P1 can be signed off.**
+
+The repository's clean core build, full viewer build, existing core/full/P1 tests, dependency gates, source-closure checks, and RHI boundary check all pass. Independent adversarial review nevertheless found three High-severity Gate P1 blockers: cross-document stale IDs alias live objects, malformed accessor payloads pass validation, and Windows overwrite publication is not atomic across process interruption. R24/F42 also remain BLOCKED for release/distribution, as required, because the repository root license has not been selected.
+
+## Findings
+
+### P1-01 - High - IDs from a replaced document alias objects in the replacement
+
+**Requirements:** R02; Gate P1 stable-state/identity requirement.
+
+**Exact evidence:**
+
+- `scene/editor/GltfDocument.cpp:178-193` allocates every object slot in every newly loaded document with the constant `initialGeneration = 1u`.
+- `scene/editor/GltfDocumentIO.cpp:905-912` publishes a candidate by replacing the active `unique_ptr`; neither the ID nor the lookup authority carries a document-instance identity.
+- `tests/editor/gltf_document_load_tests.cpp:193-199` asserts generation `1` for a fresh load and tests only a forged generation in that same document. It does not retain an ID across publication of a different document.
+
+**Independent reproducer:** the TEMP probe loads two distinct one-node documents, retains document A's node ID, and asks document B whether that old ID is live. Publishing B over an active pointer uses the same B authority because `publishTo` only moves the candidate pointer.
+
+```powershell
+Set-Location C:\Users\happyelements\AppData\Local\Temp\mgif-p1-review-2bba9259f9e44a1f8ee13e1afb84c396
+.\adversarial_probe.exe .\replacement-a.gltf .\replacement-b.gltf `
+  .\invalid-sparse-index.gltf .\non-finite-position.gltf .\out-of-range-mesh-index.gltf
+```
+
+Relevant observed output:
+
+```text
+replacement-a.gltf: succeeded=1 error=0 message=
+replacement-b.gltf: succeeded=1 error=0 message=
+stale_aliases_replacement=1 old_generation=1 new_generation=1
+```
+
+The probe exits `1` when any prohibited acceptance or alias is observed. Both documents assign `{kind=node, slot=0, generation=1}`, so `second->contains(idFromFirst)` returns true even though the objects belong to different document authorities.
+
+**Impact:** selection, picking, queued commands, or other retained handles from a closed/reloaded document can silently resolve to an unrelated object in the replacement. This violates the R02 rule that a stale ID must never alias a new object.
+
+**Expected fix:** bind object identity to the document authority. A robust fix can add an unforgeable document-instance epoch/UUID to IDs and validate it on every resolution, or allocate generations from a process-wide/non-repeating authority epoch with explicit wrap handling. Add a regression that publishes A, retains IDs of every selectable kind, publishes B with identical collection shapes, and proves every A ID is stale in B while B's IDs remain valid.
+
+### P1-02 - High - Accessor validation accepts invalid sparse indices, non-finite vertex data, and out-of-range primitive indices
+
+**Requirements:** R01, R02, R22; Gate P1 validated-candidate and bounded-work requirements.
+
+**Exact evidence:**
+
+- `scene/editor/GltfValidator.cpp:716-773` validates sparse accessor counts, component types, offsets, alignment, and byte ranges, but never decodes the sparse-index payload. It therefore cannot enforce that sparse indices are strictly increasing and each is less than `accessor.count`.
+- `scene/editor/GltfValidator.cpp:775` returns success after metadata/range checks without decoding ordinary or sparse accessor elements.
+- `scene/editor/GltfValidator.cpp:970-982` checks only that a primitive index accessor is an unsigned integer `SCALAR`; it never checks decoded indices against the vertex attribute count.
+
+**Independent reproducer:** use the same TEMP probe command shown in P1-01. The three scratch fixtures are minimal and adversarial:
+
+- `invalid-sparse-index.gltf`: accessor `count` is 1, while its only unsigned-byte sparse index is 1. The valid range is `[0, 1)`, so the payload is invalid.
+- `non-finite-position.gltf`: the sole float32 `POSITION.x` payload is quiet NaN (`00 00 c0 7f`, little endian).
+- `out-of-range-mesh-index.gltf`: one vertex exists, while the sole unsigned-byte primitive index is 7.
+
+Observed output:
+
+```text
+invalid-sparse-index.gltf: succeeded=1 error=0 message=
+non-finite-position.gltf: succeeded=1 error=0 message=
+out-of-range-mesh-index.gltf: succeeded=1 error=0 message=
+invalid_sparse_accepted=1
+non_finite_accessor_accepted=1
+out_of_range_mesh_index_accepted=1
+```
+
+**Impact:** malformed candidates are published as valid authority models. Bad sparse indices can overwrite the wrong logical element during materialization, non-finite vertex data can poison bounds/transforms/render data, and out-of-range primitive indices can become invalid downstream reads. Metadata bounds alone do not establish semantic validity.
+
+**Expected fix:** add one overflow-safe, byte-bounded accessor decoder shared by validation paths. Validate sparse indices as strictly increasing and `< accessor.count`; validate every decoded primitive index against the referenced vertex-domain count; validate semantic-specific component/type/count agreement across attributes and morph targets; reject non-finite floating payloads used by editable or rendered semantics. Apply configured aggregate/work limits before decoding, and add positive boundary plus negative payload tests for base views, byte strides, sparse overlays, all legal index component widths, NaN/infinity, mismatched attribute counts, and maximum values.
+
+### P1-03 - High - Existing-target Save As is not atomic on Windows
+
+**Requirements:** R17; Gate P1 old-target preservation and process-interruption requirement.
+
+**Exact evidence:**
+
+- `scene/editor/GltfDocumentIO.cpp:788-800` uses a direct rename only when a Windows target does not already exist.
+- For an existing target, `scene/editor/GltfDocumentIO.cpp:802-805` moves the old target to a backup.
+- Only afterward, `scene/editor/GltfDocumentIO.cpp:811` moves the staged candidate to the requested target path. A process stop, host crash, or power loss between lines 805 and 811 leaves the requested target absent.
+- The restore at `scene/editor/GltfDocumentIO.cpp:824-832` is reachable only when the process survives the second rename failure.
+- The final injected failure is `preAtomicReplace` at `scene/editor/GltfDocumentIO.cpp:1322-1325`, before the vulnerable two-step operation. The existing fault matrix therefore cannot interrupt or observe the gap.
+
+**Control-flow reproducer:** on Windows, Save As to an existing regular file takes the fallback branch. Stop the process after `std::filesystem::rename(target, backup)` at line 805 returns and before `std::filesystem::rename(staged, target)` at line 811 executes. The old bytes still exist under a private backup name, but the user-selected target path is missing, directly contradicting the R17 acceptance requirement that an interrupted write preserve the old target.
+
+This is a source-proven failure window rather than a timing-dependent test claim: there is no single filesystem operation covering the two path changes, and no code can run the restore after process termination.
+
+**Expected fix:** on Windows, use a verified atomic same-volume replacement primitive such as `ReplaceFileW` (with appropriate write-through/metadata handling), keeping the staged file in the destination directory. Treat backup/recovery as supplemental recovery, not as the replacement primitive. Add fault/crash-boundary coverage at the actual replacement call and a subprocess interruption test that continuously verifies the requested target resolves to either the complete old file or the complete new file, never missing or partial.
+
+## Gate Decision
+
+Gate P1 cannot pass while P1-01 through P1-03 are open. The failures directly defeat the gate's identity, validated-document, and old-target atomicity claims even though every checked-in test passes. Remediation should be followed by a fresh independent review; the current reviewer should not self-certify those fixes.
+
+R24 is a separate release/distribution blocker. It does not by itself prevent internal P1 engineering readiness, but it must remain BLOCKED and must not be reported as PASS.
+
+## Verification Results
+
+All builds and generated evidence were isolated under the evidence root above. No repository file, Git state, repository build tree, or external evidence was changed.
+
+| Check | Result | Independent evidence |
+|---|---:|---|
+| Clean editor-core configure/build | PASS | Ninja + MSVC, Debug, `BUILD_TESTING=ON`, `DEMO_EDITOR_CORE_ONLY=ON`, unique `core-ninja` directory |
+| Core CTest suite | PASS | 11/11 tests; final entries include dependency-gate integration and Android viewer contract |
+| Clean full configure/build | PASS | Ninja + MSVC, Debug, `BUILD_TESTING=ON`, `DEMO_EDITOR_CORE_ONLY=OFF`, unique `full-ninja` directory |
+| Viewer executable | PASS | `full-ninja\Demo.exe`, 12,427,776 bytes |
+| Full CTest suite | PASS | 24/24 tests, including RHI/backend and D3D12 smoke/clear-present coverage |
+| Focused P1 label | PASS | 5/5: identity, document load, round-trip, I/O, validator |
+| P1 engineering-readiness artifact validation | PASS | Validator exited 0 |
+| Release/distribution validation | EXPECTED BLOCK | Validator exited 1 because root-license/F42/R24 readiness is intentionally unresolved |
+| Configured production editor dependency gate | PASS | Core and full configurations passed the integration gate |
+| RHI boundary guard | PASS | `boundary-report\rhi-boundary-report.json` reports `blocking_findings: 0`; six informational future hot-path notes do not introduce a boundary dependency |
+| Independent adversarial probe | FAIL AS EXPECTED | Exit 1 with one stale-ID alias and three malformed-payload acceptances |
+
+### Required scenario coverage
+
+The existing tests do provide meaningful coverage; the result below records it without treating it as proof against the independent counterexamples.
+
+| Requested scenario | Result | Evidence |
+|---|---:|---|
+| Malformed JSON | PASS | Typed parse failure in `tests/editor/gltf_document_load_tests.cpp:376-379` |
+| Cycle and multiparent graphs | PASS | Bounded typed rejection in `tests/editor/gltf_document_load_tests.cpp:351-370` |
+| Metadata/reference out-of-range cases | PASS | Reference matrix in `tests/editor/gltf_validator_tests.cpp:133-145` and invalid child fixture |
+| Accessor payload out-of-range cases | **FAIL** | P1-02 accepts invalid sparse and primitive index payloads |
+| Non-finite authority scalar fields | PASS | Save-time injected transform rejection in `tests/editor/gltf_validator_tests.cpp:236-286` |
+| Non-finite accessor payload | **FAIL** | P1-02 accepts NaN `POSITION` bytes |
+| Collection/source/dependency/depth/payload limits | PASS | Limit boundary tests in load and validator suites |
+| Unknown extensions and nested extras | PASS | No-op semantic round-trip and authority observability checks in `gltf_document_roundtrip_tests.cpp` |
+| External buffer and image URIs | PASS | Load/accounting and staged Save As fixtures |
+| Data URI and embedded GLB | PASS | Data URI load plus generated GLB load; GLB Save As embeds tracked dependencies |
+| Unicode names and Unicode target paths | PASS | Unicode fixture plus repeated Save As/reload semantic comparison |
+| Staging/create/write/flush/pre-replace failures | PASS for injected points | Old target bytes and document state preserved; staging debris removed |
+| Process interruption during existing-target replacement | **FAIL** | P1-03 exposes the uninstrumented two-rename gap |
+| Failed load does not publish | PASS | Failed/consumed candidate publication checks in `gltf_document_load_tests.cpp:207-219` and fault matrix |
+| Failed Save As preserves target/path/revision/state | PASS for represented failures | Existing fault, missing dependency/directory, non-regular, and read-only target cases |
+| Stable typed IDs and same-document stale generation | PASS | Identity tests cover kind/slot/generation and slot reuse |
+| Cross-document/reload stale identity | **FAIL** | P1-01 aliases A's ID to B's object |
+| No-op semantic round-trip | PASS | glTF and GLB round-trip suite reports semantic equivalence and state preservation |
+
+## Target, Source, And Dependency Closure
+
+The production P1 CPU core is appropriately isolated; none of the Gate failures is a dependency-boundary failure.
+
+- `CMakeLists.txt:112-130` defines `scene_editor_document` with exactly one TinyGLTF implementation TU, six public P1 headers, and four document implementation files, privately linked only to `tinygltf`.
+- `CMakeLists.txt:132-140` defines `scene_editor_core` with exactly `EditorClock.h`, `EditorFaultInjection.h`, and `SceneEditorCore.cpp`, privately linked only to `scene_editor_document`.
+- `CMakeLists.txt:328-396` seals those exact final source and link sets after deferred CMake mutations.
+- CMake File API replies from both isolated configurations match the locked source sets and link closure.
+- Each build's parsed `compile_commands.json` contains exactly one compilation of `loader/TinyGltfImplementation.cpp`.
+- `loader/TinyGltfImplementation.cpp:1-3` is the only production definition site for `TINYGLTF_IMPLEMENTATION`, `STB_IMAGE_IMPLEMENTATION`, and `STB_IMAGE_WRITE_IMPLEMENTATION`; other matches in readable tests are assertion/fixture strings.
+- A case-insensitive production-core scan found zero ImGui, RHI, native-backend, `nvcore`, `nvpro`, `nvapp`, `nvgui`, `nvvk`, or reference-helper dependencies in the P1 target/source/transitive closure.
+- The full viewer links and builds successfully while the P1 core remains fenced from viewer UI/RHI dependencies.
+
+## R24 / Root License
+
+`docs/editor-parity/LICENSE-SOURCES.md:14` states that the repository root remains unlicensed and rights-reserved for distribution until the owner selects a root license. `docs/editor-parity/LICENSE-SOURCES.md:41` consequently keeps F42, R24, T-LIC-01 release acceptance, and all release/distribution gates blocked while allowing internal P1 engineering work. The independent release validator returned nonzero as required, so this review does not clear or weaken that blocker.
+
+## Remediation And Re-review Minimum
+
+1. Make IDs authority-specific and add replacement/reload staleness tests across all object kinds.
+2. Add bounded accessor payload decoding and reject the three supplied adversarial fixtures, with expanded stride/sparse/type/count/index/finite boundary coverage.
+3. Replace the Windows backup dance with a verified atomic replacement primitive and add a subprocess interruption test at the actual publication boundary.
+4. Rebuild clean core and full viewer configurations in new temporary directories; rerun core/full/P1 suites, dependency/source closure, RHI boundary, engineering validator, and all adversarial probes.
+5. Dispatch a new independent read-only reviewer for Gate P1. Keep R24/F42 blocked until the owner explicitly selects and records a root license.

@@ -1,0 +1,15 @@
+{
+  "authorizedAtUtc": "2026-09-02T14:20:00.000Z",
+  "documentKind": "local-recovery-task-authority",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "ledgerId": "mgif-editor-parity",
+  "parentBundleId": "6850b93b4458d9440fad554440bc5734507a1b75107b0ee555a4c3734377ab4b",
+  "parentSnapshotSha256": "ac08c53778a8103c9af7b1b4e15a6baa12c6184985482ab51c5d27055f06c0ef",
+  "schemaVersion": 1,
+  "taskDefinitionSha256": "862fa025403ba36922277295a493effd27328b079cc5c8d06cf3509f0ce08bbb"
+}

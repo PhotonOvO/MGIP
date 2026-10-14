@@ -1,0 +1,17 @@
+{
+  "documentKind": "gate-verdict",
+  "schemaVersion": 1,
+  "runId": "run_ede89c4421e9",
+  "phase": "P3",
+  "gateTaskId": "task_a4832b5ed3e6",
+  "dispatchId": "ctx_8ec615efdce5",
+  "gateVerdict": "GATE P3 ENGINEERING PASS",
+  "gateScope": "engineering",
+  "supersedesGateTaskId": "task_958b7d42d0a2",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "r24": "BLOCKED",
+    "metal": "Not Verified",
+    "releaseDistribution": "NOT PASS"
+  }
+}

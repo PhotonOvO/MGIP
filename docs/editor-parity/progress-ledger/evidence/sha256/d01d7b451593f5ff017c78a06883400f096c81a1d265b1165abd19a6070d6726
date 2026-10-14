@@ -1,0 +1,191 @@
+# P6-10 Completion Report
+
+## Verdict
+
+P6-10 (`task_1040525304c0`) is complete as the immutable occurrence mapping
+and asynchronous picking-producer leaf.
+
+This is not integrated P6 and is not Gate P6. RendererFacade,
+GPUDrivenRenderer, application/controller wiring, camera behavior, visible
+outline integration, and CMake registration remain later-task work.
+
+Completed at: `2026-08-28T15:50:51.000Z`
+
+## Selected Parent
+
+- Local pointer SHA-256 before this transition:
+  `d2249bab86526091011393a8db39db939baa1032a341cebd6a32c1355dd7047b`.
+- Parent bundle:
+  `2be23966fea89cc5c5777827596f981b47d98c701070e3cad53d27c48a549d1b`.
+- Parent snapshot SHA-256:
+  `8cb2cc5fe709977f4e0e928402bcc9f1c3972f2bb7c5286dd7c1cd1e08e80874`.
+- Previous transition SHA-256:
+  `06bc686ba941e3e69825460366aad3cefdba5335c90e84402764549f002c34bc`.
+- P6-10 before-task SHA-256:
+  `4a76a6f0a773eecf7722c7967bc90e45e9b18ff584298f50cd322c96baa522ab`.
+- Before state: `ready`.
+
+## Producer Bindings
+
+- P6-00 report: 13875 bytes, SHA-256
+  `7a8bcf776845d4fff563a0cdd60f38777b273c5993773f74bae91dce179c78b6`.
+- P6-00 receipt: 1399 bytes, SHA-256
+  `06bc686ba941e3e69825460366aad3cefdba5335c90e84402764549f002c34bc`.
+- Frozen `EditorSelectionTypes.h`: 4543 bytes, SHA-256
+  `e61645ef7b3daa1043adc4c89e3f2b6002a18ea162a3abc4c4a4ffe9dd6c1ff8`.
+- Frozen `EditorViewportMetrics.h`: 16606 bytes, SHA-256
+  `daffc513756e4a71ef8734e87234627bbfc8d7cb0788119d15ff48c5355227aa`.
+- P6 readiness authority: SHA-256
+  `5912fb9b0d0adadac122249a6698bf4a603592e474346e8d18c10c41a4f6578c`.
+- Successor blueprint: SHA-256
+  `1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84`.
+
+## Pre-Edit Binding
+
+All ten exact P6-10 paths were independently checked before the first edit
+and were missing. Each preimage is therefore the required missing sentinel:
+zero bytes and null SHA-256. No placeholder was created.
+
+## Final Write Set
+
+| Path | Bytes | SHA-256 |
+|---|---:|---|
+| `scene/editor/include/mgif/scene_editor/EditorPickingTypes.h` | 7580 | `d8f566959e8b8e7a8a0703164e625bcb16e7deb271f67a74ff43deb314694004` |
+| `scene/editor/include/mgif/scene_editor/SceneRenderOccurrenceMapping.h` | 3450 | `a33d9413a5ec1c513990d14eb46fb3f29bfa2625ea78bbf434390ce93f31d4ea` |
+| `scene/editor/SceneRenderOccurrenceMapping.cpp` | 12161 | `34bfd50b8e8b060a7e7bc62ea2d43640ac370eba2ba487ee2729aeb97e587b98` |
+| `render/editor/ScenePicking.h` | 2531 | `25b1cf1e647d61989bf6d4e896c242aa2f370addc4dada180e8fc22e1558434d` |
+| `render/editor/ScenePicking.cpp` | 8211 | `ce5c8f0f0e9765aa263f87722cb9141eb61dfdda2b63ce871da5639109930c3e` |
+| `render/passes/EditorPickingPass.h` | 4065 | `a1108c8978a7c17cfc3af38b1f86326157621a03aa02fb4015b635b431a7bc73` |
+| `render/passes/EditorPickingPass.cpp` | 9116 | `3ab77e4e1cc7cb1bf8d677349085c4375b4c33321be00bcb333ca19c7fca0617` |
+| `shaders/editor_picking.slang` | 2298 | `1d433596ae351529bc910982138b3226f2dd51b21c6af96c2993696ef3a7c04c` |
+| `tests/editor/scene_render_occurrence_mapping_tests.cpp` | 12570 | `446bc73dacf9bdeafd0f3e0cfbc074461eaf74c9e60ecead973459d4e8890a85` |
+| `tests/editor/editor_picking_rhi_tests.cpp` | 26874 | `73d8e4e2a0b2348b9b0d9522f1cea8a20a6cd12bfe00aedc07025d12d7ff8af6` |
+
+No path outside this product-leaf write set was changed by the P6-10 writer.
+The verification owner made only scoped corrections inside these same paths.
+
+## Implemented Contract
+
+Occurrence mapping:
+
+- Generation-bearing `RenderOccurrenceId` and snapshot-local nonzero
+  framebuffer token; zero remains background.
+- Immutable shared snapshot binds authority, document revision, projection
+  revision, scene, scene epoch, device generation, and mapping generation.
+- Exact `(scene,node,primitive,instanceOrdinal)` keys distinguish definition
+  reuse across nodes and instances.
+- Node topology is sealed as a canonical parent/depth preorder. Unknown,
+  duplicate, foreign, noncanonical ordinal, reused live slot, and capacity
+  inputs fail before snapshot publication.
+- Node highlight expands the sealed descendant preorder and filters effective
+  hidden occurrences. Primitive highlight resolves exactly one occurrence.
+- Factory failure messages are static `string_view` values. A deterministic
+  allocation-fault hook proves `noexcept` returns `allocationFailure` without
+  a partial snapshot or second allocation.
+
+Picking types and producer:
+
+- Full `EditorSceneFence` and `EditorPickFence`, monotonic request serial,
+  single/double intent, attachment sample, normalized world ray, mapping
+  generation, and closed hit/miss/error/cancelled terminal payloads.
+- Accepted requests retain the exact immutable occurrence snapshot through
+  physical readback retirement and terminal consumption.
+- Backend enqueue/poll/cancel/retire is injected through MGIF logical RHI
+  contracts. There is no synchronous wait or device-idle surface.
+- Readback matches the exact `(ticket, SubmissionToken)` pair, preventing a
+  late old readback from ABA-terminating a reused ticket.
+- Malformed backend status/reason combinations normalize to a valid error or
+  cancellation terminal; no accepted request is removed with an invalid
+  terminal payload.
+- A required, no-throw `IScenePickingTerminalSink` receives ready and pending
+  terminals during zero-allocation destruction shutdown. Snapshot release
+  occurs only after the sink callback.
+- Duplicate/unknown late readbacks are ignored; exact queue submission tokens
+  are retired once.
+
+Shader:
+
+- Vertex and fragment entrypoints write a snapshot-local unsigned token to
+  `SV_Target0`.
+- Renderer draw index remains private to draw-data lookup and is never treated
+  as a document identity.
+- Alpha-cutout discard is preserved.
+- No native image/descriptor handle or stable document identifier is encoded.
+
+## Windows MSVC Verification
+
+The completion decision uses Windows native builds and execution. WSL checks
+were editing feedback only.
+
+- Compiler: Microsoft Visual C++ 19.44.35217.0.
+- C++20, `/permissive-`, `/W4`, `/WX`.
+- Debug: `/MDd /Od`; Release: `/MD /O2 /DNDEBUG`.
+- Output root: `G:/Temp/mgif-p6-10-msvc-tests-20260828`.
+
+| Test | Config | Bytes | SHA-256 | Result |
+|---|---|---:|---|---|
+| `scene_render_occurrence_mapping_tests.exe` | Debug | 202752 | `ff438c22c04032cae6193e40620feadc315a9c01af0800d1dc9cda1f80fe95f6` | PASS |
+| `scene_render_occurrence_mapping_tests_release.exe` | Release | 47104 | `0f2f67e9ba880ee42352820bcf5ab65f02abb7418a2f29b7763f1d7ae68278fe` | PASS |
+| `editor_picking_rhi_tests.exe` | Debug | 859648 | `7f833742340afb4c76c28485ab749ced2bd7dcd5587a65af09391baab7136dda` | PASS |
+| `editor_picking_rhi_tests_release.exe` | Release | 120320 | `757f5f8ea85c935e845d8399cde2db4c33b4affec9e6650b0357aae44f1c8988` | PASS |
+
+Header probes:
+
+| Probe | Bytes | SHA-256 | Result |
+|---|---:|---|---|
+| `editor_picking_types_header_probe.obj` | 1157 | `36fbb6cbc0a62f29ee3aaebc23595b3abffd78c626679ff9a8a1ac69175667b7` | PASS |
+| `scene_render_occurrence_mapping_header_probe.obj` | 1169 | `98f727615c8d389cd017a8b927d109ac32a8acbe8ea2ce503cdc3e71dd4e0d3b` | PASS |
+| `editor_picking_pass_header_probe.obj` | 1157 | `2186280a0bf087420c88c000a2244f5839790b79c3182e3137c5ed180ee30481` | PASS |
+| `scene_picking_header_probe.obj` | 1153 | `18584ea7e4ab065087802550f7f7f92eb5c9f307f24c3ad6438b92bd984ed76e` | PASS |
+
+Slang 2026.3.1 compiled all four final entrypoint/backend artifacts without
+errors:
+
+| Artifact | Bytes | SHA-256 | Result |
+|---|---:|---|---|
+| `editor_picking.vert.spv` | 4100 | `dfc81c0e48680dcc607f17d4f4b5b15cd35d2ef6a7e177fd9bb8c4d96e2b51cd` | PASS |
+| `editor_picking.frag.spv` | 3004 | `d27da225bf359d6413b453c2d6ea9db13a242985b740896efcbbfd3f0c6a1795` | PASS |
+| `editor_picking.vert.dxil` | 7220 | `51109bdc3673f7cf942b879f101d3260d4910823cd26f0cb47bbced92dcbb526` | PASS |
+| `editor_picking.frag.dxil` | 3256 | `2a868acebb67b2136daeee5d8ae10c5fd538c8b6ac239a46b9bce028c26191e2` | PASS |
+
+The first RHI runtime attempt failed only because the shader explanatory
+comment contained the forbidden literal type name checked by the boundary
+test. The comment was narrowed without weakening the test; both final configs
+passed. An initial whole-process allocator override used for fault injection
+was also discarded after it proved unsuitable on Windows; the final narrow
+factory hook passes in both configs and does not replace the CRT allocator.
+
+Additional final Windows gates:
+
+- Configured production-editor dependency preflight: PASS.
+- P0 scaffold/dependency scan: PASS, 42 features, 10 traces, 110 edges.
+- Independent P6-10 read-only review after all four blocker repairs: no
+  remaining completion blocker.
+
+## Deferred Work
+
+1. P6-20 must consume this exact `EditorPickingTypes.h` identity, buffer
+   out-of-order terminals by request serial, reject stale full fences, and
+   implement selection/camera/focus consequences.
+2. P6-90 must implement the concrete renderer/RHI backend, object-ID target,
+   readback scheduling, facade/application wiring, cancellation at lifecycle
+   boundaries, and visible outline integration. The injected backend in this
+   leaf defines and tests that contract but is not production composition.
+3. P6-90 owns CMake registration. This leaf intentionally made no CMake,
+   Facade, GPU renderer, app, controller, or legacy-picking edit.
+4. Gate P6 remains not run. Runtime Vulkan validation, D3D12 integration,
+   Android boundary, screenshots, Inspector agreement, and independent Gate
+   evidence remain required.
+
+## Fixed Policy
+
+- F42: `BLOCKED`
+- R24: `BLOCKED`
+- Metal: `Not Verified`
+- release/distribution: `NOT PASS`
+
+## Local Review Decision
+
+The automatic local review decision is `completed` with outcome `succeeded`
+for P6-10 only. P6-20 is expected to become ready after receipt replay. P6-90,
+G6, and Gate P6 remain pending/not run.

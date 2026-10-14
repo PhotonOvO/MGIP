@@ -1,0 +1,51 @@
+{
+  "authorityArtifact": {
+    "bytes": 572,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/4fcacce3d82dbfba77ab68ddd38536e3ecae8fddebc479cdf9c081468a76b6c7",
+    "sha256": "4fcacce3d82dbfba77ab68ddd38536e3ecae8fddebc479cdf9c081468a76b6c7"
+  },
+  "beforeTaskSha256": "7d065a70085e39e5d25292095cd235a31f33e6d576d9258140d2fd0290ea5270",
+  "completedAtUtc": "2026-09-03T16:21:32.411Z",
+  "dependencyReplacements": [],
+  "displayName": "P7-CONTRACT-R1",
+  "documentKind": "local-task-transition-receipt",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "fromStatus": "ready",
+  "gateEvent": null,
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "0ed0b2df6009b3d7cec61071d1facb89c2b5bc085d18cfffbece43b917760dc5",
+  "parentSnapshotSha256": "0a2bbf8dd7de19c72aa5278d1d2892828d09325fc4cf456963eb2e2bfb16c88d",
+  "previousTransitionSha256": "d6b8262087c50402dd29470086beceff6e3537860ca2ff8bbe7b77b3e35c16ac",
+  "report": {
+    "bytes": 5159,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/ac69c1b71da4f1e90c7817451de06a6e40eba367b18be74f84b5e76e25323170",
+    "sha256": "ac69c1b71da4f1e90c7817451de06a6e40eba367b18be74f84b5e76e25323170"
+  },
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskDefinition": {
+    "createdAtUtc": "2026-09-03T06:45:00.000Z",
+    "dependencies": [
+      "task_p7_present_layout_repair_20260902"
+    ],
+    "displayName": "P7-CONTRACT-R1",
+    "phase": "P7",
+    "role": "reconciliation",
+    "supersedesTaskId": "task_3f216d250677",
+    "taskId": "task_p7_contract_reconciliation_20260903"
+  },
+  "taskId": "task_p7_contract_reconciliation_20260903",
+  "toStatus": "completed",
+  "verdictArtifact": {
+    "bytes": 1132,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/5f58048fe1969d56c19384bf1e6747af3eaf1945a6209923ebccce14b925539e",
+    "sha256": "5f58048fe1969d56c19384bf1e6747af3eaf1945a6209923ebccce14b925539e"
+  }
+}

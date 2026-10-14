@@ -1,0 +1,196 @@
+# Gate P6 Recovery Independent Review
+
+**Verdict: GATE P6 ENGINEERING PASS**
+
+This is a fresh, scope-correct independent review of the completed P6
+selection, picking, camera, clipboard, highlight, Inspector, and viewport
+integration. It supersedes the engineering conclusion of the failed G6 event
+without deleting or rewriting that event. It does not approve release or
+distribution, resolve F42/R24, verify Metal, or claim completion of P7/P10
+visual work.
+
+## Scope and identity
+
+- Repository: `G:\MGIF`
+- Evidence root: `G:\Temp\mgif-p6-independent-regate-20260901T002000+0800`
+- Recovery task: `task_c627c917ddb9` / `G6-R1`
+- Git head: `6c36567625b305286755a734a66188a22df18e77`
+- Recovery authority SHA-256:
+  `30e280bbf869d53925bef9b64e0e3f93a15c5ad909e6b43e8f51c3edba1d5602`
+- Diagnostic authority SHA-256:
+  `af77f0bfdc1acf1a76c955839852189a0e48f93a568b30aeccd03049d766c91b`
+- Gate evidence index: 1802 bytes, SHA-256
+  `ef6cfc0c185ec26dab69c481e79c1c1c7114fe5b6fda82b4f867280e8980f1bf`
+- Debug executable: 20,722,176 bytes, SHA-256
+  `e58e41d77bde8bd743a366eccbd41b2dd46ecb94e23ee861a4b8a138ce41b80e`
+- Release executable: 6,014,464 bytes, SHA-256
+  `903939c621b032cbd98a479511df1190c1fb953933c631158d3e61d63aa4c384`
+
+All authoritative builds and runtime executions were Windows-native MSVC
+runs. WSL was used only for agent orchestration, evidence inspection, and hash
+collation. No Linux build or Linux runtime result contributes to this verdict.
+
+## Scope correction
+
+The original G6 failure treated the complete V01-V07 matrix and D3D12 native
+editor picking as Gate P6 blockers. That interpretation created requirements
+outside the locked Gate P6 boundary:
+
+- Gate P6 requires all selection entry points, asynchronous pick semantics,
+  single/toggle/blank/double behavior, camera focus, clipboard, highlight,
+  Inspector agreement, viewport conversion, Android exclusion, and neutral
+  public RHI contracts.
+- V01-V04 and V07 are P7 overlay evidence. The complete V01-V07 matrix is final
+  P10/definition-of-done evidence. Requiring P7 evidence at G6 would form a
+  dependency cycle because P7-10 depends on an accepted Gate P6.
+- Windows Vulkan is the full runtime target. D3D12 is a public/object/compile
+  target for this Gate; D3D12 native editor picking is deferred and does not
+  override passing D3D12 public contracts and CSM runtime evidence.
+
+This correction is bound by `g6-r1-authority-recovery.json` and the locked
+wording in `docs/gltf-scene-editor-parity-task.md:498-502,890-901` plus the
+successor blueprint and P6 readiness artifacts recorded by that authority.
+
+## Decision
+
+Gate P6 is **ENGINEERING PASS**. The required P6 behavior is closed by fresh
+Windows MSVC Debug/Release tests, native Vulkan interaction runs, clean
+validation logs, D3D12 public/runtime checks, source immutability checks, and
+two fresh UI captures. The old G6 failure remains immutable history and its
+descendants remain blocked until the append-only G6-R1 receipt is accepted.
+
+## Windows build and automated evidence
+
+The candidate was rebuilt after every temporary diagnostic edit had been
+removed. A final no-change Debug and Release build check also passed the
+production dependency preflight and all RHI boundary guards.
+
+- Direct focused executables: **30/30 passed** across Debug and Release.
+  `direct/results.json` is 8432 bytes, SHA-256
+  `c45b103e1e58513e7b5c2d21ce910bb1401325914f0e81d72fc9cc69467aa790`.
+- CTest Debug: **33/33 passed**, zero failures or skips. JUnit SHA-256
+  `bb43079097eafe7d6df78845790eaf504c4b68d8be35de0fdfe3262f987d57f8`.
+- CTest Release: **33/33 passed**, zero failures or skips. JUnit SHA-256
+  `8c6deef146555ee6ed85c0d06cda15628df3332be25b0c89c1149b76a6d5177d`.
+- Vulkan native P6 matrix: **8/8 passed** (Debug/Release x `single-hit`,
+  `same-primitive-toggle`, `blank-clear`, and `double-focus`). Matrix SHA-256
+  `6581466a1003846b1a037fd20ffc2bc7ceaf28bc13e3b93fef24c590c46d96d2`.
+- CSM matrix: **4/4 passed** (Debug/Release x Vulkan/D3D12). Matrix SHA-256
+  `73c463545783e5701802a11ccce9d3c30905731e769301e1aaa12996beb49e25`.
+- P0 dependency, schema, boundary, and corpus revalidation passed: 42
+  features, 10 traces, and 110 edges. Log SHA-256
+  `a152da401859fc0b0d67b652392ac296389462acb1a358e3db003b8ba40a94bb`.
+- The source-before and source-after P6 path arrays are byte-for-byte equal.
+  Their containing documents differ only because each records its own
+  generation timestamp. No product source repair was performed.
+
+The native metrics close the requested interaction outcomes in both build
+configurations:
+
+| Case | Submitted / terminal | Selection effects | Camera effects | Final result |
+|---|---:|---:|---:|---|
+| single-hit | 1 / 1 | 1 | 0 | one visible primitive selected and highlighted |
+| same-primitive-toggle | 2 / 2 | 2 | 0 | second hit clears the same primitive |
+| blank-clear | 2 / 2 | 2 | 0 | hit followed by miss clears selection |
+| double-focus | 1 / 1 | 0 | 1 | camera focus changes without a selection effect |
+
+Focused CPU/RHI tests additionally cover stale document, scene, projection,
+viewport, renderer-fence, and occurrence generations; hidden occurrences;
+exactly-one terminal completion; retained snapshots; input ownership; Escape;
+clipboard canonical/invalid/cross-document handling; and 100/125/150/200
+percent logical-to-physical viewport conversion.
+
+## Vulkan validation classification
+
+The first Release attempt exposed
+`VUID-vkCmdDraw-None-09600` for the three swapchain images. It was not silently
+ignored or treated as product success. The following bounded diagnostics were
+performed and retained:
+
+1. The loader was forced to disable every discovered implicit EOS, Nsight,
+   RenderDoc, Arm RenderDoc, Steam, and NVIDIA implicit layer and to insert
+   only `VK_LAYER_KHRONOS_validation`.
+2. Descriptor tracing found no MGIF `ArgumentWrite` that referenced a
+   swapchain image or view.
+3. A diagnostic binary skipped every MGIF `vkCmdDraw` call; all three product
+   fullscreen draws were reported skipped on every frame, yet the same
+   swapchain VUID remained. The skip log SHA-256 is
+   `d64dfa39da6f93d2a88e0f675a55a55eef574dc0cfb2470cec7decf61890f535`
+   and the corresponding validation stdout SHA-256 is
+   `ac0d842f26875cac03cacb51dcb17367b897168631cc6b41c0cd8a88e7a32c0a`.
+4. Process module inventory contained Khronos validation plus NVIDIA
+   `nvspcap64.dll` and `NvCameraAllowlisting64.dll`, but no RenderDoc, Nsight,
+   EOS, or Steam capture module. Inventory SHA-256 is
+   `a76ed82731e5c6284e1825110605929c5becbe25b531889cfa2f089c8d96a34c`.
+
+This proves that the reported draw is injected below the MGIF command-recording
+path by the NVIDIA capture/overlay stack. Final Gate runs therefore retain all
+Khronos core and synchronization validation while filtering only the exact
+external `VUID-vkCmdDraw-None-09600`. All other VUID, validation error,
+SYNC-HAZARD, assertion, device-lost, and failure markers remain blocking and
+were scanned across stdout and stderr. The final runtime and visual logs contain
+zero such diagnostics. The raw diagnostic is preserved in the evidence root;
+this classification is not a product-source waiver.
+
+## Visual evidence
+
+Two fresh 1920x1080 Release Vulkan captures use the exact final executable.
+The capture path also resizes the real window before taking the screenshot and
+performs nonblank/color pixel checks.
+
+- `visual/selection-highlight-inspector.png`: 72,026 bytes, SHA-256
+  `4d1a1186a6316a65fa52a4906f80d57663029b78408c556ba9aec6366f773765`.
+  The Scene Browser hierarchy is expanded to the picked primitive, Inspector
+  shows `Primitive 0`, and the viewport shows the cyan/yellow outline. Runtime
+  metrics bind selection revision 1 to highlight revision 1, one highlighted
+  occurrence, and one browser-focus event. Visual manifest SHA-256:
+  `3c3dad1169bc6a949a859780cd124b6d079dd571ffe63a6fab9f99e0c4688c11`.
+- `visual/blank-clear-no-highlight.png`: 59,937 bytes, SHA-256
+  `e1cc3398676f92bef54df108ee05a5922b63684810c40b65f05e26c2b091821c`.
+  The fixture remains loaded, Inspector visibly shows `No selection`, and the
+  settled viewport has no selected-object outline. Metrics record two
+  submissions, two terminals, final revision 2, and a final `miss`. Visual
+  manifest SHA-256:
+  `1d438c033981f249eee9d38b352814b66d34c2941677c2428f309dc86091d4a8`.
+
+Hidden and stale selections are fail-closed in the focused tests and cannot
+produce a highlight; the blank capture supplies the corresponding visible
+no-selection state. DPI and resize conversion is covered by the focused
+viewport tests and the real resized-window capture.
+
+## Platform and dependency disposition
+
+- Windows Vulkan full P6 runtime: **PASS**.
+- Windows D3D12 public/object/compile contracts and production CSM runtime:
+  **PASS**. Native D3D12 editor picking is deferred by the locked platform
+  contract and is not represented as passing evidence.
+- Android desktop picking/highlight exclusion and neutral shared contracts:
+  **PASS**.
+- Forbidden production dependencies: **zero in configured closure**.
+- Metal runtime: **Not Verified**.
+
+## Fixed policy and deferred work
+
+The following remain unchanged regardless of this engineering Gate:
+
+- F42: `BLOCKED`
+- R24: `BLOCKED`
+- Metal: `Not Verified`
+- release/distribution: `NOT PASS`
+
+P7 overlay work, V01-V04/V07, the complete V01-V07 matrix, long soak, and
+final release acceptance remain later-phase obligations. This report does not
+claim them complete.
+
+## Append-only conclusion
+
+The correct transition is a new G6-R1 `ready -> completed` event with Gate P6
+`ENGINEERING PASS`, forward-linked to and superseding event
+`00c79c551eb7fe71101971d74ceb05a80a11ae3e661da273a7bf3a428babdde4`.
+The old `task_4af12cfad98a` G6 failure and its report remain immutable. Once the
+accepted G6-R1 event is the latest P6 event, the explicit dependency
+replacement may make `task_1a40c0d302ae` (P7-10) ready without rewriting its
+original dependency definition.
+
+No Orca operation, product source repair, license approval, Metal verification,
+or release/distribution approval is claimed by this report.

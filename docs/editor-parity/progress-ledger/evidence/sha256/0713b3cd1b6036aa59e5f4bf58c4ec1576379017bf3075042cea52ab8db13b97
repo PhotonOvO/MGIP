@@ -1,0 +1,185 @@
+# P7-00 Completion Report
+
+## Verdict
+
+P7-00 (`task_b59fd290ead0`) is complete as the clean-room CPU Gizmo geometry,
+math, action-model, and Grid leaf.
+
+This is not integrated P7 and is not Gate P7. RHI overlay/pass/shader,
+application input routing, document/history mutation, P5 delta transport,
+CMake wiring, and runtime visual evidence remain later tasks.
+
+Completed at: `2026-08-29T01:28:31.000Z`
+
+## Selected Parent
+
+- Local pointer SHA-256 before this transition:
+  `4d2b13697a8d96b073458a6f8d505e394606b5e156969c39bcf98223d4cd444f`.
+- Parent bundle:
+  `8ec962fd1dacfb5324cb37e85ae5f5fa6239ed4c8f75e834ac4effd82b2dbc3b`.
+- Parent snapshot SHA-256:
+  `46178cce5a765c616291574b971269dcafabfe909bf57dc74c2847b88b8bc618`.
+- Previous transition SHA-256:
+  `5db1193abb4b0ba55bb40a0e07da8ca2dab595c2215758a4e048697a4bd00c36`.
+- P7-00 before-task SHA-256:
+  `1de5b70a03e297c7ffaffeb7ffc97c8382bdf4506086358a55334da13fad042a`.
+- Before state: `ready`.
+
+## Producer Bindings
+
+- P6-00 report: SHA-256
+  `7a8bcf776845d4fff563a0cdd60f38777b273c5993773f74bae91dce179c78b6`.
+- P6-00 receipt: SHA-256
+  `06bc686ba941e3e69825460366aad3cefdba5335c90e84402764549f002c34bc`.
+- Frozen read-only `EditorViewportMetrics.h`: 16606 bytes, SHA-256
+  `daffc513756e4a71ef8734e87234627bbfc8d7cb0788119d15ff48c5355227aa`.
+- P7 readiness authority: SHA-256
+  `1e2ce3ac038e8ead39f5634caeda1fc22a4c3e1a8ac383d915130b5c462616ac`.
+- O06 report: SHA-256
+  `8d8d35c3aae38e7ad08b1fe7502383027218ad5cbcf1f26172f10ad614a1c456`.
+- Successor blueprint: SHA-256
+  `1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84`.
+
+## Pre-Edit Binding
+
+All nine exact P7-00 Section 6.4 paths were independently checked before the
+first edit and were missing. Each preimage is the required missing sentinel:
+zero bytes and null SHA-256. No placeholder was created.
+
+## Final Write Set
+
+| Path | Bytes | SHA-256 |
+|---|---:|---|
+| `render/editor/GizmoGeometry.h` | 2914 | `677c3fc0f84b3cd520f01e49293ff90d1f26bc0a57b9fcb0bd70d21a0cb70272` |
+| `render/editor/GizmoGeometry.cpp` | 24241 | `5411c2437ba45cf28d8293d535938761753ab4b2508088a71cd6f96c34959fb2` |
+| `render/editor/TransformGizmo.h` | 10720 | `e5d0251793d1abb6188c1c8f04ef50612e95a1dcc5f9cd925f7744eeb7e51566` |
+| `render/editor/TransformGizmo.cpp` | 55515 | `e3d06bcfd85c25350f895c7605bababae15abfa09d2ef5ec1ddb03ce8220f5e9` |
+| `render/editor/GridModel.h` | 1609 | `5855d5280a9689c5e69ef0a476f34fdc1ec6135ebcfbe4ce17790062d4ad4112` |
+| `render/editor/GridModel.cpp` | 14926 | `f7668b374e212816c2cecdd94c39b0cb858e0b80986f4614b9c582a1f28b4da1` |
+| `render/editor/EditorOverlayTypes.h` | 6662 | `176209cd8eb3888b610bbc0800a6b0987da7bcc034cdf327f6ac37267cba8759` |
+| `tests/editor/transform_gizmo_cpu_tests.cpp` | 66852 | `9554c13022b6fefe95dbbc1e01a5f197305ccbd1e771579443ebd49ef838fb59` |
+| `tests/editor/grid_model_tests.cpp` | 19106 | `afcb1cb3fbe9da75a07f482ac28e78e7d755640167c295ed058b119a824e3382` |
+
+No P4/P5/P6, app, router, history, RHI, backend, CMake, ledger, or locked
+document path was changed by this P7-00 leaf.
+
+## Implemented Contract
+
+Geometry and value packets:
+
+- Exactly 13 stable components in fixed order: three translation axes, three
+  translation planes, three rotation rings, three scale axes, and uniform
+  scale. There is no screen-rotation component.
+- Deterministic immutable vertex/index atlas with finite normals/bounds,
+  contiguous non-overlapping component ranges, stable style constants, and a
+  topology/style digest independent of platform libm output.
+- Backend-neutral POD draw/action/grid packets contain no native handle,
+  document pointer, history object, ImGui, GLFW, or RHI type.
+
+Ray, hit, and transform math:
+
+- Camera inverse matrices and view depth are bound to the exact viewport,
+  projection, and view generations before use.
+- D4 surface transforms, clip ranges, reverse-Z, perspective, orthographic,
+  and one-pixel viewport ray paths are covered.
+- Near-parallel plane intersection uses the frozen strict `1e-6` cutoff;
+  negative-t/behind-axis, non-finite, singular, and degenerate inputs fail
+  closed.
+- Fixed hit thresholds are 0.6 for axis/axis-scale/uniform and 0.2 for
+  plane/ring partitions, with deterministic closest-hit/tie order.
+- Translation/rotation/scale and snapping use double precision before
+  validated narrowing. Global and parent-local basis modes are explicit.
+- Rotated, sheared, nonuniform, and one/three-axis reflected parents are
+  supported. Singular, near-singular, ill-conditioned, and projective parents
+  reject. Reflected-parent local rotation preserves the correct quaternion
+  direction.
+- Constant-size tests project real geometry silhouettes, pivot centers, and
+  hit regions across DPI, near/far, resize, orthographic zoom, and the locked
+  2/3 logical-pixel tolerances.
+
+Action model:
+
+- Attachment binds stable node ID, document revision, selection revision,
+  parent frame, and accepted preview state.
+- Ordinary delivered release commits exactly once. Repeated/late terminal is
+  a no-op.
+- O05 and Escape detach while retaining the latest accepted preview and emit
+  no history terminal.
+- O06 Escape plus delivered release in either same-batch order resolves to the
+  same detach/clear/no-history terminal. A prior-frame ordinary release remains
+  committed exactly once.
+- O07 focus loss latches retained preview without manufacturing a commit.
+- A stale attachment immediately detaches/releases capture; a later release
+  cannot commit the stale transaction.
+
+Grid:
+
+- Pure CPU XZ Grid with four decade steps and three unique adjacent active
+  LODs, deterministic snapped center, finite fades, bounded line count,
+  coarser/axis duplicate suppression, ordering, and semantic digest.
+- Each LOD uses its own step-derived extent rather than the coarsest extent.
+- Extreme finite values that cannot represent the configured spacing fail
+  closed without degenerate or duplicate lines.
+- Coincidence tolerance is bounded by step scale and two local floating-point
+  ULPs, not absolute world position. Regression at both `+1e12` and `-1e12`
+  proves all representable fine LODs remain nonempty.
+
+## Windows MSVC Verification
+
+The completion decision uses Windows native build and execution; WSL checks
+were editing feedback only.
+
+- Microsoft Visual C++ 19.44.35217.0.
+- C++20, `/permissive-`, `/W4`, `/WX`.
+- Debug: `/MDd /Od`; Release: `/MD /O2 /DNDEBUG`.
+- Output root: `G:/Temp/mgif-p7-00-cpu-tests-20260828`.
+
+| Test | Config | Bytes | SHA-256 | Result |
+|---|---|---:|---|---|
+| `transform_gizmo_cpu_tests.exe` | Debug | 784384 | `5071b591075b2c229f3cd98aa1d5453f9d3fc9988c7f0f1f62ef3f34812ca8f0` | PASS |
+| `transform_gizmo_cpu_tests_release.exe` | Release | 135680 | `e374ebe92c0b8170cde310635321b5e0b9c1fceef5b7fa70e22a03b7952b3d14` | PASS |
+| `grid_model_tests.exe` | Debug | 587776 | `585d014531a5d0a34262a5a385518a0bdec7baae5e1811fd703246576c7f4b71` | PASS |
+| `grid_model_tests_release.exe` | Release | 66560 | `332982698085c64c1818bb41025ff6b16d2e635781694c0e83a9dc128ffceb40` | PASS |
+
+Public-header self-containment probes:
+
+| Probe | Bytes | SHA-256 | Result |
+|---|---:|---|---|
+| `editor_overlay_types_header_probe.obj` | 924 | `abf35f486cb73bf66896672dbaf6c631af02e7cca483c204f729829e62157d15` | PASS |
+| `gizmo_geometry_header_probe.obj` | 992 | `ce88646414479335f2056b24725a1a384968c1d2d302b592d9956abc1b0448a0` | PASS |
+| `transform_gizmo_header_probe.obj` | 992 | `c22b3949a6d6068e48b9d92c1e53ae4a7515a86b6e54697f37ee2b1061ec5d9d` | PASS |
+| `grid_model_header_probe.obj` | 988 | `67f7f54f205d050517e1ab110dac3f48fc1a14fe9e06b0341d14b6216f062a39` | PASS |
+
+Additional final Windows gates:
+
+- Configured production-editor dependency preflight: PASS.
+- P0 scaffold/dependency scan: PASS, 42 features, 10 traces, 110 edges.
+- Production dependency scan: no ImGui, GLFW, RHI/native backend,
+  nv/reference helper, wait/idle, or orchestration dependency.
+- Independent final review: all original eight review findings and the final
+  near-parallel/Grid-large-center counterexamples are closed; no remaining
+  signing blocker.
+
+## Deferred Work
+
+1. P7-10 owns `EditorOverlayShaderInterop`, the RHI overlay pass, overlay
+   shader, and RHI tests.
+2. P7-90 owns renderer/app/input/document/history integration, CMake wiring,
+   transform-delta transport, real pointer capture, and runtime visual proof.
+3. The current production router's same-frame commit behavior remains a
+   P6-20/P6-90/P7-90 integration debt. This CPU action leaf encodes the
+   owner-bound O06 result but does not alter production router/history code.
+4. Gate P7 remains not run. Vulkan/D3D12/Android/runtime screenshots and an
+   independent engineering Gate are still required.
+
+## Fixed Policy
+
+- F42: `BLOCKED`
+- R24: `BLOCKED`
+- Metal: `Not Verified`
+- release/distribution: `NOT PASS`
+
+## Local Review Decision
+
+The automatic local review decision is `completed` with outcome `succeeded`
+for P7-00 only. P7-10 remains pending until both P7-00 and G6 are completed.

@@ -1,0 +1,854 @@
+# MGIF P7 Transform Gizmo and Grid Clean-Room Readiness Oracle
+
+## 1. Executive verdict
+
+**Verdict: P7 is not implementation-ready as a locked behavioral contract, and no Gate P7 PASS is claimed.** The MGIF RHI already has most low-level facilities needed for a clean-room overlay on Windows Vulkan: owned buffers/textures/views/samplers, graphics pipelines, argument tables, render encoders, explicit resource states, transient uploads, and deferred destruction. Those facilities are sufficient to design the overlay without a native escape hatch.
+
+Readiness is blocked by five concrete conditions:
+
+1. **The locked task specification contradicts the authoritative manifest for O06.** The task text predicts one transform history entry for same-frame Escape plus release, while the manifest's disposed conflict requires the native visible result: selection cleared, preview retained, Undo disabled, and no predicted transform history entry.
+2. **P7's declared P5/P6 integration prerequisites do not yet exist as the required contracts.** There is no `SceneChangeSet`, editor `SceneSelection`, `EditorInputRouter`, transform command transaction, or overlay frame interface in the audited worktree.
+3. **Viewport coordinates are not represented by one physical/logical snapshot.** The renderer currently sizes from the whole GLFW framebuffer while the central dock rectangle is stored in ImGui logical screen coordinates. Hit testing, pixel scale, depth sampling, render viewport, and DPI therefore cannot yet be proven to describe the same image.
+4. **No P7 implementation or test harness exists.** F19/F20 remain `not_implemented`; there is no transform-gizmo/grid source, editor overlay pass/shader, overlay-aware fake RHI encoder, or P7 visual artifact.
+5. **Only Windows Vulkan can be a full runtime target under the locked scope.** D3D12 is a public/compile contract target, Metal is currently unavailable/scaffold-only, and Android must exclude desktop editor UI and overlay orchestration.
+
+The correct next action is a normative correction, not implementation: update the locked specification to the O06 manifest disposition, then freeze the viewport/input and P5/P6 interfaces described in this report. Only after those changes should P7-T01 begin.
+
+## 2. Audit identity, scope, and evidence ceiling
+
+Audit date: 2026-08-23 (Asia/Shanghai).
+
+| Item | Identity / scope |
+|---|---|
+| MGIF worktree | `G:\MGIF`, HEAD `6c36567625b305286755a734a66188a22df18e77`; audited read-only, with pre-existing worktree changes not attributed to this audit |
+| Locked specification | `docs/gltf-scene-editor-parity-task.md`, specifically R06/R07/R13/R16/R21, P7, test/visual matrices, and edge obligations |
+| Authoritative behavior manifest | `docs/editor-parity/manifest.json` |
+| Edge obligations | `docs/editor-parity/edge-obligations.json` |
+| Reference repository | `F:\GitHub\vk_gltf_renderer` |
+| Reference commit | HEAD verified exactly `50373c7b0ff58078727af2c2aac70e29d5e74752`; tree `03e44de44217b109ab71dfbf6aee3989593d76b0` |
+| Reference use | Behavioral observation and evidence only. No reference Vulkan/helper implementation is proposed for MGIF. |
+| Actions deliberately not performed | No repository file modification, no build, no test execution, no GPU run, no screenshots, and no destructive command |
+
+Evidence grades must remain separate:
+
+- Fixed-reference source is exact evidence for code paths and constants at the locked commit, but it is not by itself a complete runtime/UI oracle.
+- `input-clipboard-index.json` and `INPUT-CLIPBOARD-REPORT.md` contain an executable input/core probe and source-order models. The report explicitly says it did not launch a full GLFW/ImGui/Vulkan UI and has no visual, DPI, hover, outside-viewport, or GPU-validation observation (`INPUT-CLIPBOARD-REPORT.md:172-185`).
+- Native UI evidence in `UI-SEMANTIC-REPORT.md:108-119` is authoritative for the bounded visible O05/O06/O07 results, while private callback order, private drag state, and direct history memory remain debt.
+- The manifest records F19 as provisional reference evidence and MGIF `not_implemented` (`manifest.json:1067-1099`), and F20 as source-only provisional evidence with MGIF `not_implemented` (`manifest.json:1102-1124`).
+- This report is a readiness oracle. It does not upgrade any manifest grade or close any visual/runtime gate.
+
+## 3. Blocking normative conflict: O06
+
+The conflict is not an implementation detail. The locked document says requirement changes must be made in the requirement text before plans or implementation are changed (`gltf-scene-editor-parity-task.md:374-376`), and its change-control rule says new reference behavior must first update the manifest and task specification rather than be selected silently in code (`gltf-scene-editor-parity-task.md:1378-1384`).
+
+| Authority/evidence | Current statement | Consequence |
+|---|---|---|
+| Task section 7.5 | Same-frame Escape plus release produces exactly one transform history entry (`gltf-scene-editor-parity-task.md:361-362`). | Stale source prediction. |
+| R16 Target/Acceptance | Same-frame Escape plus release commits once (`gltf-scene-editor-parity-task.md:468-472`). | Stale normative acceptance. |
+| P4/P7 plans | P4-T03 and P7-T04 require a same-frame commit (`gltf-scene-editor-parity-task.md:868-872`, `909-913`). | An implementation following the plan would contradict the manifest. |
+| Test/state matrices | `GizmoDragging`, T-GIZMO, and U03 still encode same-frame commit (`gltf-scene-editor-parity-task.md:655-660`, `1014-1018`, `1043-1047`). | Expected results are internally inconsistent. |
+| Manifest O06 | Both native event orders clear selection, retain the transformed preview, and leave Undo disabled (`manifest.json:353-389`). | This is the required visible result. |
+| Manifest disposition | `status=disposed_with_debt`, `disposition=observed_behavior_authoritative`, `targetBehavior=mgif_matches_native_visible_result_without_predicted_transform_history_entry` (`manifest.json:369-388`). | The native visible result overrides the earlier prediction. |
+
+### Required normative correction before implementation
+
+Update at minimum:
+
+- Section 7.5 line 362.
+- R16 Target and Acceptance at lines 471-472.
+- P4-T03 at line 870.
+- The `GizmoDragging` row at line 658.
+- P7-T04 at line 912.
+- T-GIZMO and U03 expected-result text at lines 1017 and 1046.
+- Any generated acceptance oracle that currently expects one command.
+
+The corrected rule should say:
+
+> If Escape and left release belong to the same application input batch with no intervening rendered application frame, either queue order clears selection, retains the latest preview TRS, detaches the gizmo, and leaves transform history unchanged/Undo disabled. A release already delivered in an earlier application frame is a normal one-time commit; later focus loss or Escape cannot undo or duplicate it.
+
+Private callback/history internals must remain marked as evidence debt. The implementation may use an MGIF-owned frame resolver to produce the authoritative visible result, but must not claim that resolver reproduces unobserved reference internals.
+
+Until this correction is approved in the locked specification, **P7-T04 has no single valid expected result and P7 must remain blocked**.
+
+## 4. Fixed-reference observable behavior oracle
+
+All source citations in this section refer to reference commit `50373c7b0ff58078727af2c2aac70e29d5e74752`.
+
+### 4.1 Modes, spaces, components, and attachment
+
+- Translate, rotate, and scale geometry is shown together; the clicked component selects the operation (`src/gizmo_transform_vk.hpp:37-39`).
+- The only supported transform space is world; local space is explicitly commented as unsupported (`src/gizmo_transform_vk.hpp:55-59`). MGIF must not add a visible Local mode as part of parity P7.
+- Components are translate X/Y/Z and XY/XZ/YZ, rotate X/Y/Z, scale X/Y/Z, and uniform scale (`src/gizmo_transform_vk.hpp:61-80`). `eRotateScreen` exists in the enum but is filtered out of rendering (`src/gizmo_transform_vk.cpp:1079-1103`); it is not a P7 component.
+- The attachment is node-backed. Only Node and Primitive selections route to a node attachment; the parent world matrix is supplied separately (`src/renderer.cpp:903-950`). No selection means `clearAttachment()` (`src/renderer.cpp:926-933`).
+- `clearAttachment()` directly clears attached pointers, hover, active drag, and component state without calling the transform-end callback (`src/gizmo_transform_vk.cpp:184-194`). This is why detach is observably distinct from release.
+
+### 4.2 Handle geometry and visual constants
+
+The reference defaults are a behavioral baseline, not code to copy:
+
+| Element | Fixed-reference value | Evidence |
+|---|---:|---|
+| Nominal gizmo size | 50 logical pixels | `src/gizmo_transform_vk.hpp:108-110` |
+| Axis shaft | radius 0.02, length 1.0 | `src/gizmo_transform_vk.hpp:130-132` |
+| Translation cone | radius 0.06, height 0.25, 16 segments | `src/gizmo_transform_vk.hpp:133-135` |
+| Rotation ring | radius 1.3, tube radius 0.020, 64 x 16 segments | `src/gizmo_transform_vk.hpp:137-141` |
+| Scale cube | size 0.15, axis length 1.67 | `src/gizmo_transform_vk.hpp:143-146` |
+| Uniform center box | 2.0 times the scale cube | `src/gizmo_transform_vk.hpp:143-146` |
+| Translation plane | size 0.22, offset 0.5, alpha 0.45 | `src/gizmo_transform_vk.hpp:148-151` |
+| Axis palette | X red, Y green, Z blue semantic families | `src/gizmo_transform_vk.hpp:112-120` |
+| Occlusion dither default | false | `src/gizmo_transform_vk.hpp:153-154` |
+
+The reference's plane alpha is implemented as checkerboard discard, then opaque output, not conventional alpha blending (`shaders/gizmo_visuals.slang:104-114`). MGIF visual baselines must distinguish that appearance from a blended translucent quad.
+
+### 4.3 Ray construction and hit testing
+
+- Mouse coordinates are unprojected with zero-to-one depth using near NDC z=0 and far NDC z=1 (`src/gizmo_transform_vk.cpp:868-897`). The reference describes Y as top-to-bottom and uses the incoming viewport-local mouse convention.
+- The ray is transformed once into gizmo-local space, then every visible component first uses an AABB broad phase (`src/gizmo_transform_vk.cpp:568-596`).
+- Axis, axis-scale, and uniform boxes use a 0.6 local-distance threshold; translate planes and rotation rings use 0.2 (`src/gizmo_transform_vk.cpp:598-638`).
+- Ring selection intersects the ring plane and measures radial distance. Plane intersection rejects `abs(dot(ray, normal)) < 1e-6` and negative t (`src/gizmo_transform_vk.cpp:1038-1049`).
+- The closest qualifying component wins (`src/gizmo_transform_vk.cpp:634-638`). Tie behavior and iteration order should be frozen by MGIF unit tests because multiple handles overlap near the origin.
+- MGIF must use its `ProjectionConvention` rather than hard-code Vulkan Y/depth assumptions. MGIF Vulkan, D3D12, and Metal all use reverse-Z, while Vulkan alone flips Y (`render/ClipSpaceConvention.h:21-45`).
+
+### 4.4 Drag math
+
+- Axis translation builds a best-view plane from the axis and view direction, intersects the current ray, and projects the hit delta onto the axis (`src/gizmo_transform_vk.cpp:668-683`, `723-746`).
+- Plane translation intersects the component plane and applies the world delta converted to local parent space (`src/gizmo_transform_vk.cpp:686-697`, `750-768`).
+- Rotation intersects the axis-normal plane, compares start/current vectors, and applies a signed angular delta (`src/gizmo_transform_vk.cpp:772-818`).
+- Scale uses total screen delta, `1 + (dx - dy) * 0.005`, clamped to at least 0.01 (`src/gizmo_transform_vk.cpp:858-865`). This is the reference drag response, even though R06 separately requires legal authored zero/negative scale from numeric editing.
+- Begin snapshots the initial TRS, Preview mutates the node, and End constructs/pushes a transform command (`src/renderer.cpp:363-391`). Preview must therefore be a transaction, not a per-frame history push.
+
+### 4.5 Parent-space transform behavior
+
+- Display position is parent-world multiplied by local position (`src/gizmo_transform_vk.cpp:963-990`).
+- Gizmo axes come from normalized parent matrix columns; the selected node's own rotation does not orient the handles in the supported world mode (`src/gizmo_transform_vk.cpp:963-971`).
+- A world movement is converted with the inverse parent matrix and a direction w=0 (`src/gizmo_transform_vk.cpp:998-1009`).
+- Negative and non-uniform parent scales can reflect/skew the effective basis or make inversion ill-conditioned. The source is not proof of robust behavior for those cases; E018/V03 require deterministic finite handling and visual baselines.
+- MGIF should compute ray/drag intermediates in double precision, validate determinant/condition and finiteness, and fail closed before preview mutation if the parent transform cannot yield a stable result. A disabled attachment in such a case is allowed only if it follows the locked K06 failure policy and is visibly explained; it is not a general parity waiver.
+
+### 4.6 Snapping
+
+- Scalar snap is nearest multiple: `round(value / step) * step` (`src/gizmo_transform_vk.cpp:47-52`).
+- Axis and plane translation snap the complete resulting local position vector, including components not moved by the current handle (`src/gizmo_transform_vk.cpp:740-764`).
+- Rotation snaps the angular delta, and scale snaps resulting affected component(s).
+- Runtime defaults are Grid/translation 1.0, rotation 45 degrees, scale 0.1; Grid/Gizmo/Snap start disabled (`src/resources.hpp:129-140`).
+- The reference UI ranges are Grid Unit `[0.001,1000]`, rotation `[1,180]` degrees, and scale `[0.001,10]` (`src/ui_renderer.cpp:460-473`).
+- Grid Unit feeds both the grid base unit and translation snap (`src/renderer.cpp:866-875`).
+
+### 4.7 Constant pixel scale, hover, and active state
+
+- The source formula is `(sizePixels / viewportHeight) * clipW` (`src/gizmo_transform_vk.cpp:1028-1036`). It is evidence of intent for perspective projection, not an adequate cross-projection algorithm.
+- Orthographic scale, behind-camera clip W, very small viewport height, resize-frame mismatch, and DPI are not closed by source evidence. MGIF must derive world-units-per-logical-pixel from projection type and the immutable viewport snapshot, and validate the projected result.
+- Rendering explicitly colors by `m_hoveredComponent` (`src/gizmo_transform_vk.cpp:320-334`), and hover is updated only when the left button is not down (`src/gizmo_transform_vk.cpp:255-258`). There is no independent reference active-color token in this code. During a normal drag, the pre-press hover usually remains highlighted.
+- Consequently, P7 must capture normal/hover/active reference images before defining an MGIF active token. It must not invent a visually distinct active state and then call it parity.
+
+### 4.8 Input capture and event ordering
+
+- Release is processed before drag update and press; a delivered release ends an active drag once (`src/gizmo_transform_vk.cpp:221-260`).
+- Viewport processing continues while the gizmo is dragging even if the viewport is no longer hovered (`src/ui_renderer.cpp:52-58`). Gizmo processing precedes scene picking, and an active/dragging gizmo returns before picking (`src/ui_renderer.cpp:68-89`).
+- No explicit OS pointer-capture call was found in the fixed reference. The observable behavior is logical capture plus continued polling. MGIF should own the capture adapter and test OS/window edges rather than expose GLFW/Win32 types from editor code.
+- Escape is a global selection clear, not a gizmo rollback (`src/ui_renderer.cpp:879-883`). There is no visible cancel API.
+
+The authoritative target state table is:
+
+| Input branch | Selection | Preview TRS | Attachment/drag | Transform history |
+|---|---|---|---|---|
+| Normal delivered release | Retained | Final preview retained | End once, release capture | Exactly one command |
+| Release outside viewport after inside press | Retained | Final preview retained | End once, release capture | Exactly one command |
+| O05 Escape-only while down | Cleared | Latest preview retained | Detach without End | Unchanged; late release is a no-op |
+| O06 Escape + release in one input batch, either order, no rendered frame between | Cleared | Latest preview retained | Detach/resolved inactive | **Unchanged; Undo remains disabled** |
+| O07 focus loss, no delivered release | Retained until some later clear | Preview retained | Reference drag remains latched; later clear detaches | Unchanged |
+| O07 mouse-up then focus loss in same input queue but no app-visible release | Retained | Preview retained | Remains latched | Unchanged |
+| O07 release delivered in preceding app frame, then focus loss | Retained | Final preview retained | Already ended | Exactly one command; focus loss adds none |
+| Repeated Escape, second release, or late release after detach/end | No further change | No further change | Inactive | No additional command |
+
+O05 details are supported by `manifest.json:320-350`; O06 by `manifest.json:353-389`; O07 by `manifest.json:392-423`. The executable probe's exact focus partitions are recorded at `INPUT-CLIPBOARD-REPORT.md:84-92`. E040/E072/E081 make the branches mutually exclusive and idempotent.
+
+### 4.9 Grid and overlay composition
+
+- The grid is a procedural XZ-plane visual overlay, not a pickable object (`shaders/gizmo_grid.slang:20-29`).
+- It draws three adjacent LOD levels, two axes, and `numLines` lines per level; the default is 151 lines, base unit 1.0 (`src/gizmo_grid_vk.hpp:82-84`; `shaders/gizmo_grid.slang:23-25`).
+- Four decade steps are generated from base unit. Perspective LOD blends floor-ray distance and camera height; orthographic LOD uses height (`src/gizmo_grid_vk.cpp:119-149`, `164-184`).
+- Each level snaps its center to the active step (`shaders/gizmo_grid.slang:80-104`), suppresses coincident coarser lines and X/Z-axis duplicates (`shaders/gizmo_grid.slang:110-130`).
+- Grid pixels behind scene depth are discarded and then faded by edge, viewing angle, distance, and per-level alpha (`shaders/gizmo_grid.slang:180-224`). X/Y/Z axes are separate and do not perform the grid's scene-depth discard, so they remain on top.
+- The grid uses additive color blending; axes use alpha-over (`src/gizmo_grid_vk.cpp:233-250`, `313-328`). Because MGIF blend state is pipeline-fixed, these require distinct pipelines.
+- Reference overlay order is existing tonemapped color (load), grid, then gizmo, before ImGui (`src/gizmo_visuals_vk.cpp:117-176`; `src/renderer.cpp:885-900`).
+- A separate helper depth attachment is cleared for the gizmo so gizmo parts self-occlude while scene depth remains sampled (`src/gizmo_visuals_vk.cpp:136-171`, `183-217`).
+- Gizmo fragments sample scene depth. With default `occlusionDither=false`, occluded fragments remain fully visible (x-ray); when enabled, occluded fragments use checkerboard discard (`shaders/gizmo_visuals.slang:83-114`).
+- The reference patches a perspective projection to extreme near/far before overlay rendering (`src/gizmo_visuals_vk.cpp:33-40`, `165-171`). MGIF must not copy that Vulkan-era helper. It needs an MGIF-owned, projection-convention-aware overlay projection or screen-space extrusion algorithm that is tested for perspective, orthographic, reverse-Z, and all backends.
+
+### 4.10 Scene-root transform is deliberately not gizmo-routed
+
+R13 is adjacent to P7 but has a separate behavior boundary:
+
+- Scene Transform is a popup with numeric Translation/Rotation/Scale and Reset (`src/ui_scene_browser.cpp:521-555`).
+- It captures root IDs and ordered baseline local matrices (`src/ui_scene_browser.cpp:589-617`).
+- Application computes `sceneTRS * baselineLocal`; decomposable results become TRS, otherwise a matrix remains authoritative (`src/ui_scene_browser.cpp:622-673`).
+- A hierarchy change freezes the applied result, resets popup state to identity, and rebuilds baselines on the next application (`src/ui_scene_browser.cpp:559-633`).
+- The task locks this route as non-history (`gltf-scene-editor-parity-task.md:450-454`). It must not attach one root, create a group gizmo, or emit a transform command as an implementation shortcut.
+
+## 5. Current MGIF capability and gap audit
+
+### 5.1 RHI primitives that are ready to reuse
+
+| Capability | Evidence | P7 use |
+|---|---|---|
+| RHI-owned buffers, textures, views, samplers | `rhi/RHIDevice.h:119-173` | Immutable gizmo geometry, frame data, helper depth, scene-depth sampler |
+| Deferred backend destruction contract | `rhi/RHIDevice.h:131-138` | Resize/shutdown without immediate native destruction |
+| Graphics pipelines and shader libraries | `rhi/RHIDevice.h:177-199` | Grid/axis/gizmo pipeline families and Slang artifacts |
+| Vertex/index/CPU-to-GPU/storage usage | `rhi/RHITypes.h:426-430`, `458-523` | Portable geometry and dynamic uploads |
+| Sampled texture, sampler, uniform/storage argument writes using RHI handles only | `rhi/RHIArgumentTable.h:11-21`, `59-69` | Scene depth plus frame uniforms with no native descriptors |
+| Render encoder pipeline/table/root/viewport/scissor/draw interface | `rhi/RHIEncoder.h:105-145` | Complete overlay recording surface |
+| Render target load/store and depth target descriptions | `rhi/RHITypes.h:563-583` | Load tonemapped output and clear helper depth |
+| Pipeline vertex/raster/depth/blend schema | `rhi/RHIPipeline.h:266-288`; `rhi/RHITypes.h:301-333` | Fixed blend/depth variants |
+| Shader IR identities | `rhi/RHIPipeline.h:240-253` | SPIR-V, DXIL, Metal-library public contract |
+| Declarative pass dependencies and resource states | `render/Pass.h:60-99`; `render/PassExecutor.cpp:232-370` | Output/depth transitions and hazards |
+| Per-frame transient allocations | `render/TransientAllocator.h:17-60` | Camera/settings uniforms and optional dynamic geometry |
+| Existing scene/output RHI views and extents | `render/RenderTypes.h:233-269` | No need for native image exposure |
+| Backend-neutral ImGui renderer | `render/ImGuiRhiRenderer.cpp:180-201`, `410-414`, `470-493`, `591-700` | Proof that dynamic buffers, scissor, tables, pipelines, and root constants work through RHI |
+
+Root bindings are limited to 256 bytes (`rhi/RHIPipeline.h:143-145`). A camera matrix set plus grid/gizmo settings should therefore live in a frame-local dynamic uniform allocation/table. Root constants should be restricted to compact per-draw values such as model matrix index, color token, component flags, and depth mode.
+
+### 5.2 Pass integration facts
+
+- The current graph registers `FinalColor -> Present -> ImGui` at `render/GPUDrivenRenderer.cpp:411-456`.
+- FinalColor writes the output as a color attachment and clears it (`render/passes/GPUDrivenFinalColorPass.cpp:20-71`).
+- Present reads the output, performs a transfer blit to the swapchain, and restores both images (`render/passes/GPUDrivenPresentPass.cpp:14-107`).
+- ImGui records after Present (`render/passes/GPUDrivenImguiPass.cpp:14-29`).
+- The only overlay-shaped example, `GPUDrivenDebugPass`, declares output as a color attachment and records with `load`, but its call is commented out (`render/passes/GPUDrivenDebugPass.cpp:23-43`, `82-101`). Runtime diagnostics explicitly call it disabled (`render/GPUDrivenRenderer.cpp:6098-6100`). It is a recording pattern, not ready P7 functionality.
+
+Required insertion point: `FinalColor -> EditorOverlay -> Present -> ImGui`. The overlay must declare output `readWrite/ColorAttachment` because it loads existing color, and scene depth `read/ShaderRead`. The pass uses output load/store, its own cleared depth attachment for gizmo self-depth, and no native barrier or native image access.
+
+### 5.3 Reverse-Z and shader convention gap
+
+MGIF uses zero-to-one, reverse-Z projection for Vulkan, D3D12, and Metal, with Vulkan Y flip (`render/ClipSpaceConvention.h:21-45`, `56-79`). The reference's shader tests `fragmentDepth > sceneDepth`, which is forward-Z-specific. A direct transcription would invert occlusion in MGIF.
+
+The MGIF shader contract must carry `reverseZ` or an equivalent convention token. With an epsilon, the occluded predicate is conceptually:
+
+```text
+forward Z: fragmentDepth > sceneDepth + epsilon
+reverse Z: fragmentDepth < sceneDepth - epsilon
+```
+
+The helper depth clear value and compare op must also be selected from the same convention. For current reverse-Z, far clear is 0 and self-depth uses a greater/greater-equal comparison. These values must be generated centrally, not inferred independently by CPU and shader.
+
+### 5.4 Viewport/DPI gap
+
+Current app behavior is split:
+
+- Renderer extent and camera aspect are set from the entire GLFW framebuffer (`app/MinimalLatestApp.h:341-360`).
+- The central dock rectangle is obtained from ImGui `WorkPos/WorkSize` or dock-node position/size and stored as logical screen-space floats (`app/MinimalLatestApp.h:363-377`, `934-945`; `render/RenderTypes.h:320-328`).
+- No app-level conversion binds that logical rect to a physical render sub-rectangle.
+- The ImGui RHI renderer correctly applies `FramebufferScale` to its own clips and framebuffer extent (`render/ImGuiRhiRenderer.cpp:470-488`, `810-813`), but that conversion is internal to ImGui rendering and is not a gizmo contract.
+
+P7 cannot safely use `viewportImageRect.z/w` as render pixels or the whole framebuffer extent as logical hit-test size. This would produce DPI-dependent hit offsets and apparent handle size, especially with non-1 scale or a docked central viewport.
+
+### 5.5 Missing editor/P7 surfaces
+
+Narrow existence checks found no:
+
+- `app/editor/` directory, `SceneSelection`, or `EditorInputRouter`.
+- `render/editor/` directory, `TransformGizmo`, or `GizmoGeometry`.
+- `render/passes/EditorOverlayPass.*`.
+- `shaders/editor_overlay.slang`.
+- `scene/editor/SceneChangeSet.*` or `scene/editor/commands/TransformCommands.*`.
+- `tests/editor/transform_gizmo_tests.cpp` or overlay fake-RHI tests.
+
+`render/RendererFacade` currently exposes direct mesh/instance transform update calls rather than the P5 change-set/pick/overlay contracts (`render/RendererFacade.h:47-53`; `render/RendererFacade.cpp:117-127`). This is not sufficient for the required frame-safe preview path.
+
+The existing `tests/editor/editor_rhi_contract_tests.cpp` only includes editor clock/fault-injection and basic RHI types (`:1-18`). It does not compile or inspect any editor render interface. The fake device in `tests/gpu_scene_registry_model_tests.cpp` is buffer-oriented; its render pass begins by returning `nullptr` (`:132-186`, `:320-338`). It cannot validate overlay recording.
+
+### 5.6 Backend and product boundaries
+
+| Target | Current audited boundary | Allowed P7 claim |
+|---|---|---|
+| Windows Vulkan | `VulkanDevice` implements modern argument table/pipeline surface (`rhi/vulkan/VulkanDevice.h:21`, `83-91`). | Full runtime, validation, screenshot, and canvas-pixel acceptance, once implemented and run. |
+| Windows D3D12 | `D3D12Device` declares the same table/pipeline surface (`rhi/d3d12/D3D12Device.h:14`, `62-70`). | Public header/object compile contract only under locked R21; no runtime parity claim from this audit. |
+| Metal | Factory reports unavailable (`rhi/RHIFactory.cpp:27-60`); `MetalDevice` lacks modern resource/table/pipeline overrides (`rhi/metal/MetalDevice.h:9-97`); pipeline creation is TODO (`rhi/metal/MetalPipelines.cpp:7-39`). | Header/token/schema compile contract only when a valid Apple artifact exists; no runtime or functional claim. |
+| Android | Source contract rejects `app/editor`, `render/editor`, `EditorOverlay`, and other desktop markers from active Android production inputs (`tests/editor/android_viewer_contract_tests.py:18-31`, `206-215`). | Shared RHI changes may compile only if neutral; desktop editor UI/overlay orchestration must remain excluded. |
+
+The production editor dependency boundary is non-negotiable:
+
+- Upstream Dear ImGui is pinned to commit `fd13a1e8923a0a7077b404fc36fd063b25a0c0b5` (`CMakeLists.txt:709-713`).
+- Editor UI may use only that upstream API plus MGIF-owned app/RHI/scene adapters.
+- Production direct, wrapper, public, target, include/link, and transitive dependencies on `nvcore`, `nvpro`, `nvapp`, `nvgui`, `nvvk*`, `nvvkgltf`, or reference Vulkan helpers are forbidden by R21/D21 (`gltf-scene-editor-parity-task.md:498-502`, `1327-1330`).
+- The RHI boundary scanner recognizes backend includes, native `Vk*`/`ID3D12*`/`MTL*` tokens, and native getters (`tools/check_rhi_boundaries.ps1:295-303`). P7 public/editor code must produce zero new findings.
+
+## 6. Proposed clean-room MGIF architecture
+
+The architecture below is derived from required behavior and MGIF's existing contracts. It deliberately does not preserve the reference's Vulkan class boundaries, descriptor layout, command helpers, projection patch, allocation calls, or shader binding syntax.
+
+### 6.1 Ownership boundaries
+
+```text
+upstream Dear ImGui events
+        |
+        v
+MGIF desktop adapter ----> immutable EditorViewportMetrics + EditorInputBatch
+        |                                      |
+        v                                      v
+EditorInputRouter ----------------------> TransformGizmo (pure CPU)
+        |                                      |
+        | owner/consumed                       +--> GizmoDrawPacket (POD)
+        v                                      +--> GizmoAction[]
+EditorController / transform transaction <---------+
+        |
+        +--> authoritative document preview/final TRS
+        +--> one history command or no-history terminal
+        +--> P5 SceneChangeSet with revisions
+                     |
+                     v
+RendererFacade -> GPUDrivenRenderer -> EditorOverlayPass -> MGIF RHI only
+                                            |       |
+                                            |       +--> helper depth + fixed pipelines
+                                            +--> editor_overlay.slang
+```
+
+Rules enforced by this split:
+
+- `TransformGizmo` owns geometry identity, hit/drag math, hover/drag state, and snap calculations. It does not include ImGui, GLFW, history, document mutation, RHI, or any backend header.
+- `EditorInputRouter` owns priority, frame-batch arbitration, pointer capture, and O05/O06/O07 terminal selection. It does not calculate geometry or mutate the document directly.
+- `EditorController`/the transform transaction owns authoritative preview validation, document revisions, command creation, and `SceneChangeSet` emission. A gizmo never holds a mutable node pointer or vector index.
+- `EditorOverlayPass` consumes an immutable draw snapshot and existing RHI scene resources. It cannot access the editor document, selection service, history, ImGui, or native backend handles.
+- Scene-root transform remains in `NonHistoryTransactions`/scene mutation logic and only emits normal transform deltas. It never enters `TransformGizmo`.
+
+### 6.2 Immutable viewport contract
+
+Create one backend-neutral snapshot after Dear ImGui layout is finalized and before input routing/render submission. Suggested shape:
+
+```cpp
+enum class EditorProjectionKind : uint8_t { perspective, orthographic };
+
+struct EditorViewportMetrics {
+  glm::vec2 logicalScreenOrigin{};
+  glm::vec2 logicalExtent{};
+  glm::ivec2 physicalTargetOrigin{};
+  glm::uvec2 physicalExtent{};
+  glm::uvec2 colorTargetExtent{};
+  glm::uvec2 depthTargetExtent{};
+  glm::vec2 framebufferScale{1.0f};
+
+  glm::vec2 pointerLogicalLocal{};   // not clamped during capture
+  glm::vec2 pointerPhysicalLocal{};  // same event converted once
+
+  glm::mat4 view{1.0f};
+  glm::mat4 projection{1.0f};
+  glm::mat4 inverseViewProjection{1.0f};
+  demo::clipspace::ProjectionConvention convention{};
+  EditorProjectionKind projectionKind{EditorProjectionKind::perspective};
+
+  uint64_t frameId{};
+  uint64_t layoutRevision{};
+  uint64_t cameraRevision{};
+  bool hovered{};
+  bool focused{};
+  bool valid{};
+};
+```
+
+This is a design sketch, not committed API. The final type must use only MGIF/plain math and RHI-neutral value types. It must not include `ImVec2`, `GLFWwindow`, `VkExtent2D`, `D3D12_*`, or Metal objects.
+
+Snapshot invariants:
+
+1. Logical and physical extents are finite and nonzero; per-axis scale is positive.
+2. `physicalTargetOrigin + physicalExtent` is clamped within both color and depth target extents.
+3. Camera aspect/projection describes this physical render viewport, not a different full-window rectangle.
+4. Pointer conversion uses the same logical origin and framebuffer scale as rendering.
+5. The snapshot is immutable for input, picking, constant-size math, overlay draw, and the frame's evidence marker.
+6. Pointer local coordinates remain outside `[0,extent)` while captured so an outside motion/release is not artificially moved to the viewport edge.
+7. A stale `frameId/layoutRevision/cameraRevision` causes input/draw data to be rejected, not reinterpreted with the next frame's layout.
+
+The P6 owner must choose and document whether the scene renders into a true central-viewport sub-rectangle or a dedicated viewport texture. P7 must not guess from the current full-frame render plus logical dock rectangle.
+
+### 6.3 CPU gizmo contracts
+
+Recommended plain-data contracts:
+
+```cpp
+enum class GizmoComponent : uint8_t {
+  none,
+  translateX, translateY, translateZ,
+  translateXY, translateXZ, translateYZ,
+  rotateX, rotateY, rotateZ,
+  scaleX, scaleY, scaleZ, scaleUniform
+};
+
+struct GizmoAttachment {
+  EditorObjectId nodeId{};
+  NodeTRS local{};
+  glm::dmat4 parentWorld{1.0};
+  uint64_t documentRevision{};
+  uint64_t selectionRevision{};
+};
+
+struct GizmoSettings {
+  bool visible{};
+  bool snapEnabled{};
+  double translationStep{1.0};
+  double rotationDegrees{45.0};
+  double scaleStep{0.1};
+  float nominalLogicalPixels{50.0f};
+};
+
+enum class GizmoActionKind : uint8_t {
+  beginPreview,
+  updatePreview,
+  commitPreviewOnce,
+  detachRetainingPreview
+};
+
+struct GizmoAction {
+  GizmoActionKind kind{};
+  uint64_t transactionId{};
+  EditorObjectId nodeId{};
+  NodeTRS value{};
+};
+```
+
+No public `cancelDrag()` or rollback result should exist. `detachRetainingPreview` names the actual behavior: it releases attachment/input state without restoring the baseline and without an End/history command.
+
+`GizmoGeometryLibrary` should deterministically generate one immutable vertex/index atlas plus per-component ranges and local bounds. `TransformGizmo` should return a `GizmoDrawPacket` containing only component ranges, model transforms, color/state tokens, and depth flags. The packet must own or reference frame-stable storage; it must not contain document pointers or backend handles.
+
+CPU calculations should use `double` for inverse matrices, ray/plane intersections, signed angles, and parent-space conversion, then validate before narrowing to float for renderer data. Any non-finite ray, TRS, matrix, scale factor, or determinant fails before a preview mutation.
+
+### 6.4 Constant logical-pixel sizing
+
+Use projection-aware MGIF math, calibrated against the reference capture:
+
+```text
+targetPhysicalPixelsY = nominalLogicalPixels * framebufferScale.y
+
+perspective worldUnitsPerPhysicalPixelY
+  = 2 * abs(viewSpaceDepth) / (abs(projection[1][1]) * physicalExtent.y)
+
+orthographic worldUnitsPerPhysicalPixelY
+  = 2 / (abs(projection[1][1]) * physicalExtent.y)
+
+gizmoWorldScale
+  = targetPhysicalPixelsY * worldUnitsPerPhysicalPixelY / canonicalVisualDiameter
+```
+
+The actual canonical diameter must be defined from MGIF geometry and fitted once against the locked 50-pixel reference baseline. Reject or hide an attachment behind the camera, at non-finite depth, or with zero viewport height. Do not clamp it into a giant visible gizmo.
+
+Tests must project handle centers and measured silhouettes back to **logical** pixels at 100/125/150/200% DPI. The locked tolerance is 2 logical pixels for centers and 3 logical pixels for hit regions (`gltf-scene-editor-parity-task.md:986-992`; E104).
+
+### 6.5 Input event and capture contract
+
+The MGIF-owned desktop adapter should translate upstream Dear ImGui/window events into an ordered frame batch:
+
+```cpp
+enum class EditorInputEventKind : uint8_t {
+  pointerMove,
+  leftPress,
+  leftReleaseDelivered,
+  escapePressed,
+  focusLost,
+  focusGained
+};
+
+struct EditorInputEvent {
+  EditorInputEventKind kind{};
+  glm::vec2 logicalScreenPosition{};
+  uint64_t sequence{};
+};
+
+struct EditorInputBatch {
+  uint64_t frameId{};
+  std::span<const EditorInputEvent> orderedEvents{};
+  bool applicationSeesLeftDown{};
+};
+```
+
+Only `leftReleaseDelivered` may commit. A raw OS mouse-up that ImGui/focus processing suppresses is not that event. `focusLost` must never manufacture a commit event.
+
+Pointer capture is an MGIF adapter capability with an opaque token, not a backend/native handle in public APIs. Capture starts only after an inside-viewport left press hits a component. While held, move/release events route to the active gizmo regardless of hover. Capture ends on an ordinary delivered release, selection detach, or focus/capture loss. Logical ownership remains latched after focus loss without release until the authoritative state machine detaches or otherwise resolves it; picking and camera remain suppressed while latched.
+
+The router returns one `InputOwner` and one consumption record per event:
+
+```text
+modal/dialog > active or latched gizmo > ImGui-captured widget
+             > viewport picking > camera navigation
+```
+
+This satisfies E031 and makes double-consumption observable in tests.
+
+### 6.6 Authoritative state machine
+
+The frame resolver must evaluate the whole input batch before emitting a history terminal, because O06 is defined over both same-frame event orders.
+
+| State | Event/condition | Next state | Document/history action | Capture/input action |
+|---|---|---|---|---|
+| Detached | Valid Node/Primitive attachment | AttachedIdle | None | None |
+| AttachedIdle | Move, no button | AttachedHover/Idle | None | Update closest component |
+| AttachedIdle/Hover | Inside left press on component | Dragging | Begin transaction with stable ID/revisions; no history | Acquire capture; gizmo owns event |
+| Dragging | Delivered move/down, finite solution | Dragging | Apply validated preview and P5 transform delta; no history | Suppress picking/camera |
+| Dragging | Ordinary delivered release, no Escape in batch | AttachedIdle | End once, push exactly one transform command | Release capture |
+| Dragging | Escape in batch, no release | Detached | Clear selection; retain latest preview; no End/history | End-of-batch attachment sync releases capture |
+| Dragging | Escape and delivered release in same batch, either order | Detached | Clear selection; retain latest preview; **no history** per O06 | Release capture; mark transaction terminal |
+| Dragging | Focus lost, no app-visible release | DraggingLatched | Retain preview; no End/history | Physical capture lost; continue gizmo ownership |
+| Dragging | Mouse-up queued then focus lost, but no app-visible release | DraggingLatched | Retain preview; no End/history | Same as no-delivered-release branch |
+| Dragging | Release was delivered in prior app frame | AttachedIdle | Commit already occurred exactly once | Later focus loss is no-op |
+| DraggingLatched | Selection clear/Escape | Detached | Retain preview; no history | Clear latch |
+| Detached/AttachedIdle | Late or second release; repeated Escape | Same | No document/history change | No-op |
+| Any | Attachment ID/revision becomes stale | Detached | No stale mutation; retain only already-authoritative preview | Release capture/latch |
+
+Implementation notes:
+
+- The ordinary release and O06 same-batch terminal are mutually exclusive.
+- A `transactionId` records terminal emission; attempts to terminate twice are assertions in tests and no-ops in production.
+- Selection clear may be dispatched before end-of-batch attachment sync. Ordered moves that are genuinely visible before detach may update the retained preview; no later move may mutate after detach.
+- Escape is not consumed as a rollback request. It continues to perform global selection clear.
+- Camera/picking suppression uses `Dragging || DraggingLatched`, not only physical button state.
+- Modal/text-input/right-button concurrency must produce a single owner and cannot synthesize a transform terminal.
+
+### 6.7 Document, history, and P5 flow
+
+1. Begin captures stable node ID, starting TRS, document revision, selection revision, parent world matrix, and animation/edit-conflict state.
+2. Each preview is validated by the R06 mutation path: finite numbers/matrices, quaternion normalization, zero/negative authored-scale rules, descendant/camera/light/instance consistency, and no stale ID.
+3. A valid preview produces the smallest P5 Transform `SceneChangeSet`; it never calls `waitForIdle()` or uploads geometry/textures.
+4. Renderer consumes the delta at a frame-safe boundary. Overlay draw data uses the same accepted transform revision, preventing the gizmo and object from diverging for a frame.
+5. Ordinary release creates exactly one command from begin snapshot to final accepted TRS. A no-op final value follows the locked history/no-op policy once P4 defines it.
+6. O05/O06/detach terminals retain the last accepted preview as authoritative but do not run the transform-end history path.
+7. A stale/rejected preview preserves the last valid document and draw snapshot. It cannot partially update overlay-only state.
+
+Scene-root transform bypasses all seven gizmo steps. It keeps ordered per-scene root baselines and executes the R13 non-history transaction; its deltas may reuse P5 Transform transport but not gizmo transaction/history semantics.
+
+## 7. RHI overlay and shader integration
+
+### 7.1 Pass resources and lifecycle
+
+`EditorOverlayPass` should own:
+
+- One immutable gizmo vertex/index atlas uploaded through RHI.
+- One scene-depth sampler.
+- Per-frame argument tables referencing the current scene-depth view and transient uniform allocation.
+- A helper depth texture/view in the same attachment-coordinate space as the output target, recreated only on attachment extent/sample/format changes. If the editor uses a dedicated viewport-local color target, both extents equal the viewport and the origin is zero; if it draws into a shared full-frame output, helper depth must match that full attachment extent so a nonzero render-area origin remains in bounds.
+- Shader libraries and fixed pipeline variants.
+- No document, selection, ImGui context, or native device/command/image object.
+
+Resource creation/destruction must use `rhi::Device`. Resize replaces helper depth via normal logical-handle destruction/retirement; no `waitIdle()` is permitted on resize or interaction. If helper depth is registered in the pass graph, give it a logical handle such as `kPassEditorOverlayDepthHandle` and declare `DepthStencilAttachment` write state so `PassExecutor` owns transitions.
+
+Frame dependencies:
+
+| Resource | Access/state | Reason |
+|---|---|---|
+| `kPassOutputHandle` | read-write, `ColorAttachment` | Load FinalColor output and blend/draw overlay |
+| `kPassSceneDepthHandle` | read, fragment `ShaderRead` | Grid occlusion and gizmo x-ray classification |
+| helper depth logical handle | write, `DepthStencilAttachment` | Gizmo self-depth only; same attachment-coordinate extent as output and clear the overlay render area every frame |
+| immutable geometry buffers | read, vertex/index | Gizmo component meshes |
+| transient frame uniform buffer | read, vertex/fragment uniform | Matrices, viewport/depth extents, settings, depth convention |
+
+The pass render target uses output `load/store`; helper depth uses convention-appropriate far clear/store. Render area, viewport, and scissor use `physicalTargetOrigin/physicalExtent`, but both attachments must cover that rectangle in the same coordinate space. This invariant prevents a viewport-sized depth attachment from being addressed with a full-frame nonzero origin.
+
+### 7.2 Fixed pipeline family
+
+Do not depend on native dynamic blend commands or wide smooth lines. MGIF's public dynamic states are viewport/scissor/depth-bias, and blend is in `GraphicsPipelineDesc` (`rhi/RHITypes.h:161-166`; `rhi/RHIPipeline.h:273-287`). Create explicit variants:
+
+| Pipeline | Topology/geometry | Blend | Helper depth | Scene depth behavior |
+|---|---|---|---|---|
+| Grid | Screen-expanded triangle quads generated from vertex ID | Additive: src-alpha, one | Off | Discard grid fragments behind scene geometry |
+| Axes | Screen-expanded triangle quads | Alpha-over | Off | Always on top, matching reference axes |
+| Gizmo opaque/x-ray | Indexed triangles | Off/opaque | Test + write, convention-aware | Occluded fragments still visible by default |
+| Gizmo dither | Indexed triangles | Off/opaque | Test + write | Checkerboard discard only when occluded |
+| Gizmo plane | Indexed triangles | Off/opaque | Test + write | Checkerboard plane coverage; output alpha one |
+
+The reference uses a wide/smooth native line mode. That is not a portable RHI parity assumption. Expanding line segments to pixel-width quads in the shader gives stable 1.5-logical-pixel coverage on Vulkan/D3D12/Metal contracts and supports deterministic canvas bounds.
+
+### 7.3 Uniforms and bindings
+
+Use one frame-local uniform block, not oversized root constants:
+
+```cpp
+struct EditorOverlayFrameUniforms {
+  glm::mat4 view;
+  glm::mat4 projection;
+  glm::mat4 viewProjection;
+  glm::mat4 inverseViewProjection;
+  glm::vec4 viewportOriginAndExtentPx;
+  glm::vec4 colorAndDepthExtentPx;
+  glm::vec4 framebufferScaleAndGridLevel;
+  glm::vec4 cameraPositionAndGridUnit;
+  uint32_t projectionKind;
+  uint32_t reverseZ;
+  uint32_t gridFlags;
+  uint32_t occlusionMode;
+};
+```
+
+Per-draw root constants must remain below 256 bytes and contain only compact model/component/color/flags data. The exact shared CPU/Slang layout belongs in an MGIF-owned shader I/O header with static size/alignment assertions. Argument writes contain only RHI handles, as required by `RHIArgumentTable.h:11-12`.
+
+### 7.4 Shader behavior
+
+The MGIF shader should have separate entry points but can live in one `shaders/editor_overlay.slang`:
+
+- `gridVertex/gridFragment`: generate three adjacent decade LODs on XZ, snap around the floor/view point, suppress coarser duplicates/axis overlaps, expand to pixel quads, sample scene depth, and apply edge/angle/distance fades.
+- `axisVertex/axisFragment`: draw X/Y/Z axis quads with alpha-over and no scene-depth rejection.
+- `gizmoVertex/gizmoFragment`: transform immutable component geometry, preserve constant logical size, sample scene depth using physical viewport origin/extent, apply reverse-Z-aware occlusion, plane/occlusion dither, and output MGIF theme tokens.
+
+Depth UV must be derived from physical target coordinates and `depthTargetExtent`; it must not assume depth extent equals logical viewport size. If color/depth extents differ, the snapshot supplies both and tests cover the mapping.
+
+The overlay projection must preserve MGIF Y/reverse-Z convention. Any near/far extension must be built using `ClipSpaceConvention` and separately cover orthographic projection; direct matrix-member patching from the reference is forbidden.
+
+### 7.5 Pass graph and Android isolation
+
+Register the pass only for the desktop editor path:
+
+```text
+GPUDrivenFinalColor
+  -> EditorOverlay (desktop editor only)
+  -> GPUDrivenPresent
+  -> GPUDrivenImgui
+```
+
+Keep `app/editor/*`, `render/editor/*`, `EditorOverlayPass`, editor shader packaging, and desktop orchestration out of Android's active target/source graph. Shared RHI types must remain editor-neutral. If `GPUDrivenRenderer.cpp` needs a conditional hook, the compile definition and CMake source selection must prove that no editor code or symbols are compiled into `DemoAndroid`; an editor-named pass must not become an always-linked shared renderer feature.
+
+No RHI public API change appears necessary from this audit. If implementation discovers a missing portable operation, it must first extend and test the RHI contract across Vulkan/D3D12/Metal boundaries. It must not call a native getter from the overlay.
+
+## 8. Implementation file ownership and merge order
+
+The following ownership keeps P7 changes reviewable and prevents document/UI/RHI responsibilities from collapsing into one class.
+
+| File(s) | Owner/responsibility | Must not own |
+|---|---|---|
+| `render/editor/EditorViewportMetrics.h` | Immutable logical/physical viewport, camera, DPI, revision contract shared by P6/P7 | ImGui/GLFW/native backend types |
+| `render/editor/GizmoGeometry.h/.cpp` | Deterministic MGIF-owned vertex/index atlas, component ranges, local bounds | Input, document, GPU allocation |
+| `render/editor/TransformGizmo.h/.cpp` | Pure CPU attachment state, ray hits, drag math, snap, draw packet generation | RHI, ImGui, history, direct document mutation |
+| `render/editor/EditorOverlayTypes.h` | POD grid/gizmo frame snapshot and visual tokens | Native handles or editor-domain pointers |
+| `app/editor/EditorInputRouter.h/.cpp` | Input priority, ordered batch resolution, capture token, O05/O06/O07 state machine | Gizmo geometry or renderer recording |
+| `scene/editor/commands/TransformCommands.*` | Begin/preview/end transaction and one-command history integration | Pointer capture or drawing |
+| `scene/editor/NonHistoryTransactions.*` | Scene-root baseline/freeze/reset route | Node gizmo or transform history entry |
+| `render/passes/EditorOverlayPass.h/.cpp` | RHI resources, pass dependencies, pipeline/table creation, draw recording, resize/retirement | Native API, document/selection/ImGui |
+| `shaders/editor_overlay.slang` plus MGIF-owned I/O header | Grid/axis/gizmo entry points, depth convention, dither, fades, screen expansion | Reference binding declarations or copied helper code |
+| `render/RenderTypes.h` | Optional immutable editor overlay frame pointer/value and viewport contract plumbing | Editor mutation logic |
+| `render/RendererFacade.*` | Submit immutable overlay snapshot and P5 transform deltas | Per-component gizmo state |
+| `render/GPUDrivenRenderer.*` | Desktop-only pass ownership/registration and resource binding | Editor input/history logic |
+| `CMakeLists.txt` / shader packaging | Desktop editor source/target wiring, contract tests, Android exclusion | Any dependency exception |
+| `tests/editor/transform_gizmo_cpu_tests.cpp` | Geometry/ray/drag/snap/scale math | GPU assertions |
+| `tests/editor/editor_input_router_tests.cpp` | Owner priority, capture, O05/O06/O07/idempotency | Rendering |
+| `tests/editor/editor_overlay_rhi_tests.cpp` | Recording fake-RHI resources/pipelines/tables/draws/pass dependencies | Visual parity claims |
+| `tests/editor/editor_rhi_contract_tests.cpp` | Public include/token/schema compilation for new APIs | Runtime claims |
+| Acceptance scripts/artifacts | Vulkan validation, visual/canvas checks, identity/state JSON | Production runtime dependency |
+
+Recommended merge order:
+
+1. Correct O06 normative text and generated expected results.
+2. Land/freeze P4 transform transaction plus P5 `SceneChangeSet`/renderer interface and P6 selection/input/viewport contracts.
+3. Land pure CPU geometry/math and CPU tests.
+4. Land overlay POD contract, shader, pass, and recording fake-RHI tests.
+5. Wire the desktop-only pass into `FinalColor -> Overlay -> Present -> ImGui`, extend dependency/RHI/Android contract tests, then run backend compile gates.
+6. Capture/run native Vulkan UI and visual matrices; only then evaluate Gate P7.
+
+Overlapping high-risk files are `CMakeLists.txt`, `render/RenderTypes.h`, `render/RendererFacade.*`, and `render/GPUDrivenRenderer.*`. Assign one integrator and merge the frozen P5/P6 contracts before P7 edits those files.
+
+## 9. Required test matrix
+
+### 9.1 CPU geometry, picking, drag, and transform tests
+
+| Test group | Required cases | Required assertions |
+|---|---|---|
+| Geometry identity | All 13 supported components; `rotateScreen` absent; deterministic generation twice; default style and custom theme | Stable vertex/index bytes or semantic digest, valid indices, finite normals/bounds, nonempty range per component, no overlapping ownership IDs |
+| Ray construction | Perspective and orthographic; Vulkan Y-flip/reverse-Z and D3D12/Metal no-flip/reverse-Z conventions; center/corners/edges; zero/one-pixel viewport; behind camera | Finite normalized ray or explicit invalid result; correct near/far direction; no division by zero |
+| Hit classifier | Axis shafts/tips, XY/XZ/YZ planes, rings, uniform center; overlapping origin; just-inside/outside hit tolerance; disabled/hidden attachment | Expected closest component and stable tie order; hit-region boundary within 3 logical pixels of baseline |
+| Near-parallel | Axis best-view plane and ring/plane dot products around epsilon; ray parallel and almost parallel | No NaN/Inf/jump; deterministic no-hit or retained last preview |
+| Parent space | No parent; rotated parent; positive non-uniform scale; one/two/three negative axes; selected node own rotation; nearly singular and singular parent | Display position/orientation and world-to-local delta match independent double calculation; own rotation does not rotate handles; unstable inverse fails before mutation |
+| Axis/plane translation | Each axis/plane, positive/negative deltas, viewport-edge start and outside move | Final local/world TRS within `1e-5`; untouched axes remain correct before snap |
+| Rotation | X/Y/Z, both signs, wrap around +/-180, near center, large motion | Quaternion sign-equivalent and normalized; matrix within `1e-5` |
+| Scale | X/Y/Z/uniform, positive/negative mouse deltas, 0.01 gizmo minimum, authored starting zero/negative scale | Reference screen-response result; no invalid multiplication; numeric R06 zero/negative policy remains distinct |
+| Snap | On/off; steps 0.001/1/1000 translation, 1/45/180 rotation, 0.001/0.1/10 scale; positive/negative half boundaries | C++ nearest-multiple behavior; full resulting translation vector snapped; deterministic rotation/scale result |
+| Constant size | Near/far perspective depths, orthographic zoom, resize, DPI 1/1.25/1.5/2, nonuniform synthetic scale | Measured projected size stable in logical pixels; center <=2 px and hit region <=3 px from baseline |
+| Finiteness/property | Random finite cameras/parents/TRS with fixed seeds; extreme finite values | No non-finite result; rejection leaves document revision/history/draw snapshot unchanged |
+
+### 9.2 Input and transaction state tests
+
+Every test records ordered input events, owner per event, attachment, capture, selection ID/revision, preview/final TRS, document/projection revision, Undo/Redo sizes and next descriptions, camera state, and terminal transaction ID.
+
+| Case | Exact expected result |
+|---|---|
+| Press + move in one frame | One begin and at most one accepted preview for the resolved event sequence; gizmo is sole owner |
+| Normal inside release | Exactly one commit/history entry; capture released; picking/camera receive none of the drag events |
+| Drag outside viewport, release outside | Preview continues outside; exactly one commit/history entry; no pick/camera jump |
+| Escape-only while left remains down (O05) | Selection clear, latest preview retained, detach, no End/history; late release no-op |
+| Escape then release in same batch (O06) | Selection clear, preview retained, detach, history unchanged/Undo disabled |
+| Release then Escape in same batch with no rendered frame between (O06) | Same visible/document/history result as the preceding case: no history |
+| Release delivered in frame N, Escape in N+1 | Frame N commits exactly once; later Escape clears selection but cannot undo/add history |
+| Focus loss without delivered release (O07) | Preview retained, selection retained, drag latched, history unchanged; later non-delivered physical up does not commit |
+| Mouse-up then focus-loss in same input queue, release suppressed (O07) | Same as no-delivered-release branch |
+| Delivered release in prior frame then focus loss (O07) | Exactly one prior commit; focus loss changes neither selection nor history |
+| Escape from latched state | Clear selection and detach, retained preview, no history |
+| Second release/repeated Escape/late release | No TRS/revision/history change after first terminal |
+| Modal/text editing/right button concurrency | Exactly one input owner; no transform/pick/camera side effect not present in oracle |
+| Selection/document/scene switch during drag | Stable-ID/revision mismatch detaches fail-closed; never mutates a replacement object |
+| Camera arbitration | Camera state byte/semantic equality throughout every gizmo-owned branch |
+
+The same-frame O06 assertions must be generated from the corrected manifest, not from stale P7-T04 text.
+
+### 9.3 Scene-root boundary tests
+
+| Edge | Required case/assertion |
+|---|---|
+| E010 | Adjacent roots, mixed TRS/matrix roots, and multiple scenes use independent ordered baseline sets with no contamination. |
+| E022 | Identity/Reset returns all roots to the frozen baseline; non-decomposable matrices remain matrix-authored. |
+| E037 | Add/delete/reparent during an active root transform freezes current results, resets popup TRS, and installs the next baseline atomically. |
+| E055 | Zero-root scenes produce no node, revision, history, or non-identity mutation. |
+| E078/E108 | Repeated Reset and 1,000 back-and-forth cycles remain within `1e-5`; no history/drift accumulation. |
+| E096 | Capture/apply/freeze/reset iterate roots in document order without reordering. |
+| Routing guard | Selecting a scene root never creates a `TransformGizmo` attachment, draw packet, pointer capture, or transform history command. |
+
+### 9.4 Recording fake-RHI tests
+
+The current buffer-only fake must not be treated as sufficient. Add a dedicated recording fake with non-null `RenderEncoder` and owned logical IDs. It should deep-copy span-backed pipeline/table descriptions before the production call returns.
+
+| Test | Required observation |
+|---|---|
+| Initialization | One immutable geometry allocation/upload path, helper-depth-capable texture/view path, sampler, layouts/tables, shader libraries, and expected pipeline variants; no zero-size resource |
+| Pipeline schemas | Correct topology, blend factors, depth compare/write, color/depth formats, binding visibility; each root-constant block <=256 bytes |
+| Argument writes | Scene depth is a sampled texture; sampler and uniform buffer bindings use only valid RHI handles and correct frame-local lifetime |
+| Pass dependencies | Output read-write ColorAttachment, scene depth read ShaderRead, helper depth write DepthStencilAttachment; registration order after FinalColor and before Present |
+| Render recording | Output `load/store`; helper depth `clear/store`; exact viewport/scissor from physical metrics; grid -> axes -> gizmo draw order; expected per-component index ranges |
+| Empty/invalid state | Grid-off plus no attachment emits no draws; invalid extent/depth/table/pipeline fails closed and never dereferences null encoder |
+| Resize | Same attachment extent is a no-op; changed attachment extent replaces helper depth once; viewport-only layout changes update render area without needless allocation; old handles become invalid and retire through RHI; no `waitIdle()` |
+| Frame rotation | Per-frame tables/uniform offsets are not updated while pending GPU use; frame IDs and table lifetime remain consistent |
+| Shutdown | Every owned logical resource destroyed once; no borrowed output/scene-depth resource destroyed |
+| Convention | Forward/reverse-Z synthetic settings select correct shader flag, helper clear, and compare op |
+| Boundary | Public/editor headers contain no native token/include/getter; dependency scan has no forbidden direct or transitive edge |
+
+### 9.5 Backend and product contract tests
+
+| Target | Required gate artifact |
+|---|---|
+| RHI public contract | `editor_rhi_contract_tests` includes viewport/gizmo/overlay public headers and asserts plain/RHI-neutral types and schema sizes. |
+| Windows D3D12 | Object/public contract compile of the new headers/pass-facing schema; no Vulkan-only define/include is required. |
+| Apple Metal | Real Apple compile artifact for public headers/shader schema when infrastructure exists. Current scaffold does not justify PASS. |
+| Android | `android_viewer_contract_tests.py` extended as needed; active CMake/source graph and final symbols contain no desktop editor UI or overlay orchestration. |
+| Dependency | Final configured editor graph, compile commands, response files, generated/deferred sources, public includes, and transitive closure contain zero `nvcore`/`nvpro`/`nvapp`/`nvgui`/`nvvk*`/`nvvkgltf`/reference-helper edge. |
+| RHI boundary | Enforcement scan reports zero new backend include/native symbol/native getter finding in editor/public/render-pass code. |
+| Dear ImGui identity | Resolved production target still proves the pinned upstream commit/tree and no source override; only MGIF-owned adapters connect it to editor logic. |
+
+### 9.6 Vulkan visual, screenshot, and canvas-pixel matrix
+
+Run a real Windows Vulkan editor executable with validation and synchronization validation. Each action emits identity JSON, ordered action log, UI state JSON, selection/document/runtime/history digest, PNG, and the required single markers. PNG-only evidence is insufficient (`gltf-scene-editor-parity-task.md:1043-1053`).
+
+Required scenes/states come from the locked V matrix (`gltf-scene-editor-parity-task.md:1077-1089`):
+
+| Visual ID | Required captures |
+|---|---|
+| V01 Grid | Perspective and orthographic; Grid off/on; units 0.001/1/1000; near horizon; resize; LOD transitions; geometry occludes grid while axes stay on top |
+| V02 Components | Every 13-component normal, hover, and active frame; all components nonempty; correct X/Y/Z semantics; uniform center visible |
+| V03 Parent space | Rotated parent plus negative/non-uniform scale; handle orientation, axis drag result, no NaN/crash |
+| V04 Depth/x-ray | Gizmo partly behind opaque geometry; helper self-depth, default solid x-ray, optional occlusion dither if exposed, plane checker coverage, selected outline interaction |
+| V07 DPI/resize | Stable logical size, correct hit mapping, nonblank overlay, outside drag/release across all supported viewport sizes |
+
+Resolution/DPI coverage:
+
+- Locked desktop matrix: `1280x720`, `1920x1080`, and `2560x1440` at 100%, 125%, 150%, and 200% where applicable (`gltf-scene-editor-parity-task.md:492-496`).
+- Add desktop Vulkan mobile-shaped viewport tests such as `390x844` and `844x390`. These test constrained viewport geometry; they do **not** authorize or claim Android desktop editor runtime.
+- Include dock/panel layouts that make the central viewport physical rect smaller than the window framebuffer.
+- Include resize and DPI changes between frames, verifying the input and draw snapshots share the same revision.
+
+Canvas/pixel checks must assert:
+
+1. Screenshot dimensions equal the manifest and the viewport is neither black nor single-color.
+2. Grid and gizmo masks fall within reference-derived min/max pixel-count intervals.
+3. Each axis/component projected bounding box is nonempty and lies inside the expected viewport/scissor.
+4. Projected centers are within 2 logical pixels and hit masks/regions within 3 logical pixels of the approved baseline.
+5. Normal/hover/active token masks appear only in their intended state. Until active reference imagery exists, no distinct active-token expectation may be invented.
+6. Default occluded gizmo pixels remain visible; dithered mode has the approved checker coverage; grid pixels behind opaque geometry disappear; axes remain visible.
+7. UI rectangles and overlay viewport do not overlap incoherently; no dynamic resize causes one-frame position/size jumps.
+8. TRS/world matrices and state JSON meet the `1e-5` tolerance while edited document numerics meet the locked persistence tolerance.
+9. Logs contain zero VUID, synchronization hazard, assertion, crash, or device-lost marker.
+
+Reference/MGIF theme pixels need not be identical. Only approved MGIF theme-token differences are allowed; axis X/Y/Z semantics, geometry, state, depth behavior, and interaction result remain exact.
+
+## 10. Edge-obligation traceability
+
+| Obligation | P7 enforcement |
+|---|---|
+| E017 | R06 finite positive/zero/negative numeric scale; reject NaN/Inf/non-finite matrices atomically. |
+| E018 | CPU ray/drag/grid tests cover near-parallel rays, viewport edges, negative parent scale, orthographic projection, and Grid Unit 0.001/1/1000. |
+| E030 | Transform preview and animation/frame projection follow the locked edit-conflict policy and publish one consistent descendant/camera/light/instance set. |
+| E031 | Router produces exactly one owner among gizmo/ImGui/picking/camera and one preview per resolved event. |
+| E040 | Escape-only, same-batch Escape+release, focus loss with/without delivered release, and late release are mutually exclusive branches. |
+| E071 | Unchanged/rejected TRS leaves document revision, matrices, runtime digest, and history unchanged. |
+| E072 | Second release, repeated Escape, and late release cannot double-commit or alter retained TRS. |
+| E081 | After Escape detach, selection stays clear, preview stays retained, and history stays unchanged under every repeated late event. |
+| E103 | Quaternion sign equivalence, matrix `1e-5`, and persistence numeric tolerance apply to gizmo results. |
+| E104 | TRS tolerance plus 2-logical-pixel center and 3-logical-pixel hit-region limits drive CPU and visual comparison. |
+| E010/E022/E037/E055/E078/E096/E108 | Scene-root baseline/identity/concurrency/empty/idempotency/order/precision tests enforce the separate non-gizmo route. |
+
+Source locations for these obligations are `edge-obligations.json:143-145`, `213-225`, `263-265`, `343-355`, `413-445`, `593-595`, `753-765`, `823-855`, `1003-1005`, and `1073-1125`.
+
+## 11. Gate P7 criteria
+
+### 11.1 Entry criteria: implementation readiness
+
+All items must be true before P7 implementation is called ready:
+
+- [ ] O06 corrections are merged into section 7.5, R16, P4-T03, P7-T04, `GizmoDragging`, T-GIZMO, U03, and generated expectations.
+- [ ] Manifest O05/O06/O07 remains the authoritative target; bounded private-state/history debt is retained, not erased.
+- [ ] P4 transform preview/commit/no-history transaction API exists and is stable-ID/revision safe.
+- [ ] Gate P5 is complete enough to accept incremental Transform deltas without full rebuild, geometry upload, or device idle.
+- [ ] Gate P6 provides selection attachment, one-owner arbitration, pointer adapter, and an immutable logical/physical viewport contract.
+- [ ] Reference captures exist for V01/V02/V03/V04/V07, including hover/active, perspective/orthographic, depth/x-ray, parent scale, resize, and DPI. Missing states remain explicit debt.
+- [ ] File ownership and integration order are assigned for shared renderer/CMake files.
+- [ ] Windows Vulkan, D3D12 contract, Apple contract environment, and Android contract artifact owners are identified.
+- [ ] The dependency and RHI boundary gates are configured to include all new editor/overlay sources, generated shaders, response files, and transitive target edges.
+
+### 11.2 Exit criteria: Gate P7 evaluation
+
+Gate P7 may be marked PASS only when all are true:
+
+- [ ] CPU geometry/hit/drag/snap/parent/constant-size tests pass, including E018/E104 and fixed-seed property cases.
+- [ ] State/transaction tests pass the corrected O05/O06/O07 matrix, outside release, single-owner priority, and E040/E072/E081 exact-once rules.
+- [ ] Scene-root transform remains separate, non-history, ordered, precise, and non-gizmo-routed for all listed edge obligations.
+- [ ] Recording fake-RHI tests prove resources, binding tables, fixed pipelines, pass dependencies/order, viewport/scissor, draw order, resize retirement, and no device idle.
+- [ ] Overlay is inserted after FinalColor and before Present/ImGui; output loads; scene depth is sampled; helper depth self-occludes gizmo; reverse-Z is correct.
+- [ ] Windows Vulkan Validation plus synchronization validation reports zero errors, with no assert/crash/device loss.
+- [ ] V01-V04/V07 and canvas/pixel checks pass at required desktop resolutions/DPI and mobile-shaped desktop viewports.
+- [ ] Every supported handle is nonempty in normal/hover/active evidence; depth/x-ray/grid/axis behavior and 2/3-pixel tolerances pass.
+- [ ] D3D12 and Apple public/compile contract artifacts pass. Any platform without evidence remains Not Verified, not PASS.
+- [ ] Android production build/source/symbol graph excludes desktop editor UI and overlay orchestration.
+- [ ] Public/editor/pass source and final production target closure contain zero backend-native leak and zero forbidden dependency; Dear ImGui identity remains the pinned upstream tree with MGIF adapters only.
+- [ ] Acceptance artifacts bind executable SHA, MGIF commit/diff identity, machine/GPU/driver, SDK/compiler, viewport, DPI, reference commit, action log, state/digests, screenshots, validation logs, and exit status.
+
+This restates and strengthens the locked Gate P7 requirement at `gltf-scene-editor-parity-task.md:903-915`; it does not satisfy it.
+
+## 12. Principal risks and required mitigations
+
+| Risk | Failure mode | Required mitigation |
+|---|---|---|
+| O06 stale specification | Correct implementation fails one oracle or follows wrong history behavior | Merge normative correction first; generate expected states from manifest |
+| Logical/physical viewport split | Offset hits, DPI-dependent scale, wrong depth UV, resize jump | One immutable viewport snapshot owned by P6 and shared through render submission |
+| Reverse-Z transcription | Grid/gizmo occlusion inverted | Explicit projection/depth convention in CPU and shader; forward/reverse fake tests |
+| Reference active state under-specified | Invented active color presented as parity | Capture V02 native active frames; keep state token separate from visual mapping until then |
+| Negative/non-uniform/singular parent | Reflected axes, NaN, transform jump, wrong local delta | Double-precision math, condition/finiteness checks, deterministic fail-closed tests |
+| Focus/capture ambiguity | Lost release, double commit, camera starts moving | Ordered application-visible events, latched state, opaque capture token, exact-once transaction ID |
+| Native wide-line reliance | Different thickness/coverage on D3D12/Metal/mobile GPUs | Shader-expanded triangle quads and logical-pixel tests |
+| Sampling scene depth while self-depth testing | Feedback/layout hazard or gizmo parts draw through each other | Separate helper depth attachment plus PassExecutor-declared scene-depth ShaderRead |
+| Resize lifetime | Use-after-free or device idle in interactive path | RHI logical handles, deferred retirement, per-frame table discipline, fake/Vulkan validation |
+| Android target contamination | Desktop editor symbols/dependencies in viewer | Desktop-only source/target wiring plus active-CMake and final-symbol tests |
+| Scene-root shortcut | Wrong baseline/history/selection behavior | Explicit routing guard and dedicated R13 non-history tests |
+| Reference helper reuse | RHI/platform/license boundary violation | Behavior-only evidence; MGIF-owned CPU/RHI implementation; zero forbidden dependencies |
+
+## 13. Explicit non-claims
+
+This report makes all of the following explicit:
+
+- It is **not** an implementation, a build result, a test result, a screenshot comparison, or a Gate P7 PASS.
+- It does not claim the current MGIF worktree is clean, reproducibly buildable, or baseline-green; no build/test was authorized or run.
+- It does not claim F19 or F20 is implemented. The manifest currently says both are not implemented.
+- It does not claim visual parity for geometry, hover, active, depth/x-ray, grid LOD, DPI, or constant pixel size. Required native captures remain evidence debt.
+- It does not claim the fixed-reference source probe proves private callback order, private drag state, direct history memory, full UI behavior, Vulkan visuals, or outside-viewport capture.
+- It does not claim that same-frame Escape plus release commits. The authoritative target is the manifest's no-history visible result; the locked task text must be corrected.
+- It does not claim a visible Local space, screen-rotation handle, mutually exclusive translate/rotate/scale mode, or Gizmo cancel/rollback API. Those are not fixed-reference P7 behavior.
+- It does not claim scene-root transforms are controlled by the node gizmo or enter history. They remain a separate baseline-driven non-history route.
+- It does not claim Metal runtime capability or D3D12 runtime parity. Metal is unavailable/scaffold-only in the audited implementation; D3D12/Metal scope is public/compile contract evidence.
+- It does not claim Android provides or should provide desktop editor UI/overlay. Mobile-shaped viewport visual tests run in the desktop Vulkan acceptance application.
+- It does not claim current RHI line-width semantics are portable. The proposal deliberately uses triangle-expanded lines.
+- It does not claim an RHI API extension is unnecessary under every implementation outcome. It says the currently audited public surface appears sufficient; any discovered gap requires an RHI-level cross-backend review, never a native escape hatch.
+- It does not copy, port, wrap, link, expose, or authorize reference Vulkan helpers or any `nvcore`, `nvpro`, `nvapp`, `nvgui`, `nvvk*`, or `nvvkgltf` production dependency.
+- It does not authorize a Dear ImGui fork or override. Production remains pinned upstream Dear ImGui plus MGIF-owned adapters only.
+
+## 14. Final readiness decision
+
+The RHI foundation is **conditionally adequate**, but P7 as a product slice is **not ready to implement or sign off**. The immediate blockers are the O06 normative contradiction, missing P5/P6/transaction contracts, unresolved viewport/DPI mapping, incomplete native visual baselines, and absent P7/fake-RHI test surfaces.
+
+Once the O06 text is corrected and P5/P6 freeze the proposed revisioned viewport/input/data-flow boundaries, P7-T01 through P7-T03 can proceed clean-room with no reference-helper or native RHI dependency. P7-T04 must use the manifest state machine in this report, and P7-T05/Gate P7 remain evidence-producing stages rather than assumptions.

@@ -1,0 +1,48 @@
+# P7-VISUAL-R1 Recovery Report
+
+Decision: bounded visual integration recovery completed.
+Role: integration; this receipt does not declare Gate P7.
+
+Parent bundle: 8158ea9e19fd3c518050e3cbd935a0d09df0816aae2a70c4b8196b3d4ee30b89
+Parent snapshot: 6eefc19cc2e7619d69cd78f8309ae3209f726c12efb4b615dd1b4b64c41935b5
+Previous transition/G7 failed receipt: e297bd471f5f7a5441abe7bb9e645736b6085987d9e452f4168de71445aca7cd
+Task definition SHA-256: 589a48b9538a8570feabb8897cecd7b76a5ee69297cb739f5042b71399668222
+Authority artifact: 572 bytes, e29c7bc069697b22f64f31bd764c9f486a4edbd2264981f8b7e312c08bcaa705
+
+Bounded write set (exactly four paths):
+app/MinimalLatestApp.h; bytes=285908; sha256=d3dee09591a774f5815fce3a3bc37bddc4b22f0e2f346e1c3c37a5c6c5fe137f
+app/MinimalLatestApp.cpp; bytes=12965; sha256=4bcbb5c5531b96fec68f5e5b84be2ca1c6a0e4d8d09a7e1113159d7c086da5c8
+tools/editor_visual_capture.ps1; bytes=33390; sha256=a08629d7f3a63245a3e9ba6eda96cbaf0bdaf857bf5688148bc1656a0a8bb469
+tests/editor/editor_visual_capture_contract_tests.py; bytes=2760; sha256=795a327e2dcba2d008a965ef5718a5b423ee44f521aa479b97387d0a8658e910
+Combined source identity: 8cbd4abf0c2b4e11ffed191c5fa922a1fdce5fe198992d4c30b2ce256ae32355
+No ledger, .codex, locked spec/manifest, or RHI scope-reconciliation path was modified. Other dirty paths are inherited selected-parent state.
+
+Release executable: G:\Temp\mgif-p6-90-msvc-20260831T134500Z-Release\Demo.exe; sha256=d73f8797d2181397ac0a15b0b0e0e8d9ed1159dbf6fe19f3efad8ad3bd112d59
+Debug executable: G:\Temp\mgif-p6-90-msvc-20260829T151147Z-Debug\Demo.exe; sha256=a5716124a37b8a75634dbee8196d07167ecd6d503bf491e91d1881995f81e55a
+Release evidence manifest sha256: b9c9fda543974b04e0f26077ef75a4ba8a60085ab6b0d1b980002b15f5907f36
+Debug evidence manifest sha256: fd52da0a575dec67c38f1ea7ad1b609bf6b6edec9421ddbb57f3339b9fb84db3
+
+Each Release and Debug baseline case emitted PNG, state, pixel, stdout, stderr, metrics, and manifest. Harness checks covered identity, viewport/depth fence coherence, six ordered ready markers, required lifecycle markers, nonblank pixels, 13 visible nonempty ranges, and hover/active tokens.
+Release cases:
+V01-grid: PNG 960x540; markers=6; metrics=904; stderr=0
+V02-gizmo-components: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+V03-parent-space: PNG 960x540; markers=6; metrics=906; stderr=0; hover=[2]; active=[2]
+V04-depth-xray: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+V07-dpi-resize: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+
+Debug cases:
+V01-grid: PNG 960x540; markers=6; metrics=904; stderr=0
+V02-gizmo-components: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+V03-parent-space: PNG 960x540; markers=6; metrics=906; stderr=0; hover=[2]; active=[2]
+V04-depth-xray: PNG 960x540; markers=6; metrics=909; stderr=0; hover=[2]; active=[2]
+V07-dpi-resize: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+
+Additional final Release V07 roots passed at 125/150/200 percent DPI for 960x540 and at 1280x720, 1920x1080, and 2560x1440 requests. The 2560 client height was 1421 because of window decoration tolerance.
+
+Verification: Windows MSVC Release and Debug Demo objects were compiled and linked; focused gizmo binaries exited 0; Windows RHI boundary guard reported 0/0/0; visual contract tests passed 4/4; local ledger read-only validation passed at the bound parent.
+
+The harness records VK_LAYER_MESSAGE_ID_FILTER=VUID-vkCmdDraw-None-09600 as the P6-91 external-capture exception. This is not an unfiltered swapchain-layout proof; RHI reconciliation remains separate.
+
+Non-claims: gateEvent is null and dependencyReplacements is empty. G7 remains FAIL/BLOCKED and P8/P9/P10 remain blocked. The complete normative V01 sub-variant matrix, thirteen independent component traces, full V04 depth toggle comparison, unfiltered validation, Escape reconciliation, P0/D20 residuals, and three-path RHI reconciliation are not reclassified. F42/R24, Metal, and release/distribution remain unchanged.
+
+Fresh evidence supports this bounded integration leaf only. A later independent role=gate recovery is required before any P8 dependency change.

@@ -1,0 +1,164 @@
+{
+  "authorization": {
+    "instruction": "continue",
+    "observedAtUtc": "2026-08-31T14:44:00.000Z",
+    "source": "project-owner-conversation"
+  },
+  "documentKind": "local-source-repair-authority",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "ledgerId": "mgif-editor-parity",
+  "parentAuthority": {
+    "path": "docs/editor-parity/g6-r1-authority-recovery.json",
+    "sha256": "30e280bbf869d53925bef9b64e0e3f93a15c5ad909e6b43e8f51c3edba1d5602",
+    "sourceRepairAuthorized": false
+  },
+  "repairTask": {
+    "dependencies": [
+      "task_c4958ebe56e4"
+    ],
+    "displayName": "P6-91",
+    "phase": "P6",
+    "role": "implementation",
+    "taskId": "task_7dfe2e9a405c"
+  },
+  "scope": {
+    "allowedSourcePaths": [
+      "render/GPUDrivenRenderer.cpp",
+      "render/passes/GPUDrivenPresentPass.cpp",
+      "rhi/vulkan/VulkanDevice.cpp",
+      "rhi/vulkan/VulkanCommandBuffer.cpp",
+      "rhi/vulkan/VulkanResourceTable.cpp",
+      "rhi/vulkan/VulkanResourceTable.h",
+      "rhi/vulkan/VulkanSwapchain.cpp",
+      "shaders/editor_highlight.slang"
+    ],
+    "allowedTestPaths": [
+      "tests/rhi/vulkan_command_buffer_handle_tests.cpp",
+      "tests/rhi/vulkan_resource_table_tests.cpp",
+      "tests/vulkan_conversion_tests.cpp",
+      "tests/editor/editor_picking_rhi_tests.cpp",
+      "tests/editor/editor_rhi_contract_tests.cpp"
+    ],
+    "diagnosticEditsMustBeRemoved": true,
+    "excluded": [
+      "D3D12 native editor runtime expansion",
+      "P7 overlay implementation",
+      "V01-V07 completion",
+      "Orca integration",
+      ".codex changes"
+    ],
+    "sourceRepairAuthorized": true
+  },
+  "triggerEvidence": {
+    "cleanLoaderEnvironment": {
+      "VK_INSTANCE_LAYERS": "VK_LAYER_KHRONOS_validation",
+      "VK_LOADER_LAYERS_DISABLE": "~implicit~",
+      "VK_LOADER_LAYERS_ENABLE": "VK_LAYER_KHRONOS_validation"
+    },
+    "loaderLog": {
+      "bytes": 52007,
+      "path": "G:/Temp/mgif-p6-clean-layer-probe-20260831T151500Z/Release-vulkan-single-hit.stderr.log",
+      "sha256": "085177f92c053e48f16030b211eb3fba99ffb2a211d0221445fa7abffaceda00"
+    },
+    "observations": [
+      "The loader forced disabled all discovered implicit EOS, Nsight, RenderDoc, Arm RenderDoc, and Steam layers.",
+      "The loader inserted only VK_LAYER_KHRONOS_validation.",
+      "Release single-hit and baseline CSM both reproduced VUID-vkCmdDraw-None-09600.",
+      "The descriptor expected GENERAL while the same swapchain image was UNDEFINED on first use and PRESENT_SRC_KHR thereafter.",
+      "The defect is independent of selection and highlight activation because baseline CSM reproduces it."
+    ],
+    "runs": [
+      {
+        "case": "single-hit",
+        "metricsSha256": "a481083db727918091e63c3adef88737ddc55dc97f94fac40164bc3b49b1f2c3",
+        "stdoutSha256": "5a634ad3cb8d8eec77a42e925290d047fdfcf3e87435400d27cb9ab02aaab2ec",
+        "vuidOccurrences": 10
+      },
+      {
+        "case": "baseline-csm",
+        "metricsSha256": "5ab58652d53c6cb49bb665d70f536385e76bdad9258758943e8191cbe4c71bc1",
+        "stdoutSha256": "f4ca4161f8ac7aa1a9e0149658a738d4bf54dd5a291859f18a679398b6afb1b0",
+        "vuidOccurrences": 10
+      }
+    ]
+  },
+  "diagnosticConclusion": {
+    "classification": "external-nvidia-capture-overlay-injection",
+    "evidence": [
+      {
+        "bytes": 6939,
+        "path": "G:/Temp/mgif-p6-91-draw-ab2-20260831T160000Z/all.stdout.log",
+        "sha256": "ac0d842f26875cac03cacb51dcb17367b897168631cc6b41c0cd8a88e7a32c0a"
+      },
+      {
+        "bytes": 456,
+        "path": "G:/Temp/mgif-p6-91-draw-ab2-20260831T160000Z/all.stderr.log",
+        "sha256": "d64dfa39da6f93d2a88e0f675a55a55eef574dc0cfb2470cec7decf61890f535"
+      },
+      {
+        "bytes": 11644,
+        "path": "G:/Temp/mgif-p6-91-module-audit-20260831T163000Z/modules.json",
+        "sha256": "a76ed82731e5c6284e1825110605929c5becbe25b531889cfa2f089c8d96a34c"
+      },
+      {
+        "bytes": 51481,
+        "path": "G:/Temp/mgif-p6-91-module-audit-20260831T163000Z/audit.stderr.log",
+        "sha256": "692181830b7b988cab9388ec6345dcad43437d17c86f1affd35e48cef1f35302"
+      },
+      {
+        "bytes": 2974,
+        "path": "G:/Temp/mgif-p6-91-filter-probe-20260831T173000Z/filtered.stdout.log",
+        "sha256": "7e6089470e49e6c0730ae3a68c45768cf8e7fa3de7262ab0e2cac007e0ab42d5"
+      },
+      {
+        "bytes": 0,
+        "path": "G:/Temp/mgif-p6-91-filter-probe-20260831T173000Z/filtered.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "findings": [
+      "The same VUID remained after every MGIF vkCmdDraw call was skipped in a diagnostic binary.",
+      "The process module inventory contained VkLayer_khronos_validation.dll, nvspcap64.dll, and NvCameraAllowlisting64.dll, but no RenderDoc, Nsight, EOS, or Steam capture module.",
+      "The Vulkan loader log showed only VK_LAYER_KHRONOS_validation in the layer call chain.",
+      "No ArgumentWrite in the diagnostic trace referenced a swapchain image or view.",
+      "Filtering only VUID-vkCmdDraw-None-09600 left validation and synchronization checks enabled and produced zero remaining diagnostics."
+    ],
+    "productSourceRepairPerformed": false,
+    "runtimeValidationPolicy": {
+      "messageIdFilter": "VUID-vkCmdDraw-None-09600",
+      "reason": "Exclude the proven NVIDIA capture/overlay draw while retaining all other Khronos validation messages.",
+      "requiredLoaderControls": {
+        "VK_LOADER_LAYERS_DISABLE": "~implicit~",
+        "VK_LOADER_LAYERS_ENABLE": "VK_LAYER_KHRONOS_validation"
+      }
+    },
+    "temporaryDiagnosticEditsRemoved": true,
+    "verifiedPostRemovalSource": [
+      {
+        "path": "rhi/vulkan/VulkanCommandBuffer.cpp",
+        "sha256": "e4b8f50c772564ee07c91c9f1d04bc7219c1764df1afb3a4ee78c248e9125808"
+      },
+      {
+        "path": "rhi/vulkan/VulkanDevice.cpp",
+        "sha256": "7abe6c34901e0e6989594168f5722ecae412ff03b3c85b96eb4eb50836e2fb5b"
+      }
+    ]
+  },
+  "verificationContract": {
+    "authoritativePlatform": "Windows MSVC",
+    "required": [
+      "Debug and Release rebuild of every changed target",
+      "direct and CTest regression coverage for every changed contract",
+      "clean-loader Vulkan baseline CSM and all four P6 native cases",
+      "zero VUID, validation error, sync hazard, assertion, or device-lost diagnostics across stdout and stderr",
+      "fresh G6-R1 evidence root after the repair leaf is accepted"
+    ],
+    "wslRole": "agent orchestration and evidence collation only"
+  },
+  "schemaVersion": 1
+}

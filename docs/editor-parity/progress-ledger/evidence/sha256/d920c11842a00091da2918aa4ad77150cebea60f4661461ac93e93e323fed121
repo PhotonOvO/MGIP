@@ -1,0 +1,48 @@
+# P7-RHI-VISUAL-R3 Integration Report
+
+Decision: bounded Windows/MSVC visual integration leaf completed; this is not a Gate P7 event.
+
+Task: task_p7_rhi_visual_r3_20260904 (P7-RHI-VISUAL-R3)
+Role: integration
+Parent bundle: 403ea3cc760223e4fc182ab46dee516f726b977a2ad50c335b2a0b7f2bf5b32c
+Parent snapshot: 490510a775979f522a44a13a9ff4aeed74e392f95b2782ed95d01537fd6512d9
+Previous transition head: 4708d652b4da7de123bab2e0aeecfe6579422ee90409af9a776ae615a1b793b1
+Before-task hash: f4e30924015e470cbd07666dcafdce9e1b732e57fa6cae1ebaed2b0582f904e4
+
+## Authority
+
+The local recovery authority is bound to this definition and the frozen local parent. No Gate event and no dependency replacement are attached.
+
+## Platform
+
+Windows MSVC Vulkan is the authoritative build/runtime platform. WSL was used only to orchestrate commands and inspect artifacts; no Linux build or runtime claim is made.
+
+## Evidence
+
+Evidence root: G:\Temp\mgif-p7-visual-r3-20260904T143000Z
+Visual aggregate: 5bfe304b18098490f5eb87d41293456e5b17566a673b231f2d9466339f48af9a (443060 bytes)
+Visual report: b118fb8f2fac53ecdfa720b7f7f01fa3149a743b73bd1ae3385aee24561ad037 (2709 bytes)
+Runtime matrix: fe28d591ff4a723f9992135a90d638aef2b7faa5848e47c2142372c7c7465368 (26210 bytes); 8/8 cases validated fail-closed
+Focused CTest: Debug 15/15, Release 15/15
+Visual contract: 7/7; present contract: 4/4; P0 scaffold: 42 features, 10 traces, 110 edges
+Visual matrix: 62 traces (Debug/Release base 24+24 and V07 extensions), with executable/source identities sealed in the aggregate
+
+## V04 Boundary
+
+V04 xray/occlusion-dither state and RHI depth tokens are recorded, but the paired gizmo crop has diffPixels=0 at threshold 8 (the whole-image difference is FPS/text noise). Real opaque-occluder visual proof is deferred and is not a V04 PASS claim.
+
+## Non-Claims
+
+- This integration leaf does not declare Gate P7 and does not replace the historical failed G7 event.
+- G7 remains FAIL/BLOCKED; P8-P10 remain blocked and no dependency replacement is emitted.
+- D3D12 native editor runtime remains a deferred non-claim; only the accepted public/compile boundary is retained.
+- Metal remains Not Verified; F42/R24 remain BLOCKED; release/distribution remains NOT PASS.
+- No byte-for-byte reference-image equality is claimed; reference screenshots remain provenance context only.
+
+## Focused Log Hashes
+
+- ctestDebug: d0679effd8dca3858bd2999b2446c742ac34fa3961a15f3db816fc0e96ebec67 (2334 bytes)
+- ctestRelease: c88703f9eb10808e2c7b01b8a63fd8b59b4a675fefebb1040078172d32a2b0b0 (2336 bytes)
+- visualContract: 49f03b702d1c491736cf1b322a14dfcdfc9865f37c46e189100dbda2edd5bb4d (110 bytes)
+- presentContract: 96714955c6f7c81ebba21a280ced3912592bf613bb20afaab86c00bb56743dd9 (107 bytes)
+- p0Scaffold: a152da401859fc0b0d67b652392ac296389462acb1a358e3db003b8ba40a94bb (118 bytes)

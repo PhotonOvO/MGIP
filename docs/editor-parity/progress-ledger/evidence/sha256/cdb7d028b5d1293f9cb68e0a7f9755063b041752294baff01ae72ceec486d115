@@ -1,0 +1,95 @@
+# Gate P1 Independent Re-Review
+
+Review type: fresh, read-only, post-remediation engineering gate review  
+Review date: 2026-08-23 (Asia/Shanghai)  
+Repository: `G:\MGIF`  
+Evidence root: `C:\Users\happyelements\AppData\Local\Temp\mgif-p1-independent-580c5282867b4889bf5a65842ea34c68`  
+Primary locked specification: `docs/gltf-scene-editor-parity-task.md`  
+Specification SHA-256: `bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e`
+
+## Findings
+
+### No open Gate P1 blocker
+
+No Critical, High, or Medium engineering-readiness finding remained after the independent re-review. The three High findings from the prior independent report were re-tested against the final filesystem state and all passed; the evidence is recorded below before the gate summary.
+
+### Prior High finding P1-01: cross-document identity aliasing — REMEDIATED
+
+The implementation now allocates a process-wide, non-repeating document authority in `scene/editor/GltfDocument.cpp:20-39`, reserves it during `GltfDocument` construction at `scene/editor/GltfDocument.cpp:200`, stores it in every object ID at `scene/editor/GltfDocument.cpp:214-220`, and requires authority equality during lookup at `scene/editor/GltfDocument.cpp:350-366`. This prevents a retained ID from a replaced document from resolving in the replacement, while preserving typed kind, slot, and generation checks.
+
+Fresh independent probe: `identity_probe.exe` loaded the same one-node fixture twice, retained document A's node ID, published document B, and observed:
+
+```text
+old_authority=1 new_authority=2 old_live_before=1 published=1 stale_after=1 new_live=1
+```
+
+The checked-in replacement matrix independently covers all object kinds and same/different topology replacements in `tests/editor/gltf_document_load_tests.cpp:301-425`; the fresh probe additionally exercised the exact old minimal alias shape.
+
+### Prior High finding P1-02: accessor payload validation — REMEDIATED
+
+`scene/editor/GltfValidator.cpp:157-360` now contains a bounded byte-reader that decodes dense, strided, matrix-padded, and sparse elements with checked offsets and byte ranges. Sparse indices are checked for strict increase and `< accessor.count` at `scene/editor/GltfValidator.cpp:183-247`; decoded values are checked for finite floating data, primitive-index domain, restart sentinel, joint domain, weights, animation monotonicity, and declared bounds at `scene/editor/GltfValidator.cpp:1224-1337`. Aggregate decode work is checked with the shared checked arithmetic helpers at `scene/editor/GltfValidator.cpp:1105-1134`, with the configured `EditorLimits::maxAuthorityPayloadBytes` boundary in `scene/editor/include/mgif/scene_editor/EditorLimits.h:24-46`.
+
+Fresh independent payload probe rejected all 18 normative-invalid fixtures and accepted all six valid/advisory controls. The independently run executable also reported:
+
+```text
+Accessor payload validation passed 77 checks, including 18 normative-invalid cases and all valid/advisory controls.
+```
+
+The matrix includes invalid primitive indices, topology count, restart sentinel, non-finite position/output/sparse values, declared bounds mismatch, attribute/morph count mismatch, sparse out-of-range/unsorted/duplicate indices, animation monotonicity/finite cases, joint bounds, negative weights, and quantized weight sums; controls include dense, sparse, animation, skin, quantized weights, and the advisory non-normalized float-weight case.
+
+### Prior High finding P1-03: Windows existing-target publication — REMEDIATED
+
+The Windows path now validates same-volume staging and flushes the staged file before publication (`scene/editor/GltfDocumentIO.cpp:679-750`), then replaces an existing regular target with one `MoveFileExW` call using `MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH` at `scene/editor/GltfDocumentIO.cpp:1006-1022`. No backup-rename gap is used on Windows; the non-Windows fallback at `scene/editor/GltfDocumentIO.cpp:942-983` is separate from the requested Windows contract.
+
+Fresh independent execution of `gltf_document_io_tests.exe` ran 12 terminated-writer trials at the actual replacement boundary and continuously observed only complete old or complete new target bytes:
+
+```text
+Windows atomic replacement interruption: 12 terminated writers, 524 complete target observations (478 old, 46 new)
+```
+
+The test also checks the selected Unicode target path, target existence, and absence of backup/staging debris (`tests/editor/gltf_document_io_tests.cpp:644-780` and `tests/editor/gltf_document_io_tests.cpp:918-942`).
+
+## Independent Verification
+
+### Build and test evidence
+
+- Fresh isolated MSVC core configure/build in `core-msvc`: PASS. The build was outside the repository and completed all 23 core build edges.
+- Fresh isolated core CTest: PASS, `12/12` tests.
+- Fresh isolated MSVC full configure/build in `full-msvc`: PASS, `266/266` build edges; `Demo.exe` linked.
+- Fresh isolated full CTest: PASS, `25/25` tests, including RHI contract, D3D12 smoke/clear-present, editor dependency integration, and Android viewer contract.
+- Focused independent executions: round-trip PASS; I/O/fault/interruption PASS; accessor payload PASS with 77 checks.
+- Fresh `scene_editor_p0` aggregate target: PASS. The configured dependency preflight, RHI boundary guard, complete CTest set, identity generation, and gate validator all completed successfully.
+- Independent gate validator result: `gate=0` / engineering readiness PASS.
+- Release validator result: expected nonzero because root-license selection remains pending; this is not an engineering Gate P1 failure.
+
+### Data safety and round-trip
+
+The independent full round-trip suite passed glTF and GLB no-op/edited-save/reload coverage for minimal, multi-scene, unknown-extension/extras, feature-preservation, external-buffer, and external-image fixtures (`tests/editor/gltf_document_roundtrip_tests.cpp:209-279`). It verifies semantic equivalence, default/current scene preservation, stable IDs for the in-document saved authority, GLB dependency embedding, source-path immutability before successful Save As, Unicode paths, and repeated content-addressed Save As reuse.
+
+Load and save failure-state tests passed for parse, post-parse validation, allocation, staging creation, serialization, flush, candidate handoff, candidate publication, pre-atomic replacement, missing dependencies, unsupported suffixes, missing directories, non-regular targets, read-only targets, and existing-target overwrite. The snapshot assertions cover target bytes, source path, format, revision/clean revision, semantic digest, current scene, IDs, and dependencies (`tests/editor/gltf_document_io_tests.cpp:480-550` and `tests/editor/gltf_document_io_tests.cpp:800-942`).
+
+External URI handling is bounded and contained by `scene/editor/GltfDocumentIO.cpp:230-406`; Save As stages generated buffer/image resources in a same-directory temporary directory and publishes resources before the main file at `scene/editor/GltfDocumentIO.cpp:1441-1559`. The source writer rejects filesystem writes during load (`scene/editor/GltfDocumentIO.cpp:490-508`), and temporary staging cleanup is RAII-backed at `scene/editor/GltfDocumentIO.cpp:613-627`.
+
+### Arithmetic, stride, matrix, sparse, and work-budget audit
+
+The final validator uses `editorCheckedAdd`/`editorCheckedMultiply` for accessor element sizes, byte strides, last-element offsets, sparse index/value ranges, aggregate decoded work, collection counts, animation output counts, scene occurrences, and skin/morph/primitive work. `AccessorPayloadReader` computes matrix column padding via `accessorComponentOffset` and reads little-endian component payloads without unbounded allocations. Existing boundary tests cover all legal component widths, byte offsets/strides, sparse index widths, matrix padding, truncation, misalignment, arithmetic overflow, and exact work-budget limits (`tests/editor/gltf_accessor_payload_tests.cpp:201-437`).
+
+### Authority and dependency closure
+
+`scene_editor_document` is defined with one TinyGLTF implementation translation unit and the locked document source/header set in `CMakeLists.txt:112-140`; `scene_editor_core` links only the document library. The final CMake sealing checks for exact source sets and link closure at `CMakeLists.txt:328-396`. The full and core configured dependency preflights passed, and the RHI boundary guard reported zero blocking findings. The production editor core has no ImGui/RHI/native-backend/nvpro/reference-helper dependency; `loader/TinyGltfImplementation.cpp` remains the single production implementation site for TinyGLTF/STB implementation macros.
+
+## Residual Risks And Explicit Non-Claims
+
+- The locked task is broader than P1. Direct editing commands, projection, UI parity, Gizmo, merge/compact, and later renderer integration remain assigned to later phases; this report certifies only the P1 engineering gate.
+- Windows Vulkan validation/30-minute editor soak and the complete later visual acceptance matrix are not claimed by this P1 report. Existing renderer evidence and later-phase obligations remain governed by the task ledger.
+- D3D12 public/contract smoke and compilation evidence passed in the isolated full build. Metal was not executed on a macOS environment and is therefore **Not Verified**, despite Windows-side source compilation of the shared contract paths.
+- The repository root license is intentionally unresolved. `docs/editor-parity/LICENSE-SOURCES.md:14-15` and `:39-43` state that distribution remains rights-reserved until owner selection; F42 and R24 therefore remain **BLOCKED**, and the release validator correctly returned nonzero.
+- No repository source, build tree, progress ledger, or git metadata was modified by this review. Only the unique TEMP evidence directory contains the independent report, probes, and isolated build outputs.
+
+## Gate Decision
+
+All requested P1 remediation checks passed independently: cross-document authority identity, payload-aware validation, Windows single-call existing-target publication, no-op semantic round-trip, external staging, GLB, Unicode, fault-state invariants, core/full tests, dependency/source closure, and CPU-only core boundaries.
+
+F42/R24 remain BLOCKED as a separate release/distribution condition, and Metal remains Not Verified; neither is conflated with the engineering gate decision.
+
+Gate P1 engineering verdict PASS

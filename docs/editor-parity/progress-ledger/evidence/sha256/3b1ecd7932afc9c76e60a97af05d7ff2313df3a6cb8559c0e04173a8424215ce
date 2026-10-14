@@ -1,0 +1,64 @@
+{
+  "authorityArtifact": {
+    "bytes": 572,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/3ae61750c051e03a3e0a0f1fba8e4811d7f04e25648a28ba84581a28308adb1f",
+    "sha256": "3ae61750c051e03a3e0a0f1fba8e4811d7f04e25648a28ba84581a28308adb1f"
+  },
+  "beforeTaskSha256": "09693e325882c7869a8dbf68ca94caadae93c35257592737c69747c55c55cf6d",
+  "completedAtUtc": "2026-09-04T14:01:00.000Z",
+  "dependencyReplacements": [
+    {
+      "acceptedGate": {
+        "gateVerdict": "ENGINEERING PASS",
+        "phase": "P7"
+      },
+      "replacedDependencyTaskId": "task_3f216d250677",
+      "taskId": "task_15f206f912f6"
+    }
+  ],
+  "displayName": "G7-R1",
+  "documentKind": "local-task-transition-receipt",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "fromStatus": "ready",
+  "gateEvent": {
+    "gateVerdict": "ENGINEERING PASS",
+    "phase": "P7",
+    "supersedesEventId": "e297bd471f5f7a5441abe7bb9e645736b6085987d9e452f4168de71445aca7cd"
+  },
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "abe868298415dd263871f499e3d63e73f2046382dabf22dc2131fd2349052500",
+  "parentSnapshotSha256": "330e7d5aca1ef81ef67d77beaefe23bcff70601ae5e8ae0c0aa34db9007e04ad",
+  "previousTransitionSha256": "afa8a5f59922c984073d07f5f873a4b9bfe7f956f173534e22d1a3e46e2e9109",
+  "report": {
+    "bytes": 1728,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/220ebe47e0d50aa3ba57163a34be96cce8c72ebebbfca201cae56bbaeaa65a1e",
+    "sha256": "220ebe47e0d50aa3ba57163a34be96cce8c72ebebbfca201cae56bbaeaa65a1e"
+  },
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskDefinition": {
+    "createdAtUtc": "2026-09-04T14:00:00.000Z",
+    "dependencies": [
+      "task_p7_rhi_visual_r4_20260904"
+    ],
+    "displayName": "G7-R1",
+    "phase": "P7",
+    "role": "gate",
+    "supersedesTaskId": "task_3f216d250677",
+    "taskId": "task_g7_r1_bridge"
+  },
+  "taskId": "task_g7_r1_bridge",
+  "toStatus": "completed",
+  "verdictArtifact": {
+    "bytes": 1251,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/d9f873aa84a0f9f999706e2c90ac5b20fd30c890151a9e52cef8e4c8c8a1667b",
+    "sha256": "d9f873aa84a0f9f999706e2c90ac5b20fd30c890151a9e52cef8e4c8c8a1667b"
+  }
+}

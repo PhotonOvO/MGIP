@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "schema": "mgif.editor-parity.o09-real-ui-reference-index",
+  "indexId": "O09-REAL-UI",
+  "evidenceKind": "external-reference-pointer-mirror",
+  "sealedEvidenceRoot": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-o09-real-ui-20260822T132518Z",
+  "repositoryMirrorReport": "docs/editor-parity/reference-traces/O09-REAL-UI-REPORT.md",
+  "largeArtifactsCopiedIntoMgif": false,
+  "copiedArtifacts": [],
+  "reference": {
+    "commit": "50373c7b0ff58078727af2c2aac70e29d5e74752",
+    "tree": "03e44de44217b109ab71dfbf6aee3989593d76b0",
+    "executableSha256": "a02572b63f4af50bbaa26cf1909e1938bf7d72a7ae28904766d7e83394fd326b",
+    "pdbSha256": "6185aea9eb3b2fb7c27adf7db96443a69a478340f9a15a98f4c5d60aef693273",
+    "registrySha256": "b873a4c898532381882b658d30720d857cd74c0ae3e0bf292615be3dfe488fea"
+  },
+  "externalArtifacts": {
+    "report": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-o09-real-ui-20260822T132518Z\\REPORT.md",
+      "bytes": 8027,
+      "sha256": "7d676c34c16e892ff261d30c158c5b1756eee436bac08a8101a6acb9a2282221"
+    },
+    "index": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-o09-real-ui-20260822T132518Z\\INDEX.json",
+      "bytes": 2293631,
+      "sha256": "3c52c80daab9690224666d054c763de428b678e0f3898996d852938a73671b02"
+    },
+    "artifactIndex": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-o09-real-ui-20260822T132518Z\\ARTIFACT-INDEX.json",
+      "bytes": 2854080,
+      "sha256": "6aefe5474f64e7a0442d865bf0a4249f31833110aced48543bd845b811700d64"
+    },
+    "integrityReverification": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-o09-real-ui-20260822T132518Z\\INTEGRITY-REVERIFICATION.json",
+      "bytes": 1727,
+      "sha256": "0448376ae2264562e9484dfa2166b644e7132f0bd0734984a5de57f68f92a86f"
+    },
+    "finalSeal": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-o09-real-ui-20260822T132518Z\\FINAL-SEAL.json",
+      "bytes": 3400,
+      "sha256": "df21d2f4e90c022ba23f0d37737a5b5e4dcf90536b0dea5737f4d45b2afd1c69"
+    },
+    "detachedSha256Manifest": {
+      "path": "G:\\ReferenceOracleRuns\\vkgr-50373c7b-o09-real-ui-20260822T132518Z\\SHA256SUMS.txt",
+      "bytes": 1091562,
+      "sha256": "13943eac4d6ce8ce58ac28f539ff76fe102af0056a8bcb841a5b457a93ab654b"
+    }
+  },
+  "coverage": {
+    "registryCells": 298,
+    "realUiActionPathsCaptured": 298,
+    "numericExitIdentitiesCaptured": 298,
+    "cpuExpectationAndMinimumPhaseMatches": 292,
+    "cleanSelectedExits": 290,
+    "expectedStackOverflowExits": 2,
+    "unexpectedAccessViolationExits": 6,
+    "fullVisibleHistorySequences": 290,
+    "exactSerializedTopologyCells": 7,
+    "exactSerializedTopologyCheckpoints": 20,
+    "visibleOnlyCurrentSceneCells": 298,
+    "visibleOnlySelectionCells": 294,
+    "privateStateReadbackCells": 0,
+    "gpuCorroboratedCells": 298,
+    "screenshots": 2186,
+    "checksumEntries": 8660,
+    "integrityFailures": 0
+  },
+  "coverageCeiling": {
+    "status": "native_partial",
+    "allCellsHaveRealUiActionPath": true,
+    "allCellsAreFullStateUiReplays": false,
+    "domainMatrixRelabeledAsUiReplays": false,
+    "exactAllSceneTopologyLimitedToSubset": true,
+    "visibleStateIsNotPrivateState": true,
+    "referenceFailuresPreserved": true
+  },
+  "decisionBoundary": {
+    "policySelectedByEvidenceRun": false,
+    "selectedPolicy": null,
+    "manifestDecisionMayBeRecordedSeparately": true
+  },
+  "closureRule": "O09 remains native_partial: 298 real UI action paths are not 298 complete state replays, exact topology is limited to 7 cells, visible state is not a private readback, and all crash or divergent outcomes remain preserved."
+}

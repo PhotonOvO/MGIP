@@ -1,0 +1,2256 @@
+{
+  "capturedAtUtc": "2026-08-26T19:14:27.784Z",
+  "consistencyMode": "stable-two-pass-derived-revision",
+  "decisionGates": {
+    "gate_b66203c11b10": {
+      "createdAtUtc": "2026-08-25T04:36:54.000Z",
+      "options": [
+        "accept_verified_r2f",
+        "reject_or_repair"
+      ],
+      "outcome": "accepted",
+      "question": "R2-F prerequisite: has task_2115abdff446 completed, been independently verified, and been accepted with duplicate_primitive, multi-primitive, shared-mesh, SceneUploadPlanner reverse-coordinate, Debug/Release, and forbidden-dependency checks passing? Do not dispatch replacement P5-90 until yes.",
+      "resolution": "accept_verified_r2f",
+      "resolvedAtUtc": "2026-08-25T05:54:54.000Z",
+      "status": "resolved",
+      "taskId": "task_8c29dd510a99"
+    },
+    "gate_ca804cbec712": {
+      "createdAtUtc": "2026-08-22T08:00:01.000Z",
+      "options": [
+        "mgif_safety_exception",
+        "exact_defect_parity"
+      ],
+      "outcome": "accepted",
+      "question": "D20\uff1a\u591a\u573a\u666f\u7ed3\u6784\u7f16\u8f91\u9047\u5230\u53c2\u8003\u9879\u76ee\u5df2\u8bc1\u5b9e\u7684\u6570\u636e\u635f\u574f\u4e0e\u5d29\u6e83\u65f6\uff0cMGIF \u5e94\u91c7\u7528\u54ea\u79cd\u7ed3\u679c\u8bed\u4e49\uff1f",
+      "resolution": "mgif_safety_exception",
+      "resolvedAtUtc": "2026-08-25T05:55:48.000Z",
+      "status": "resolved",
+      "taskId": "task_5e9fa075e9c5"
+    }
+  },
+  "documentKind": "orca-progress-snapshot",
+  "revisionSha256": "72df3a571b6b0da17a8b93f6646e02230a1d00b0fffc7fb1c70391e8090cacd7",
+  "runGeneration": 1,
+  "runId": "run_ede89c4421e9",
+  "runTasks": {
+    "task_01997cf2a4f8": {
+      "createdAtUtc": "2026-08-26T00:16:35.000Z",
+      "displayName": "P5 repair: fix camera/light attachment node binding in the GPU-driven rendere...",
+      "status": "completed"
+    },
+    "task_01ef1283b4b8": {
+      "createdAtUtc": "2026-08-23T18:27:49.000Z",
+      "displayName": "P4-05 property/transform-independent material and light command factories and...",
+      "status": "pending"
+    },
+    "task_024b8bbc93e9": {
+      "createdAtUtc": "2026-08-23T18:55:10.000Z",
+      "displayName": "P4 corrected final-snapshot blueprint remediation (TEMP-only, documentation a...",
+      "status": "completed"
+    },
+    "task_03835036fb6f": {
+      "createdAtUtc": "2026-08-23T10:36:01.000Z",
+      "displayName": "P8 read-only UI parity architecture map for MGIF glTF Scene Editor.",
+      "status": "completed"
+    },
+    "task_04e52d906959": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:14.000Z",
+      "dependencies": [
+        "task_942fc9e4f987"
+      ],
+      "dispatch": null,
+      "displayName": "G10",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_05a17a298512": {
+      "createdAtUtc": "2026-08-22T10:06:56.000Z",
+      "displayName": "READ-ONLY independent adversarial review of the final combined MGIF editor de...",
+      "status": "completed"
+    },
+    "task_05ba01f1d9f1": {
+      "createdAtUtc": "2026-08-22T07:59:27.000Z",
+      "displayName": "P0 independent verification, read-only. Work in shared G:\\MGIF and preserve a...",
+      "status": "completed"
+    },
+    "task_07e694f8f09e": {
+      "createdAtUtc": "2026-08-23T07:20:48.000Z",
+      "displayName": "P1 remediation B: implement bounded value-aware accessor payload validation f...",
+      "status": "completed"
+    },
+    "task_07ebb1e91926": {
+      "createdAtUtc": "2026-08-26T04:32:58.000Z",
+      "displayName": "Independent P5 Vulkan preflight adversarial code review, repository READ-ONLY...",
+      "status": "completed"
+    },
+    "task_087d11fd5641": {
+      "completedAtUtc": "2026-08-25T05:43:25.000Z",
+      "createdAtUtc": "2026-08-25T02:51:41.000Z",
+      "dependencies": [],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T05:43:25.000Z",
+        "dispatchId": "ctx_6291dc0d9536",
+        "dispatchedAtUtc": "2026-08-25T02:51:49.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-R2-A",
+      "status": "completed",
+      "workerResult": {
+        "body": "Implemented private live-device staged scene generations across RenderDevice, GPUDrivenRenderer, GPUSceneRegistry, RendererFacade, and the integration suite, including exact queue-token fencing, failure-safe retirement, atomic publication, complete CPU candidate updates, duplicate no-work semantics, and deferred render-thread registry journals. Debug and Release focused builds and 10-test selections passed, as did 8/8 strict header probes under each compiler driver, both RHI boundary guards, configured dependency preflight, Android transaction-excluded object builds, and all five available core-only UBSan suites. Nothing remains for this dispatch; Metal remains intentionally Unsupported/Not Verified and the completion report plus hash-bound manifests are at the reported evidence path.",
+        "completedAtUtc": "2026-08-25T05:43:25.888Z",
+        "messageId": "msg_b1edd19af230",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-r2-a-20260825T025954Z-task_087d11fd5641\\p5-r2-a-completion-report.md",
+        "reportedBy": "term_4796dff2-7fd9-44b0-9706-e7016cbf907b",
+        "resultPayload": "{\"body\":\"Implemented private live-device staged scene generations across RenderDevice, GPUDrivenRenderer, GPUSceneRegistry, RendererFacade, and the integration suite, including exact queue-token fencing, failure-safe retirement, atomic publication, complete CPU candidate updates, duplicate no-work semantics, and deferred render-thread registry journals. Debug and Release focused builds and 10-test selections passed, as did 8/8 strict header probes under each compiler driver, both RHI boundary guards, configured dependency preflight, Android transaction-excluded object builds, and all five available core-only UBSan suites. Nothing remains for this dispatch; Metal remains intentionally Unsupported/Not Verified and the completion report plus hash-bound manifests are at the reported evidence path.\",\"completedAt\":\"2026-08-25T05:43:25.888Z\",\"completedBy\":\"term_4796dff2-7fd9-44b0-9706-e7016cbf907b\",\"filesModified\":[\"render/RenderDevice.h\",\"render/RenderDevice.cpp\",\"render/GPUDrivenRenderer.h\",\"render/GPUDrivenRenderer.cpp\",\"render/GPUSceneRegistry.h\",\"render/GPUSceneRegistry.cpp\",\"render/RendererFacade.h\",\"render/RendererFacade.cpp\",\"tests/editor/editor_renderer_integration_tests.cpp\"],\"messageId\":\"msg_b1edd19af230\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-r2-a-20260825T025954Z-task_087d11fd5641\\\\p5-r2-a-completion-report.md\",\"reportedBy\":\"term_4796dff2-7fd9-44b0-9706-e7016cbf907b\",\"subject\":\"P5-90-R2-A staged uploads complete\"}",
+        "resultSha256": "e214333ab7b2194ba6a4e67be066d4d1f84b6f7698626dddd6215399df06267d",
+        "subject": "P5-90-R2-A staged uploads complete"
+      }
+    },
+    "task_0913f5017612": {
+      "createdAtUtc": "2026-08-22T05:49:27.000Z",
+      "displayName": "P0 Edge Obligations",
+      "status": "completed"
+    },
+    "task_09b81f3a25e5": {
+      "createdAtUtc": "2026-08-26T14:32:22.000Z",
+      "displayName": "P5 bounded read-only performance analysis: explain and minimize the measured...",
+      "status": "completed"
+    },
+    "task_0b7c23eadc59": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:11.000Z",
+      "dependencies": [
+        "task_421b4c55e3f7",
+        "task_44edc62a635f",
+        "task_64f2460b590a"
+      ],
+      "dispatch": null,
+      "displayName": "P9-90",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_0bbab21810b2": {
+      "createdAtUtc": "2026-08-22T07:59:47.000Z",
+      "displayName": "Read-only P0 closure and D20 safety-exception audit in shared G:\\MGIF. Do not...",
+      "status": "completed"
+    },
+    "task_0c7b26ff5a71": {
+      "createdAtUtc": "2026-08-23T14:16:50.000Z",
+      "displayName": "READ-ONLY P5 renderer-delta and RHI integration readiness audit. Work against...",
+      "status": "completed"
+    },
+    "task_0cf29bb35e9d": {
+      "createdAtUtc": "2026-08-22T21:48:43.000Z",
+      "displayName": "READ-ONLY P0 remediation architecture advisor. Shared G:\\MGIF, no repository...",
+      "status": "completed"
+    },
+    "task_0d7674182848": {
+      "createdAtUtc": "2026-08-22T13:19:57.000Z",
+      "displayName": "Close the O09 real-UI reference evidence gap in an isolated external evidence...",
+      "status": "completed"
+    },
+    "task_0e48946f25f3": {
+      "createdAtUtc": "2026-08-22T16:11:29.000Z",
+      "displayName": "P5B renderer integration in shared G:\\\\MGIF after P5A: connect SceneChangeSet...",
+      "status": "pending"
+    },
+    "task_0f838f2412f2": {
+      "createdAtUtc": "2026-08-26T13:23:32.000Z",
+      "displayName": "P5 exact editor-transaction marker regression and validation architecture, RE...",
+      "status": "completed"
+    },
+    "task_1040525304c0": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:05.000Z",
+      "dependencies": [
+        "task_1254fa47b9b7"
+      ],
+      "dispatch": null,
+      "displayName": "P6-10",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_116c32740787": {
+      "completedAtUtc": "2026-08-25T03:15:50.000Z",
+      "createdAtUtc": "2026-08-25T02:51:41.000Z",
+      "dependencies": [],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T03:15:50.000Z",
+        "dispatchId": "ctx_8887407c4c42",
+        "dispatchedAtUtc": "2026-08-25T02:51:49.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-R2-B",
+      "status": "completed",
+      "workerResult": {
+        "body": "I repaired the portable UTF-8 filesystem bridge in the owned GltfDocumentIO source, preserving byte identity and existing Windows atomic Save As behavior; Windows Debug and Release load, round-trip, and I/O tests passed 3/3 each, and the NDK owned object compiles. The fresh arm64-v8a API 26 DemoAndroid configure passed and the owned translation unit compiled, then the build stopped at the first unrelated error in SceneCommands line 784: NDK r23 libc++ has no std bit_cast. Nothing remains in the owned scope; the full report is C:\\Temp\\mgif-p5-r2-b-20260825T030133Z-task_116c32740787\\p5-90-r2-b-report.md, with pre-post-manifest.json and exact-commands.md beside it.",
+        "completedAtUtc": "2026-08-25T03:15:50.054Z",
+        "messageId": "msg_82970e4a9f63",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-r2-b-20260825T030133Z-task_116c32740787\\p5-90-r2-b-report.md",
+        "reportedBy": "term_fa5083e3-bde0-4a6f-a6aa-e5d1bb5ffca9",
+        "resultPayload": "{\"body\":\"I repaired the portable UTF-8 filesystem bridge in the owned GltfDocumentIO source, preserving byte identity and existing Windows atomic Save As behavior; Windows Debug and Release load, round-trip, and I/O tests passed 3/3 each, and the NDK owned object compiles. The fresh arm64-v8a API 26 DemoAndroid configure passed and the owned translation unit compiled, then the build stopped at the first unrelated error in SceneCommands line 784: NDK r23 libc++ has no std bit_cast. Nothing remains in the owned scope; the full report is C:\\\\Temp\\\\mgif-p5-r2-b-20260825T030133Z-task_116c32740787\\\\p5-90-r2-b-report.md, with pre-post-manifest.json and exact-commands.md beside it.\",\"completedAt\":\"2026-08-25T03:15:50.054Z\",\"completedBy\":\"term_fa5083e3-bde0-4a6f-a6aa-e5d1bb5ffca9\",\"filesModified\":[\"scene/editor/GltfDocumentIO.cpp\"],\"messageId\":\"msg_82970e4a9f63\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-r2-b-20260825T030133Z-task_116c32740787\\\\p5-90-r2-b-report.md\",\"reportedBy\":\"term_fa5083e3-bde0-4a6f-a6aa-e5d1bb5ffca9\",\"subject\":\"Owned Android filesystem incompatibility repaired\"}",
+        "resultSha256": "ba813eff3e1a61e283c29d8006cdf0b2a1b15fba2691260d12ac85da001c61a4",
+        "subject": "Owned Android filesystem incompatibility repaired"
+      }
+    },
+    "task_11ff77ec7f24": {
+      "createdAtUtc": "2026-08-22T11:48:43.000Z",
+      "displayName": "Mirror native semantic evidence",
+      "status": "completed"
+    },
+    "task_1254fa47b9b7": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:04.000Z",
+      "dependencies": [
+        "task_2ebaf90139c5",
+        "task_bd6e62faa588"
+      ],
+      "dispatch": null,
+      "displayName": "P6-00",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_127090b4652e": {
+      "createdAtUtc": "2026-08-24T13:44:16.000Z",
+      "displayName": "Fresh independent Stage A blueprint audit. Dependency task_71b98ba11e36 compl...",
+      "status": "completed"
+    },
+    "task_12f00023b657": {
+      "createdAtUtc": "2026-08-23T02:20:10.000Z",
+      "displayName": "P0 remediation A: fix CMake File API source-path semantics after audit task_3...",
+      "status": "completed"
+    },
+    "task_13824a1991ff": {
+      "completedAtUtc": "2026-08-25T00:24:35.000Z",
+      "createdAtUtc": "2026-08-24T21:16:02.000Z",
+      "dependencies": [
+        "task_759e96a51910"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T00:24:35.000Z",
+        "dispatchId": "ctx_637dd0ab2e5f",
+        "dispatchedAtUtc": "2026-08-24T22:41:12.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-10",
+      "status": "completed",
+      "workerResult": {
+        "body": "Implemented typed exact editor evidence, independent activation/root clocks, lossless command/history transport, and immutable projection mapping across the exact 16-path P5-10 write set while preserving frozen P5-00 and no-throw publication. Strict Clang and clang-cl, UBSan, final-source live producer/history, header self-containment, syntax, and existing regression suites all passed; the sealed report is 16189 bytes with SHA-256 4ACCB33ACA983B9E52BA201DC49B0FCA35324FF07D808A8FFCE4216D899D824C. Only P5-90 configured CMake/CTest and renderer integration remains, while F42/R24 stay BLOCKED, Metal stays Not Verified, and release/distribution stay NOT PASS.",
+        "completedAtUtc": "2026-08-25T00:24:35.963Z",
+        "messageId": "msg_d056738cdc1e",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-10-20260824T225730Z-13824a19\\p5-10-completion-report.md",
+        "reportedBy": "term_96d46f6f-2843-4d34-a0c2-c53790ba59a4",
+        "resultPayload": "{\"body\":\"Implemented typed exact editor evidence, independent activation/root clocks, lossless command/history transport, and immutable projection mapping across the exact 16-path P5-10 write set while preserving frozen P5-00 and no-throw publication. Strict Clang and clang-cl, UBSan, final-source live producer/history, header self-containment, syntax, and existing regression suites all passed; the sealed report is 16189 bytes with SHA-256 4ACCB33ACA983B9E52BA201DC49B0FCA35324FF07D808A8FFCE4216D899D824C. Only P5-90 configured CMake/CTest and renderer integration remains, while F42/R24 stay BLOCKED, Metal stays Not Verified, and release/distribution stay NOT PASS.\",\"completedAt\":\"2026-08-25T00:24:35.963Z\",\"completedBy\":\"term_96d46f6f-2843-4d34-a0c2-c53790ba59a4\",\"filesModified\":[\"scene/editor/include/mgif/scene_editor/SceneChangeCapture.h\",\"scene/editor/SceneChangeCapture.cpp\",\"scene/editor/include/mgif/scene_editor/SceneRuntimeMapping.h\",\"scene/editor/SceneRuntimeMapping.cpp\",\"scene/editor/include/mgif/scene_editor/SceneProjection.h\",\"scene/editor/SceneProjection.cpp\",\"tests/editor/scene_change_capture_tests.cpp\",\"tests/editor/scene_runtime_mapping_tests.cpp\",\"scene/editor/include/mgif/scene_editor/GltfDocument.h\",\"scene/editor/GltfDocument.cpp\",\"scene/editor/include/mgif/scene_editor/SceneCommands.h\",\"scene/editor/SceneCommands.cpp\",\"scene/editor/include/mgif/scene_editor/commands/EditorCommand.h\",\"scene/editor/commands/TransformCommands.cpp\",\"scene/editor/commands/PropertyCommands.cpp\",\"scene/editor/commands/HierarchyCommands.cpp\"],\"messageId\":\"msg_d056738cdc1e\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-10-20260824T225730Z-13824a19\\\\p5-10-completion-report.md\",\"reportedBy\":\"term_96d46f6f-2843-4d34-a0c2-c53790ba59a4\",\"subject\":\"P5-10 exact capture complete\"}",
+        "resultSha256": "82d922cfec20ef90bc97bb29c47aff4b3e2cb01a9627dfc44cd189d115464a42",
+        "subject": "P5-10 exact capture complete"
+      }
+    },
+    "task_139bfec5dc3d": {
+      "createdAtUtc": "2026-08-22T13:15:32.000Z",
+      "displayName": "Fix the independently confirmed post-submit host-read race in the shared G:\\M...",
+      "status": "completed"
+    },
+    "task_15efc19cac06": {
+      "createdAtUtc": "2026-08-22T16:17:38.000Z",
+      "displayName": "P8C app cutover and UI acceptance integration in shared G:\\\\MGIF after P8B. R...",
+      "status": "pending"
+    },
+    "task_15f206f912f6": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:08.000Z",
+      "dependencies": [
+        "task_3f216d250677"
+      ],
+      "dispatch": null,
+      "displayName": "P8-00",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_16578c3087ee": {
+      "createdAtUtc": "2026-08-22T15:46:02.000Z",
+      "displayName": "P4 independent read-only adversarial review after task_962bd5a0b97c. Shared G...",
+      "status": "pending"
+    },
+    "task_19ecfd12bd15": {
+      "createdAtUtc": "2026-08-26T16:21:50.000Z",
+      "displayName": "P5 independent adversarial review, READ-ONLY. Inspect only currently allowed...",
+      "status": "completed"
+    },
+    "task_1a40c0d302ae": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:06.000Z",
+      "dependencies": [
+        "task_4af12cfad98a",
+        "task_b59fd290ead0"
+      ],
+      "dispatch": null,
+      "displayName": "P7-10",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_1b1b7488c9c6": {
+      "createdAtUtc": "2026-08-23T22:04:18.000Z",
+      "displayName": "P4-05 property command implementation against the approved P4 v2 blueprint. D...",
+      "status": "completed"
+    },
+    "task_1b6ba65ef09a": {
+      "createdAtUtc": "2026-08-22T16:17:46.000Z",
+      "displayName": "P10 final independent READ-ONLY audit after P10B. Do not edit. Verify goal ac...",
+      "status": "pending"
+    },
+    "task_1bba3a17d7c7": {
+      "createdAtUtc": "2026-08-23T18:28:16.000Z",
+      "displayName": "P4-07 exclusive integration, source-set migration, full fresh Gate preparatio...",
+      "status": "pending"
+    },
+    "task_1c31d0881c41": {
+      "createdAtUtc": "2026-08-23T11:21:11.000Z",
+      "displayName": "P9 implementation in shared G:\\\\MGIF after P8. Own SceneMerger, SceneCompacto...",
+      "status": "pending"
+    },
+    "task_1c5c0923a0c1": {
+      "createdAtUtc": "2026-08-24T05:05:13.000Z",
+      "displayName": "P4-01V bounded allocation-free validator repair, triggered by P4-05 escalatio...",
+      "status": "failed"
+    },
+    "task_1e492f8d8933": {
+      "createdAtUtc": "2026-08-22T15:30:50.000Z",
+      "displayName": "Fresh independent READ-ONLY P0 final gate review after task_e45636281adf. Wor...",
+      "status": "completed"
+    },
+    "task_1e88ff7fdcb3": {
+      "createdAtUtc": "2026-08-26T03:39:29.000Z",
+      "displayName": "P5 repair worker C: close the dependency-free DEMO_RHI_CONTRACT_ONLY target c...",
+      "status": "completed"
+    },
+    "task_1ff98cc3d9df": {
+      "createdAtUtc": "2026-08-22T12:51:16.000Z",
+      "displayName": "Coordinated P0 semantic evidence and D20 integration write pass in shared G:\\...",
+      "status": "blocked"
+    },
+    "task_20e1045fff5b": {
+      "completedAtUtc": "2026-08-25T03:55:38.000Z",
+      "createdAtUtc": "2026-08-25T03:20:54.000Z",
+      "dependencies": [],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T03:55:38.000Z",
+        "dispatchId": "ctx_c557c02b90d9",
+        "dispatchedAtUtc": "2026-08-25T03:21:01.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-90-R2-D: close the newly exposed Android NDK r23 C++20 library portability...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Replaced unavailable NDK r23 bit casts with a strict MGIF memcpy helper, preserved the Clang 12 material equality behavior, added a portable bit-representation contract, and verified contained Windows and Android builds. All owned sources now compile through Android step 179, strict cross-platform bit tests and Windows focused suites pass, and the first remaining failure is the final DemoAndroid link missing sceneDigestPresent, SceneRuntimeMapping::documentIdAt, and SceneChangeCanonicalizer::computeSha256 because their target libraries are absent from the link graph outside dispatch ownership. Remaining work is the forbidden CMake target-link closure repair; the report path contains the full outcome plus the pre-post manifest and exact command ledger.",
+        "completedAtUtc": "2026-08-25T03:55:38.195Z",
+        "messageId": "msg_890fc148b29c",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-r2-d-20260825T032400Z-task_20e1045fff5b\\p5-90-r2-d-report.md",
+        "reportedBy": "term_5ff4439b-35f8-4e0e-9d38-d4ab5f2e0357",
+        "resultPayload": "{\"body\":\"Replaced unavailable NDK r23 bit casts with a strict MGIF memcpy helper, preserved the Clang 12 material equality behavior, added a portable bit-representation contract, and verified contained Windows and Android builds. All owned sources now compile through Android step 179, strict cross-platform bit tests and Windows focused suites pass, and the first remaining failure is the final DemoAndroid link missing sceneDigestPresent, SceneRuntimeMapping::documentIdAt, and SceneChangeCanonicalizer::computeSha256 because their target libraries are absent from the link graph outside dispatch ownership. Remaining work is the forbidden CMake target-link closure repair; the report path contains the full outcome plus the pre-post manifest and exact command ledger.\",\"completedAt\":\"2026-08-25T03:55:38.195Z\",\"completedBy\":\"term_5ff4439b-35f8-4e0e-9d38-d4ab5f2e0357\",\"filesModified\":[\"scene/editor/GltfValidator.cpp\",\"scene/editor/SceneCommands.cpp\",\"scene/editor/include/mgif/scene_editor/detail/BitwiseCast.h\",\"scene/editor/commands/TransformCommands.cpp\",\"scene/editor/commands/HierarchyCommands.cpp\",\"tests/editor/portable_bit_representation_tests.cpp\"],\"messageId\":\"msg_890fc148b29c\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-r2-d-20260825T032400Z-task_20e1045fff5b\\\\p5-90-r2-d-report.md\",\"reportedBy\":\"term_5ff4439b-35f8-4e0e-9d38-d4ab5f2e0357\",\"subject\":\"Owned NDK portability closed\"}",
+        "resultSha256": "3f82ef300252041a19d76a07dfdd542b27341ba7593f65ada96ea85bb5ed3bb1",
+        "subject": "Owned NDK portability closed"
+      }
+    },
+    "task_2115abdff446": {
+      "completedAtUtc": "2026-08-25T05:38:26.000Z",
+      "createdAtUtc": "2026-08-25T04:36:19.000Z",
+      "dependencies": [],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T05:38:26.000Z",
+        "dispatchId": "ctx_a614bb500b09",
+        "dispatchedAtUtc": "2026-08-25T04:36:24.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-90-R2-F: repair the deterministic projection/runtime-mapping identity mode...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Implemented deterministic one-to-many SceneAsset coordinate aliases while preserving one stable document entry, canonical forward lookup, and one document-derived runtime identity per projected ID across the six owned files. Fresh Debug and Release focused suites, the full ten-seed by 1,000-operation randomized mode, snapshot validation, strict compiler and header checks, and scoped dependency and integrity gates all pass. Only the coordinator acceptance rerun of Debug and Release renderer integration remains after concurrent R2-A work stops; F42 and R24 remain BLOCKED, Metal remains Not Verified, and release and distribution remain NOT PASS.",
+        "completedAtUtc": "2026-08-25T05:38:26.619Z",
+        "messageId": "msg_04243027129d",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-r2-f-20260825T044225Z-task_2115abdff446\\p5-90-r2-f-report.md",
+        "reportedBy": "term_c4a2d904-32f2-4f18-81d0-423226894c4e",
+        "resultPayload": "{\"body\":\"Implemented deterministic one-to-many SceneAsset coordinate aliases while preserving one stable document entry, canonical forward lookup, and one document-derived runtime identity per projected ID across the six owned files. Fresh Debug and Release focused suites, the full ten-seed by 1,000-operation randomized mode, snapshot validation, strict compiler and header checks, and scoped dependency and integrity gates all pass. Only the coordinator acceptance rerun of Debug and Release renderer integration remains after concurrent R2-A work stops; F42 and R24 remain BLOCKED, Metal remains Not Verified, and release and distribution remain NOT PASS.\",\"completedAt\":\"2026-08-25T05:38:26.619Z\",\"completedBy\":\"term_c4a2d904-32f2-4f18-81d0-423226894c4e\",\"filesModified\":[\"scene/editor/include/mgif/scene_editor/SceneRuntimeMapping.h\",\"scene/editor/SceneRuntimeMapping.cpp\",\"scene/editor/SceneProjection.cpp\",\"tests/editor/scene_runtime_mapping_tests.cpp\",\"tests/editor/scene_projection_tests.cpp\",\"tests/editor/scene_commands_tests.cpp\"],\"messageId\":\"msg_04243027129d\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-r2-f-20260825T044225Z-task_2115abdff446\\\\p5-90-r2-f-report.md\",\"reportedBy\":\"term_c4a2d904-32f2-4f18-81d0-423226894c4e\",\"subject\":\"R2-F identity repair verified\"}",
+        "resultSha256": "edb500f68b4e0ef5d2d112bf78b822010c768c76df34865d05c2fbfa96d25eda",
+        "subject": "R2-F identity repair verified"
+      }
+    },
+    "task_214a680bb5fb": {
+      "createdAtUtc": "2026-08-24T20:40:55.000Z",
+      "displayName": "Fresh independent Stage B re-audit of the repaired P5-P10 materialization pac...",
+      "status": "completed"
+    },
+    "task_229a661d3a06": {
+      "createdAtUtc": "2026-08-23T14:50:13.000Z",
+      "displayName": "READ-ONLY P6 selection/picking readiness oracle. Work against the shared G:\\M...",
+      "status": "completed"
+    },
+    "task_22e0d3ca42a9": {
+      "createdAtUtc": "2026-08-25T13:06:05.000Z",
+      "displayName": "Fresh independent READ-ONLY acceptance review of the repaired progress-ledger...",
+      "status": "completed"
+    },
+    "task_23a955fd8b96": {
+      "createdAtUtc": "2026-08-23T02:20:26.000Z",
+      "displayName": "P0 remediation B: repair Android viewer and official Gradle/CMake Dear ImGui...",
+      "status": "completed"
+    },
+    "task_25bba9912e67": {
+      "createdAtUtc": "2026-08-25T16:59:59.000Z",
+      "displayName": "Integrate the completed SceneCompactor and EditorInputRouter/Overlay source f...",
+      "status": "completed"
+    },
+    "task_2aca2d72b656": {
+      "createdAtUtc": "2026-08-22T21:48:43.000Z",
+      "displayName": "READ-ONLY P0 remediation architecture advisor. Shared G:\\MGIF, no repository...",
+      "status": "completed"
+    },
+    "task_2c5f762c2290": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:09.000Z",
+      "dependencies": [
+        "task_15f206f912f6"
+      ],
+      "dispatch": null,
+      "displayName": "P8-12",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_2ebaf90139c5": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:04.000Z",
+      "dependencies": [
+        "task_bd6e62faa588",
+        "task_d73712d125c5"
+      ],
+      "dispatch": null,
+      "displayName": "O06-BIND",
+      "status": "ready",
+      "workerResult": null
+    },
+    "task_2f2de8f6cb70": {
+      "createdAtUtc": "2026-08-22T07:13:17.000Z",
+      "displayName": "P0 \u8f93\u5165/\u526a\u8d34\u677f\u53c2\u8003\u8bc1\u636e\u4ed3\u5e93\u96c6\u6210\u3002\u4f60\u5728\u5171\u4eab G:\\MGIF worktree \u5de5\u4f5c\uff0c\u4e0d\u662f\u552f\u4e00\u4ee3\u7406\uff0c\u5fc5\u987b\u4fdd\u7559\u6240\u6709\u7528\u6237\u548c\u5e76\u53d1\u4fee\u6539\uff0c\u7edd\u4e0d\u56de\u6eda/\u8986\u76d6\u4ed6\u4eba\u3002\u4f60\u53ea\u62e5...",
+      "status": "completed"
+    },
+    "task_2f6c1c737eae": {
+      "createdAtUtc": "2026-08-23T18:27:19.000Z",
+      "displayName": "P4-01 document structural delta and mandatory history policy implementation i...",
+      "status": "pending"
+    },
+    "task_3010d2de1248": {
+      "createdAtUtc": "2026-08-23T18:11:12.000Z",
+      "displayName": "THIRD and final replacement P3 independent adversarial Gate review. This is a...",
+      "status": "blocked"
+    },
+    "task_308071ab8da8": {
+      "createdAtUtc": "2026-08-22T15:12:30.000Z",
+      "displayName": "Fix every finding from fresh adversarial validator review task_96a2c05df3c8 i...",
+      "status": "completed"
+    },
+    "task_31740eccfdf2": {
+      "createdAtUtc": "2026-08-24T15:18:28.000Z",
+      "displayName": "Stage A bounded P5-10 consumer test-contract repair, TEMP-only. This task dep...",
+      "status": "completed"
+    },
+    "task_31d89ded7754": {
+      "completedAtUtc": "2026-08-24T23:54:49.000Z",
+      "createdAtUtc": "2026-08-24T21:16:03.000Z",
+      "dependencies": [
+        "task_759e96a51910"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-24T23:54:49.000Z",
+        "dispatchId": "ctx_a311b663ef6c",
+        "dispatchedAtUtc": "2026-08-24T22:41:21.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-20",
+      "status": "completed",
+      "workerResult": {
+        "body": "Implemented the eight owned P5-20 files with the backend-neutral staged scene transaction, immutable publication generation, typed mapping/fence/result contracts, complete counters and resource journal, plus exhaustive publication and recording fake-RHI tests. All strict Clang, clang-cl, UBSan, header self-containment, static-analysis, formatting, boundary, frozen-contract, and scoped-integrity checks passed with zero partial publication and zero idle use. P5-90 still must wire CMake and shared renderer/backend integration, while F42/R24 remains BLOCKED, Metal remains Not Verified, and release and distribution remain NOT PASS.",
+        "completedAtUtc": "2026-08-24T23:54:49.785Z",
+        "messageId": "msg_3ceea787de67",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-20-20260824T225258Z-task_31d89ded7754\\p5-20-completion-report.md",
+        "reportedBy": "term_cf33bf50-c06f-47ed-810b-79ff1ee18743",
+        "resultPayload": "{\"body\":\"Implemented the eight owned P5-20 files with the backend-neutral staged scene transaction, immutable publication generation, typed mapping/fence/result contracts, complete counters and resource journal, plus exhaustive publication and recording fake-RHI tests. All strict Clang, clang-cl, UBSan, header self-containment, static-analysis, formatting, boundary, frozen-contract, and scoped-integrity checks passed with zero partial publication and zero idle use. P5-90 still must wire CMake and shared renderer/backend integration, while F42/R24 remains BLOCKED, Metal remains Not Verified, and release and distribution remain NOT PASS.\",\"completedAt\":\"2026-08-24T23:54:49.785Z\",\"completedBy\":\"term_cf33bf50-c06f-47ed-810b-79ff1ee18743\",\"filesModified\":[\"render/editor/SceneRuntimePublisher.h\",\"render/editor/SceneRuntimePublisher.cpp\",\"render/editor/SceneDeltaCounters.h\",\"render/editor/SceneDeltaCounters.cpp\",\"render/editor/SceneDeltaResourceJournal.h\",\"render/editor/SceneDeltaResourceJournal.cpp\",\"tests/editor/renderer_scene_publication_tests.cpp\",\"tests/editor/scene_delta_fake_rhi_tests.cpp\"],\"messageId\":\"msg_3ceea787de67\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-20-20260824T225258Z-task_31d89ded7754\\\\p5-20-completion-report.md\",\"reportedBy\":\"term_cf33bf50-c06f-47ed-810b-79ff1ee18743\",\"subject\":\"P5-20 standalone leaf verified\"}",
+        "resultSha256": "885eae7b6af6ec8444fbda63a26790ae8952b77c851589ecf93d12bb7e387476",
+        "subject": "P5-20 standalone leaf verified"
+      }
+    },
+    "task_327f7a38250e": {
+      "createdAtUtc": "2026-08-22T22:20:29.000Z",
+      "displayName": "P0 fresh independent adversarial READ-ONLY audit after remediation task_cb374...",
+      "status": "completed"
+    },
+    "task_32f0b77cdce0": {
+      "createdAtUtc": "2026-08-24T09:29:49.000Z",
+      "displayName": "Progress ledger update after independent Gate P4 failure. Dependency: complet...",
+      "status": "completed"
+    },
+    "task_32f382d8b822": {
+      "createdAtUtc": "2026-08-23T18:55:22.000Z",
+      "displayName": "Fresh independent read-only audit of the corrected P4 final-snapshot blueprin...",
+      "status": "blocked"
+    },
+    "task_34cbff58a1ef": {
+      "createdAtUtc": "2026-08-22T16:17:40.000Z",
+      "displayName": "P9A Merge and Compact implementation in shared G:\\\\MGIF after P8 review and P...",
+      "status": "pending"
+    },
+    "task_35b3fe54d46c": {
+      "createdAtUtc": "2026-08-25T22:34:24.000Z",
+      "displayName": "P1 Scene Editor production integration repair in shared G:\\\\MGIF worktree. Re...",
+      "status": "completed"
+    },
+    "task_35c940f72bc7": {
+      "createdAtUtc": "2026-08-23T11:21:12.000Z",
+      "displayName": "P10 acceptance/evidence in shared G:\\\\MGIF after P9. Own acceptance harness,...",
+      "status": "pending"
+    },
+    "task_36178854ca53": {
+      "createdAtUtc": "2026-08-22T15:40:16.000Z",
+      "displayName": "P2B integration: unify legacy and experimental MGIF load paths on GltfDocumen...",
+      "status": "pending"
+    },
+    "task_36f82082230d": {
+      "createdAtUtc": "2026-08-23T11:21:10.000Z",
+      "displayName": "P8 implementation in shared G:\\\\MGIF after P7. Own app/editor UI shell/contro...",
+      "status": "pending"
+    },
+    "task_38b5e6183e3e": {
+      "createdAtUtc": "2026-08-22T08:42:32.000Z",
+      "displayName": "Implement the user's newly locked MGIF editor dependency boundary in shared G...",
+      "status": "completed"
+    },
+    "task_395d3d07b807": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:07.000Z",
+      "dependencies": [
+        "task_1a40c0d302ae"
+      ],
+      "dispatch": null,
+      "displayName": "P7-90",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_3b7f167f24e9": {
+      "createdAtUtc": "2026-08-23T15:34:58.000Z",
+      "displayName": "P3 remediation A for independent blocker P3-B01 in shared G:\\\\MGIF. Dependenc...",
+      "status": "completed"
+    },
+    "task_3c33dcaf200d": {
+      "createdAtUtc": "2026-08-22T13:31:22.000Z",
+      "displayName": "Fix every confirmed blocker from independent validator review task task_f9fe7...",
+      "status": "completed"
+    },
+    "task_3e4313d67d50": {
+      "createdAtUtc": "2026-08-26T15:34:46.000Z",
+      "displayName": "P5 supplemental verification-preparation, READ-ONLY in shared G:\\MGIF. You ar...",
+      "status": "completed"
+    },
+    "task_3ef33401444a": {
+      "createdAtUtc": "2026-08-24T07:16:42.000Z",
+      "displayName": "P5-P10 successor DAG materialization rehearsal, TEMP-only and repository READ...",
+      "status": "completed"
+    },
+    "task_3f216d250677": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:07.000Z",
+      "dependencies": [
+        "task_395d3d07b807"
+      ],
+      "dispatch": null,
+      "displayName": "G7",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_3f5a45fa5739": {
+      "createdAtUtc": "2026-08-25T18:16:49.000Z",
+      "displayName": "Fix semantic texture coordinate selection across editor renderer transactions...",
+      "status": "completed"
+    },
+    "task_3fbc7d2475fb": {
+      "createdAtUtc": "2026-08-22T15:50:52.000Z",
+      "displayName": "P5-P7 read-only implementation reconnaissance in shared G:\\\\MGIF. Do not modi...",
+      "status": "completed"
+    },
+    "task_3ff2370ac0a8": {
+      "createdAtUtc": "2026-08-25T16:27:50.000Z",
+      "displayName": "P6 bounded implementation: add a backend-neutral EditorInputRouter state mach...",
+      "status": "completed"
+    },
+    "task_4084acfe8b92": {
+      "createdAtUtc": "2026-08-22T10:59:29.000Z",
+      "displayName": "Fix every finding from Orca status msg_3cbf6d7c6a07 in the shared G:\\MGIF wor...",
+      "status": "completed"
+    },
+    "task_409aa30d59fc": {
+      "createdAtUtc": "2026-08-24T11:06:59.000Z",
+      "displayName": "Independent TEMP-only audit of the stale X-O06 successor node after P5 compat...",
+      "status": "completed"
+    },
+    "task_4154babfd00a": {
+      "createdAtUtc": "2026-08-24T10:22:58.000Z",
+      "displayName": "P4 post-repair unified contained integration and evidence freeze. Dependencie...",
+      "status": "completed"
+    },
+    "task_415c981ae2c2": {
+      "createdAtUtc": "2026-08-25T21:39:22.000Z",
+      "displayName": "\u72ec\u7acb\u53ea\u8bfb\u5ba1\u67e5 MGIF \u5f53\u524d Scene Editor UI/Controller \u4e0e\u56fa\u5b9a\u53c2\u8003 F:\\GitHub\\vk_gltf_renderer@50...",
+      "status": "completed"
+    },
+    "task_421b4c55e3f7": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:10.000Z",
+      "dependencies": [
+        "task_65c1d2014a21"
+      ],
+      "dispatch": null,
+      "displayName": "P9-10",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_43821af86a39": {
+      "createdAtUtc": "2026-08-24T16:23:43.000Z",
+      "displayName": "Stage B authoring for the independently accepted P5-P10 rebound blueprint. De...",
+      "status": "completed"
+    },
+    "task_442975349482": {
+      "createdAtUtc": "2026-08-23T11:34:40.000Z",
+      "displayName": "P3 completion gap follow-up in shared G:\\\\MGIF. The prior P3 worker_done is a...",
+      "status": "completed"
+    },
+    "task_44edc62a635f": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:11.000Z",
+      "dependencies": [
+        "task_65c1d2014a21"
+      ],
+      "dispatch": null,
+      "displayName": "P9-12",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_44f73d17b4ab": {
+      "createdAtUtc": "2026-08-23T22:03:43.000Z",
+      "displayName": "P4-03 history/session facade implementation against the APPROVED P4 v2 bluepr...",
+      "status": "completed"
+    },
+    "task_4521fbe0eb6d": {
+      "createdAtUtc": "2026-08-22T16:11:32.000Z",
+      "displayName": "P6B integration in shared G:\\\\MGIF after P6A: implement editor picking pass/r...",
+      "status": "pending"
+    },
+    "task_469ac0bc570d": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:08.000Z",
+      "dependencies": [
+        "task_15f206f912f6"
+      ],
+      "dispatch": null,
+      "displayName": "P8-10",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_4779eea04cf2": {
+      "createdAtUtc": "2026-08-23T17:30:04.000Z",
+      "displayName": "P4 final-snapshot implementation blueprint, READ-ONLY. Do not modify any file...",
+      "status": "blocked"
+    },
+    "task_47b6bfeb6b37": {
+      "createdAtUtc": "2026-08-22T12:13:15.000Z",
+      "displayName": "Close final editor gate blockers",
+      "status": "completed"
+    },
+    "task_48c61a78654f": {
+      "createdAtUtc": "2026-08-22T07:27:13.000Z",
+      "displayName": "P0 CMake \u805a\u5408\u95e8\u7981\u4fee\u590d\u3002\u5de5\u4f5c\u5728\u5171\u4eab G:\\MGIF \u5f53\u524d worktree\uff1b\u4f60\u4e0d\u662f\u552f\u4e00\u4ee3\u7406\uff0c\u5fc5\u987b\u4fdd\u7559\u6240\u6709\u7528\u6237\u548c\u5e76\u53d1\u4fee\u6539\uff0c\u7edd\u4e0d\u56de\u6eda/\u8986\u76d6\u4ed6\u4eba\u3002\u4f60\u53ea\u62e5...",
+      "status": "completed"
+    },
+    "task_48c6e0f4174f": {
+      "createdAtUtc": "2026-08-23T07:20:48.000Z",
+      "displayName": "P1 remediation A: make EditorObjectId authority-specific and close cross-docu...",
+      "status": "completed"
+    },
+    "task_492180b70a7a": {
+      "createdAtUtc": "2026-08-26T04:32:58.000Z",
+      "displayName": "P5 post-repair integration validation, repository READ-ONLY and repair-free,...",
+      "status": "completed"
+    },
+    "task_4993a1a8c06d": {
+      "createdAtUtc": "2026-08-22T15:33:20.000Z",
+      "displayName": "P1 independent read-only review. Shared G:\\MGIF after task_cdfed52a30dd. Do n...",
+      "status": "blocked"
+    },
+    "task_49bcac3e9a66": {
+      "createdAtUtc": "2026-08-25T18:06:57.000Z",
+      "displayName": "Implement and verify serializer compatibility for the glTF texture/image/samp...",
+      "status": "completed"
+    },
+    "task_49c9915fe47a": {
+      "createdAtUtc": "2026-08-22T06:08:30.000Z",
+      "displayName": "Reference D20 Executable Probe",
+      "status": "completed"
+    },
+    "task_49e3c560728f": {
+      "createdAtUtc": "2026-08-25T21:04:37.000Z",
+      "displayName": "MGIF Scene Editor: add a focused Material Duplicate contract test in the shar...",
+      "status": "completed"
+    },
+    "task_4af12cfad98a": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:06.000Z",
+      "dependencies": [
+        "task_c4958ebe56e4"
+      ],
+      "dispatch": null,
+      "displayName": "G6",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_4b956aebba3f": {
+      "createdAtUtc": "2026-08-25T20:20:17.000Z",
+      "displayName": "Implement MGIF-owned CPU animation sampling utility only. Work in shared G:\\\\...",
+      "status": "completed"
+    },
+    "task_4ba0168de807": {
+      "createdAtUtc": "2026-08-23T08:07:49.000Z",
+      "displayName": "Gate P1 combined integration verification after the three remediations. READ-...",
+      "status": "completed"
+    },
+    "task_4cb8ee016191": {
+      "createdAtUtc": "2026-08-22T16:11:28.000Z",
+      "displayName": "P5A implementation in shared G:\\\\MGIF: implement MGIF-owned SceneChangeSet an...",
+      "status": "pending"
+    },
+    "task_4cfc0dfb4a2e": {
+      "createdAtUtc": "2026-08-23T21:35:24.000Z",
+      "displayName": "P4 v2 final independent blueprint audit, READ-ONLY. Produce an explicit PASS...",
+      "status": "completed"
+    },
+    "task_4e0a2eeff7b6": {
+      "createdAtUtc": "2026-08-25T09:29:26.000Z",
+      "displayName": "P5-90-R3 evidence-hygiene recovery and final Gate-preparation verification af...",
+      "status": "failed"
+    },
+    "task_4e68f181ff75": {
+      "createdAtUtc": "2026-08-23T15:23:41.000Z",
+      "displayName": "READ-ONLY P9 lifecycle, Merge, Compact, and Save As readiness oracle. Work ag...",
+      "status": "completed"
+    },
+    "task_4f88b986a42c": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:05.000Z",
+      "dependencies": [
+        "task_1040525304c0"
+      ],
+      "dispatch": null,
+      "displayName": "P6-20",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_4fa011af0b1e": {
+      "createdAtUtc": "2026-08-24T09:29:21.000Z",
+      "displayName": "P4 Gate repair A for blockers P4-B01 and P4-B02. Dependency: completed indepe...",
+      "status": "completed"
+    },
+    "task_505d70ebc60f": {
+      "createdAtUtc": "2026-08-23T18:27:19.000Z",
+      "displayName": "P4-02 CPU-owned stable-ID selection implementation in shared G:\\MGIF. This ta...",
+      "status": "pending"
+    },
+    "task_5092b4da4429": {
+      "createdAtUtc": "2026-08-25T11:45:45.000Z",
+      "displayName": "P5 live Vulkan blocker diagnosis, repository READ-ONLY and repair-free, runni...",
+      "status": "completed"
+    },
+    "task_51fe7cc4dd05": {
+      "createdAtUtc": "2026-08-24T01:13:52.000Z",
+      "displayName": "Independent final audit of corrected P5-P10 successor DAG blueprint v2. This...",
+      "status": "completed"
+    },
+    "task_527c02bedf2e": {
+      "createdAtUtc": "2026-08-26T11:20:30.000Z",
+      "displayName": "P5 permanent regression integration after the three production repairs task_7...",
+      "status": "completed"
+    },
+    "task_532ef15be92f": {
+      "createdAtUtc": "2026-08-23T09:04:11.000Z",
+      "displayName": "P2 read-only architecture probe for MGIF glTF Scene Editor. Inspect only expl...",
+      "status": "failed"
+    },
+    "task_59b8cf058bee": {
+      "createdAtUtc": "2026-08-25T14:18:11.000Z",
+      "displayName": "Fresh read-only instrumented recapture/provenance audit for VUID-vkCmdDraw-No...",
+      "status": "failed"
+    },
+    "task_5a83b3160e05": {
+      "completedAtUtc": "2026-08-24T22:39:40.000Z",
+      "createdAtUtc": "2026-08-24T22:29:43.000Z",
+      "dependencies": [
+        "task_759e96a51910"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-24T22:39:40.000Z",
+        "dispatchId": "ctx_5a2e20557d50",
+        "dispatchedAtUtc": "2026-08-24T22:29:55.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-00-R1 coordinator-review correction for the frozen SceneChangeSet canonica...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Corrected canonicalizeEvidence to publish one deterministic by-value union of full-snapshot and mutation-evidence remaps in both required locations, with focused regressions for distinct entries, duplicates, both conflict directions, canonical validation, and tampering. Strict Clang and clang-cl C++20 suites, UBSan, header self-containment, static analysis, formatting, and the path-scoped review all passed, with exact commands and final hashes recorded in the attached temporary report. Only configured P5-90 integration remains; F42/R24 BLOCKED, Metal Not Verified, and release/distribution NOT PASS are preserved.",
+        "completedAtUtc": "2026-08-24T22:39:40.600Z",
+        "messageId": "msg_54198d16d802",
+        "outcome": "succeeded",
+        "reportPath": "C:/Temp/mgif-p5-00-r1-20260825-task_5a83b3160e05/p5-00-r1-correction-report.md",
+        "reportedBy": "term_96d46f6f-2843-4d34-a0c2-c53790ba59a4",
+        "resultPayload": "{\"body\":\"Corrected canonicalizeEvidence to publish one deterministic by-value union of full-snapshot and mutation-evidence remaps in both required locations, with focused regressions for distinct entries, duplicates, both conflict directions, canonical validation, and tampering. Strict Clang and clang-cl C++20 suites, UBSan, header self-containment, static analysis, formatting, and the path-scoped review all passed, with exact commands and final hashes recorded in the attached temporary report. Only configured P5-90 integration remains; F42/R24 BLOCKED, Metal Not Verified, and release/distribution NOT PASS are preserved.\",\"completedAt\":\"2026-08-24T22:39:40.600Z\",\"completedBy\":\"term_96d46f6f-2843-4d34-a0c2-c53790ba59a4\",\"filesModified\":[\"scene/editor/SceneChangeCanonicalizer.cpp\",\"tests/editor/scene_change_set_tests.cpp\"],\"messageId\":\"msg_54198d16d802\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:/Temp/mgif-p5-00-r1-20260825-task_5a83b3160e05/p5-00-r1-correction-report.md\",\"reportedBy\":\"term_96d46f6f-2843-4d34-a0c2-c53790ba59a4\",\"subject\":\"P5-00-R1 remap union corrected\"}",
+        "resultSha256": "49df8efea074e29083f00ea2f399219bb9e3bd369884caea98674a8a6c9ac5de",
+        "subject": "P5-00-R1 remap union corrected"
+      }
+    },
+    "task_5a851f355ecc": {
+      "createdAtUtc": "2026-08-25T15:10:54.000Z",
+      "displayName": "Preparatory implementation, CPU-only P6 interaction contract for MGIF glTF Sc...",
+      "status": "completed"
+    },
+    "task_5b5eb9933183": {
+      "createdAtUtc": "2026-08-23T06:51:18.000Z",
+      "displayName": "P1 narrow read-only adversarial probe: index and accessor payload validation....",
+      "status": "completed"
+    },
+    "task_5b6bb2528ba8": {
+      "createdAtUtc": "2026-08-24T19:57:20.000Z",
+      "displayName": "Stage B Execute Order Repair",
+      "status": "completed"
+    },
+    "task_5b6d63b165b3": {
+      "createdAtUtc": "2026-08-23T18:27:49.000Z",
+      "displayName": "P4-04 hierarchy command factories and structural history tests in shared G:\\M...",
+      "status": "pending"
+    },
+    "task_5d30a46225fc": {
+      "createdAtUtc": "2026-08-25T15:05:15.000Z",
+      "displayName": "Preparatory implementation, CPU-only P7 leaf for MGIF glTF Scene Editor. Work...",
+      "status": "completed"
+    },
+    "task_5e9fa075e9c5": {
+      "completedAtUtc": "2026-08-25T05:56:11.046Z",
+      "createdAtUtc": "2026-08-22T07:59:55.000Z",
+      "dependencies": [],
+      "dispatch": null,
+      "displayName": "D20 user decision gate for MGIF glTF scene editor. No worker may implement P1...",
+      "status": "completed",
+      "workerResult": {
+        "body": "{\"approvalText\":\"\\u53c2\\u8003\\u4f60\\u7684\\u5efa\\u8bae\",\"authority\":\"MGIF project owner (user)\",\"contractEvidence\":\"docs/gltf-scene-editor-parity-task.md D20\",\"decision\":\"mgif_safety_exception\",\"gateId\":\"gate_ca804cbec712\"}",
+        "completedAtUtc": "2026-08-25T05:56:11.046Z",
+        "messageId": "decision:gate_ca804cbec712",
+        "outcome": "succeeded",
+        "reportPath": null,
+        "reportedBy": "decision-gate",
+        "resultPayload": "{\"approvalText\":\"\\u53c2\\u8003\\u4f60\\u7684\\u5efa\\u8bae\",\"authority\":\"MGIF project owner (user)\",\"contractEvidence\":\"docs/gltf-scene-editor-parity-task.md D20\",\"decision\":\"mgif_safety_exception\",\"gateId\":\"gate_ca804cbec712\"}",
+        "resultSha256": "2e90a7d17a859540869dac98ee953604d31bfe76982677b416813cc92e169d24",
+        "subject": "decision-gate:gate_ca804cbec712"
+      }
+    },
+    "task_5f4fb67e986b": {
+      "createdAtUtc": "2026-08-24T01:53:34.000Z",
+      "displayName": "P4-01S bounded immutable material/light snapshot canonical-inspection reconci...",
+      "status": "completed"
+    },
+    "task_5fd375237112": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:13.000Z",
+      "dependencies": [
+        "task_9c7cb2a4eb42",
+        "task_f5ecbcda47dd"
+      ],
+      "dispatch": null,
+      "displayName": "P10-90",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_6144f9b8f7b2": {
+      "createdAtUtc": "2026-08-23T10:24:07.000Z",
+      "displayName": "P3 read-only architecture map for the MGIF glTF Scene Editor. Work in the sha...",
+      "status": "completed"
+    },
+    "task_61c19ab23f95": {
+      "createdAtUtc": "2026-08-22T15:42:08.000Z",
+      "displayName": "P3B implementation: material/primitive/camera/light/visibility/scene transfor...",
+      "status": "pending"
+    },
+    "task_62733f315779": {
+      "createdAtUtc": "2026-08-22T09:47:28.000Z",
+      "displayName": "READ-ONLY architecture mapping for the full MGIF glTF scene editor integratio...",
+      "status": "completed"
+    },
+    "task_62e92d8ff4c5": {
+      "createdAtUtc": "2026-08-22T06:45:25.000Z",
+      "displayName": "P0 Gate Audit",
+      "status": "completed"
+    },
+    "task_63ea8af55b1a": {
+      "createdAtUtc": "2026-08-23T11:20:54.000Z",
+      "displayName": "P5 implementation in shared G:\\\\MGIF after P4. Own MGIF-owned SceneChangeSet/...",
+      "status": "pending"
+    },
+    "task_64f2460b590a": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:10.000Z",
+      "dependencies": [
+        "task_65c1d2014a21"
+      ],
+      "dispatch": null,
+      "displayName": "P9-11",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_655b72181479": {
+      "createdAtUtc": "2026-08-22T16:11:30.000Z",
+      "displayName": "P5 independent adversarial READ-ONLY review in shared G:\\\\MGIF after P5B. Do...",
+      "status": "pending"
+    },
+    "task_657220241180": {
+      "createdAtUtc": "2026-08-22T09:57:35.000Z",
+      "displayName": "P0 native reference UI semantic evidence attempt for O05/O06/O07/O08/O10. Wor...",
+      "status": "completed"
+    },
+    "task_65a45964d4c9": {
+      "createdAtUtc": "2026-08-23T07:20:48.000Z",
+      "displayName": "P1 remediation C: make existing-target Save As atomically replace the destina...",
+      "status": "completed"
+    },
+    "task_65c1d2014a21": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:10.000Z",
+      "dependencies": [
+        "task_eb85190ed1ac"
+      ],
+      "dispatch": null,
+      "displayName": "P9-00",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_6687afc1c182": {
+      "createdAtUtc": "2026-08-23T21:00:54.000Z",
+      "displayName": "P4 final-snapshot blueprint v2 remediation, TEMP-only and documentation-only....",
+      "status": "completed"
+    },
+    "task_6730b786f3a1": {
+      "createdAtUtc": "2026-08-23T23:54:23.000Z",
+      "displayName": "Independent final audit of the P5-P10 successor DAG blueprint. This is reposi...",
+      "status": "completed"
+    },
+    "task_6a73be623ed1": {
+      "completedAtUtc": "2026-08-25T08:36:55.000Z",
+      "createdAtUtc": "2026-08-25T03:57:25.000Z",
+      "dependencies": [
+        "task_087d11fd5641",
+        "task_20e1045fff5b"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T08:36:55.000Z",
+        "dispatchId": "ctx_3c83422d75ff",
+        "dispatchedAtUtc": "2026-08-25T05:54:18.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-90-R2-E Android final link-closure and portable-test wiring repair in shar...",
+      "status": "completed",
+      "workerResult": {
+        "body": "I repaired the CMake-owned Android link graph with unique scene mapping/change-contract ownership and wired the portable plus three accepted host-only progress-ledger contracts into CTest and the editor aggregate. Fresh Android completed 185/185, Windows production completed 228/228 in Debug and Release, focused CTest passed 7/7 twice, full CTest passed 45/45 twice, and every independent dependency, RHI, isolation, forbidden-token, link, symbol, pinned-ImGui, and fixed-policy audit passed. No required R2-E work remains; only CMakeLists.txt was modified by this dispatch, while F42/R24 remain BLOCKED, Metal remains Not Verified, and release/distribution remains NOT PASS by policy.",
+        "completedAtUtc": "2026-08-25T08:36:55.190Z",
+        "messageId": "msg_afe5728a4f7c",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-r2-e-20260825T060623Z-task_6a73be623ed1\\p5-90-r2-e-report.md",
+        "reportedBy": "term_b8c0ba4b-f6f8-4df6-840a-e44dcb8efefd",
+        "resultPayload": "{\"body\":\"I repaired the CMake-owned Android link graph with unique scene mapping/change-contract ownership and wired the portable plus three accepted host-only progress-ledger contracts into CTest and the editor aggregate. Fresh Android completed 185/185, Windows production completed 228/228 in Debug and Release, focused CTest passed 7/7 twice, full CTest passed 45/45 twice, and every independent dependency, RHI, isolation, forbidden-token, link, symbol, pinned-ImGui, and fixed-policy audit passed. No required R2-E work remains; only CMakeLists.txt was modified by this dispatch, while F42/R24 remain BLOCKED, Metal remains Not Verified, and release/distribution remains NOT PASS by policy.\",\"completedAt\":\"2026-08-25T08:36:55.190Z\",\"completedBy\":\"term_b8c0ba4b-f6f8-4df6-840a-e44dcb8efefd\",\"filesModified\":[\"CMakeLists.txt\"],\"messageId\":\"msg_afe5728a4f7c\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-r2-e-20260825T060623Z-task_6a73be623ed1\\\\p5-90-r2-e-report.md\",\"reportedBy\":\"term_b8c0ba4b-f6f8-4df6-840a-e44dcb8efefd\",\"subject\":\"R2-E link closure PASS\"}",
+        "resultSha256": "f96f0469d3ff43cf5fbc6d32123122c772ea9d6e8c7b38768d569b5e533379ec",
+        "subject": "R2-E link closure PASS"
+      }
+    },
+    "task_6be0aae20e3f": {
+      "createdAtUtc": "2026-08-23T22:04:19.000Z",
+      "displayName": "P4-06 transform commands and continuous edit arbiter implementation against t...",
+      "status": "completed"
+    },
+    "task_6c5d01f2adcc": {
+      "createdAtUtc": "2026-08-25T19:25:38.000Z",
+      "displayName": "\u72ec\u7acb\u5ba1\u67e5\u5e76\u5b9e\u73b0 MGIF SceneMerger \u7684 dependency/source metadata \u4e0e\u5b8c\u6574 glTF extension rema...",
+      "status": "completed"
+    },
+    "task_6c9acf605f14": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:12.000Z",
+      "dependencies": [
+        "task_e6d16b19af18"
+      ],
+      "dispatch": null,
+      "displayName": "P10-00",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_6cf35495bd88": {
+      "createdAtUtc": "2026-08-26T13:13:30.000Z",
+      "displayName": "P5 scene-editor transaction smoke marker repair design, READ-ONLY analysis in...",
+      "status": "completed"
+    },
+    "task_6db8f2b6fe3f": {
+      "createdAtUtc": "2026-08-22T15:50:52.000Z",
+      "displayName": "P9-P10 read-only implementation and acceptance reconnaissance in shared G:\\\\M...",
+      "status": "completed"
+    },
+    "task_6def7d33c22b": {
+      "createdAtUtc": "2026-08-22T09:56:00.000Z",
+      "displayName": "After task_8923cdd140f5 succeeds, bind the new sealed native UI/Vulkan reposi...",
+      "status": "completed"
+    },
+    "task_6e4f814584d4": {
+      "createdAtUtc": "2026-08-25T22:40:19.000Z",
+      "displayName": "READ-ONLY renderer publication diagnosis for MGIF shared G:\\\\MGIF. Do not edi...",
+      "status": "completed"
+    },
+    "task_6e5799271207": {
+      "createdAtUtc": "2026-08-22T16:11:33.000Z",
+      "displayName": "P6 independent adversarial READ-ONLY review after P6B. Do not edit. Validate...",
+      "status": "pending"
+    },
+    "task_70a1eee8a233": {
+      "createdAtUtc": "2026-08-26T03:39:28.000Z",
+      "displayName": "P5 repair worker B: make Vulkan command recording reject stale/null/wrong-gen...",
+      "status": "completed"
+    },
+    "task_70d3d2614e29": {
+      "createdAtUtc": "2026-08-22T16:17:36.000Z",
+      "displayName": "P8A desktop editor shell/controller implementation in shared G:\\\\MGIF after P...",
+      "status": "pending"
+    },
+    "task_70fc431e8856": {
+      "completedAtUtc": "2026-08-25T02:09:38.000Z",
+      "createdAtUtc": "2026-08-25T01:58:55.000Z",
+      "dependencies": [],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T02:09:38.000Z",
+        "dispatchId": "ctx_5045d3bc55fc",
+        "dispatchedAtUtc": "2026-08-25T01:59:03.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-90-R1 narrow SceneAssetView leaf-contract correction in the shared G:\\MGIF...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Added the missing std::span<const uint8_t> sceneRootTransformApplyToRoot field and deterministic binding in scene/SceneAssetView.h while preserving the coordinator-bound preimage and all existing edits. The exact two-line delta passed git diff --check, the focused Debug Ninja TransformSystem object rebuild, and a TEMP aggregate/default-root semantics probe; final SHA-256 is 96E42F702D2B37B15BAA84A9F3561BC8DA744D6C78DC71301A0619EAD408EB56. No blocker remains for this leaf repair; F42 and R24 remain BLOCKED, Metal on Windows remains Not Verified, and release/distribution remains NOT PASS.",
+        "completedAtUtc": "2026-08-25T02:09:38.959Z",
+        "messageId": "msg_6df41d1abe53",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-90-r1-20260825T100433413\\repair-report.md",
+        "reportedBy": "term_58252ecb-76b4-4614-9868-ee95f8751078",
+        "resultPayload": "{\"body\":\"Added the missing std::span<const uint8_t> sceneRootTransformApplyToRoot field and deterministic binding in scene/SceneAssetView.h while preserving the coordinator-bound preimage and all existing edits. The exact two-line delta passed git diff --check, the focused Debug Ninja TransformSystem object rebuild, and a TEMP aggregate/default-root semantics probe; final SHA-256 is 96E42F702D2B37B15BAA84A9F3561BC8DA744D6C78DC71301A0619EAD408EB56. No blocker remains for this leaf repair; F42 and R24 remain BLOCKED, Metal on Windows remains Not Verified, and release/distribution remains NOT PASS.\",\"completedAt\":\"2026-08-25T02:09:38.959Z\",\"completedBy\":\"term_58252ecb-76b4-4614-9868-ee95f8751078\",\"filesModified\":[\"scene/SceneAssetView.h\"],\"messageId\":\"msg_6df41d1abe53\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-90-r1-20260825T100433413\\\\repair-report.md\",\"reportedBy\":\"term_58252ecb-76b4-4614-9868-ee95f8751078\",\"subject\":\"SceneAssetView leaf corrected\"}",
+        "resultSha256": "0e7adf8a2619fef3305ef85ea48b0ff52e6716df59bef1d433f89029dc7125e7",
+        "subject": "SceneAssetView leaf corrected"
+      }
+    },
+    "task_7108d367d311": {
+      "createdAtUtc": "2026-08-23T15:34:58.000Z",
+      "displayName": "P3 remediation B for independent blockers P3-B02 and P3-B03 in shared G:\\\\MGI...",
+      "status": "completed"
+    },
+    "task_71167dc39d90": {
+      "createdAtUtc": "2026-08-22T14:58:23.000Z",
+      "displayName": "READ-ONLY final verification of renderer clustered-stats fix plus test harden...",
+      "status": "completed"
+    },
+    "task_713bd337742b": {
+      "createdAtUtc": "2026-08-26T10:53:55.000Z",
+      "displayName": "P5 ResourceTable strong-exception-safety repair after task_f268a3cd9fc6. Work...",
+      "status": "completed"
+    },
+    "task_71a080a94f5d": {
+      "createdAtUtc": "2026-08-22T12:50:37.000Z",
+      "displayName": "READ-ONLY D20 mgif_safety_exception contract audit for the MGIF glTF editor t...",
+      "status": "completed"
+    },
+    "task_71b98ba11e36": {
+      "createdAtUtc": "2026-08-24T12:51:50.000Z",
+      "displayName": "P5-P10 rebound Stage A: author the fresh Gate P4 evidence bundle and correcte...",
+      "status": "completed"
+    },
+    "task_7259c85dcf06": {
+      "createdAtUtc": "2026-08-26T04:50:56.000Z",
+      "displayName": "P5 HandlePool ABA repair in shared G:\\MGIF after task_492180b70a7a completes....",
+      "status": "completed"
+    },
+    "task_744ce240fd0f": {
+      "createdAtUtc": "2026-08-22T15:39:59.000Z",
+      "displayName": "P2A implementation: lossless GltfDocument to renderer-facing SceneAsset proje...",
+      "status": "pending"
+    },
+    "task_7478bd84b89a": {
+      "createdAtUtc": "2026-08-25T18:39:24.000Z",
+      "displayName": "Finish editor command and FrameModel integration",
+      "status": "completed"
+    },
+    "task_74ab5fee6feb": {
+      "createdAtUtc": "2026-08-26T06:27:06.000Z",
+      "displayName": "P5 HandlePool exception-safety and alias-safety repair after focused independ...",
+      "status": "completed"
+    },
+    "task_74df0214102f": {
+      "createdAtUtc": "2026-08-22T15:41:55.000Z",
+      "displayName": "P3A implementation: SceneEditor transactional hierarchy/transform/attachment...",
+      "status": "pending"
+    },
+    "task_759e96a51910": {
+      "completedAtUtc": "2026-08-24T22:23:33.000Z",
+      "createdAtUtc": "2026-08-24T21:16:02.000Z",
+      "dependencies": [
+        "task_d73712d125c5"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-24T22:23:33.000Z",
+        "dispatchId": "ctx_343c8f02ed6f",
+        "dispatchedAtUtc": "2026-08-24T21:17:16.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-00",
+      "status": "completed",
+      "workerResult": {
+        "body": "Implemented the frozen backend-neutral SceneChangeSet value contract, raw mutation evidence, deterministic canonicalizer, SHA-256 serialization, and focused self-containment tests in exactly the six P5-00 paths. Strict Clang and clang-cl builds, the standalone suite, UBSan, static analysis, format checks, public-boundary scans, and all 17 P4 API rehashes passed. P5-90 still needs only the reserved CMake and test wiring plus configured integration suites, while F42/R24 remains BLOCKED and Metal remains Not Verified.",
+        "completedAtUtc": "2026-08-24T22:23:33.125Z",
+        "messageId": "msg_289b6ef5ad67",
+        "outcome": "succeeded",
+        "reportPath": "C:/Temp/mgif-p5-00-20260824T212858Z-759e96a5/p5-00-completion-report.md",
+        "reportedBy": "term_96d46f6f-2843-4d34-a0c2-c53790ba59a4",
+        "resultPayload": "{\"body\":\"Implemented the frozen backend-neutral SceneChangeSet value contract, raw mutation evidence, deterministic canonicalizer, SHA-256 serialization, and focused self-containment tests in exactly the six P5-00 paths. Strict Clang and clang-cl builds, the standalone suite, UBSan, static analysis, format checks, public-boundary scans, and all 17 P4 API rehashes passed. P5-90 still needs only the reserved CMake and test wiring plus configured integration suites, while F42/R24 remains BLOCKED and Metal remains Not Verified.\",\"completedAt\":\"2026-08-24T22:23:33.125Z\",\"completedBy\":\"term_96d46f6f-2843-4d34-a0c2-c53790ba59a4\",\"filesModified\":[\"scene/editor/include/mgif/scene_editor/SceneChangeSet.h\",\"scene/editor/SceneChangeSet.cpp\",\"scene/editor/include/mgif/scene_editor/SceneChangeCanonicalizer.h\",\"scene/editor/SceneChangeCanonicalizer.cpp\",\"tests/editor/scene_change_set_tests.cpp\",\"tests/editor/header_self_containment/scene_change_set_header.cpp\"],\"messageId\":\"msg_289b6ef5ad67\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:/Temp/mgif-p5-00-20260824T212858Z-759e96a5/p5-00-completion-report.md\",\"reportedBy\":\"term_96d46f6f-2843-4d34-a0c2-c53790ba59a4\",\"subject\":\"P5-00 contract frozen and verified\"}",
+        "resultSha256": "4bc26cfb05c95552881b96d248eb7d6960562a443d729e8c16865735c326686f",
+        "subject": "P5-00 contract frozen and verified"
+      }
+    },
+    "task_767d9282d06a": {
+      "createdAtUtc": "2026-08-22T09:45:00.000Z",
+      "displayName": "Integrate the sealed native UI/Vulkan reference evidence into docs/editor-par...",
+      "status": "completed"
+    },
+    "task_77e763c490f2": {
+      "createdAtUtc": "2026-08-26T06:06:27.000Z",
+      "displayName": "P5 HandlePool focused independent adversarial re-review after task_7259c85dcf...",
+      "status": "completed"
+    },
+    "task_782db47de13d": {
+      "createdAtUtc": "2026-08-23T14:05:46.000Z",
+      "displayName": "READ-ONLY P4 history oracle and implementation-readiness audit. Work against...",
+      "status": "completed"
+    },
+    "task_789be0b0cf1d": {
+      "createdAtUtc": "2026-08-23T18:57:21.000Z",
+      "displayName": "P3/P1 regression remediation: make GltfDocumentIO::saveAs reliably support Un...",
+      "status": "completed"
+    },
+    "task_789e48c8232f": {
+      "createdAtUtc": "2026-08-23T16:24:03.000Z",
+      "displayName": "FRESH READ-ONLY P3 combined integration verification after remediation tasks...",
+      "status": "completed"
+    },
+    "task_7a136efd712e": {
+      "createdAtUtc": "2026-08-25T09:57:37.000Z",
+      "displayName": "P5-R3-A bounded glTF validator compatibility repair for the real staged Sponz...",
+      "status": "completed"
+    },
+    "task_7a27eda04c64": {
+      "createdAtUtc": "2026-08-22T15:25:49.000Z",
+      "displayName": "P1 read-only implementation reconnaissance for the MGIF glTF Scene Editor. Wo...",
+      "status": "completed"
+    },
+    "task_7da98652aae3": {
+      "createdAtUtc": "2026-08-24T15:43:57.000Z",
+      "displayName": "Fresh independent blueprint re-audit of the exact bounded consumer-repair Sta...",
+      "status": "completed"
+    },
+    "task_7f0578eb9aab": {
+      "createdAtUtc": "2026-08-22T16:17:42.000Z",
+      "displayName": "P9 independent adversarial READ-ONLY data-safety review after P9B. Do not edi...",
+      "status": "pending"
+    },
+    "task_7f280bebbc1f": {
+      "createdAtUtc": "2026-08-26T12:27:35.000Z",
+      "displayName": "P5 fresh independent adversarial re-review after permanent regression task_52...",
+      "status": "completed"
+    },
+    "task_7f5c361c7ba3": {
+      "createdAtUtc": "2026-08-24T10:14:29.000Z",
+      "displayName": "P4-B03 evidence-report metadata correction only. Dependency task_cdf8b6e015f9...",
+      "status": "completed"
+    },
+    "task_806274d07265": {
+      "createdAtUtc": "2026-08-23T18:23:40.000Z",
+      "displayName": "Replacement READ-ONLY audit of the P4 final-snapshot implementation blueprint...",
+      "status": "failed"
+    },
+    "task_8099d61614e8": {
+      "createdAtUtc": "2026-08-23T15:29:19.000Z",
+      "displayName": "READ-ONLY P10 acceptance/evidence readiness oracle for the MGIF glTF Scene Ed...",
+      "status": "completed"
+    },
+    "task_81ac0c0ccef0": {
+      "createdAtUtc": "2026-08-23T06:51:06.000Z",
+      "displayName": "P1 narrow read-only adversarial probe: cross-document stable ID staleness. Wo...",
+      "status": "completed"
+    },
+    "task_8261f1595760": {
+      "completedAtUtc": "2026-08-23T10:37:14.000Z",
+      "createdAtUtc": "2026-08-23T10:22:42.000Z",
+      "dependencies": [],
+      "dispatch": {
+        "completedAtUtc": "2026-08-23T10:37:14.000Z",
+        "dispatchId": "ctx_539e52156e31",
+        "dispatchedAtUtc": "2026-08-23T10:22:54.000Z",
+        "status": "completed"
+      },
+      "displayName": "P2 Gate repair and verification for MGIF glTF Scene Editor. Work in the share...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Repaired the Windows CMake/Ninja protected-edge mismatch by normalizing only path-bearing Clang arguments in the evidence comparison, made GLM/TinyGLTF available to the focused P2 target, and retained the narrow private GltfLoader friend with a source-removal authority regression. The out-of-repository VS Clang C++20 Ninja configure, preflight, focused P2 build/CTest, seven P1 document tests, configured dependency gate, 12 gate-integration tests, and 145 P0 validator tests all pass. No P3 work or full renderer/Vulkan smoke was started; exact commands, results, and modified files are in G:\\MGIF-p2-gate-report.md.",
+        "completedAtUtc": "2026-08-23T10:37:14.830Z",
+        "messageId": "msg_dae85c78b385",
+        "outcome": "succeeded",
+        "reportPath": "G:\\MGIF-p2-gate-report.md",
+        "reportedBy": "term_26255e4b-2670-45dc-af72-6627677bea47",
+        "resultPayload": "{\"body\":\"Repaired the Windows CMake/Ninja protected-edge mismatch by normalizing only path-bearing Clang arguments in the evidence comparison, made GLM/TinyGLTF available to the focused P2 target, and retained the narrow private GltfLoader friend with a source-removal authority regression. The out-of-repository VS Clang C++20 Ninja configure, preflight, focused P2 build/CTest, seven P1 document tests, configured dependency gate, 12 gate-integration tests, and 145 P0 validator tests all pass. No P3 work or full renderer/Vulkan smoke was started; exact commands, results, and modified files are in G:\\\\MGIF-p2-gate-report.md.\",\"completedAt\":\"2026-08-23T10:37:14.830Z\",\"completedBy\":\"term_26255e4b-2670-45dc-af72-6627677bea47\",\"filesModified\":[\"CMakeLists.txt\",\"tools/generate_editor_dependency_identity.py\",\"scene/editor/include/mgif/scene_editor/GltfDocument.h\",\"tests/editor/scene_projection_tests.cpp\"],\"messageId\":\"msg_dae85c78b385\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"G:\\\\MGIF-p2-gate-report.md\",\"reportedBy\":\"term_26255e4b-2670-45dc-af72-6627677bea47\",\"subject\":\"P2 Ninja gate repaired and verified\"}",
+        "resultSha256": "b8869b981fa074fe95b1735f93a74f77992032485fd0d5372941b065f2fcf18f",
+        "subject": "P2 Ninja gate repaired and verified"
+      }
+    },
+    "task_82851faad585": {
+      "createdAtUtc": "2026-08-22T18:42:40.000Z",
+      "displayName": "P0 dependency-gate remediation after independent review task_1e492f8d8933. Wo...",
+      "status": "completed"
+    },
+    "task_82e3891e1ce9": {
+      "createdAtUtc": "2026-08-22T05:17:23.000Z",
+      "displayName": "P0 test architecture and skeleton design (READ-ONLY FIRST PASS).",
+      "status": "completed"
+    },
+    "task_831f45f22072": {
+      "completedAtUtc": "2026-08-23T09:11:05.000Z",
+      "createdAtUtc": "2026-08-23T08:09:58.000Z",
+      "dependencies": [
+        "task_4ba0168de807"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-23T09:11:05.000Z",
+        "dispatchId": "ctx_265a270d4083",
+        "dispatchedAtUtc": "2026-08-23T08:39:18.000Z",
+        "status": "completed"
+      },
+      "displayName": "Independent Gate P1 re-review after remediation and combined integration veri...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Fresh read-only Gate P1 re-review completed against the final filesystem state, with the three prior High findings independently re-tested and cleared: cross-document authority identity, payload-aware accessor validation, and Windows existing-target atomic publication. Independent evidence includes fresh core 12/12 and full 25/25 CTest, 266/266 full build edges, 77-check payload matrix, no-op/GLB/external/Unicode round-trips, fault-state checks, dependency/RHI boundary validation, and 12-trial Windows interruption observations. Gate P1 engineering verdict is PASS; F42/R24 remain BLOCKED pending root-license selection, and Metal remains Not Verified.",
+        "completedAtUtc": "2026-08-23T09:11:05.746Z",
+        "messageId": "msg_99390f407e73",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Users\\happyelements\\AppData\\Local\\Temp\\mgif-p1-independent-580c5282867b4889bf5a65842ea34c68\\P1-INDEPENDENT-REVIEW.md",
+        "reportedBy": "term_eeafb57f-2bf6-4a3b-b8af-7bb8d73701b9",
+        "resultPayload": "{\"body\":\"Fresh read-only Gate P1 re-review completed against the final filesystem state, with the three prior High findings independently re-tested and cleared: cross-document authority identity, payload-aware accessor validation, and Windows existing-target atomic publication. Independent evidence includes fresh core 12/12 and full 25/25 CTest, 266/266 full build edges, 77-check payload matrix, no-op/GLB/external/Unicode round-trips, fault-state checks, dependency/RHI boundary validation, and 12-trial Windows interruption observations. Gate P1 engineering verdict is PASS; F42/R24 remain BLOCKED pending root-license selection, and Metal remains Not Verified.\",\"completedAt\":\"2026-08-23T09:11:05.746Z\",\"completedBy\":\"term_eeafb57f-2bf6-4a3b-b8af-7bb8d73701b9\",\"filesModified\":[\"C:\\\\Users\\\\happyelements\\\\AppData\\\\Local\\\\Temp\\\\mgif-p1-independent-580c5282867b4889bf5a65842ea34c68\\\\P1-INDEPENDENT-REVIEW.md\",\"C:\\\\Users\\\\happyelements\\\\AppData\\\\Local\\\\Temp\\\\mgif-p1-independent-580c5282867b4889bf5a65842ea34c68\\\\identity_probe.cpp\",\"C:\\\\Users\\\\happyelements\\\\AppData\\\\Local\\\\Temp\\\\mgif-p1-independent-580c5282867b4889bf5a65842ea34c68\\\\payload_probe.cpp\"],\"messageId\":\"msg_99390f407e73\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Users\\\\happyelements\\\\AppData\\\\Local\\\\Temp\\\\mgif-p1-independent-580c5282867b4889bf5a65842ea34c68\\\\P1-INDEPENDENT-REVIEW.md\",\"reportedBy\":\"term_eeafb57f-2bf6-4a3b-b8af-7bb8d73701b9\",\"subject\":\"Gate P1 PASS (engineering); F42/R24 BLOCKED; Metal Not Verified\"}",
+        "resultSha256": "d927124797f9749fa83fd8dab90edebc127e7c6950bca6b5a5d9e23a4ad2b646",
+        "subject": "Gate P1 PASS (engineering); F42/R24 BLOCKED; Metal Not Verified"
+      }
+    },
+    "task_838fb8081135": {
+      "createdAtUtc": "2026-08-22T16:11:31.000Z",
+      "displayName": "P6A implementation in shared G:\\\\MGIF after P5 review: implement MGIF-owned S...",
+      "status": "pending"
+    },
+    "task_84444c60deda": {
+      "completedAtUtc": "2026-08-25T03:15:00.000Z",
+      "createdAtUtc": "2026-08-25T02:51:41.000Z",
+      "dependencies": [],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T03:15:00.000Z",
+        "dispatchId": "ctx_95ca05601ba5",
+        "dispatchedAtUtc": "2026-08-25T02:51:49.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5-R2-C",
+      "status": "completed",
+      "workerResult": {
+        "body": "I repaired the clang-cl compile closure by preserving the default constructor behavior through a delegating overload while leaving command-line, automation, capture, rendering, and ImGui logic unchanged. Both configured Ninja/clang-cl Debug and Release Demo targets linked successfully, and the non-interactive CLI, app-boundary, RHI, Android-isolation, and automation-validator contracts passed. No compile-closure work remains; the optional RenderDoc-module-dependent self-test was unavailable before execution, with the full report at C:\\Temp\\mgif-p5-r2-c-20260825T110013Z-task_84444c60deda\\p5-90-r2-c-report.md and manifest at C:\\Temp\\mgif-p5-r2-c-20260825T110013Z-task_84444c60deda\\pre-post-manifest.json.",
+        "completedAtUtc": "2026-08-25T03:15:00.253Z",
+        "messageId": "msg_d732ef80c73a",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-r2-c-20260825T110013Z-task_84444c60deda\\p5-90-r2-c-report.md",
+        "reportedBy": "term_b34860a2-499b-4619-8b45-b03befdd009b",
+        "resultPayload": "{\"body\":\"I repaired the clang-cl compile closure by preserving the default constructor behavior through a delegating overload while leaving command-line, automation, capture, rendering, and ImGui logic unchanged. Both configured Ninja/clang-cl Debug and Release Demo targets linked successfully, and the non-interactive CLI, app-boundary, RHI, Android-isolation, and automation-validator contracts passed. No compile-closure work remains; the optional RenderDoc-module-dependent self-test was unavailable before execution, with the full report at C:\\\\Temp\\\\mgif-p5-r2-c-20260825T110013Z-task_84444c60deda\\\\p5-90-r2-c-report.md and manifest at C:\\\\Temp\\\\mgif-p5-r2-c-20260825T110013Z-task_84444c60deda\\\\pre-post-manifest.json.\",\"completedAt\":\"2026-08-25T03:15:00.253Z\",\"completedBy\":\"term_b34860a2-499b-4619-8b45-b03befdd009b\",\"filesModified\":[\"app/MinimalLatestApp.h\"],\"messageId\":\"msg_d732ef80c73a\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-r2-c-20260825T110013Z-task_84444c60deda\\\\p5-90-r2-c-report.md\",\"reportedBy\":\"term_b34860a2-499b-4619-8b45-b03befdd009b\",\"subject\":\"Desktop Demo compile closure repaired\"}",
+        "resultSha256": "7b7cce93352c3d3e8d5b00dd083a27bac6d164f74f63ad788e02ee06c8f2d54b",
+        "subject": "Desktop Demo compile closure repaired"
+      }
+    },
+    "task_8499288050d8": {
+      "createdAtUtc": "2026-08-25T03:34:02.000Z",
+      "displayName": "READ-ONLY progress-ledger mechanism audit for the MGIF glTF Scene Editor effo...",
+      "status": "completed"
+    },
+    "task_84b38117705c": {
+      "createdAtUtc": "2026-08-22T13:45:03.000Z",
+      "displayName": "\u4fee\u590d\u72ec\u7acb\u590d\u5ba1 task_998f3a47c14c \u786e\u8ba4\u7684 clustered-stats \u9996\u6b21\u4f7f\u7528/\u65e0 producer host-read \u95ee\u9898\uff0c\u5de5\u4f5c\u5728...",
+      "status": "completed"
+    },
+    "task_84d82d2fcccd": {
+      "createdAtUtc": "2026-08-22T16:11:36.000Z",
+      "displayName": "P7B integration in shared G:\\\\MGIF after P7A: implement MGIF-RHI-only EditorO...",
+      "status": "pending"
+    },
+    "task_855790d17544": {
+      "createdAtUtc": "2026-08-22T16:17:44.000Z",
+      "displayName": "P10A acceptance/evidence infrastructure in shared G:\\\\MGIF after P9 review. O...",
+      "status": "pending"
+    },
+    "task_8877efddf84c": {
+      "createdAtUtc": "2026-08-22T12:37:33.000Z",
+      "displayName": "Implement the diagnosed F39 baseline Vulkan synchronization fix in shared G:\\...",
+      "status": "completed"
+    },
+    "task_88818035f354": {
+      "createdAtUtc": "2026-08-25T17:09:02.000Z",
+      "displayName": "P5/P5.5 renderer identity repair in shared G:\\\\MGIF. You are not alone in the...",
+      "status": "completed"
+    },
+    "task_8923cdd140f5": {
+      "createdAtUtc": "2026-08-22T09:40:23.000Z",
+      "displayName": "Fix the MGIF editor dependency validator based on the completed adversarial r...",
+      "status": "completed"
+    },
+    "task_89bf581ecffd": {
+      "createdAtUtc": "2026-08-23T11:21:08.000Z",
+      "displayName": "P6 implementation in shared G:\\\\MGIF after P5. Own selection, clipboard codec...",
+      "status": "pending"
+    },
+    "task_8ac01b0f50de": {
+      "createdAtUtc": "2026-08-26T15:48:39.000Z",
+      "displayName": "P5 Save-As performance diagnosis, READ-ONLY in shared G:\\MGIF. You are not al...",
+      "status": "completed"
+    },
+    "task_8aceace3fcd7": {
+      "createdAtUtc": "2026-08-22T15:40:30.000Z",
+      "displayName": "P2 independent read-only review after task_36178854ca53. Shared G:\\MGIF. Do n...",
+      "status": "pending"
+    },
+    "task_8b035c1b77e8": {
+      "createdAtUtc": "2026-08-22T12:56:36.000Z",
+      "displayName": "READ-ONLY independent review of completed F39 Vulkan synchronization fix in s...",
+      "status": "completed"
+    },
+    "task_8b91a0a76fa8": {
+      "createdAtUtc": "2026-08-23T22:04:51.000Z",
+      "displayName": "P4-07 exclusive integration and Gate-preparation implementation against the a...",
+      "status": "completed"
+    },
+    "task_8bf53c47a0e0": {
+      "createdAtUtc": "2026-08-23T19:51:47.000Z",
+      "displayName": "READ-ONLY diagnostic for the active P3 Save As remediation. Work in G:\\MGIF b...",
+      "status": "completed"
+    },
+    "task_8c180abec38c": {
+      "createdAtUtc": "2026-08-23T13:39:28.000Z",
+      "displayName": "P3 remediation core in shared G:\\\\MGIF after independent Gate FAIL. You own s...",
+      "status": "completed"
+    },
+    "task_8c29dd510a99": {
+      "completedAtUtc": "2026-08-25T09:56:30.598Z",
+      "completionProvenance": "coordinator_review_settlement",
+      "createdAtUtc": "2026-08-25T04:00:35.000Z",
+      "dependencies": [
+        "task_087d11fd5641",
+        "task_116c32740787",
+        "task_20e1045fff5b",
+        "task_6a73be623ed1",
+        "task_84444c60deda"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T09:55:11.000Z",
+        "dispatchId": "ctx_3cc9e9bc9f70",
+        "dispatchedAtUtc": "2026-08-25T08:38:32.000Z",
+        "status": "failed"
+      },
+      "displayName": "Replacement P5-90-R2 unified integration and Gate-preparation verification, r...",
+      "status": "completed",
+      "workerResult": {
+        "body": "The verification objective completed and its FAIL verdict is preserved. This settlement only releases the already-materialized R3 recovery dependency; it does not accept P5 or authorize G5.",
+        "completedAtUtc": "2026-08-25T09:56:30.598Z",
+        "messageId": "msg_341ac0d9d94f",
+        "outcome": "failed",
+        "recoverySettlement": {
+          "acceptanceVerdict": "FAIL",
+          "blockingFindings": [
+            "PROBABLE_PROHIBITED_DEMO_TXT_WRITE",
+            "P5_LIVE_VULKAN_SCENE_SMOKE_NOT_REACHED",
+            "BOUNDED_GLTF_VALIDATOR_REJECTS_SPONZA"
+          ],
+          "commandLedgerSha256": "cf668652a74a351c9fa6ac891dc3431daff715101c4c31656d7118808bdf00c7",
+          "fixedPolicy": {
+            "F42": "BLOCKED",
+            "Metal": "Not Verified",
+            "R24": "BLOCKED",
+            "releaseDistribution": "NOT PASS"
+          },
+          "integrityCheckSha256": "5a257b34261ed5ac17fc2ad2e752f33cd68e29005c3f7ee999371abf4628766d",
+          "machineReceiptSha256": "0fd16ba3953d19d45b384c54afcd42d92eb7a530975a84a59fe91f0af7742c23",
+          "note": "The verification objective completed and its FAIL verdict is preserved. This settlement only releases the already-materialized R3 recovery dependency; it does not accept P5 or authorize G5.",
+          "objectiveCompleted": true,
+          "originalDispatchId": "ctx_3cc9e9bc9f70",
+          "originalMessageId": "msg_341ac0d9d94f",
+          "postSourceManifestSha256": "68d58c87004de08ee913135f9d0590242e3c10d5aa5feff100947088dd5b4d67",
+          "provenance": "coordinator_review_settlement",
+          "reportPath": "C:\\Temp\\mgif-p5-90-r2-gateprep-20260825T084731034Z-task_8c29dd510a99-7a1ae6ea\\p5-90-r2-gate-preparation-report.md",
+          "reportSha256": "1f952c8af0adfc538143e688a51c44fe1a83b791ac38942003024fa74dd06180",
+          "settledAtUtc": "2026-08-25T09:56:30.598Z",
+          "taskId": "task_8c29dd510a99",
+          "workerOutcome": "failed"
+        },
+        "reportPath": "C:\\Temp\\mgif-p5-90-r2-gateprep-20260825T084731034Z-task_8c29dd510a99-7a1ae6ea\\p5-90-r2-gate-preparation-report.md",
+        "reportedBy": "coordinator-review-settlement",
+        "resultPayload": "{\"acceptanceVerdict\":\"FAIL\",\"blockingFindings\":[\"PROBABLE_PROHIBITED_DEMO_TXT_WRITE\",\"P5_LIVE_VULKAN_SCENE_SMOKE_NOT_REACHED\",\"BOUNDED_GLTF_VALIDATOR_REJECTS_SPONZA\"],\"commandLedgerSha256\":\"CF668652A74A351C9FA6AC891DC3431DAFF715101C4C31656D7118808BDF00C7\",\"fixedPolicy\":{\"F42\":\"BLOCKED\",\"Metal\":\"Not Verified\",\"R24\":\"BLOCKED\",\"releaseDistribution\":\"NOT PASS\"},\"integrityCheckSha256\":\"5A257B34261ED5AC17FC2AD2E752F33CD68E29005C3F7EE999371ABF4628766D\",\"machineReceiptSha256\":\"0FD16BA3953D19D45B384C54AFCD42D92EB7A530975A84A59FE91F0AF7742C23\",\"note\":\"The verification objective completed and its FAIL verdict is preserved. This settlement only releases the already-materialized R3 recovery dependency; it does not accept P5 or authorize G5.\",\"objectiveCompleted\":true,\"originalDispatchId\":\"ctx_3cc9e9bc9f70\",\"originalMessageId\":\"msg_341ac0d9d94f\",\"postSourceManifestSha256\":\"68D58C87004DE08EE913135F9D0590242E3C10D5AA5FEFF100947088DD5B4D67\",\"provenance\":\"coordinator_review_settlement\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-90-r2-gateprep-20260825T084731034Z-task_8c29dd510a99-7a1ae6ea\\\\p5-90-r2-gate-preparation-report.md\",\"reportSha256\":\"1F952C8AF0ADFC538143E688A51C44FE1A83B791AC38942003024FA74DD06180\",\"workerOutcome\":\"failed\"}",
+        "resultSha256": "1f3d4409a41b46e88d9e41614e4c38d26f297adbb9f4b11bfa61ee59003a16e1",
+        "subject": "coordinator-review-settlement:FAIL"
+      }
+    },
+    "task_8ca21e958faa": {
+      "createdAtUtc": "2026-08-22T05:43:40.000Z",
+      "displayName": "Review the just-added P0 implementation in the shared G:\\MGIF worktree. READ-...",
+      "status": "completed"
+    },
+    "task_8dbdb012d2e8": {
+      "createdAtUtc": "2026-08-23T23:15:59.000Z",
+      "displayName": "P5-P10 successor DAG blueprint, TEMP-only and repository READ-ONLY. Work in t...",
+      "status": "completed"
+    },
+    "task_8ee442272ee9": {
+      "createdAtUtc": "2026-08-25T04:59:12.000Z",
+      "displayName": "Fresh independent READ-ONLY code review of the accepted progress-ledger autom...",
+      "status": "completed"
+    },
+    "task_8eee6f045a61": {
+      "createdAtUtc": "2026-08-24T14:47:13.000Z",
+      "displayName": "Fresh independent blueprint re-audit after Stage A repair task_a3d29493bb83....",
+      "status": "completed"
+    },
+    "task_8f50da19692b": {
+      "createdAtUtc": "2026-08-23T22:04:18.000Z",
+      "displayName": "P4-04 hierarchy command implementation against the approved P4 v2 blueprint....",
+      "status": "completed"
+    },
+    "task_8fb2d98a93e6": {
+      "createdAtUtc": "2026-08-23T17:23:30.000Z",
+      "displayName": "P3 fresh independent adversarial gate review. READ-ONLY: do not modify any fi...",
+      "status": "blocked"
+    },
+    "task_9222bc99e80f": {
+      "createdAtUtc": "2026-08-23T14:50:26.000Z",
+      "displayName": "READ-ONLY P7 gizmo/grid clean-room readiness oracle. Work against the shared...",
+      "status": "completed"
+    },
+    "task_9227a3d09ecb": {
+      "createdAtUtc": "2026-08-25T16:01:17.000Z",
+      "displayName": "P9 app integration worker. Work in shared G:\\\\MGIF; you are not alone, preser...",
+      "status": "completed"
+    },
+    "task_92b508dbb83e": {
+      "createdAtUtc": "2026-08-22T16:17:41.000Z",
+      "displayName": "P9B GltfDocumentIO Save As and lifecycle integration in shared G:\\\\MGIF after...",
+      "status": "pending"
+    },
+    "task_92d30650c179": {
+      "completedAtUtc": "2026-08-23T07:17:11.000Z",
+      "createdAtUtc": "2026-08-23T06:44:17.000Z",
+      "dependencies": [
+        "task_cdfed52a30dd"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-23T07:17:11.000Z",
+        "dispatchId": "ctx_f3f0d5f01b11",
+        "dispatchedAtUtc": "2026-08-23T06:44:55.000Z",
+        "status": "completed"
+      },
+      "displayName": "P1 replacement independent READ-ONLY review after discarded dispatch ctx_beee...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Completed an independent read-only Gate P1 audit using unique TEMP core/full Ninja builds, the full and P1 test suites, dependency/source-closure checks, and adversarial fixtures; no repository state was modified. All checked-in tests and build gates passed, but I found three High blockers: cross-document stale-ID aliasing, missing accessor-payload semantic validation, and a non-atomic Windows existing-target replacement window; R24/F42 correctly remain blocked by the unresolved root license. Gate P1 therefore requires remediation and a fresh independent review; the detailed report is at the attached report path.",
+        "completedAtUtc": "2026-08-23T07:17:11.105Z",
+        "messageId": "msg_b5e6c373c0d0",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Users\\happyelements\\AppData\\Local\\Temp\\mgif-p1-review-2bba9259f9e44a1f8ee13e1afb84c396\\P1-INDEPENDENT-REVIEW.md",
+        "reportedBy": "term_1b17d76f-01dc-4f8e-b848-df6d68aae4b9",
+        "resultPayload": "{\"body\":\"Completed an independent read-only Gate P1 audit using unique TEMP core/full Ninja builds, the full and P1 test suites, dependency/source-closure checks, and adversarial fixtures; no repository state was modified. All checked-in tests and build gates passed, but I found three High blockers: cross-document stale-ID aliasing, missing accessor-payload semantic validation, and a non-atomic Windows existing-target replacement window; R24/F42 correctly remain blocked by the unresolved root license. Gate P1 therefore requires remediation and a fresh independent review; the detailed report is at the attached report path.\",\"completedAt\":\"2026-08-23T07:17:11.105Z\",\"completedBy\":\"term_1b17d76f-01dc-4f8e-b848-df6d68aae4b9\",\"filesModified\":[],\"messageId\":\"msg_b5e6c373c0d0\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Users\\\\happyelements\\\\AppData\\\\Local\\\\Temp\\\\mgif-p1-review-2bba9259f9e44a1f8ee13e1afb84c396\\\\P1-INDEPENDENT-REVIEW.md\",\"reportedBy\":\"term_1b17d76f-01dc-4f8e-b848-df6d68aae4b9\",\"subject\":\"Gate P1 review: remediation required\"}",
+        "resultSha256": "bcab434b6ddd5d4a3e0c83ed4b36de79059aac600c34a8270a1c19a27c7fa771",
+        "subject": "Gate P1 review: remediation required"
+      }
+    },
+    "task_942b62e336e4": {
+      "createdAtUtc": "2026-08-22T12:19:09.000Z",
+      "displayName": "READ-ONLY evidence integration mapping in shared G:\\MGIF worktree. Do not mod...",
+      "status": "completed"
+    },
+    "task_942fc9e4f987": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:13.000Z",
+      "dependencies": [
+        "task_5fd375237112"
+      ],
+      "dispatch": null,
+      "displayName": "P10-EXEC",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_958b7d42d0a2": {
+      "completedAtUtc": "2026-08-23T15:33:30.000Z",
+      "createdAtUtc": "2026-08-23T14:06:11.000Z",
+      "dependencies": [
+        "task_8c180abec38c"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-23T15:33:30.000Z",
+        "dispatchId": "ctx_650d09db7f42",
+        "dispatchedAtUtc": "2026-08-23T15:01:44.000Z",
+        "status": "completed"
+      },
+      "displayName": "FRESH INDEPENDENT READ-ONLY Gate P3 adversarial review after remediation task...",
+      "status": "completed",
+      "workerResult": {
+        "body": "I completed a fresh independent read-only Gate P3 audit at HEAD 6c36567625b305286755a734a66188a22df18e77, configured and built an external Ninja clang-cl tree, ran all requested label/direct/preflight/scans, and verified the locked task SHA. I found five blockers: a projection stack overflow after a valid 4,096-deep mutation, locked D20 shared all_scenes rejection, incorrect orphaning Split/Merge semantics, invalid KHR material-extension acceptance through save/reload, and the missing semantic randomized projection/all-ID oracle. Repository files were not modified; remediation and a fresh re-review remain, with exact lines, independent probe sources/results, and complete test evidence in the attached report.",
+        "completedAtUtc": "2026-08-23T15:33:30.096Z",
+        "messageId": "msg_999b7a9ace7e",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-gate-p3-ctx_650d09db7f42\\gate-p3-adversarial-review.md",
+        "reportedBy": "term_585274f0-9aa2-41e0-b7fb-ceaff68c03e2",
+        "resultPayload": "{\"body\":\"I completed a fresh independent read-only Gate P3 audit at HEAD 6c36567625b305286755a734a66188a22df18e77, configured and built an external Ninja clang-cl tree, ran all requested label/direct/preflight/scans, and verified the locked task SHA. I found five blockers: a projection stack overflow after a valid 4,096-deep mutation, locked D20 shared all_scenes rejection, incorrect orphaning Split/Merge semantics, invalid KHR material-extension acceptance through save/reload, and the missing semantic randomized projection/all-ID oracle. Repository files were not modified; remediation and a fresh re-review remain, with exact lines, independent probe sources/results, and complete test evidence in the attached report.\",\"completedAt\":\"2026-08-23T15:33:30.096Z\",\"completedBy\":\"term_585274f0-9aa2-41e0-b7fb-ceaff68c03e2\",\"filesModified\":[\"C:\\\\Temp\\\\mgif-gate-p3-ctx_650d09db7f42\\\\gate-p3-adversarial-review.md\",\"C:\\\\Temp\\\\mgif-gate-p3-ctx_650d09db7f42\\\\d20_probe.cpp\",\"C:\\\\Temp\\\\mgif-gate-p3-ctx_650d09db7f42\\\\depth_projection_probe.cpp\",\"C:\\\\Temp\\\\mgif-gate-p3-ctx_650d09db7f42\\\\material_extension_probe.cpp\",\"C:\\\\Temp\\\\mgif-gate-p3-ctx_650d09db7f42\\\\split_probe.cpp\"],\"messageId\":\"msg_999b7a9ace7e\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-gate-p3-ctx_650d09db7f42\\\\gate-p3-adversarial-review.md\",\"reportedBy\":\"term_585274f0-9aa2-41e0-b7fb-ceaff68c03e2\",\"subject\":\"Gate P3 FAIL: five blockers\"}",
+        "resultSha256": "5ae53f9025caaf7d0e7e39bd79b4cb8d1e154dfc7c1ba51b702f24063cd5207d",
+        "subject": "Gate P3 FAIL: five blockers"
+      }
+    },
+    "task_95d16389e8c5": {
+      "createdAtUtc": "2026-08-22T15:32:52.000Z",
+      "displayName": "P1A implementation: authority, stable IDs, limits, unique TinyGLTF implementa...",
+      "status": "completed"
+    },
+    "task_95fff79c66e9": {
+      "createdAtUtc": "2026-08-23T18:28:18.000Z",
+      "displayName": "Fresh independent READ-ONLY Gate P4 adversarial review after P4-07. Must run...",
+      "status": "pending"
+    },
+    "task_962bd5a0b97c": {
+      "createdAtUtc": "2026-08-22T15:45:37.000Z",
+      "displayName": "P4 implementation: command/history/continuous transaction system with exact r...",
+      "status": "pending"
+    },
+    "task_964d3d736b0a": {
+      "createdAtUtc": "2026-08-23T18:27:19.000Z",
+      "displayName": "P4-03 failure-atomic history core and lifecycle implementation in shared G:\\M...",
+      "status": "pending"
+    },
+    "task_96a2c05df3c8": {
+      "createdAtUtc": "2026-08-22T14:18:58.000Z",
+      "displayName": "READ-ONLY fresh adversarial review of validator hardening task_3c33dcaf200d i...",
+      "status": "completed"
+    },
+    "task_991813666b65": {
+      "createdAtUtc": "2026-08-26T05:18:03.000Z",
+      "displayName": "P5 post-fix independent adversarial re-review, repository READ-ONLY and repai...",
+      "status": "completed"
+    },
+    "task_994266e103b5": {
+      "completedAtUtc": "2026-08-25T02:48:23.000Z",
+      "createdAtUtc": "2026-08-24T21:16:03.000Z",
+      "dependencies": [
+        "task_13824a1991ff",
+        "task_31d89ded7754"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-25T02:48:23.000Z",
+        "dispatchId": "ctx_49b1d8c5d36b",
+        "dispatchedAtUtc": "2026-08-25T00:27:51.000Z",
+        "status": "failed"
+      },
+      "displayName": "P5-90",
+      "status": "failed",
+      "workerResult": {
+        "body": "Integrated the frozen P5 contracts through the owned scene, renderer, RHI-counter, test, Android-contract, and CMake paths, froze all 17 postimages in p5-90-post-edit-manifest.json (SHA-256 DADAFD29C590C0021E704402C5B799C02A6D65C57BBE8BD2C1CE41322B9C134D), and recorded the full evidence in the report (SHA-256 F6DBD0F30632D227F1E2E8D5E335C857A46304D4670E55766A248D0800DBB002). Verification found Debug/Release CPU, fake-RHI, RHI contract, D3D12, header, and static-CRT UBSan suites passing, but live resource-bearing full snapshots remain blocked by the missing private staged-upload and exact submission-token retirement contract, so live P5 Vulkan/sync evidence and Gate readiness are unavailable. Remaining work is the separate staged-upload architecture repair plus independent Android filesystem and desktop viewer compile repairs, followed by fresh resource-bearing Vulkan/sync validation; F42/R24 remain BLOCKED, Metal remains Not Verified, and release/distribution remain NOT PASS.",
+        "completedAtUtc": "2026-08-25T02:48:23.557Z",
+        "messageId": "msg_73a6ed8d8bd1",
+        "outcome": "failed",
+        "reportPath": "C:\\Temp\\mgif-p5-90-20260825T003100Z-task_994266e103b5\\p5-90-integration-report.md",
+        "reportedBy": "term_96d46f6f-2843-4d34-a0c2-c53790ba59a4",
+        "resultPayload": "{\"body\":\"Integrated the frozen P5 contracts through the owned scene, renderer, RHI-counter, test, Android-contract, and CMake paths, froze all 17 postimages in p5-90-post-edit-manifest.json (SHA-256 DADAFD29C590C0021E704402C5B799C02A6D65C57BBE8BD2C1CE41322B9C134D), and recorded the full evidence in the report (SHA-256 F6DBD0F30632D227F1E2E8D5E335C857A46304D4670E55766A248D0800DBB002). Verification found Debug/Release CPU, fake-RHI, RHI contract, D3D12, header, and static-CRT UBSan suites passing, but live resource-bearing full snapshots remain blocked by the missing private staged-upload and exact submission-token retirement contract, so live P5 Vulkan/sync evidence and Gate readiness are unavailable. Remaining work is the separate staged-upload architecture repair plus independent Android filesystem and desktop viewer compile repairs, followed by fresh resource-bearing Vulkan/sync validation; F42/R24 remain BLOCKED, Metal remains Not Verified, and release/distribution remain NOT PASS.\",\"completedAt\":\"2026-08-25T02:48:23.557Z\",\"completedBy\":\"term_96d46f6f-2843-4d34-a0c2-c53790ba59a4\",\"filesModified\":[\"scene/SceneUploadPlan.h\",\"scene/SceneUploadPlanner.cpp\",\"render/RenderTypes.h\",\"render/RendererFacade.h\",\"render/RendererFacade.cpp\",\"render/GPUSceneRegistry.h\",\"render/GPUSceneRegistry.cpp\",\"render/GPUDrivenRenderer.h\",\"render/GPUDrivenRenderer.cpp\",\"render/RenderDevice.h\",\"render/RenderDevice.cpp\",\"rhi/RHIDebugCounters.h\",\"app/AndroidNativeApp.cpp\",\"tests/editor/editor_renderer_integration_tests.cpp\",\"tests/editor/editor_rhi_contract_tests.cpp\",\"tests/editor/android_viewer_contract_tests.py\",\"CMakeLists.txt\"],\"messageId\":\"msg_73a6ed8d8bd1\",\"outcome\":\"failed\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-90-20260825T003100Z-task_994266e103b5\\\\p5-90-integration-report.md\",\"reportedBy\":\"term_96d46f6f-2843-4d34-a0c2-c53790ba59a4\",\"subject\":\"P5-90 BLOCKED report complete\"}",
+        "resultSha256": "fd0f51fef62ca168fbcd6058fd3f4e3030e531e912e1ae3e44caceb27bf05964",
+        "subject": "P5-90 BLOCKED report complete"
+      }
+    },
+    "task_998f3a47c14c": {
+      "createdAtUtc": "2026-08-22T13:27:48.000Z",
+      "displayName": "READ-ONLY independent review of the completed post-submit clustered-stats hos...",
+      "status": "completed"
+    },
+    "task_99a11c23bb9a": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:09.000Z",
+      "dependencies": [
+        "task_2c5f762c2290",
+        "task_469ac0bc570d",
+        "task_c52f54a8f799"
+      ],
+      "dispatch": null,
+      "displayName": "P8-90",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_9aec4beb6475": {
+      "createdAtUtc": "2026-08-24T01:48:27.000Z",
+      "displayName": "P4-01R bounded structural-delta contract reconciliation discovered by P4-04....",
+      "status": "completed"
+    },
+    "task_9c2739b1a120": {
+      "createdAtUtc": "2026-08-23T11:17:32.000Z",
+      "displayName": "P4 implementation for the MGIF glTF Scene Editor, in the shared G:\\MGIF workt...",
+      "status": "ready"
+    },
+    "task_9c3b7cc146d6": {
+      "createdAtUtc": "2026-08-26T05:28:40.000Z",
+      "displayName": "P5 progress-ledger dependency-free JSON Schema repair in shared G:\\MGIF. You...",
+      "status": "completed"
+    },
+    "task_9c7cb2a4eb42": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:12.000Z",
+      "dependencies": [
+        "task_6c9acf605f14"
+      ],
+      "dispatch": null,
+      "displayName": "P10-10",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_9cc043c5ecf1": {
+      "createdAtUtc": "2026-08-22T20:44:50.000Z",
+      "displayName": "P0 independent adversarial READ-ONLY audit after task_82851faad585. Work in t...",
+      "status": "completed"
+    },
+    "task_9d4ec69cac0d": {
+      "createdAtUtc": "2026-08-22T12:19:38.000Z",
+      "displayName": "READ-ONLY diagnosis of P0 blocker F39 in shared G:\\MGIF. Do not modify files....",
+      "status": "completed"
+    },
+    "task_9d8f5f8979e1": {
+      "createdAtUtc": "2026-08-23T10:41:49.000Z",
+      "displayName": "P3 implementation: complete SceneEditor domain mutation and identity remappin...",
+      "status": "completed"
+    },
+    "task_9ff369a50b72": {
+      "createdAtUtc": "2026-08-24T10:24:33.000Z",
+      "displayName": "Produce an implementation-ready P5 SceneChangeSet/RendererFacade blueprint an...",
+      "status": "completed"
+    },
+    "task_a08f12648c10": {
+      "createdAtUtc": "2026-08-22T16:11:34.000Z",
+      "displayName": "P7A implementation in shared G:\\\\MGIF after P6 review: implement clean-room M...",
+      "status": "pending"
+    },
+    "task_a14108c37fb0": {
+      "createdAtUtc": "2026-08-22T16:17:45.000Z",
+      "displayName": "P10B execute full locally feasible acceptance and remediate implementation de...",
+      "status": "pending"
+    },
+    "task_a1613c8313b6": {
+      "createdAtUtc": "2026-08-22T11:44:39.000Z",
+      "displayName": "Independent final editor gate review",
+      "status": "completed"
+    },
+    "task_a3195a681278": {
+      "createdAtUtc": "2026-08-22T14:10:37.000Z",
+      "displayName": "READ-ONLY independent review of completed clustered-stats producer-validity f...",
+      "status": "completed"
+    },
+    "task_a3d29493bb83": {
+      "createdAtUtc": "2026-08-24T14:12:58.000Z",
+      "displayName": "Stage A rebound repair after independent BLUEPRINT AUDIT FAIL/BLOCKED. Depend...",
+      "status": "completed"
+    },
+    "task_a4832b5ed3e6": {
+      "completedAtUtc": "2026-08-23T21:09:13.000Z",
+      "createdAtUtc": "2026-08-23T19:25:29.000Z",
+      "dependencies": [
+        "task_789be0b0cf1d"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-23T21:09:13.000Z",
+        "dispatchId": "ctx_8ec615efdce5",
+        "dispatchedAtUtc": "2026-08-23T20:18:48.000Z",
+        "status": "completed"
+      },
+      "displayName": "Fresh final independent Gate P3 review after the Unicode/moderately-long Wind...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Completed a fully fresh read-only Gate P3 review in a dedicated TEMP root with guarded Python/temp paths, a new clang-cl/Ninja Debug build, every required suite and direct binary, scoped static scans, fresh 36/36 adversarial probes, and exact before/after manifests. Gate P3 is PASS: P0 6/6, P1 7/7, P2 1/1, P3 4/4, direct C++ 11/11, Python 145/12/9/4, live 42/10/110, long ASCII/Unicode glTF and GLB Save As plus atomicity/debris coverage passed, repository drift is zero, and the result binds fingerprint 93AD702A9E635ECDFDF2CB0B6ABC466D757FE39EA2E9E9FCD19E0A1B7F423089 to blueprint SHA-256 3050D18315CC4E045E0A6708AC90B7AE753AB641CE67280EFD2F557304E7E68A. Nothing remains for P3; the separately owned fresh P4 blueprint audit remains outside this task, and the full evidence report is at C:\\Temp\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\p3-final-independent-report.md.",
+        "completedAtUtc": "2026-08-23T21:09:13.237Z",
+        "messageId": "msg_ae4c303a7e0a",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\p3-final-independent-report.md",
+        "reportedBy": "term_143c75c6-893a-4a05-b5fe-17a8420b5675",
+        "resultPayload": "{\"body\":\"Completed a fully fresh read-only Gate P3 review in a dedicated TEMP root with guarded Python/temp paths, a new clang-cl/Ninja Debug build, every required suite and direct binary, scoped static scans, fresh 36/36 adversarial probes, and exact before/after manifests. Gate P3 is PASS: P0 6/6, P1 7/7, P2 1/1, P3 4/4, direct C++ 11/11, Python 145/12/9/4, live 42/10/110, long ASCII/Unicode glTF and GLB Save As plus atomicity/debris coverage passed, repository drift is zero, and the result binds fingerprint 93AD702A9E635ECDFDF2CB0B6ABC466D757FE39EA2E9E9FCD19E0A1B7F423089 to blueprint SHA-256 3050D18315CC4E045E0A6708AC90B7AE753AB641CE67280EFD2F557304E7E68A. Nothing remains for P3; the separately owned fresh P4 blueprint audit remains outside this task, and the full evidence report is at C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\p3-final-independent-report.md.\",\"completedAt\":\"2026-08-23T21:09:13.237Z\",\"completedBy\":\"term_143c75c6-893a-4a05-b5fe-17a8420b5675\",\"filesModified\":[\"C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\p3-final-independent-report.md\",\"C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\before-manifest.json\",\"C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\after-manifest.json\",\"C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\blueprint-binding-verification.json\",\"C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\probes\",\"C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\build\",\"C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\logs\",\"C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\results\"],\"messageId\":\"msg_ae4c303a7e0a\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\\\\p3-final-independent-report.md\",\"reportedBy\":\"term_143c75c6-893a-4a05-b5fe-17a8420b5675\",\"subject\":\"Gate P3 PASS\"}",
+        "resultSha256": "74802ef211bd7229f9e810fbca036eb2b3f92c4b7122bcb05f85c709b679ccbd",
+        "subject": "Gate P3 PASS"
+      }
+    },
+    "task_a48be95d8ca5": {
+      "createdAtUtc": "2026-08-22T09:18:42.000Z",
+      "displayName": "READ-ONLY adversarial review of the newly added MGIF production editor depend...",
+      "status": "completed"
+    },
+    "task_a5ef1e734bd2": {
+      "createdAtUtc": "2026-08-23T18:22:13.000Z",
+      "displayName": "Fresh third P3 final independent adversarial Gate review. The immediately pre...",
+      "status": "failed"
+    },
+    "task_a8139290d0ac": {
+      "createdAtUtc": "2026-08-23T22:03:18.000Z",
+      "displayName": "P4-01 document/delta/policy implementation against the APPROVED v2 blueprint.",
+      "status": "completed"
+    },
+    "task_a85076a75dde": {
+      "createdAtUtc": "2026-08-22T07:32:43.000Z",
+      "displayName": "P0 validator \u8d1f\u5411\u56de\u5f52\u6d4b\u8bd5\u52a0\u56fa\u3002\u5de5\u4f5c\u5728\u5171\u4eab G:\\MGIF \u5f53\u524d worktree\uff1b\u4f60\u4e0d\u662f\u552f\u4e00\u4ee3\u7406\uff0c\u5fc5\u987b\u4fdd\u7559\u6240\u6709\u7528\u6237/\u5e76\u53d1\u4fee\u6539\uff0c\u7981\u6b62\u56de\u6eda\u8986\u76d6\u3002...",
+      "status": "completed"
+    },
+    "task_a91e7b96c85c": {
+      "createdAtUtc": "2026-08-26T10:53:55.000Z",
+      "displayName": "P5 VulkanCommandAllocator native rollback repair after task_f268a3cd9fc6. Wor...",
+      "status": "completed"
+    },
+    "task_ab822a872485": {
+      "createdAtUtc": "2026-08-25T03:54:28.000Z",
+      "displayName": "P5 progress-ledger automation implementation in shared G:\\\\MGIF. You are not...",
+      "status": "completed"
+    },
+    "task_ad646b01cc31": {
+      "createdAtUtc": "2026-08-22T07:59:37.000Z",
+      "displayName": "P0 reference UI-runtime evidence closure attempt. Work from shared G:\\MGIF bu...",
+      "status": "completed"
+    },
+    "task_add539b3c2c7": {
+      "createdAtUtc": "2026-08-23T17:32:12.000Z",
+      "displayName": "Replacement P3 final independent adversarial gate review. READ-ONLY: do not m...",
+      "status": "failed"
+    },
+    "task_ae4e73c2c602": {
+      "createdAtUtc": "2026-08-22T14:42:57.000Z",
+      "displayName": "Implement test-only hardening for the two MEDIUM gaps found by review task_a3...",
+      "status": "completed"
+    },
+    "task_af7b71e452e7": {
+      "createdAtUtc": "2026-08-26T00:16:07.000Z",
+      "displayName": "P5 repair: fix RHI command-buffer resource tracking capacity for full glTF sc...",
+      "status": "completed"
+    },
+    "task_aff0ff24eb43": {
+      "createdAtUtc": "2026-08-23T19:25:30.000Z",
+      "displayName": "Fresh independent read-only audit of the post-SaveAs rebound P4 corrected fin...",
+      "status": "failed"
+    },
+    "task_b0bb6bbbe5a6": {
+      "createdAtUtc": "2026-08-26T03:39:26.000Z",
+      "displayName": "P5 repair worker A: implement the required camera-owned exposure value end to...",
+      "status": "failed"
+    },
+    "task_b1e0580003b6": {
+      "createdAtUtc": "2026-08-22T07:17:28.000Z",
+      "displayName": "P0 D20/hierarchy \u53c2\u8003\u8bc1\u636e\u4ed3\u5e93\u96c6\u6210\u3002\u4f60\u5728\u5171\u4eab G:\\MGIF worktree \u5de5\u4f5c\uff0c\u4e0d\u662f\u552f\u4e00\u4ee3\u7406\uff0c\u5fc5\u987b\u4fdd\u7559\u6240\u6709\u7528\u6237\u548c\u5e76\u53d1\u4fee\u6539\uff0c\u7edd\u4e0d\u56de\u6eda/...",
+      "status": "completed"
+    },
+    "task_b2869b138f74": {
+      "createdAtUtc": "2026-08-25T13:25:12.000Z",
+      "displayName": "Fresh READ-ONLY P6/P7 implementation-readiness gap map for MGIF glTF Scene Ed...",
+      "status": "completed"
+    },
+    "task_b485a63a7fd3": {
+      "createdAtUtc": "2026-08-22T08:57:50.000Z",
+      "displayName": "Create a lightweight repository evidence mirror for the sealed native referen...",
+      "status": "completed"
+    },
+    "task_b48d609d9a56": {
+      "createdAtUtc": "2026-08-25T13:16:46.000Z",
+      "displayName": "Fresh independent READ-ONLY acceptance review of bounded P5 texture-upload fo...",
+      "status": "pending"
+    },
+    "task_b54a1ad9d482": {
+      "createdAtUtc": "2026-08-26T04:00:36.000Z",
+      "displayName": "P5 camera-exposure authority reconciliation, repository READ-ONLY and TEMP-on...",
+      "status": "completed"
+    },
+    "task_b59fd290ead0": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:05.000Z",
+      "dependencies": [
+        "task_1254fa47b9b7"
+      ],
+      "dispatch": null,
+      "displayName": "P7-00",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_b65daebcd76a": {
+      "createdAtUtc": "2026-08-22T15:42:19.000Z",
+      "displayName": "P3 independent read-only adversarial review after task_61c19ab23f95. Shared G...",
+      "status": "pending"
+    },
+    "task_b949b032ef83": {
+      "createdAtUtc": "2026-08-26T11:19:34.000Z",
+      "displayName": "P5 scene-ready canonical asset identity repair after task_e825f904fa2e. Work...",
+      "status": "completed"
+    },
+    "task_b9c27a289f42": {
+      "createdAtUtc": "2026-08-26T04:50:56.000Z",
+      "displayName": "P5 Vulkan remaining preflight/transaction repair in shared G:\\MGIF after task...",
+      "status": "completed"
+    },
+    "task_ba8ade72d3e9": {
+      "completedAtUtc": "2026-08-23T03:41:42.000Z",
+      "createdAtUtc": "2026-08-23T02:31:35.000Z",
+      "dependencies": [
+        "task_12f00023b657",
+        "task_23a955fd8b96"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-23T03:41:42.000Z",
+        "dispatchId": "ctx_9b13deebb72e",
+        "dispatchedAtUtc": "2026-08-23T02:45:42.000Z",
+        "status": "completed"
+      },
+      "displayName": "P0 fresh post-remediation independent adversarial READ-ONLY re-audit. Depends...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Completed the fresh read-only post-remediation adversarial audit across File API semantics, hostile dependency attacks including TOCTOU, fresh core/full/Android builds, Gradle generation, identity, gates, and repository integrity. P1 engineering verdict: READY; engineering blockers: none, with Python 165/165, core CTest 6/6, full CTest 19/19, and direct Android libDemoAndroid.so isolation all passing. Release readiness remains BLOCKED only by the unresolved owner root-license selection; Windows Metal is NOT VERIFIED on this Windows host.",
+        "completedAtUtc": "2026-08-23T03:41:42.845Z",
+        "messageId": "msg_e52d94131f2f",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Users\\happyelements\\AppData\\Local\\Temp\\mgif-p0-post-remediation-audit-d07a3a2004bc4016a8049cbc1362b1be\\P0-POST-REMEDIATION-INDEPENDENT-ADVERSARIAL-AUDIT.md",
+        "reportedBy": "term_e15737d6-1fcc-4ba9-a9f8-0fa9eb7c1ef8",
+        "resultPayload": "{\"body\":\"Completed the fresh read-only post-remediation adversarial audit across File API semantics, hostile dependency attacks including TOCTOU, fresh core/full/Android builds, Gradle generation, identity, gates, and repository integrity. P1 engineering verdict: READY; engineering blockers: none, with Python 165/165, core CTest 6/6, full CTest 19/19, and direct Android libDemoAndroid.so isolation all passing. Release readiness remains BLOCKED only by the unresolved owner root-license selection; Windows Metal is NOT VERIFIED on this Windows host.\",\"completedAt\":\"2026-08-23T03:41:42.845Z\",\"completedBy\":\"term_e15737d6-1fcc-4ba9-a9f8-0fa9eb7c1ef8\",\"filesModified\":[],\"messageId\":\"msg_e52d94131f2f\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Users\\\\happyelements\\\\AppData\\\\Local\\\\Temp\\\\mgif-p0-post-remediation-audit-d07a3a2004bc4016a8049cbc1362b1be\\\\P0-POST-REMEDIATION-INDEPENDENT-ADVERSARIAL-AUDIT.md\",\"reportedBy\":\"term_e15737d6-1fcc-4ba9-a9f8-0fa9eb7c1ef8\",\"subject\":\"P1 engineering READY\"}",
+        "resultSha256": "9c752ee945963712c93e7e26c4a90f96b7a99c3447126f5bb008568a2b2d5993",
+        "subject": "P1 engineering READY"
+      }
+    },
+    "task_bcb48c78766d": {
+      "createdAtUtc": "2026-08-26T15:08:14.000Z",
+      "displayName": "P5 supplemental read-only performance diagnosis in shared G:\\MGIF. Analyze th...",
+      "status": "completed"
+    },
+    "task_bd6e62faa588": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:03.000Z",
+      "dependencies": [
+        "task_994266e103b5"
+      ],
+      "dispatch": {
+        "completedAtUtc": null,
+        "dispatchId": "ctx_508252bbb5c2",
+        "dispatchedAtUtc": "2026-08-26T19:00:57.000Z",
+        "status": "dispatched"
+      },
+      "displayName": "G5",
+      "status": "dispatched",
+      "workerResult": null
+    },
+    "task_bf88889b3fa0": {
+      "createdAtUtc": "2026-08-22T16:17:39.000Z",
+      "displayName": "P8 independent adversarial READ-ONLY review after P8C. Do not edit. Compare a...",
+      "status": "pending"
+    },
+    "task_c2892a73df25": {
+      "createdAtUtc": "2026-08-25T22:37:04.000Z",
+      "displayName": "READ-ONLY Orca/ledger recovery analysis for fixed MGIF G5 task task_bd6e62faa...",
+      "status": "completed"
+    },
+    "task_c346ebff90f2": {
+      "completedAtUtc": "2026-08-24T09:27:37.000Z",
+      "createdAtUtc": "2026-08-23T22:05:15.000Z",
+      "dependencies": [
+        "task_8b91a0a76fa8"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-24T09:27:37.000Z",
+        "dispatchId": "ctx_9ce95ad9385d",
+        "dispatchedAtUtc": "2026-08-24T08:27:02.000Z",
+        "status": "completed"
+      },
+      "displayName": "Gate P4 fresh independent implementation review, READ-ONLY. Depends on comple...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Completed the fresh read-only Section 16.9 implementation review against all locked authorities and all 58 frozen paths, with the contained clang-cl/Ninja run passing 22/22 CTest, 17/17 direct invocations, Python 145/145+12/12+9/9+4/4, validators, dependency scans, and zero-drift checks. The binary engineering verdict is GATE P4 FAIL/BLOCKED because the required atomic setCameraFromView API is absent, the exhaustive release HistoryPolicy matrix is incomplete, and mandatory anchored-composer scenarios are untested; the report is 24073 bytes/SHA-256 1C6D9EB4DF859C0D95657964228D14A5963236BD23158BB41180C14E7DF8C647 and the manifest is 7162 bytes/SHA-256 C7738DD6626D321C867F68944B640ACFF58F9451C39411D2F755C7C3619C4B2A. What remains is implementation and fresh independent re-verification of those three blockers, while F42/R24 stays BLOCKED, Metal stays Not Verified, release/distribution stays not PASS, and production dependency exceptions stay zero.",
+        "completedAtUtc": "2026-08-24T09:27:37.853Z",
+        "messageId": "msg_9bcee099addf",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\\p4-independent-gate-report.md",
+        "reportedBy": "term_2036ff30-e3c4-485e-9926-43add6e9991b",
+        "resultPayload": "{\"body\":\"Completed the fresh read-only Section 16.9 implementation review against all locked authorities and all 58 frozen paths, with the contained clang-cl/Ninja run passing 22/22 CTest, 17/17 direct invocations, Python 145/145+12/12+9/9+4/4, validators, dependency scans, and zero-drift checks. The binary engineering verdict is GATE P4 FAIL/BLOCKED because the required atomic setCameraFromView API is absent, the exhaustive release HistoryPolicy matrix is incomplete, and mandatory anchored-composer scenarios are untested; the report is 24073 bytes/SHA-256 1C6D9EB4DF859C0D95657964228D14A5963236BD23158BB41180C14E7DF8C647 and the manifest is 7162 bytes/SHA-256 C7738DD6626D321C867F68944B640ACFF58F9451C39411D2F755C7C3619C4B2A. What remains is implementation and fresh independent re-verification of those three blockers, while F42/R24 stays BLOCKED, Metal stays Not Verified, release/distribution stays not PASS, and production dependency exceptions stay zero.\",\"completedAt\":\"2026-08-24T09:27:37.853Z\",\"completedBy\":\"term_2036ff30-e3c4-485e-9926-43add6e9991b\",\"filesModified\":[\"C:\\\\Temp\\\\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\\\\p4-independent-gate-report.md\",\"C:\\\\Temp\\\\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\\\\p4-gate-verdict.json\",\"C:\\\\Temp\\\\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\\\\evidence-artifacts.json\"],\"messageId\":\"msg_9bcee099addf\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\\\\p4-independent-gate-report.md\",\"reportedBy\":\"term_2036ff30-e3c4-485e-9926-43add6e9991b\",\"subject\":\"GATE P4 FAIL/BLOCKED\"}",
+        "resultSha256": "1e912301b9c550ddd2a52314a6c21c57427bfd647510996f155619826e498de0",
+        "subject": "GATE P4 FAIL/BLOCKED"
+      }
+    },
+    "task_c3db4c729fc9": {
+      "createdAtUtc": "2026-08-25T09:07:59.000Z",
+      "displayName": "Progress-ledger F4/F7/F8 acceptance repair after task_d049af0df8ad. Work in t...",
+      "status": "completed"
+    },
+    "task_c4958ebe56e4": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:06.000Z",
+      "dependencies": [
+        "task_1040525304c0",
+        "task_4f88b986a42c"
+      ],
+      "dispatch": null,
+      "displayName": "P6-90",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_c4c5a9e84cca": {
+      "createdAtUtc": "2026-08-26T09:01:47.000Z",
+      "displayName": "P5 consolidated Vulkan correctness repair after task_991813666b65 and task_db...",
+      "status": "completed"
+    },
+    "task_c52f54a8f799": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:08.000Z",
+      "dependencies": [
+        "task_15f206f912f6"
+      ],
+      "dispatch": null,
+      "displayName": "P8-11",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_c600f1903f5f": {
+      "createdAtUtc": "2026-08-22T16:11:37.000Z",
+      "displayName": "P7 independent adversarial READ-ONLY review after P7B. Do not edit. Audit cle...",
+      "status": "pending"
+    },
+    "task_c89206ad3925": {
+      "createdAtUtc": "2026-08-22T05:17:20.000Z",
+      "displayName": "P0 Reference Oracle / D20 evidence (READ-ONLY).",
+      "status": "completed"
+    },
+    "task_cb3745fc9b6d": {
+      "createdAtUtc": "2026-08-22T21:47:43.000Z",
+      "displayName": "P0 dependency-gate remediation after independent audit task_9cc043c5ecf1. Wor...",
+      "status": "completed"
+    },
+    "task_cd65ab92908e": {
+      "createdAtUtc": "2026-08-23T13:39:54.000Z",
+      "displayName": "P3 guard-suite remediation in shared G:\\\\MGIF, independent of core worker. Ow...",
+      "status": "completed"
+    },
+    "task_cd9f4a91a549": {
+      "createdAtUtc": "2026-08-24T00:28:52.000Z",
+      "displayName": "P5-P10 successor DAG blueprint correction, TEMP-only and repository READ-ONLY.",
+      "status": "completed"
+    },
+    "task_cdf8b6e015f9": {
+      "createdAtUtc": "2026-08-24T09:29:35.000Z",
+      "displayName": "P4 Gate repair B for blocker P4-B03. Dependency: completed independent Gate t...",
+      "status": "completed"
+    },
+    "task_cdfed52a30dd": {
+      "createdAtUtc": "2026-08-22T15:33:06.000Z",
+      "displayName": "P1B implementation: full document validation, semantic comparison, atomic no-...",
+      "status": "completed"
+    },
+    "task_cedf2da2f133": {
+      "createdAtUtc": "2026-08-26T12:28:09.000Z",
+      "displayName": "P5 fresh independent current-worktree integration and driver-backed Vulkan va...",
+      "status": "failed"
+    },
+    "task_cfdeac9dda31": {
+      "createdAtUtc": "2026-08-24T19:03:43.000Z",
+      "displayName": "Fresh independent Stage B re-audit of the repaired MGIF P5-P10 successor plan...",
+      "status": "completed"
+    },
+    "task_d049af0df8ad": {
+      "createdAtUtc": "2026-08-25T05:57:23.000Z",
+      "displayName": "Fresh independent READ-ONLY acceptance review of the repaired MGIF glTF scene...",
+      "status": "completed"
+    },
+    "task_d0e867b138f8": {
+      "createdAtUtc": "2026-08-26T13:57:41.000Z",
+      "displayName": "P5 independent exact-marker/artifact validator implementation in shared G:\\MG...",
+      "status": "completed"
+    },
+    "task_d1102461e498": {
+      "createdAtUtc": "2026-08-23T15:34:58.000Z",
+      "displayName": "P3 remediation C for independent blockers P3-B04 and P3-B05 in shared G:\\\\MGI...",
+      "status": "completed"
+    },
+    "task_d4dbae72c5c2": {
+      "createdAtUtc": "2026-08-23T09:13:37.000Z",
+      "displayName": "Implement P2 of the MGIF glTF Scene Editor parity task end-to-end, now that G...",
+      "status": "completed"
+    },
+    "task_d54175850f41": {
+      "createdAtUtc": "2026-08-22T06:09:49.000Z",
+      "displayName": "Reference Input Executable Probe",
+      "status": "completed"
+    },
+    "task_d67d21768d8e": {
+      "createdAtUtc": "2026-08-25T09:08:18.000Z",
+      "displayName": "Fresh independent READ-ONLY acceptance review of progress-ledger F4/F7/F8 rep...",
+      "status": "failed"
+    },
+    "task_d6e451ed03a2": {
+      "createdAtUtc": "2026-08-24T17:17:01.000Z",
+      "displayName": "Fresh independent Stage B audit for the MGIF P5-P10 successor planning packag...",
+      "status": "failed"
+    },
+    "task_d73712d125c5": {
+      "completedAtUtc": "2026-08-24T12:40:36.000Z",
+      "createdAtUtc": "2026-08-24T10:23:32.000Z",
+      "dependencies": [
+        "task_4154babfd00a"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-24T12:40:36.000Z",
+        "dispatchId": "ctx_4d2387adadac",
+        "dispatchedAtUtc": "2026-08-24T11:40:29.000Z",
+        "status": "completed"
+      },
+      "displayName": "Fresh independent P4 re-Gate reviewer after post-repair integration. Dependen...",
+      "status": "completed",
+      "workerResult": {
+        "body": "I completed the independent read-only post-repair re-Gate and produced C:\\Temp\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\p4-independent-regate-report.md at 18,742 bytes with SHA-256 300A1E8B05A77EE50736A570D919E00E9E33C4C407BFB12C960364E5865C3290 and p4-regate-verdict.json at 7,315 bytes with SHA-256 E23DC10C1B829884C53ED021F552A4F862BC66B986D3624F7DF4A7260F6AACAD. Fresh Debug and Release/NDEBUG verification, all former-blocker matrices, all 14 Section 16.9 contracts, 298 integration artifacts, 189 final inventory artifacts, and the final live 58-file freeze passed with zero drift, so the unambiguous result is GATE P4 PASS. What remains is external to this engineering Gate: F42 and R24 stay BLOCKED, Metal stays Not Verified, release/distribution stays NOT PASS, and no P5-P10 completion is asserted.",
+        "completedAtUtc": "2026-08-24T12:40:36.303Z",
+        "messageId": "msg_de66e012762d",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\p4-independent-regate-report.md",
+        "reportedBy": "term_0b037987-7e53-46e8-b451-475c455f3316",
+        "resultPayload": "{\"body\":\"I completed the independent read-only post-repair re-Gate and produced C:\\\\Temp\\\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\\\p4-independent-regate-report.md at 18,742 bytes with SHA-256 300A1E8B05A77EE50736A570D919E00E9E33C4C407BFB12C960364E5865C3290 and p4-regate-verdict.json at 7,315 bytes with SHA-256 E23DC10C1B829884C53ED021F552A4F862BC66B986D3624F7DF4A7260F6AACAD. Fresh Debug and Release/NDEBUG verification, all former-blocker matrices, all 14 Section 16.9 contracts, 298 integration artifacts, 189 final inventory artifacts, and the final live 58-file freeze passed with zero drift, so the unambiguous result is GATE P4 PASS. What remains is external to this engineering Gate: F42 and R24 stay BLOCKED, Metal stays Not Verified, release/distribution stays NOT PASS, and no P5-P10 completion is asserted.\",\"completedAt\":\"2026-08-24T12:40:36.303Z\",\"completedBy\":\"term_0b037987-7e53-46e8-b451-475c455f3316\",\"filesModified\":[\"C:\\\\Temp\\\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\\\p4-independent-regate-report.md\",\"C:\\\\Temp\\\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\\\manifests\\\\p4-regate-verdict.json\",\"C:\\\\Temp\\\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\\\manifests\\\\report-verdict-self-audit.json\",\"C:\\\\Temp\\\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\\\manifests\\\\evidence-inventory.json\",\"C:\\\\Temp\\\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\\\manifests\\\\post-report-source-drift.json\",\"C:\\\\Temp\\\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\\\manifests\\\\dependency-resolution.json\",\"C:\\\\Temp\\\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\\\manifests\\\\errors-and-retries.json\"],\"messageId\":\"msg_de66e012762d\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z\\\\p4-independent-regate-report.md\",\"reportedBy\":\"term_0b037987-7e53-46e8-b451-475c455f3316\",\"subject\":\"GATE P4 PASS\"}",
+        "resultSha256": "c6f0eba8b41227d86570d75a705732bb1d1cc597f8c076551422bf0f94ba9b8a",
+        "subject": "GATE P4 PASS"
+      }
+    },
+    "task_d81bdd1c728e": {
+      "createdAtUtc": "2026-08-25T12:41:09.000Z",
+      "displayName": "Progress-ledger F7/F8 acceptance repair after independent FAIL task_d67d21768...",
+      "status": "completed"
+    },
+    "task_d833fdbeb0c1": {
+      "createdAtUtc": "2026-08-22T16:17:37.000Z",
+      "displayName": "P8B Scene Browser and Inspector parity in shared G:\\\\MGIF after P8A. Own app/...",
+      "status": "pending"
+    },
+    "task_db00021ae296": {
+      "createdAtUtc": "2026-08-26T05:18:03.000Z",
+      "displayName": "P5 post-fix fresh integration validation, repository READ-ONLY and repair-fre...",
+      "status": "completed"
+    },
+    "task_df0cb8aa1546": {
+      "createdAtUtc": "2026-08-25T21:04:55.000Z",
+      "displayName": "MGIF Scene Editor: add focused EditorController runtime-animation tests in sh...",
+      "status": "completed"
+    },
+    "task_e1247fabeb3e": {
+      "createdAtUtc": "2026-08-23T19:25:02.000Z",
+      "displayName": "P4 corrected blueprint post-SaveAs snapshot rebind. TEMP-only documentation t...",
+      "status": "completed"
+    },
+    "task_e21299946572": {
+      "createdAtUtc": "2026-08-25T16:02:56.000Z",
+      "displayName": "P9 SceneCompactor bounded implementation in shared G:\\\\MGIF. You are not alon...",
+      "status": "completed"
+    },
+    "task_e2475816f255": {
+      "createdAtUtc": "2026-08-23T11:17:49.000Z",
+      "displayName": "Independent read-only adversarial review of the completed current P3 implemen...",
+      "status": "completed"
+    },
+    "task_e45636281adf": {
+      "createdAtUtc": "2026-08-22T15:30:38.000Z",
+      "displayName": "P0 final integration after validator hardening and O09 real-UI evidence. Shar...",
+      "status": "completed"
+    },
+    "task_e499c8151386": {
+      "createdAtUtc": "2026-08-23T11:21:09.000Z",
+      "displayName": "P7 implementation in shared G:\\\\MGIF after P6. Own clean-room MGIF-RHI-neutra...",
+      "status": "pending"
+    },
+    "task_e5894e78a83b": {
+      "createdAtUtc": "2026-08-23T22:03:18.000Z",
+      "displayName": "P4-02 CPU stable-ID selection implementation against the APPROVED v2 blueprint.",
+      "status": "completed"
+    },
+    "task_e6723f439ecc": {
+      "createdAtUtc": "2026-08-25T06:10:37.000Z",
+      "displayName": "P5-R2-D2 narrow Android NDK r23 portability repair for SceneChangeCanonicaliz...",
+      "status": "completed"
+    },
+    "task_e6d16b19af18": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:11.000Z",
+      "dependencies": [
+        "task_0b7c23eadc59"
+      ],
+      "dispatch": null,
+      "displayName": "G9",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_e825f904fa2e": {
+      "createdAtUtc": "2026-08-26T09:40:38.000Z",
+      "displayName": "Fresh independent P5 integration and Vulkan scene-ready smoke validation of t...",
+      "status": "completed"
+    },
+    "task_e92cc5ca62a3": {
+      "createdAtUtc": "2026-08-22T05:17:22.000Z",
+      "displayName": "P0 MGIF baseline verification (NO REPO EDITS).",
+      "status": "completed"
+    },
+    "task_ea913bb6f406": {
+      "createdAtUtc": "2026-08-22T15:50:52.000Z",
+      "displayName": "P8 read-only UI parity reconnaissance in shared G:\\\\MGIF. Do not modify any f...",
+      "status": "completed"
+    },
+    "task_eb85190ed1ac": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:09.000Z",
+      "dependencies": [
+        "task_99a11c23bb9a"
+      ],
+      "dispatch": null,
+      "displayName": "G8",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_eb956be479a5": {
+      "createdAtUtc": "2026-08-22T15:44:58.000Z",
+      "displayName": "Read-only P4 command/history implementation reconnaissance. Shared G:\\MGIF. D...",
+      "status": "completed"
+    },
+    "task_efc9994d975b": {
+      "createdAtUtc": "2026-08-24T05:05:47.000Z",
+      "displayName": "P4-01V bounded allocation-free validator repair, triggered by P4-05 escalatio...",
+      "status": "completed"
+    },
+    "task_f00ccd66c683": {
+      "createdAtUtc": "2026-08-25T14:17:36.000Z",
+      "displayName": "Fresh independent READ-ONLY technical acceptance review of the P5 texture-upl...",
+      "status": "completed"
+    },
+    "task_f234313b8955": {
+      "createdAtUtc": "2026-08-25T05:19:51.000Z",
+      "displayName": "Repair the progress-ledger automation after the accepted independent FAIL rep...",
+      "status": "completed"
+    },
+    "task_f268a3cd9fc6": {
+      "createdAtUtc": "2026-08-26T09:40:38.000Z",
+      "displayName": "Fresh independent P5 adversarial re-review of the CURRENT shared MGIF worktre...",
+      "status": "completed"
+    },
+    "task_f5ecbcda47dd": {
+      "completedAtUtc": null,
+      "createdAtUtc": "2026-08-24T21:16:13.000Z",
+      "dependencies": [
+        "task_6c9acf605f14"
+      ],
+      "dispatch": null,
+      "displayName": "P10-11",
+      "status": "pending",
+      "workerResult": null
+    },
+    "task_f62b075c4046": {
+      "createdAtUtc": "2026-08-26T04:01:37.000Z",
+      "displayName": "P5 Vulkan recording-preflight follow-up on the already repaired shared G:\\\\MG...",
+      "status": "completed"
+    },
+    "task_f691abad03a0": {
+      "createdAtUtc": "2026-08-25T21:38:51.000Z",
+      "displayName": "\u4fee\u590d MGIF glTF Scene Editor \u5f53\u524d Vulkan smoke \u4e2d\u7684 encoded image -> runtime RGBA8 \u7f3a...",
+      "status": "completed"
+    },
+    "task_f6f263aef114": {
+      "createdAtUtc": "2026-08-24T18:13:35.000Z",
+      "displayName": "Repair the failed MGIF P5-P10 Stage B successor planning package in place, st...",
+      "status": "completed"
+    },
+    "task_f740aa6232a5": {
+      "completedAtUtc": "2026-08-26T18:55:38.000Z",
+      "createdAtUtc": "2026-08-26T13:52:25.000Z",
+      "dependencies": [
+        "task_6cf35495bd88"
+      ],
+      "dispatch": {
+        "completedAtUtc": "2026-08-26T18:55:38.000Z",
+        "dispatchId": "ctx_1b8d40f7804c",
+        "dispatchedAtUtc": "2026-08-26T13:52:59.000Z",
+        "status": "completed"
+      },
+      "displayName": "P5 production repair: implement and permanently test the real scene-editor tr...",
+      "status": "completed",
+      "workerResult": {
+        "body": "Implemented the explicit opt-in real EditorController rename, renderer-acceptance, undo, redo, and Save As automation, the exact seven-line CSM producer and validator contract, closed source manifests, permanent tests, CTest wiring, and runbook updates. Both Python modes passed 26/26 tests, focused Debug and fresh serial Release/NDEBUG CTests passed 6/6, and producer, source, dependency, activation, and non-overwrite checks passed with full evidence in the report. Fresh independent review and the five driver-backed Vulkan smokes remain, so this completion does not claim P5/G5.",
+        "completedAtUtc": "2026-08-26T18:55:38.782Z",
+        "messageId": "msg_28543f644468",
+        "outcome": "succeeded",
+        "reportPath": "C:\\Temp\\mgif-p5-production-repair-task_f740aa6232a5-ctx_1b8d40f7804c\\report.md",
+        "reportedBy": "term_34bfcac6-cad0-46d3-8f5b-30250dd1ebbf",
+        "resultPayload": "{\"body\":\"Implemented the explicit opt-in real EditorController rename, renderer-acceptance, undo, redo, and Save As automation, the exact seven-line CSM producer and validator contract, closed source manifests, permanent tests, CTest wiring, and runbook updates. Both Python modes passed 26/26 tests, focused Debug and fresh serial Release/NDEBUG CTests passed 6/6, and producer, source, dependency, activation, and non-overwrite checks passed with full evidence in the report. Fresh independent review and the five driver-backed Vulkan smokes remain, so this completion does not claim P5/G5.\",\"completedAt\":\"2026-08-26T18:55:38.782Z\",\"completedBy\":\"term_34bfcac6-cad0-46d3-8f5b-30250dd1ebbf\",\"filesModified\":[\"CMakeLists.txt\",\"app/MinimalLatestApp.cpp\",\"app/MinimalLatestApp.h\",\"app/editor/EditorTransactionSmoke.h\",\"tests/editor/editor_transaction_smoke_tests.cpp\",\"tests/editor/editor_controller_transaction_tests.cpp\",\"tools/editor_transaction_smoke.py\",\"tests/editor/editor_transaction_smoke_validator_tests.py\",\"tools/VULKAN_SMOKE_RUNBOOK.md\"],\"messageId\":\"msg_28543f644468\",\"outcome\":\"succeeded\",\"provenance\":\"worker_report\",\"reportPath\":\"C:\\\\Temp\\\\mgif-p5-production-repair-task_f740aa6232a5-ctx_1b8d40f7804c\\\\report.md\",\"reportedBy\":\"term_34bfcac6-cad0-46d3-8f5b-30250dd1ebbf\",\"subject\":\"P5 production repair verified\"}",
+        "resultSha256": "e15aaf596863daf37cde7e7ed31cd9036137e89152b8f6d37bf7d6eef7b8331b",
+        "subject": "P5 production repair verified"
+      }
+    },
+    "task_f9fe7813ea9d": {
+      "createdAtUtc": "2026-08-22T12:49:33.000Z",
+      "displayName": "READ-ONLY independent adversarial review of the final validator hardening fro...",
+      "status": "completed"
+    },
+    "task_fadfa90248c8": {
+      "createdAtUtc": "2026-08-25T21:55:39.000Z",
+      "displayName": "P5 resource-bearing full-snapshot staged-upload and submission-token repair i...",
+      "status": "completed"
+    },
+    "task_fb6dabb64fd9": {
+      "createdAtUtc": "2026-08-25T15:11:39.000Z",
+      "displayName": "Preparatory P8 Dear ImGui UI parity module for MGIF glTF Scene Editor. Work i...",
+      "status": "completed"
+    },
+    "task_fb8cbf2edef0": {
+      "createdAtUtc": "2026-08-25T16:34:17.000Z",
+      "displayName": "P7 bounded implementation in shared G:\\\\MGIF. You are not alone; preserve all...",
+      "status": "completed"
+    },
+    "task_fc0af7ce91ba": {
+      "createdAtUtc": "2026-08-23T18:27:49.000Z",
+      "displayName": "P4-06 transform commands and continuous frame arbitration in shared G:\\MGIF,...",
+      "status": "pending"
+    },
+    "task_fcbcc8f62f12": {
+      "createdAtUtc": "2026-08-25T12:44:59.000Z",
+      "displayName": "Bounded P5 legacy texture-upload footprint repair after sealed diagnosis task...",
+      "status": "failed"
+    },
+    "task_feca71cbe6b3": {
+      "createdAtUtc": "2026-08-25T12:55:44.000Z",
+      "displayName": "READ-ONLY F8 Draft 2020-12 schema design advisor for active repair task_d81bd...",
+      "status": "completed"
+    },
+    "task_ff26c052aea4": {
+      "createdAtUtc": "2026-08-25T13:05:52.000Z",
+      "displayName": "Fresh read-only instrumented recapture and provenance audit for VUID-vkCmdDra...",
+      "status": "pending"
+    }
+  },
+  "runtimeId": "c08d3cea-461a-4e44-9bcf-7ecfa372dd83",
+  "schemaVersion": 4
+}

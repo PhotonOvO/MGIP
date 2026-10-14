@@ -1,0 +1,477 @@
+{
+  "addedExistingIntegrationPaths": [
+    "app/editor/EditorViewportRuntime.h",
+    "app/editor/EditorViewportRuntime.cpp",
+    "app/editor/EditorController.h",
+    "app/editor/EditorController.cpp",
+    "app/editor/EditorRendererAdapter.h",
+    "app/editor/EditorRendererAdapter.cpp",
+    "app/editor/SceneEditorUi.h",
+    "app/editor/SceneEditorUi.cpp",
+    "app/editor/SceneEditorUiModel.h",
+    "scene/editor/include/mgif/scene_editor/EditorSelection.h",
+    "scene/editor/EditorSelection.cpp",
+    "scene/editor/include/mgif/scene_editor/SceneEditor.h",
+    "scene/editor/SceneEditor.cpp",
+    "scene/editor/EditorSession.cpp"
+  ],
+  "addedRendererRhiPaths": [
+    "rhi/RHITypes.h",
+    "rhi/vulkan/VulkanFormatUtils.h",
+    "rhi/d3d12/D3D12Device.cpp",
+    "rhi/d3d12/D3D12PipelineDevice.cpp",
+    "tests/vulkan_conversion_tests.cpp",
+    "tests/rhi_public_contract_tests.cpp",
+    "shaders/editor_highlight.slang"
+  ],
+  "authorization": {
+    "authority": "project-owner-standing-authorization-plus-local-automatic-review",
+    "normalizedInstruction": "Continue under the accepted local post-Orca contract without repeated authorization prompts; use automatic review and Windows-native MSVC validation.",
+    "scope": "Rebind P6-90 to the exact current integration owners and the minimum RHI integer-target/highlight dependencies required to integrate the completed P6 leaves; do not expand into P7 overlay or later-phase work."
+  },
+  "authorizedAtUtc": "2026-08-29T02:52:03.534Z",
+  "dependencyEvidence": {
+    "editorInputRouterSha256": "909a672ae39e65a511528ba32c249582d9a33ab008ace752c10fdaa002412715",
+    "editorPickingPublicSha256": "9a1d11edeab76b9263365f5189f48e235cf0940ac03541137cbb91494d539d81",
+    "editorPickingTypesSha256": "d8f566959e8b8e7a8a0703164e625bcb16e7deb271f67a74ff43deb314694004",
+    "editorSelectionTypesSha256": "e61645ef7b3daa1043adc4c89e3f2b6002a18ea162a3abc4c4a4ffe9dd6c1ff8",
+    "editorViewportMetricsSha256": "daffc513756e4a71ef8734e87234627bbfc8d7cb0788119d15ff48c5355227aa",
+    "frozenLegacyBundleId": "799241f0ff60eee1b37949b17c9118a1fa2fcda8f2f9f001a30bc336198d0eef",
+    "frozenLegacyPointerSha256": "5bd098ee508b592a8230a856cef4e5fa7642ad787a578d6d60386a8cb3de3e1b",
+    "o06ReceiptSha256": "1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88",
+    "o06ReportSha256": "8d8d35c3aae38e7ad08b1fe7502383027218ad5cbcf1f26172f10ad614a1c456",
+    "p5GateReportSha256": "2658f7b688cf93c844e821c422af6390e8e0ece501bb7e570d9f7a9c057c6069",
+    "p5SuccessorPassReceiptSha256": "fb244d098c3ab7c5c5e654f9b136d80ebf18d53cced4317c3c168b8dc1c560a2",
+    "p600ReceiptSha256": "06bc686ba941e3e69825460366aad3cefdba5335c90e84402764549f002c34bc",
+    "p600ReportSha256": "7a8bcf776845d4fff563a0cdd60f38777b273c5993773f74bae91dce179c78b6",
+    "p610ReceiptSha256": "5db1193abb4b0ba55bb40a0e07da8ca2dab595c2215758a4e048697a4bd00c36",
+    "p610ReportSha256": "d01d7b451593f5ff017c78a06883400f096c81a1d265b1165abd19a6070d6726",
+    "p620RebindFileSha256": "82186704fa231ec265436da913b5ad973ab8fa7f190c7ecb9e6ef41c2cdb4935",
+    "p620RebindRevisionSha256": "06f2d2ba35d77604012b4488e00afcd089fb954bb2637b904046aac452989f8e",
+    "p620ReceiptSha256": "0815a9dcbc828ea5f131286c79b0096c47517d614a3747164e223993551f5cd9",
+    "p620ReportSha256": "aeea6f0ac6f7981e54e6fd2149ee44314c7bda195621079b28733d150e555df1",
+    "p6ReadinessSha256": "5912fb9b0d0adadac122249a6698bf4a603592e474346e8d18c10c41a4f6578c",
+    "p700ReceiptSha256": "e6b8aa65967b3afb19f8fce76c830f1317a5ecc0fb7ce4c709c14da2053b3701",
+    "p700ReportSha256": "0713b3cd1b6036aa59e5f4bf58c4ec1576379017bf3075042cea52ab8db13b97",
+    "p7ReadinessSha256": "1e2ce3ac038e8ead39f5634caeda1fc22a4c3e1a8ac383d915130b5c462616ac",
+    "successorBlueprintSha256": "1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84"
+  },
+  "displayName": "P6-90",
+  "documentKind": "local-task-write-set-rebind",
+  "expectedPostconditions": {
+    "completedTaskId": "task_c4958ebe56e4",
+    "nextRunnableTaskIds": [
+      "task_4af12cfad98a"
+    ],
+    "p710Status": "pending"
+  },
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "frozenReadOnlyLeafPaths": {
+    "p600Paths": [
+      "scene/editor/include/mgif/scene_editor/EditorSelectionTypes.h",
+      "render/editor/EditorViewportMetrics.h",
+      "app/editor/SceneSelection.h",
+      "app/editor/SceneSelection.cpp",
+      "app/editor/MaterialClipboardCodec.h",
+      "app/editor/MaterialClipboardCodec.cpp",
+      "tests/editor/scene_selection_tests.cpp",
+      "tests/editor/material_clipboard_codec_tests.cpp",
+      "tests/editor/editor_viewport_metrics_tests.cpp"
+    ],
+    "p610Paths": [
+      "scene/editor/include/mgif/scene_editor/EditorPickingTypes.h",
+      "scene/editor/include/mgif/scene_editor/SceneRenderOccurrenceMapping.h",
+      "scene/editor/SceneRenderOccurrenceMapping.cpp",
+      "render/editor/ScenePicking.h",
+      "render/editor/ScenePicking.cpp",
+      "render/passes/EditorPickingPass.h",
+      "render/passes/EditorPickingPass.cpp",
+      "shaders/editor_picking.slang",
+      "tests/editor/scene_render_occurrence_mapping_tests.cpp",
+      "tests/editor/editor_picking_rhi_tests.cpp"
+    ],
+    "p620Paths": [
+      "scene/editor/include/mgif/scene_editor/EditorPicking.h",
+      "scene/editor/EditorPicking.cpp",
+      "scene/editor/include/mgif/scene_editor/EditorInputRouter.h",
+      "scene/editor/EditorInputRouter.cpp",
+      "tests/editor/editor_picking_contract_tests.cpp",
+      "tests/editor/editor_input_router_tests.cpp"
+    ],
+    "p700Paths": [
+      "render/editor/GizmoGeometry.h",
+      "render/editor/GizmoGeometry.cpp",
+      "render/editor/TransformGizmo.h",
+      "render/editor/TransformGizmo.cpp",
+      "render/editor/GridModel.h",
+      "render/editor/GridModel.cpp",
+      "render/editor/EditorOverlayTypes.h",
+      "tests/editor/transform_gizmo_cpu_tests.cpp",
+      "tests/editor/grid_model_tests.cpp"
+    ]
+  },
+  "futureP7OrGateExcluded": [
+    "render/editor/EditorOverlayShaderInterop.h",
+    "render/passes/EditorOverlayPass.h",
+    "render/passes/EditorOverlayPass.cpp",
+    "shaders/editor_overlay.slang",
+    "tests/editor/editor_overlay_rhi_tests.cpp",
+    "render/PassExecutor.h",
+    "render/PassExecutor.cpp",
+    "render/FrameScheduler.h",
+    "render/FrameScheduler.cpp",
+    "tests/editor/editor_gizmo_integration_tests.cpp"
+  ],
+  "gitHead": "6c36567625b305286755a734a66188a22df18e77",
+  "ledgerId": "mgif-editor-parity",
+  "newWriteSet": [
+    {
+      "bytes": 14995,
+      "expectedDisposition": "mustChange",
+      "path": "scene/editor/include/mgif/scene_editor/SceneProjection.h",
+      "sha256": "e5fbcb2d5b3ba19ff8f91ec4bee94628f6c8b1fbf447cffdafb017da82b89754",
+      "state": "existing"
+    },
+    {
+      "bytes": 55482,
+      "expectedDisposition": "mustChange",
+      "path": "scene/editor/SceneProjection.cpp",
+      "sha256": "587be78775d4f7faf0280ee160416ce1d314ffb45b036516ffba6cfcded5a44b",
+      "state": "existing"
+    },
+    {
+      "bytes": 7612,
+      "expectedDisposition": "mustChange",
+      "path": "scene/SceneUploadPlan.h",
+      "sha256": "cb494fd001c182d1d82b51851024cd57e8e10d2e196b3b05c9389b724becec08",
+      "state": "existing"
+    },
+    {
+      "bytes": 50235,
+      "expectedDisposition": "mustChange",
+      "path": "scene/SceneUploadPlanner.cpp",
+      "sha256": "efdbd6115f1ea3a7c3d9db1dea3e5dd65113bdcdb4bf6299b9c9314b7202dc21",
+      "state": "existing"
+    },
+    {
+      "bytes": 19396,
+      "expectedDisposition": "mustChange",
+      "path": "render/RenderTypes.h",
+      "sha256": "14fc76c6b97678ccb0ef4e471b95b2aa0ff323b24eef615b39ad8875306c5a5e",
+      "state": "existing"
+    },
+    {
+      "bytes": 4936,
+      "expectedDisposition": "mustChange",
+      "path": "render/RendererFacade.h",
+      "sha256": "5fede22c4dcd25f7aba72853ff8f84ce6f7eb8455231363c81f002a4bf25f764",
+      "state": "existing"
+    },
+    {
+      "bytes": 7889,
+      "expectedDisposition": "mustChange",
+      "path": "render/RendererFacade.cpp",
+      "sha256": "8622b4b9a43f027c4eda83fbfbdc8694a0c5867eb27e9f0bda8edfd1852e5add",
+      "state": "existing"
+    },
+    {
+      "bytes": 6046,
+      "expectedDisposition": "readOnlyExpected",
+      "path": "render/GPUSceneRegistry.h",
+      "sha256": "5e14ca2459f492185d26ebb960518f8dea6d81f9a477e25d2209e0f1f8acf078",
+      "state": "existing"
+    },
+    {
+      "bytes": 21438,
+      "expectedDisposition": "readOnlyExpected",
+      "path": "render/GPUSceneRegistry.cpp",
+      "sha256": "c188c7f1df456717337dc761f04f3cb5449c0db5c3f29e2474389f9148f8426b",
+      "state": "existing"
+    },
+    {
+      "bytes": 73810,
+      "expectedDisposition": "mustChange",
+      "path": "render/GPUDrivenRenderer.h",
+      "sha256": "5abb1d18e244ca5205b67a6b0a95fe8b4df64234180d3dcab99c173e678794dd",
+      "state": "existing"
+    },
+    {
+      "bytes": 442629,
+      "expectedDisposition": "mustChange",
+      "path": "render/GPUDrivenRenderer.cpp",
+      "sha256": "6ef302197f9e21ff928ee483ac0040e633ffed4c18da40e135d017888b80224c",
+      "state": "existing"
+    },
+    {
+      "bytes": 0,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/ImGuiClipboardAdapter.h",
+      "sha256": null,
+      "state": "missing"
+    },
+    {
+      "bytes": 0,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/ImGuiClipboardAdapter.cpp",
+      "sha256": null,
+      "state": "missing"
+    },
+    {
+      "bytes": 217924,
+      "expectedDisposition": "mustChange",
+      "path": "app/MinimalLatestApp.h",
+      "sha256": "67de51923022725e62c2b16d3ab17ebf394e6e30d839f133e112d5789b3071db",
+      "state": "existing"
+    },
+    {
+      "bytes": 9031,
+      "expectedDisposition": "readOnlyExpected",
+      "path": "app/MinimalLatestApp.cpp",
+      "sha256": "ae3335bb99bde7238c21c2107c581ab2edab4e8ef20c45d4fb6c751c5bc49fd3",
+      "state": "existing"
+    },
+    {
+      "bytes": 0,
+      "expectedDisposition": "mustChange",
+      "path": "tests/editor/editor_selection_picking_integration_tests.cpp",
+      "sha256": null,
+      "state": "missing"
+    },
+    {
+      "bytes": 5719,
+      "expectedDisposition": "mustChange",
+      "path": "tests/editor/editor_rhi_contract_tests.cpp",
+      "sha256": "af9ba39cf116ebc88fc6742843ae0375e425c87a7868d38c563d2c9b77bedd55",
+      "state": "existing"
+    },
+    {
+      "bytes": 9506,
+      "expectedDisposition": "mustChange",
+      "path": "tests/editor/android_viewer_contract_tests.py",
+      "sha256": "02f79662adabe9f25d7f863a242c39342a2d064f9ecc112ee775ebd1a32ac114",
+      "state": "existing"
+    },
+    {
+      "bytes": 90886,
+      "expectedDisposition": "mustChange",
+      "path": "CMakeLists.txt",
+      "sha256": "d6a80c55c2ff8f3dd7f3fa669f602699ac49cdd2dc377062ca7e0a99f2fca993",
+      "state": "existing"
+    },
+    {
+      "bytes": 6368,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/EditorViewportRuntime.h",
+      "sha256": "b747672d1418cd4f715c562d33b560c8099cc61ed14e2735a9869af876928965",
+      "state": "existing"
+    },
+    {
+      "bytes": 39163,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/EditorViewportRuntime.cpp",
+      "sha256": "1d33614e18aa89cc03dd913cd6fbd8023d275c2600626a4a66d53bcaa5f3223f",
+      "state": "existing"
+    },
+    {
+      "bytes": 9789,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/EditorController.h",
+      "sha256": "5f5c588237a8b4c2ff5d7fe9c8379c03630f5193d3eb99bb826ec6fbfc880006",
+      "state": "existing"
+    },
+    {
+      "bytes": 146633,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/EditorController.cpp",
+      "sha256": "de6427b531ef35e9417bd3cc4c93d518bbf4e7873debbb4e76061cc03824a399",
+      "state": "existing"
+    },
+    {
+      "bytes": 3599,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/EditorRendererAdapter.h",
+      "sha256": "8e9a306ce6a75a61b57656b5de96c12e846cdf4a77c8bf10abe54f53c0d921c8",
+      "state": "existing"
+    },
+    {
+      "bytes": 33790,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/EditorRendererAdapter.cpp",
+      "sha256": "b638d520060e33e02ea43c6469813970de978b197885598aff2cd14a838f25cb",
+      "state": "existing"
+    },
+    {
+      "bytes": 4688,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/SceneEditorUi.h",
+      "sha256": "da333ab8342b3268b8f62a71ab5b56a24cc6bb419d58c8d996d96d0bebbf6428",
+      "state": "existing"
+    },
+    {
+      "bytes": 124934,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/SceneEditorUi.cpp",
+      "sha256": "6d5cab1597fc545d7e91dda3ce87f7c8143f3f30e587a19e7e0d796890a1d757",
+      "state": "existing"
+    },
+    {
+      "bytes": 15208,
+      "expectedDisposition": "mustChange",
+      "path": "app/editor/SceneEditorUiModel.h",
+      "sha256": "059ef1d2107905e9d777fe1ef22655def61eb795e7e8ba5e35bfb668561ce6db",
+      "state": "existing"
+    },
+    {
+      "bytes": 4105,
+      "expectedDisposition": "mustChange",
+      "path": "scene/editor/include/mgif/scene_editor/EditorSelection.h",
+      "sha256": "9558639d25f51bce4f0f77b9bc0ff609e9e2ffa5e2b8ec8537700337a40ba40c",
+      "state": "existing"
+    },
+    {
+      "bytes": 10306,
+      "expectedDisposition": "mustChange",
+      "path": "scene/editor/EditorSelection.cpp",
+      "sha256": "c73592658bc9a8a0601ddb6dd197cbbf5ae2d9831475ebcfb7036804be81417f",
+      "state": "existing"
+    },
+    {
+      "bytes": 2457,
+      "expectedDisposition": "mustChange",
+      "path": "scene/editor/include/mgif/scene_editor/SceneEditor.h",
+      "sha256": "f0c7c94f07d3daee433e509b66a3f9b9a86e771278359168a9ee9c603ab529f2",
+      "state": "existing"
+    },
+    {
+      "bytes": 3475,
+      "expectedDisposition": "mustChange",
+      "path": "scene/editor/SceneEditor.cpp",
+      "sha256": "e30038cc3823a53c4533f74d42f74c2f085e47c673d16b5cb39cf22eddfb8834",
+      "state": "existing"
+    },
+    {
+      "bytes": 4145,
+      "expectedDisposition": "mustChange",
+      "path": "scene/editor/EditorSession.cpp",
+      "sha256": "cfeb004baef4a27e5d876c440f33c76c5ea583aee210768072eaeeb23a38fc6b",
+      "state": "existing"
+    },
+    {
+      "bytes": 13780,
+      "expectedDisposition": "mustChange",
+      "path": "rhi/RHITypes.h",
+      "sha256": "e7e771ca64b4ccd965435dc4ee4df768d186d720cf7cedd0779fab3a6f916ec4",
+      "state": "existing"
+    },
+    {
+      "bytes": 4226,
+      "expectedDisposition": "mustChange",
+      "path": "rhi/vulkan/VulkanFormatUtils.h",
+      "sha256": "a3abcbb4748fea5ad66b065a6776c1df9ca4f026a8faea891b98ab6f4af3132c",
+      "state": "existing"
+    },
+    {
+      "bytes": 105852,
+      "expectedDisposition": "mustChange",
+      "path": "rhi/d3d12/D3D12Device.cpp",
+      "sha256": "0711eab01bcf9ada8fe8a5ce8eaee281e94b60df982e5c2159b8cf01afac32cb",
+      "state": "existing"
+    },
+    {
+      "bytes": 39438,
+      "expectedDisposition": "mustChange",
+      "path": "rhi/d3d12/D3D12PipelineDevice.cpp",
+      "sha256": "fd0447f1fd731fb2714cd4dca9f7b8df89c629db9f10b6098dbccb5c9d21b157",
+      "state": "existing"
+    },
+    {
+      "bytes": 12051,
+      "expectedDisposition": "mustChange",
+      "path": "tests/vulkan_conversion_tests.cpp",
+      "sha256": "6ce6bc795e76bd03c30ff34401d2057ca2b7ee0462cd58a82dc97fbaf9fe5565",
+      "state": "existing"
+    },
+    {
+      "bytes": 29511,
+      "expectedDisposition": "mustChange",
+      "path": "tests/rhi_public_contract_tests.cpp",
+      "sha256": "9a2a9b32cae1b7b1164a896a71424bc1f47a5593ac77171c775a8d4c5e111410",
+      "state": "existing"
+    },
+    {
+      "bytes": 0,
+      "expectedDisposition": "mustChange",
+      "path": "shaders/editor_highlight.slang",
+      "sha256": null,
+      "state": "missing"
+    }
+  ],
+  "originalWriteSet": [
+    "scene/editor/include/mgif/scene_editor/SceneProjection.h",
+    "scene/editor/SceneProjection.cpp",
+    "scene/SceneUploadPlan.h",
+    "scene/SceneUploadPlanner.cpp",
+    "render/RenderTypes.h",
+    "render/RendererFacade.h",
+    "render/RendererFacade.cpp",
+    "render/GPUSceneRegistry.h",
+    "render/GPUSceneRegistry.cpp",
+    "render/GPUDrivenRenderer.h",
+    "render/GPUDrivenRenderer.cpp",
+    "app/editor/ImGuiClipboardAdapter.h",
+    "app/editor/ImGuiClipboardAdapter.cpp",
+    "app/MinimalLatestApp.h",
+    "app/MinimalLatestApp.cpp",
+    "tests/editor/editor_selection_picking_integration_tests.cpp",
+    "tests/editor/editor_rhi_contract_tests.cpp",
+    "tests/editor/android_viewer_contract_tests.py",
+    "CMakeLists.txt"
+  ],
+  "rebindReason": {
+    "applicationOwnershipDrift": "Production integration materialized in EditorViewportRuntime, EditorController, EditorRendererAdapter, SceneEditorUi, and SceneEditor core paths that were absent from the frozen P6-90 list.",
+    "integerTargetHardDependency": "The frozen P6-10 picking shader returns uint, but the current RHI has no integer color format or Vulkan/D3D12 mappings.",
+    "legacyAuthorityConflict": "EditorSelectionState still owns an independent value, revision, and event while P6-00 freezes SceneSelection as the sole production authority.",
+    "visibleHighlightGap": "No production shader currently composites a revision- and fence-bound Node-subtree or exact-Primitive highlight."
+  },
+  "revisionSha256": "8c42ded05a7782b2b4a35772c9ef9c03ae6edb51dc030a069799eaceaa4a0b97",
+  "roleConstraints": [
+    "SceneSelection is the sole production selection value, revision, and event authority; the legacy EditorSelectionState is a non-owning compatibility facade and may retain only a derived legacy view.",
+    "Primitive legacy transport preserves instanceOrdinal losslessly; no raw node, draw, dense, registry, or framebuffer index becomes selection identity.",
+    "Projection and upload planning carry canonical scene, node, primitive, instance ordinal, and node topology into one immutable occurrence snapshot sealed with renderer publication.",
+    "GPUDrivenRenderer owns the occurrence/token sidecar; GPUSceneRegistry handles and dense indices remain private and its readOnlyExpected paths normally retain their preimage hashes.",
+    "RendererFacade composes exactly one ScenePicking producer/backend and provides full-fence enqueue, poll, cancel, renderer-busy, and revision-bound highlight handoff.",
+    "Every accepted pick produces exactly one terminal result; retained occurrence and GPU/readback generations outlive exact ticket and SubmissionToken retirement.",
+    "Projection, viewport, device, document, and scene replacement cancel affected picks before releasing resources; normal enqueue, poll, cancel, and highlight paths never wait for device idle.",
+    "The production CPU mesh-AABB picker, single-slot pending pick, stale-result clear, rendererBusy=false hardcode, and runtime release-wins O06 branch are removed.",
+    "Runtime consumes the frozen EditorViewportMetrics and the completed P6-20 frame-close arbitration exactly; both same-batch Escape/release orders are no-history while prior-frame ordinary release commits once.",
+    "Double-hit camera focus keeps eye, centers at origin plus direction times positive distance, sets navigation speed to that distance, and increments one view revision; Browser reveal and scroll never switch tabs.",
+    "The frozen MaterialClipboardCodec and an upstream-ImGui OS clipboard adapter are the sole production clipboard grammar and transport.",
+    "TextureFormat::r32Uint is appended without renumbering existing values and maps exactly to VK_FORMAT_R32_UINT and DXGI_FORMAT_R32_UINT.",
+    "Highlight resolves current snapshot-local tokens for Node visible subtree or exact Primitive occurrence and rejects mismatched EditorSceneFence or selection revision without an old-frame flash.",
+    "P7 overlay, Gizmo rendering, FrameScheduler, PassExecutor, later-phase UI/lifecycle work, locked parity documents, and the frozen legacy pointer remain outside this task."
+  ],
+  "schemaVersion": 1,
+  "selectedParent": {
+    "bundleId": "164b4da73ba51bddf68605594ca4aa92409d7afd3c1d2f86c94582e09933f8f1",
+    "pointerSha256": "a9c12578dca38e6145cc02e76d9f76fca13556719ccf974b17f8a3cd22b724db",
+    "sealedAtUtc": "2026-08-29T02:16:52.000Z",
+    "snapshotSha256": "f5b0b35ef9f455ffe4c0a888f201958a0db1a148f0d3598f0d3843c0df7f09f5",
+    "transitionHeadSha256": "0815a9dcbc828ea5f131286c79b0096c47517d614a3747164e223993551f5cd9"
+  },
+  "taskId": "task_c4958ebe56e4",
+  "validationContract": {
+    "authoritativeBuildEnvironment": "Windows native cmd.exe with Visual Studio 2022 MSVC amd64 environment",
+    "finalBuildRootPattern": "G:/Temp/mgif-p6-90-msvc-<UTC>-<Debug-or-Release>",
+    "finalBuildRootsMustBeFresh": true,
+    "linuxBuildAuthority": "none",
+    "preEditConfiguredGraphInput": "G:/Temp/mgif-p6-00-msvc-full-20260828",
+    "preEditConfiguredGraphUse": "configured dependency preflight only; never final P6-90 build or test evidence",
+    "runtimeEvidenceRootPattern": "G:/Temp/mgif-p6-90-evidence-<UTC>",
+    "wslRole": "agent coordination, repository editing, and evidence collation only"
+  }
+}

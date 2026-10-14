@@ -1,0 +1,32 @@
+# P8-90 Bounded Evidence Report
+
+Decision: BLOCKED; the P8-90 integration task was executed as an audit and cannot pass with the current implementation.
+
+Task: task_99a11c23bb9a
+Evidence root: G:\Temp\mgif-p8-final-20260905T041500Z
+Source identity: 3a1ce8319f386a9091259f1b400a23d536607399dc08c7a9c428d312fb5dbdd2
+Debug Demo SHA-256: 5c99de3ad06e46f18d3f4f9fbab42554327d8f4ea8f8d506993e0f248df81678
+Release Demo SHA-256: 535b9eca30d4b61082a0ba9fc1821478ffa6ecbec041d96f466a64816c89bd04
+
+## Fresh Evidence
+
+- Windows/MSVC Vulkan is authoritative; WSL only orchestrated and read artifacts.
+- Visual matrix: 62 cases (24 Debug, 24 Release, 14 V07 extension), with 206 stage states.
+- Every stage was checked for source/executable identity, three document digests, UI semantic state, boundary action_log, marker order, RHI counters, and nonblank PNG coverage.
+- Runtime matrix: 8/8; focused P8 CTest: 14/14 in each configuration; domain/document CTest: 8/8 in each configuration.
+- Multi-scene non-current primitive regression: selection, exact Browser row, Inspector stats, focus payload, and current-scene renderer boundary all pass in Debug/Release.
+- V04 depth crop proof: proven (135 pixels; threshold 8).
+
+## Leaf Scope
+
+- The fresh leaf evidence and existing CTest results are available to the integration audit, but they do not provide the required acceptance-driver implementation.
+- BLOCKER: app/editor/EditorTestDriver.{h,cpp}, tests/editor/editor_ui_state_tests.cpp, and tests/editor/editor_ui_action_tests.cpp are absent; CMake has no corresponding target or U01-U08 replay wiring.
+- BLOCKER: SceneEditorUiModel.h exposes eleven enum values and EditorController.cpp only reaches NoDocument/Error/ReadyClean/ReadyModified in normal operation; the exact nine runtime states are not exercised.
+- BLOCKER: MinimalLatestApp.h retains m_sceneModel/m_sceneAsset and destructive runtime replacement/upload paths (notably lines 1685, 1789, 5230-5550, 5673-5681), so the legacy-authority cutover is incomplete.
+
+## Explicit Non-Claims
+
+- No complete U01-U08 real action/state replay or context-menu manifest is claimed.
+- LoadingCandidate, GizmoHover, GizmoDragging, Modal, Saving/Merging/Compacting full lifecycle traces remain deferred; current evidence does not promote them from static/state vocabulary to runtime coverage.
+- P8-90 integration and G8 independent Gate review remain pending; this receipt does not unblock or pass them.
+- No Linux build was run. Metal remains Not Verified; F42/R24 and release/distribution remain blocked by policy.

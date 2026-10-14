@@ -1,0 +1,446 @@
+# MGIF Gate P3 Final Independent Review
+
+Date: 2026-08-24 (Asia/Shanghai)  
+Task: `task_a4832b5ed3e6`  
+Dispatch: `ctx_8ec615efdce5`  
+Repository under review: `G:\MGIF` (read-only for the complete dispatch)  
+Review root: `C:\Temp\mgif-p3-final-independent-ctx_8ec615efdce5-20260824`
+
+## Binary Verdict
+
+**GATE P3: PASS**
+
+| Decision input | Required | Observed | Verdict |
+|---|---:|---:|---:|
+| Fresh configure | clang-cl / Ninja / Debug / core-only | exit 0 | PASS |
+| Dependency preflight | pass | pass | PASS |
+| Configured dependency gate | pass | pass | PASS |
+| P0 | 6/6 | 6/6 | PASS |
+| P1 | 7/7 | 7/7 | PASS |
+| P2 explicit projection | 1/1 | 1/1 | PASS |
+| P3 | 4/4 | 4/4 | PASS |
+| Direct C++ executables | 11/11 | 11/11 | PASS |
+| Artifact validator unit suite | 145/145 | 145/145 | PASS |
+| Dependency integration suite | 12/12 | 12/12 | PASS |
+| Acceptance validator suite | 9/9 | 9/9 | PASS |
+| Android contract suite | 4/4 | 4/4 | PASS |
+| Live artifact inventory | 42 / 10 / 110 | 42 / 10 / 110 | PASS |
+| B01 | 4096 / 4097 | 2/2 | PASS |
+| D20 | 8 cases | 8/8 | PASS |
+| R09 | 2 cases | 2/2 | PASS |
+| B04 | 14 schemas | 14/14 | PASS |
+| B05 | 10 x 1000 | 10/10, 10,000 operations | PASS |
+| Forbidden production dependencies | 0 | 0 | PASS |
+| Recursive `processNode` self-calls | 0 | 0 | PASS |
+| Scoped repository drift | 0 | 0 | PASS |
+| Required-test skip markers | 0 | 0 | PASS |
+
+There are no waivers, skipped cases, ambiguous counts, or repository writes in
+this verdict.
+
+## Frozen Identity And P4 Fence Binding
+
+- Locked task: `G:\MGIF\docs\gltf-scene-editor-parity-task.md`
+- Required and observed locked-task SHA-256:
+  `BFD4B5FFE8D73B9BB887047A8CAD5AD96C7184D182EEB752AA47028B05BD679E`
+- Fixed reference repository: `F:\GitHub\vk_gltf_renderer`
+- Required fixed reference: `50373c7b0ff58078727af2c2aac70e29d5e74752`
+- Reference `HEAD`: `50373c7b0ff58078727af2c2aac70e29d5e74752`
+- `rev-parse <fixed>^{commit}`: `50373c7b0ff58078727af2c2aac70e29d5e74752`
+
+This PASS is explicitly bound to the corrected post-Save-As P4 control input:
+
+- Ordered 39-input live fingerprint:
+  `93AD702A9E635ECDFDF2CB0B6ABC466D757FE39EA2E9E9FCD19E0A1B7F423089`
+- Recomputed row count: 39
+- Byte/hash mismatches: 0
+- Corrected blueprint:
+  `C:\Temp\MGIF-P4-final-snapshot-blueprint-corrected-20260824.md`
+- Corrected blueprint bytes: 142,774
+- Corrected blueprint SHA-256:
+  `3050D18315CC4E045E0A6708AC90B7AE753AB641CE67280EFD2F557304E7E68A`
+
+The 39 declared rows were reread individually; none drifted, and the ordered
+fingerprint independently recomputed to the required value. The P4-00
+replacement-independent-P3 prerequisite is therefore closed by this report
+against that exact fingerprint and corrected blueprint. The separate fresh P4
+blueprint audit remains owned by its sibling review task and is not claimed by
+this P3 report.
+
+Evidence: `blueprint-binding-verification.json`.
+
+## Safety And Placement Compliance
+
+The review root was checked before use from `C:\Temp`:
+
+```text
+Location      : C:\Temp
+ReviewRoot    : C:\Temp\mgif-p3-final-independent-ctx_8ec615efdce5-20260824
+ExistedBefore : False
+```
+
+Before the first configure, Python command, CTest command, or built executable,
+every command environment was guarded by `review-env.ps1`:
+
+```text
+PYTHONDONTWRITEBYTECODE=1
+PYTHONPYCACHEPREFIX=C:\Temp\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\pycache
+TEMP=C:\Temp\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\process-temp
+TMP=C:\Temp\mgif-p3-final-independent-ctx_8ec615efdce5-20260824\process-temp
+```
+
+The guard verifies all three path variables are absolute descendants of the
+review root. Configure dependencies, build outputs, Python caches, CTest
+scratch, direct-test scratch, independent source, independent binary, probe
+outputs, logs, and this report all reside under the new review root.
+
+No command accessed, enumerated, searched, hashed, statted, or traversed
+`G:\MGIF\mgif build entrypoints kftx8g0b`. No root-wide Git status, Git diff,
+`rg`, or `rg --files` command was used. `Demo.txt` was not accessed. All
+repository reads and scans named explicit allowed files/directories. No file
+under `G:\MGIF` was created, edited, moved, or deleted.
+
+## Exact Before/After Manifest
+
+Manifest scope was limited to these explicit inputs:
+
+```text
+CMakeLists.txt
+loader/GltfLoader.cpp
+loader/GltfLoader.h
+scene/editor/**
+tests/editor/**
+tests/fixtures/gltf_editor/**
+tools/validate_editor_p0_artifacts.py
+tools/validate_editor_acceptance_report.py
+docs/editor-parity/**
+docs/gltf-scene-editor-parity-task.md
+```
+
+The manifest includes all files physically present under those explicit
+directories, including four preexisting `tests/editor/__pycache__/*.pyc`
+files. Including them makes the no-write claim stricter; the redirected Python
+cache ensured they were not modified.
+
+| Field | Before | After | Result |
+|---|---:|---:|---:|
+| Files | 132 | 132 | identical |
+| Total bytes | 2,816,153 | 2,816,153 | identical |
+| Per-row path/bytes/SHA-256 delta | 0 | 0 | identical |
+| Manifest SHA-256 | `A18AD709F33E608A07CEC740283991D87AFF3C87DBB18DF9032692F98BB6A263` | same | identical |
+| Locked-task SHA-256 | `BFD4B5FFE8D73B9BB887047A8CAD5AD96C7184D182EEB752AA47028B05BD679E` | same | identical |
+
+Evidence: `before-manifest.json`, `after-manifest.json`, and
+`logs/manifest-zero-drift.log`.
+
+## Toolchain And Build
+
+- CMake: 4.1.2
+- Ninja: 1.13.2
+- clang-cl: 19.1.5, target `x86_64-pc-windows-msvc`
+- Python command: 3.14.0
+- CMake-discovered Python: 3.13.5
+- Generator: Ninja
+- Configuration: Debug
+- `DEMO_EDITOR_CORE_ONLY=ON`
+- `BUILD_TESTING=ON`
+
+Fresh configure completed with exit 0. The only configure warning was
+TinyGLTF's deprecation notice for compatibility with CMake versions below
+3.10. The configured dependency preflight passed before compilation. The
+`scene_editor_tests` build completed the exact final Ninja step `[53/53]`.
+The separately invoked configured dependency gate also passed.
+
+Evidence:
+
+- `logs/configure.log`
+- `logs/dependency-preflight.log`
+- `logs/build-scene-editor-tests.log`
+- `logs/configured-dependency-gate.log`
+
+## CTest Results
+
+| Invocation | Result | Duration |
+|---|---:|---:|
+| `ctest ... -L scene-editor-p0-scaffold` | 6/6 | 91.33 s |
+| `ctest ... -L scene-editor-p1-document` | 7/7 | 3.59 s |
+| `ctest ... -R '^scene_editor\.scene_projection$'` | 1/1 | 0.66 s |
+| `ctest ... -L scene-editor-p3-mutation` | 4/4 | 93.08 s |
+
+The P3 label includes projection, scene commands, mutation, and P3 regression.
+The scene-command case ran for 91.92 seconds and passed. No required CTest was
+skipped.
+
+Evidence: `logs/ctest-p0.log`, `logs/ctest-p1.log`, `logs/ctest-p2.log`, and
+`logs/ctest-p3.log`.
+
+## Direct C++ Executables
+
+Every executable was built in this review and invoked directly with the guarded
+environment. All 11 exited zero.
+
+| Executable | Exit | SHA-256 |
+|---|---:|---|
+| `scene_editor_p0_support_tests.exe` | 0 | `BB5975FD82AA514F9120006D5CAFFA499C37F4D2F2A4CF07F1271F2343CA1808` |
+| `scene_editor_identity_tests.exe` | 0 | `FA4573C324B31E40E033C01A48D481B5DF0E0D28C6C0E0537A8EAC8DF4FF73B1` |
+| `gltf_document_load_tests.exe` | 0 | `E3F234CA453AE8CA63943B94453F8A78BA845ED18F6648E9319659B231D6968D` |
+| `gltf_document_roundtrip_tests.exe` | 0 | `CBB25130FD8E65C3632D484CBD26586062E3E9CD53221497DB58B8AEAF7B68F1` |
+| `gltf_document_io_tests.exe` | 0 | `4006F57D0189A5AA5D8DDA2D3AC8C8DC5D4782DB3D51D4643B9EBB43AA4855FE` |
+| `gltf_validator_tests.exe` | 0 | `C56F7272A309F4AF1F632C35954EB4C7EE5A49F29CE8F0AAECB847DE06D262DE` |
+| `gltf_accessor_payload_tests.exe` | 0 | `1FE4F6871ED329165F0466CDBE3B7DFB8DF80BFED8D0902A7EFD89E22C07024F` |
+| `p2_projection_cpu_tests.exe` | 0 | `558B2311149DE4DF6D1E5CA41E54B7759B9335D9A3F396A8AE812EBDFA720216` |
+| `scene_editor_scene_commands_tests.exe` | 0 | `174A90E7E5DB8D93095226DF38C98E663E7A229F87E6BBCD47DA8D5131DC4336` |
+| `scene_editor_mutation_tests.exe` | 0 | `D4CF4820425D1A4B7C7445465A1EEF353A21A1D21ABC4193001BB783528E6F60` |
+| `scene_editor_p3_regression_tests.exe` | 0 | `856365D74EBEDED27822D82DBFDC77B8BB1F562B2C039721221EBBC1C03B83AE` |
+
+Evidence: `results/direct-executables.json` and `logs/direct-*.log`.
+
+## Windows Save As Remediation Coverage
+
+The fresh `gltf_document_io_tests.exe` ran with physical scratch rooted at the
+long review path on volume `C:` while all input fixtures reside on volume `G:`.
+Its exit was zero through both P1 CTest and the direct invocation. Source-bound
+case inspection and the executed binary establish all requested scenarios:
+
+| Scenario | Executed result |
+|---|---:|
+| Short Unicode glTF target | PASS |
+| Moderately long ASCII glTF | PASS |
+| External buffer staged beside long ASCII glTF | PASS |
+| Moderately long Unicode glTF on destination volume `C:` from source volume `G:` | PASS |
+| External buffer path reaches Windows extended-length territory | PASS |
+| Repeated overwrite of the same long Unicode target | PASS |
+| One-call existing-target replacement without fallback/backup | PASS |
+| Injected pre-atomic-replace failure preserves target bytes and revisions | PASS |
+| Failure cleanup removes staging/backup debris | PASS |
+| Moderately long Unicode external-image glTF staging | PASS |
+| Moderately long ASCII self-contained GLB | PASS |
+| Moderately long Unicode external-image self-contained GLB | PASS |
+| Source bytes remain unchanged after cross-volume Save As | PASS |
+| Seven-point Save As fault matrix remains atomic | PASS |
+| Actual replacement interruption stress | PASS |
+
+The Windows interruption test executed 12 terminated-writer trials and observed
+593 complete target states: 544 old versions and 49 new versions, with no
+partial or mixed publication. The successful and injected-failure paths each
+ran target-directory debris checks. A final review-root inspection found zero
+names matching Save As staging, backup, recovery, or temporary-debris patterns.
+
+The process temp directory retains an expected 160-byte test fixture buffer and
+an unrelated host provider log; neither is a Save As staging/backup artifact.
+
+Evidence: `logs/direct-gltf_document_io_tests.log`,
+`logs/ctest-p1.log`, and the executed case definitions in the manifested
+`tests/editor/gltf_document_io_tests.cpp`.
+
+## Fresh Independent Blocker Probe
+
+The independent probe was authored during this dispatch under `probes/`; no
+prior probe source, build tree, executable, or result was reused.
+
+- Source: `probes/p3_final_independent_probe.cpp`
+- Source SHA-256:
+  `A953712AEA5DA867001A4A087B912C5533B22895FDD58FC8C916DCEB43810A05`
+- CMake SHA-256:
+  `580C14AEEC6EEC1739F86C5FC463836C8FE4CCBCD196AFC6FFB7AACC89C5CF16`
+- Executable: `probes/build/mgif_p3_final_independent_probe.exe`
+- Executable SHA-256:
+  `9507FA3A21BBD67DE6A125F0E91D9BF3614737EDC5DB69186B326752BC58DB50`
+- Authoritative aggregate: 36/36, exit 0
+
+### B01: 2/2
+
+- A newly generated 4,096-node chain loaded exactly at explicit node/depth
+  limits, accepted a semantic rename using the same limit envelope, projected
+  iteratively, preserved all 4,096 parent/child relationships, accumulated the
+  final world translation to 4,096, and validated the complete runtime mapping.
+- A separately generated 4,097-node chain with `maxNodeDepth=4096` failed with
+  typed `depthExceeded`; failed publication preserved the same active 4,096
+  document pointer, identity, revision, hierarchy, and semantic digest.
+
+### D20: 8/8
+
+1. Clicked-scene Reparent from Scene Zero isolated Scene One and round-tripped.
+2. Clicked-scene Reparent from Scene One isolated Scene Zero and round-tripped.
+3. Clicked-scene Delete from Scene Zero preserved Scene One.
+4. Clicked-scene Delete from Scene One preserved Scene Zero.
+5. All-scenes Delete removed both shared occurrences and round-tripped.
+6. All-scenes Duplicate captured from the opposite orientation, preserved shared
+   child order/identity in both scenes, and round-tripped.
+7. An all-scenes parent-occurrence mismatch returned `multiScenePolicy` with
+   unchanged digest, revision, IDs, hierarchy, changed IDs, and remap.
+8. Stale occurrence, one-occurrence traversal bound, and injected
+   pre-publication failure all rejected atomically; the bound returned typed
+   `limitExceeded` and every state snapshot stayed identical.
+
+### R09: 2/2
+
+Both selected-node orientations split one of two primitives from a shared mesh.
+Each run proved private copied material identity, independent material edits,
+peer isolation, stable survivor IDs, save/reload equivalence, merge selection,
+and final reload topology. The two runs collectively also prove:
+
+- no equivalent candidate is an exact `domainNoop`;
+- a primitive without a material cannot be split and is an exact no-op;
+- an orphaned split mesh and its primitive IDs are deleted on merge;
+- a split mesh still referenced by another node is retained;
+- copied material ownership/reference counts remain correct.
+
+### B04: 14/14
+
+Each locked material extension was applied on a fresh document with an unknown
+advisory member, queried, saved, reloaded, and compared. Each strict invalid
+value or invalid extension shape was then rejected without revision, digest,
+ID, or hierarchy change.
+
+```text
+KHR_materials_anisotropy
+KHR_materials_clearcoat
+KHR_materials_diffuse_transmission
+KHR_materials_dispersion
+KHR_materials_emissive_strength
+KHR_materials_ior
+KHR_materials_iridescence
+KHR_materials_sheen
+KHR_materials_specular
+KHR_materials_transmission
+KHR_materials_unlit
+KHR_materials_volume
+KHR_materials_volume_scatter
+KHR_materials_pbrSpecularGlossiness
+```
+
+The clearcoat invalid-range case specifically rejected before publication and
+left the complete state key unchanged.
+
+### B05: 10/10
+
+Ten fixed independent seeds each completed 1,000 applied mutations, for 10,000
+operations total. Every step checked revision monotonicity, semantic digest
+change, document validation, typed-ID validity/authority/uniqueness, hierarchy
+publication, projection success, semantic-hash agreement, and runtime-mapping
+validation. The stream cycles through rename, transform, visibility, node add,
+and node delete, with retired-ID non-reuse checks. Every seed then saved,
+reloaded, and passed semantic comparison.
+
+Evidence: `results/independent-probe-authoritative.json` and
+`logs/independent-probe-authoritative.log`.
+
+## Python And Live Artifact Gates
+
+| Gate | Result | Runtime note |
+|---|---:|---|
+| `p0_artifact_validator_tests.py -v` | 145/145 | 22.215 s |
+| `editor_dependency_gate_integration_tests.py -v` | 12/12 | 58.202 s |
+| `acceptance_report_validator_tests.py -v` | 9/9 | 0.094 s |
+| `android_viewer_contract_tests.py -v` | 4/4 | 0.006 s |
+| Live `--mode scaffold` | PASS | 42 features, 10 traces, 110 edges |
+
+No authoritative log contains a `SKIP` or `SKIPPED` marker.
+
+Evidence: `logs/python-*.log` and `logs/live-validator.log`.
+
+## Static And Boundary Gates
+
+| Gate | Scope | Result |
+|---|---|---:|
+| Forbidden `nvcore`, `nvpro_core`/`nvpro`, `nvapp`, `nvgui`, `nvvk*`, `nvvkgltf`, reference helper/backend tokens | explicit production editor + loader paths | 0 matches |
+| Native traversal shape | explicit `loader/GltfLoader.cpp` | 2 entry calls, 1 definition, 0 recursive self-calls |
+| Debug leftovers | explicit production editor + loader paths | 0 matches |
+| Trailing whitespace | explicit allowed inventory | 0 matches |
+| Scoped `git diff --check` | explicit allowed pathspecs | exit 0 |
+| Configured production dependency graph | fresh configured build | PASS |
+
+The scoped Git check printed line-ending advisories stating that LF may become
+CRLF if Git later touches `CMakeLists.txt`, `loader/GltfLoader.cpp`, and
+`loader/GltfLoader.h`. These are warnings, not whitespace errors or file
+changes; the byte manifest confirms no drift.
+
+Evidence: `logs/forbidden-production-scan.log`,
+`logs/recursive-call-scan.log`, and `logs/scoped-static-hygiene.log`.
+
+## Authoritative Command Ledger
+
+Each command below dot-sourced `review-env.ps1` first.
+
+```powershell
+cmake -S G:\MGIF -B <review>\build -G Ninja `
+  -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang-cl `
+  -DCMAKE_CXX_COMPILER=clang-cl -DDEMO_EDITOR_CORE_ONLY=ON -DBUILD_TESTING=ON
+
+cmake --build <review>\build --target scene_editor_dependency_preflight --verbose
+cmake --build <review>\build --target scene_editor_tests --verbose
+python G:\MGIF\tools\validate_editor_p0_artifacts.py `
+  --repo-root G:\MGIF --mode configured-dependency `
+  --configured-build-root <review>\build --config Debug
+
+ctest --test-dir <review>\build -L scene-editor-p0-scaffold --output-on-failure
+ctest --test-dir <review>\build -L scene-editor-p1-document --output-on-failure
+ctest --test-dir <review>\build -R '^scene_editor\.scene_projection$' --output-on-failure
+ctest --test-dir <review>\build -L scene-editor-p3-mutation --output-on-failure
+
+python G:\MGIF\tests\editor\p0_artifact_validator_tests.py -v
+python G:\MGIF\tests\editor\editor_dependency_gate_integration_tests.py -v
+python G:\MGIF\tests\editor\acceptance_report_validator_tests.py -v
+python G:\MGIF\tests\editor\android_viewer_contract_tests.py -v
+python G:\MGIF\tools\validate_editor_p0_artifacts.py --repo-root G:\MGIF --mode scaffold
+
+cmake -S <review>\probes -B <review>\probes\build -G Ninja `
+  -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=clang-cl
+cmake --build <review>\probes\build --verbose
+<review>\probes\build\mgif_p3_final_independent_probe.exe `
+  G:\MGIF\tests\fixtures\gltf_editor `
+  <review>\probes\scratch-authoritative `
+  <review>\results\independent-probe-authoritative.json all
+```
+
+Direct executables were invoked by the retained
+`run-direct-executables.ps1`; manifest creation and P4 binding verification
+were invoked by the retained `make-manifest.ps1` and
+`verify-blueprint-binding.ps1`.
+
+## Diagnostic-Run Disclosure
+
+One early TEMP-only probe run is not verdict evidence. It exposed two defects in
+the freshly authored oracle:
+
+1. B01 constructed `SceneCommands` with default depth 512 after loading a
+   4,096-depth document. The product correctly rejected that mutation. The
+   oracle was corrected to use the same explicit 4,096 limit envelope.
+2. The first clicked-scene check compared iterators from two temporary vectors,
+   leaving the diagnostic process idle in a Windows user-request wait. That
+   TEMP process was interrupted, the vector was retained in one local object,
+   and the complete probe was rebuilt and rerun.
+3. A later strengthened bounded D20 diagnostic captured through the limited
+   command object, so capture correctly failed before the intended bounded
+   mutation. Capture was moved to an unrestricted observer and execution kept
+   on the limited command object, yielding typed `limitExceeded` with unchanged
+   state.
+
+No diagnostic used a prior binary, changed a repository byte, or contributed a
+passing count. The only authoritative blocker result is the final 36/36 run
+bound to source SHA-256 `A953712A...10A05` and executable SHA-256
+`9507FA3A...8DB50`.
+
+## Warnings And Residual Risk
+
+- TinyGLTF emits one CMake minimum-version deprecation warning.
+- Git emits three LF-to-CRLF advisory messages during the scoped diff check.
+- The accepted Save As matrix exercises local drive extended paths and a real
+  cross-volume `G:` to `C:` destination. UNC/network-share paths and paths near
+  the full Windows extended-path maximum are not added by this gate and remain
+  residual environment coverage, consistent with the remediation report.
+- Release F42/R24 license status and Metal verification are outside Gate P3 and
+  are not upgraded by this report.
+
+None of these warnings changes a required Gate P3 result.
+
+## Final Disposition
+
+Gate P3 is **PASS** for the exact frozen repository bytes in
+`before-manifest.json` / `after-manifest.json`, the exact 39-input P4 control
+fingerprint `93AD702A...423089`, and corrected blueprint SHA-256
+`3050D183...7E68A`. The Unicode/moderately-long Windows Save As blocker is
+closed by fresh physical-long-root execution: P1 is 7/7, direct binaries are
+11/11, all required glTF/GLB staging and atomicity cases pass, and repository
+drift is zero.

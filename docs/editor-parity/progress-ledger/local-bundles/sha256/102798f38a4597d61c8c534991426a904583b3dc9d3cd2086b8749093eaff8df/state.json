@@ -1,0 +1,789 @@
+{
+  "baseBundleId": "799241f0ff60eee1b37949b17c9118a1fa2fcda8f2f9f001a30bc336198d0eef",
+  "basePointerSha256": "5bd098ee508b592a8230a856cef4e5fa7642ad787a578d6d60386a8cb3de3e1b",
+  "baseSnapshotSha256": "82d0c43caa88d8cd70d7c654aa305742e17f72ad57e4211e9f6465b22a3e5ae0",
+  "baseStateSha256": "31ca0ba7db488f46eb3f8483960e9410ea03db9dfaead4cf6cc9d8e953d17bca",
+  "documentKind": "local-progress-ledger-state",
+  "ledgerId": "mgif-editor-parity",
+  "legacyOrigin": {
+    "bundleId": "799241f0ff60eee1b37949b17c9118a1fa2fcda8f2f9f001a30bc336198d0eef",
+    "pointerSha256": "5bd098ee508b592a8230a856cef4e5fa7642ad787a578d6d60386a8cb3de3e1b",
+    "snapshotSha256": "82d0c43caa88d8cd70d7c654aa305742e17f72ad57e4211e9f6465b22a3e5ae0",
+    "sourceKind": "legacy-orca",
+    "stateSha256": "31ca0ba7db488f46eb3f8483960e9410ea03db9dfaead4cf6cc9d8e953d17bca"
+  },
+  "nextRunnableTaskIds": [
+    "task_15f206f912f6"
+  ],
+  "phases": [
+    {
+      "engineeringGate": "PASS",
+      "executionStatus": "GATED",
+      "gateHistoryReceiptSha256s": [
+        "e25923b9f91633947c5bd2d44147572ca053b9662b3b4fdd669762fbd4ce2916"
+      ],
+      "gateTaskId": "task_ba8ade72d3e9",
+      "phase": "P0",
+      "summary": "P0 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": []
+    },
+    {
+      "engineeringGate": "PASS",
+      "executionStatus": "GATED",
+      "gateHistoryReceiptSha256s": [
+        "e2c79fabc0a7bdc6f05436f816861556c587fb10241e988e864344770ac8259f",
+        "bca0371373446ea35d3b541610c04401e3963e86d9fad870a9c568296d24b33d"
+      ],
+      "gateTaskId": "task_831f45f22072",
+      "phase": "P1",
+      "summary": "P1 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": []
+    },
+    {
+      "engineeringGate": "PASS",
+      "executionStatus": "GATED",
+      "gateHistoryReceiptSha256s": [
+        "61edd61e822f3d1bb6dc51f1dbf2e2b53e323b9e0f49f8c33112c605c05dd20c"
+      ],
+      "gateTaskId": "task_8261f1595760",
+      "phase": "P2",
+      "summary": "P2 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": []
+    },
+    {
+      "engineeringGate": "PASS",
+      "executionStatus": "GATED",
+      "gateHistoryReceiptSha256s": [
+        "03c60649d3c62d4820ffa95fa59952751c2d30a647f393eee9890e5899f971f9",
+        "9d78174715c8cd9a246c7e949570906d2f355cb82c1954cea4062fe868d1bcc6"
+      ],
+      "gateTaskId": "task_a4832b5ed3e6",
+      "phase": "P3",
+      "summary": "P3 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": []
+    },
+    {
+      "engineeringGate": "PASS",
+      "executionStatus": "GATED",
+      "gateHistoryReceiptSha256s": [
+        "6d621e7cac4fab8d7b283ee3a4f014eb97042fe6ed6aa37dbf6f0ee8ba1ba792",
+        "0b3fd547d871a2fd69945f3a4578ecd979d39be7b1c4e83c4b79228cc272bf34"
+      ],
+      "gateTaskId": "task_d73712d125c5",
+      "phase": "P4",
+      "summary": "P4 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": []
+    },
+    {
+      "engineeringGate": "PASS",
+      "executionStatus": "GATED",
+      "gateHistoryReceiptSha256s": [
+        "c54ac4bfec9dd72471a291c39682a698e66e4ba80aaea0519eedb0e31a218595",
+        "fb244d098c3ab7c5c5e654f9b136d80ebf18d53cced4317c3c168b8dc1c560a2"
+      ],
+      "gateTaskId": "task_bd6e62faa588",
+      "phase": "P5",
+      "summary": "P5 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": [
+        "task_13824a1991ff",
+        "task_31d89ded7754",
+        "task_759e96a51910",
+        "task_994266e103b5",
+        "task_bd6e62faa588"
+      ]
+    },
+    {
+      "engineeringGate": "PASS",
+      "executionStatus": "GATED",
+      "gateHistoryReceiptSha256s": [
+        "00c79c551eb7fe71101971d74ceb05a80a11ae3e661da273a7bf3a428babdde4",
+        "e96cb1cbd180100ec328a072e4aa9b381e820e13a402f4422fbd27f770c26c13"
+      ],
+      "gateTaskId": "task_c627c917ddb9",
+      "phase": "P6",
+      "summary": "P6 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": [
+        "task_1040525304c0",
+        "task_1254fa47b9b7",
+        "task_4af12cfad98a",
+        "task_4f88b986a42c",
+        "task_c4958ebe56e4",
+        "task_c627c917ddb9"
+      ]
+    },
+    {
+      "engineeringGate": "PASS",
+      "executionStatus": "GATED",
+      "gateHistoryReceiptSha256s": [
+        "e297bd471f5f7a5441abe7bb9e645736b6085987d9e452f4168de71445aca7cd",
+        "3b1ecd7932afc9c76e60a97af05d7ff2313df3a6cb8559c0e04173a8424215ce"
+      ],
+      "gateTaskId": "task_g7_r1_bridge",
+      "phase": "P7",
+      "summary": "P7 engineering Gate is accepted; release policy remains blocked.",
+      "taskIds": [
+        "task_0f3e7c8a6d21",
+        "task_0f3e7c8a6d22",
+        "task_1a40c0d302ae",
+        "task_395d3d07b807",
+        "task_3f216d250677",
+        "task_b59fd290ead0",
+        "task_g7_r1_bridge",
+        "task_p7_contract_reconciliation_20260903",
+        "task_p7_present_layout_repair_20260902",
+        "task_p7_rhi_visual_r3_20260904",
+        "task_p7_rhi_visual_r4_20260904"
+      ]
+    },
+    {
+      "engineeringGate": "NOT_RUN",
+      "executionStatus": "MATERIALIZED_PENDING",
+      "gateHistoryReceiptSha256s": [],
+      "gateTaskId": null,
+      "phase": "P8",
+      "summary": "P8 is materialized; no local Gate receipt exists.",
+      "taskIds": [
+        "task_15f206f912f6",
+        "task_2c5f762c2290",
+        "task_469ac0bc570d",
+        "task_99a11c23bb9a",
+        "task_c52f54a8f799",
+        "task_eb85190ed1ac"
+      ]
+    },
+    {
+      "engineeringGate": "NOT_RUN",
+      "executionStatus": "MATERIALIZED_PENDING",
+      "gateHistoryReceiptSha256s": [],
+      "gateTaskId": null,
+      "phase": "P9",
+      "summary": "P9 is materialized; no local Gate receipt exists.",
+      "taskIds": [
+        "task_0b7c23eadc59",
+        "task_421b4c55e3f7",
+        "task_44edc62a635f",
+        "task_64f2460b590a",
+        "task_65c1d2014a21",
+        "task_e6d16b19af18"
+      ]
+    },
+    {
+      "engineeringGate": "NOT_RUN",
+      "executionStatus": "MATERIALIZED_PENDING",
+      "gateHistoryReceiptSha256s": [],
+      "gateTaskId": null,
+      "phase": "P10",
+      "summary": "P10 is materialized; no local Gate receipt exists.",
+      "taskIds": [
+        "task_04e52d906959",
+        "task_5fd375237112",
+        "task_6c9acf605f14",
+        "task_942fc9e4f987",
+        "task_9c7cb2a4eb42",
+        "task_f5ecbcda47dd"
+      ]
+    }
+  ],
+  "policy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "publication": {
+    "ledgerPath": "docs/gltf-scene-editor-parity-local-progress.md",
+    "pointerPath": "docs/editor-parity/progress-ledger-local-current.json",
+    "sourceKind": "local-auto-review",
+    "storePath": "docs/editor-parity/progress-ledger/local-bundles/sha256"
+  },
+  "schemaVersion": 2,
+  "snapshotSha256": "3d8eee42c260f97a502e85ad9aa11cbd7152f71bdd61adc79a9b74f34f1b64d6",
+  "sourceKind": "local-auto-review",
+  "tasks": [
+    {
+      "completedAtUtc": "2026-08-25T00:24:35.000Z",
+      "completionEvidence": {
+        "legacyTaskSha256": "44ec4e3b31638ca84a6ccaf9431840aebea1c5141cd44968d73e8a65aac89f9e",
+        "sourceKind": "legacy-orca"
+      },
+      "createdAtUtc": "2026-08-24T21:16:02.000Z",
+      "dependencies": [
+        "task_759e96a51910"
+      ],
+      "displayName": "P5-10",
+      "status": "completed",
+      "taskId": "task_13824a1991ff"
+    },
+    {
+      "completedAtUtc": "2026-08-24T22:23:33.000Z",
+      "completionEvidence": {
+        "legacyTaskSha256": "b3a1f397b6fbca17dc5db201f83e9a0fedae272e2a215fd80e2ae8820d38f05e",
+        "sourceKind": "legacy-orca"
+      },
+      "createdAtUtc": "2026-08-24T21:16:02.000Z",
+      "dependencies": [
+        "task_d73712d125c5"
+      ],
+      "displayName": "P5-00",
+      "status": "completed",
+      "taskId": "task_759e96a51910"
+    },
+    {
+      "completedAtUtc": "2026-08-24T23:54:49.000Z",
+      "completionEvidence": {
+        "legacyTaskSha256": "2457d2527070b94677bc85ed803cf2dba4d5eb67427721554951b9feeb451217",
+        "sourceKind": "legacy-orca"
+      },
+      "createdAtUtc": "2026-08-24T21:16:03.000Z",
+      "dependencies": [
+        "task_759e96a51910"
+      ],
+      "displayName": "P5-20",
+      "status": "completed",
+      "taskId": "task_31d89ded7754"
+    },
+    {
+      "completedAtUtc": "2026-08-25T02:48:23.000Z",
+      "completionEvidence": {
+        "legacyTaskSha256": "a3864d65d994fa7d90cb51b3b8526e3c43201ee6c272c617a41cba9adbe59155",
+        "sourceKind": "legacy-orca"
+      },
+      "createdAtUtc": "2026-08-24T21:16:03.000Z",
+      "dependencies": [
+        "task_13824a1991ff",
+        "task_31d89ded7754"
+      ],
+      "displayName": "P5-90",
+      "status": "failed",
+      "taskId": "task_994266e103b5"
+    },
+    {
+      "completedAtUtc": "2026-08-28T10:50:44.000Z",
+      "completionEvidence": {
+        "legacyTaskSha256": "0e33a24356f9d28d75b0168e7290ff38deeffa0799cc826b38c0db464de67738",
+        "sourceKind": "legacy-orca"
+      },
+      "createdAtUtc": "2026-08-24T21:16:03.000Z",
+      "dependencies": [
+        "task_994266e103b5"
+      ],
+      "displayName": "G5",
+      "status": "completed",
+      "taskId": "task_bd6e62faa588"
+    },
+    {
+      "completedAtUtc": "2026-08-28T14:56:35.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "06bc686ba941e3e69825460366aad3cefdba5335c90e84402764549f002c34bc",
+        "reportSha256": "7a8bcf776845d4fff563a0cdd60f38777b273c5993773f74bae91dce179c78b6",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "0441c80ef39a672a5c77835a65459cc9a99b05030c3d5c7d6a2aa5eb880f1b33"
+      },
+      "createdAtUtc": "2026-08-24T21:16:04.000Z",
+      "dependencies": [
+        "task_2ebaf90139c5",
+        "task_bd6e62faa588"
+      ],
+      "displayName": "P6-00",
+      "status": "completed",
+      "taskId": "task_1254fa47b9b7"
+    },
+    {
+      "completedAtUtc": "2026-08-28T11:00:00.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88",
+        "reportSha256": "8d8d35c3aae38e7ad08b1fe7502383027218ad5cbcf1f26172f10ad614a1c456",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "0bfd94be6214742bbc35c92054bc6aacf251675b482a35c3cb412eb0cd78e0cb"
+      },
+      "createdAtUtc": "2026-08-24T21:16:04.000Z",
+      "dependencies": [
+        "task_bd6e62faa588",
+        "task_d73712d125c5"
+      ],
+      "displayName": "O06-BIND",
+      "status": "completed",
+      "taskId": "task_2ebaf90139c5"
+    },
+    {
+      "completedAtUtc": "2026-08-28T15:50:51.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "5db1193abb4b0ba55bb40a0e07da8ca2dab595c2215758a4e048697a4bd00c36",
+        "reportSha256": "d01d7b451593f5ff017c78a06883400f096c81a1d265b1165abd19a6070d6726",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "e00c2f1cd7edd498fcc53325f00fe374615b3b307370814e056e6b8d40cef23a"
+      },
+      "createdAtUtc": "2026-08-24T21:16:05.000Z",
+      "dependencies": [
+        "task_1254fa47b9b7"
+      ],
+      "displayName": "P6-10",
+      "status": "completed",
+      "taskId": "task_1040525304c0"
+    },
+    {
+      "completedAtUtc": "2026-08-29T02:16:52.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "0815a9dcbc828ea5f131286c79b0096c47517d614a3747164e223993551f5cd9",
+        "reportSha256": "aeea6f0ac6f7981e54e6fd2149ee44314c7bda195621079b28733d150e555df1",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "a174bf3eaf04b739782a95f5bffa3562b23ac2203099a048a4f293832f8ef1d3"
+      },
+      "createdAtUtc": "2026-08-24T21:16:05.000Z",
+      "dependencies": [
+        "task_1040525304c0"
+      ],
+      "displayName": "P6-20",
+      "status": "completed",
+      "taskId": "task_4f88b986a42c"
+    },
+    {
+      "completedAtUtc": "2026-08-29T01:28:31.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "e6b8aa65967b3afb19f8fce76c830f1317a5ecc0fb7ce4c709c14da2053b3701",
+        "reportSha256": "0713b3cd1b6036aa59e5f4bf58c4ec1576379017bf3075042cea52ab8db13b97",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "986c8fb0aab52b7081139f2be384120f17b2ccecce96a6698593acea967310a0"
+      },
+      "createdAtUtc": "2026-08-24T21:16:05.000Z",
+      "dependencies": [
+        "task_1254fa47b9b7"
+      ],
+      "displayName": "P7-00",
+      "status": "completed",
+      "taskId": "task_b59fd290ead0"
+    },
+    {
+      "completedAtUtc": "2026-09-01T08:45:37.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "add4ebda766979c3b847d0c9d5e8906b2f222c6236fd13b1c93cc28872501257",
+        "reportSha256": "4999cb42f963e7fedd854441525ecf1730e721c8e3b5189b2dcb97ce00267757",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "b8667c6851278e8d6ef7f0709742dbcc11cdc911bd7345f0054fc551f9b355cf"
+      },
+      "createdAtUtc": "2026-08-24T21:16:06.000Z",
+      "dependencies": [
+        "task_4af12cfad98a",
+        "task_b59fd290ead0"
+      ],
+      "displayName": "P7-10",
+      "status": "completed",
+      "taskId": "task_1a40c0d302ae"
+    },
+    {
+      "completedAtUtc": "2026-08-31T07:44:30.000Z",
+      "completionEvidence": {
+        "outcome": "failed",
+        "receiptSha256": "00c79c551eb7fe71101971d74ceb05a80a11ae3e661da273a7bf3a428babdde4",
+        "reportSha256": "5215beb12d888a744323310620f54dbeda45f6e8c268503fab49abfd9d3d47dd",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "309945068c5caa55cad288ffac321167084a959ae0f558a38776167b4a789bff"
+      },
+      "createdAtUtc": "2026-08-24T21:16:06.000Z",
+      "dependencies": [
+        "task_c4958ebe56e4"
+      ],
+      "displayName": "G6",
+      "status": "failed",
+      "taskId": "task_4af12cfad98a"
+    },
+    {
+      "completedAtUtc": "2026-08-31T07:29:09.533Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "ab9a5525ed2d29dde86d3fc7237e25c4d1784696c348d1246cb285557304ee97",
+        "reportSha256": "4e0fc69461218848613599ea1a07f0791234d05731eeb8bcd4fddd21621dc5ac",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "8006b44a3ca8148721717eded146cc0f13f5db722b2972928e8fdb40297a06ad"
+      },
+      "createdAtUtc": "2026-08-24T21:16:06.000Z",
+      "dependencies": [
+        "task_1040525304c0",
+        "task_4f88b986a42c"
+      ],
+      "displayName": "P6-90",
+      "status": "completed",
+      "taskId": "task_c4958ebe56e4"
+    },
+    {
+      "completedAtUtc": "2026-09-02T02:40:00.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "659a0a31a40b03b2b265007d02f8fdea0ee3dd51cbb13dd8adf2ae74875f576e",
+        "reportSha256": "3224aea9b3459525b774d9892344aaaf157f5a8b3832aafecbc80c52dd4d4410",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "4dc35890f1ea82221bd46c292fb93181c7aa3bab88e7c3baa4efa55680a53b62"
+      },
+      "createdAtUtc": "2026-08-24T21:16:07.000Z",
+      "dependencies": [
+        "task_1a40c0d302ae"
+      ],
+      "displayName": "P7-90",
+      "status": "completed",
+      "taskId": "task_395d3d07b807"
+    },
+    {
+      "completedAtUtc": "2026-09-02T04:03:14.129Z",
+      "completionEvidence": {
+        "outcome": "failed",
+        "receiptSha256": "e297bd471f5f7a5441abe7bb9e645736b6085987d9e452f4168de71445aca7cd",
+        "reportSha256": "851f5b045d185281e3575ca9575c788ca79dd8a3adcc097a89b8bfcacf30c696",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "ef3e0e33434d123771bae07878fc230933a05cede03f1ccf579c29735739718f"
+      },
+      "createdAtUtc": "2026-08-24T21:16:07.000Z",
+      "dependencies": [
+        "task_395d3d07b807"
+      ],
+      "displayName": "G7",
+      "status": "failed",
+      "taskId": "task_3f216d250677"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:08.000Z",
+      "dependencies": [
+        "task_3f216d250677"
+      ],
+      "displayName": "P8-00",
+      "status": "ready",
+      "taskId": "task_15f206f912f6"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:08.000Z",
+      "dependencies": [
+        "task_15f206f912f6"
+      ],
+      "displayName": "P8-10",
+      "status": "pending",
+      "taskId": "task_469ac0bc570d"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:08.000Z",
+      "dependencies": [
+        "task_15f206f912f6"
+      ],
+      "displayName": "P8-11",
+      "status": "pending",
+      "taskId": "task_c52f54a8f799"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:09.000Z",
+      "dependencies": [
+        "task_15f206f912f6"
+      ],
+      "displayName": "P8-12",
+      "status": "pending",
+      "taskId": "task_2c5f762c2290"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:09.000Z",
+      "dependencies": [
+        "task_2c5f762c2290",
+        "task_469ac0bc570d",
+        "task_c52f54a8f799"
+      ],
+      "displayName": "P8-90",
+      "status": "pending",
+      "taskId": "task_99a11c23bb9a"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:09.000Z",
+      "dependencies": [
+        "task_99a11c23bb9a"
+      ],
+      "displayName": "G8",
+      "status": "pending",
+      "taskId": "task_eb85190ed1ac"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:10.000Z",
+      "dependencies": [
+        "task_65c1d2014a21"
+      ],
+      "displayName": "P9-10",
+      "status": "pending",
+      "taskId": "task_421b4c55e3f7"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:10.000Z",
+      "dependencies": [
+        "task_65c1d2014a21"
+      ],
+      "displayName": "P9-11",
+      "status": "pending",
+      "taskId": "task_64f2460b590a"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:10.000Z",
+      "dependencies": [
+        "task_eb85190ed1ac"
+      ],
+      "displayName": "P9-00",
+      "status": "pending",
+      "taskId": "task_65c1d2014a21"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:11.000Z",
+      "dependencies": [
+        "task_421b4c55e3f7",
+        "task_44edc62a635f",
+        "task_64f2460b590a"
+      ],
+      "displayName": "P9-90",
+      "status": "pending",
+      "taskId": "task_0b7c23eadc59"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:11.000Z",
+      "dependencies": [
+        "task_65c1d2014a21"
+      ],
+      "displayName": "P9-12",
+      "status": "pending",
+      "taskId": "task_44edc62a635f"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:11.000Z",
+      "dependencies": [
+        "task_0b7c23eadc59"
+      ],
+      "displayName": "G9",
+      "status": "pending",
+      "taskId": "task_e6d16b19af18"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:12.000Z",
+      "dependencies": [
+        "task_e6d16b19af18"
+      ],
+      "displayName": "P10-00",
+      "status": "pending",
+      "taskId": "task_6c9acf605f14"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:12.000Z",
+      "dependencies": [
+        "task_6c9acf605f14"
+      ],
+      "displayName": "P10-10",
+      "status": "pending",
+      "taskId": "task_9c7cb2a4eb42"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:13.000Z",
+      "dependencies": [
+        "task_9c7cb2a4eb42",
+        "task_f5ecbcda47dd"
+      ],
+      "displayName": "P10-90",
+      "status": "pending",
+      "taskId": "task_5fd375237112"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:13.000Z",
+      "dependencies": [
+        "task_5fd375237112"
+      ],
+      "displayName": "P10-EXEC",
+      "status": "pending",
+      "taskId": "task_942fc9e4f987"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:13.000Z",
+      "dependencies": [
+        "task_6c9acf605f14"
+      ],
+      "displayName": "P10-11",
+      "status": "pending",
+      "taskId": "task_f5ecbcda47dd"
+    },
+    {
+      "completedAtUtc": null,
+      "completionEvidence": null,
+      "createdAtUtc": "2026-08-24T21:16:14.000Z",
+      "dependencies": [
+        "task_942fc9e4f987"
+      ],
+      "displayName": "G10",
+      "status": "pending",
+      "taskId": "task_04e52d906959"
+    },
+    {
+      "completedAtUtc": "2026-09-01T04:52:54.321Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "e96cb1cbd180100ec328a072e4aa9b381e820e13a402f4422fbd27f770c26c13",
+        "reportSha256": "b3b3cee5214e493ae2675a38730a3d84363ec3ca48115995929b4d87b8250d8d",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "7b13a68ff2e5215c660cf57126492298da5dbdd63dbecdb40af43968880abc84"
+      },
+      "createdAtUtc": "2026-08-31T13:40:02.179Z",
+      "dependencies": [
+        "task_c4958ebe56e4"
+      ],
+      "displayName": "G6-R1",
+      "status": "completed",
+      "taskId": "task_c627c917ddb9"
+    },
+    {
+      "completedAtUtc": "2026-09-02T14:10:00.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "56a83330bf7d9a45aa217cddae05e2884c67bd5aded6815e3c8e76c33be72ee7",
+        "reportSha256": "9782d57d3711fa0066fe3768f9563a6c09b6b9c51e62f0df3824fa2b507cf2b6",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "32df71e49d9ec13e4ce076bde84c6859f58e2e9ff9522db6fcb2252e10f276fb"
+      },
+      "createdAtUtc": "2026-09-02T04:16:00.000Z",
+      "dependencies": [
+        "task_395d3d07b807"
+      ],
+      "displayName": "P7-VISUAL-R1",
+      "status": "completed",
+      "taskId": "task_0f3e7c8a6d21"
+    },
+    {
+      "completedAtUtc": "2026-09-02T14:30:00.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "e2f94fc7b1d53e20ce856e229fab99e900448410a69062c947662cf129d927b0",
+        "reportSha256": "59cd54ee528362f6fe8bad2cc9d4568361f6ab2dcdfc23d4b0dcec0774a63af1",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "6d7074567fa30256afb0a467075cd182efbb00eccbfa5184b6526c66b905e2b9"
+      },
+      "createdAtUtc": "2026-09-02T14:20:00.000Z",
+      "dependencies": [
+        "task_0f3e7c8a6d21"
+      ],
+      "displayName": "P7-VISUAL-R2",
+      "status": "completed",
+      "taskId": "task_0f3e7c8a6d22"
+    },
+    {
+      "completedAtUtc": "2026-09-03T05:55:58.179Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "d6b8262087c50402dd29470086beceff6e3537860ca2ff8bbe7b77b3e35c16ac",
+        "reportSha256": "0504a29f6b948277ab36bd6402eb019c0cd089f4f17eadb58ebe28a20effce8f",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "220fa9e2f15ebdfe8009df04df0f253edf7ee302b25f23156c89c0e4b77dea6a"
+      },
+      "createdAtUtc": "2026-09-02T14:40:00.000Z",
+      "dependencies": [
+        "task_0f3e7c8a6d22"
+      ],
+      "displayName": "P7-PRESENT-LAYOUT-R1",
+      "status": "completed",
+      "taskId": "task_p7_present_layout_repair_20260902"
+    },
+    {
+      "completedAtUtc": "2026-09-03T16:21:32.411Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "4708d652b4da7de123bab2e0aeecfe6579422ee90409af9a776ae615a1b793b1",
+        "reportSha256": "ac69c1b71da4f1e90c7817451de06a6e40eba367b18be74f84b5e76e25323170",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "5f58048fe1969d56c19384bf1e6747af3eaf1945a6209923ebccce14b925539e"
+      },
+      "createdAtUtc": "2026-09-03T06:45:00.000Z",
+      "dependencies": [
+        "task_p7_present_layout_repair_20260902"
+      ],
+      "displayName": "P7-CONTRACT-R1",
+      "status": "completed",
+      "taskId": "task_p7_contract_reconciliation_20260903"
+    },
+    {
+      "completedAtUtc": "2026-09-04T06:18:34.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "c437e6ca655f21867de9de8840f0c4805f13c84e712172efb04d67119d908779",
+        "reportSha256": "d920c11842a00091da2918aa4ad77150cebea60f4661461ac93e93e323fed121",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "35905600b3e5943e16f57bff2eb2dbba0348eb42094a1c46fabe1cca166bdeb1"
+      },
+      "createdAtUtc": "2026-09-04T06:18:04.000Z",
+      "dependencies": [
+        "task_p7_contract_reconciliation_20260903"
+      ],
+      "displayName": "P7-RHI-VISUAL-R3",
+      "status": "completed",
+      "taskId": "task_p7_rhi_visual_r3_20260904"
+    },
+    {
+      "completedAtUtc": "2026-09-04T13:53:00.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "afa8a5f59922c984073d07f5f873a4b9bfe7f956f173534e22d1a3e46e2e9109",
+        "reportSha256": "200d8e8d9dcd805f7e63486ba250fffc091dd68d96cb849813eed99c9419e7ad",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "a5c3df312cfbe95f5cad8d8772ebb9da28ddfae68e8a711331ac1c4e64bb68be"
+      },
+      "createdAtUtc": "2026-09-04T13:52:00.000Z",
+      "dependencies": [
+        "task_p7_rhi_visual_r3_20260904"
+      ],
+      "displayName": "P7-RHI-VISUAL-R4",
+      "status": "completed",
+      "taskId": "task_p7_rhi_visual_r4_20260904"
+    },
+    {
+      "completedAtUtc": "2026-09-04T14:01:00.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "3b1ecd7932afc9c76e60a97af05d7ff2313df3a6cb8559c0e04173a8424215ce",
+        "reportSha256": "220ebe47e0d50aa3ba57163a34be96cce8c72ebebbfca201cae56bbaeaa65a1e",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "d9f873aa84a0f9f999706e2c90ac5b20fd30c890151a9e52cef8e4c8c8a1667b"
+      },
+      "createdAtUtc": "2026-09-04T14:00:00.000Z",
+      "dependencies": [
+        "task_p7_rhi_visual_r4_20260904"
+      ],
+      "displayName": "G7-R1",
+      "status": "completed",
+      "taskId": "task_g7_r1_bridge"
+    }
+  ],
+  "transitionHeadSha256": "3b1ecd7932afc9c76e60a97af05d7ff2313df3a6cb8559c0e04173a8424215ce"
+}

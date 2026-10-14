@@ -1,0 +1,121 @@
+{
+  "authorization": {
+    "instruction": "continue",
+    "observedAtUtc": "2026-08-31T13:40:02.179Z",
+    "source": "project-owner-conversation"
+  },
+  "documentKind": "local-gate-recovery-authority",
+  "failedGate": {
+    "displayName": "G6",
+    "gateVerdict": "GATE P6 FAIL/BLOCKED",
+    "localVerdictSha256": "309945068c5caa55cad288ffac321167084a959ae0f558a38776167b4a789bff",
+    "reportSha256": "5215beb12d888a744323310620f54dbeda45f6e8c268503fab49abfd9d3d47dd",
+    "taskId": "task_4af12cfad98a",
+    "transitionReceiptSha256": "00c79c551eb7fe71101971d74ceb05a80a11ae3e661da273a7bf3a428babdde4"
+  },
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "ledgerId": "mgif-editor-parity",
+  "lockedInputs": [
+    {
+      "bytes": 165772,
+      "path": "docs/gltf-scene-editor-parity-task.md",
+      "sha256": "bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e"
+    },
+    {
+      "bytes": 151486,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84",
+      "sha256": "1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84"
+    },
+    {
+      "bytes": 50844,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/5912fb9b0d0adadac122249a6698bf4a603592e474346e8d18c10c41a4f6578c",
+      "sha256": "5912fb9b0d0adadac122249a6698bf4a603592e474346e8d18c10c41a4f6578c"
+    },
+    {
+      "bytes": 21091,
+      "path": "docs/editor-parity/p6-90-write-set-rebind.json",
+      "sha256": "225a154deb2918656755aa7bc6dbd4f0d9e1d4e748ee4538828b9fd390618009"
+    },
+    {
+      "bytes": 4479,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/4e0fc69461218848613599ea1a07f0791234d05731eeb8bcd4fddd21621dc5ac",
+      "sha256": "4e0fc69461218848613599ea1a07f0791234d05731eeb8bcd4fddd21621dc5ac"
+    },
+    {
+      "bytes": 8047,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/5215beb12d888a744323310620f54dbeda45f6e8c268503fab49abfd9d3d47dd",
+      "sha256": "5215beb12d888a744323310620f54dbeda45f6e8c268503fab49abfd9d3d47dd"
+    },
+    {
+      "bytes": 1389,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/00c79c551eb7fe71101971d74ceb05a80a11ae3e661da273a7bf3a428babdde4",
+      "sha256": "00c79c551eb7fe71101971d74ceb05a80a11ae3e661da273a7bf3a428babdde4"
+    }
+  ],
+  "parent": {
+    "bundleId": "f7c9d5377328243fe409d926e32b0575acc33231842317c6a56e58544074b946",
+    "pointerSha256": "ffc9b3b37d8fdeed53c2f96c1f35fc965bf3266b6f0ab9a3f6ad3fa94acd8726",
+    "snapshotSha256": "67ac9d81fadfaea2157e8e14f79692dbfb8ad18afaf943c283cbe31ac001bc34",
+    "stateSha256": "c9bcfd164ef92a0dc184f7731b70078069dbfcfd8bf907692614aad9d907abec"
+  },
+  "recoveryTask": {
+    "createdAtUtc": "2026-08-31T13:40:02.179Z",
+    "dependencies": [
+      "task_c4958ebe56e4"
+    ],
+    "displayName": "G6-R1",
+    "evidenceRootPattern": "G:/Temp/mgif-p6-independent-regate-*",
+    "phase": "P6",
+    "repositoryReadOnly": true,
+    "role": "gate",
+    "supersedesEventId": "00c79c551eb7fe71101971d74ceb05a80a11ae3e661da273a7bf3a428babdde4",
+    "taskId": "task_c627c917ddb9"
+  },
+  "scopeCorrection": {
+    "d3d12NativePicking": {
+      "classification": "non-blocking-deferred-rhi-finding",
+      "reason": "The locked platform contract requires D3D12 public/object and compile evidence, not D3D12 native editor runtime."
+    },
+    "gateP6RequiredVisualEvidence": [
+      "selection-highlight-inspector-browser-agreement",
+      "blank-hidden-stale-no-highlight",
+      "logical-to-physical-viewport-and-resize"
+    ],
+    "gateP6Scope": [
+      "selection-authority-and-revision",
+      "occurrence-identity-and-retained-snapshots",
+      "asynchronous-pick-terminal-and-fence-semantics",
+      "single-double-drag-and-input-ownership",
+      "camera-focus-clipboard-highlight-ui-agreement",
+      "high-dpi-resize-and-surface-conversion",
+      "android-exclusion-and-neutral-public-contracts",
+      "zero-forbidden-production-dependencies"
+    ],
+    "laterPhaseVisualEvidence": {
+      "P10": [
+        "complete-V01-V07-and-final-acceptance-matrix"
+      ],
+      "P7": [
+        "V01-grid",
+        "V02-gizmo-components",
+        "V03-parent-space",
+        "V04-depth-xray",
+        "V07-dpi-resize"
+      ],
+      "reason": "Requiring the P7 matrix at G6 would create a dependency cycle because P7-10 depends on an accepted Gate P6."
+    },
+    "sourceRepairAuthorized": false
+  },
+  "successorBinding": {
+    "activationCondition": "G6-R1 latest gate event is GATE P6 ENGINEERING PASS",
+    "downstreamTaskId": "task_1a40c0d302ae",
+    "replacesDependencyTaskId": "task_4af12cfad98a",
+    "replacementDependencyTaskId": "task_c627c917ddb9"
+  },
+  "schemaVersion": 1
+}

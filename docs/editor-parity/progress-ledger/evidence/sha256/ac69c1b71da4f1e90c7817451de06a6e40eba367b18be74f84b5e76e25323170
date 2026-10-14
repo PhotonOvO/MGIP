@@ -1,0 +1,98 @@
+# P7-CONTRACT-R1 Reconciliation Report
+
+Decision: completed reconciliation prerequisite; this is not Gate P7.
+
+## Bound Parent
+
+- Local bundle: `0ed0b2df6009b3d7cec61071d1facb89c2b5bc085d18cfffbece43b917760dc5`
+- Snapshot: `0a2bbf8dd7de19c72aa5278d1d2892828d09325fc4cf456963eb2e2bfb16c88d`
+- Transition head: `d6b8262087c50402dd29470086beceff6e3537860ca2ff8bbe7b77b3e35c16ac`
+- Failed G7 event retained: `e297bd471f5f7a5441abe7bb9e645736b6085987d9e452f4168de71445aca7cd`
+
+The legacy Orca state is a frozen origin only. No Orca runtime, dispatch,
+worker result, or synthetic Orca message participates in this reconciliation.
+
+## Owner Authorization And O06
+
+The project owner authorized continuation under the post-Orca local contract
+in this conversation with the exact instruction:
+
+> `可以, 按照这个契约继续,但是不要反复找我授权,由自动审核`
+
+The owner subsequently repeated that all in-scope execution is allowed and
+that automatic review must be used. This durable report binds that authority
+to the already selected native-visible O06 disposition without requesting a
+new authorization.
+
+Effective O06 rule:
+
+1. Escape and delivered primary-button release in the same application input
+   batch, in either event order and with no intervening rendered application
+   frame, clear selection, retain the latest preview TRS, detach the Gizmo,
+   release capture, and leave transform history unchanged/Undo disabled.
+2. Escape-only while the button remains down has the same no-history detach
+   result; every late or repeated release is a no-op.
+3. A delivered release in an earlier application frame is the ordinary
+   exactly-once commit. Later Escape or focus loss cannot undo or duplicate it.
+
+This is the effective downstream contract. The stale one-command prediction
+in the immutable planning-base task remains historical input and is not used
+as the G7 expected result. The implementation and focused tests already use
+the native-visible no-history rule. No locked specification, manifest, edge
+registry, implementation, or test file is edited by this reconciliation.
+
+## P7-90 RHI Scope Reconciliation
+
+The prior read-only reconciliation report is accepted for exactly these three
+causally required paths and no others:
+
+| Path | Current SHA-256 | Accepted purpose |
+|---|---|---|
+| `render/SceneResources.cpp` | `58bf5e6d6463f8166333e5d4c6d559db60a0cae77cfcb16ce3d1c5ed31491f2a` | Register read-only ImGui views as sampled reads. |
+| `rhi/vulkan/VulkanDevice.h` | `d1e23b4e615d76eaea5bf13aa4aec75d95cabbd9d2de1e1411fbdbf1a52b5731` | Backend-private empty descriptor-set layout ownership. |
+| `rhi/vulkan/VulkanDevice.cpp` | `10cd4d797844152e79ad5bb2571dd0fe710b40aea5c3e173370cb27eec8f1aef` | Sparse Vulkan set lowering and empty-layout lifecycle. |
+
+- Reconciliation report SHA-256: `26c644f82e4768e3076956e92fe32e62bd737cef5a3fc48669d5212155ab35d2`
+- Companion manifest SHA-256: `7518a37b8eee1348ff6636074ad73686b7f879a29d0acfaf365d7987c93661ff`
+
+Rollback is not accepted because it restores the observed `06753` and
+`09600` failures. The reconciliation does not authorize any further RHI path,
+public API, native escape hatch, or later-phase implementation.
+
+## Fresh Windows/MSVC Observations
+
+Windows VS 2022 MSVC amd64 is authoritative; WSL only orchestrated commands
+and inspected hashes.
+
+- Fresh Debug and Release Ninja configurations both passed the final
+  configured production-editor dependency preflight.
+- Both configurations built the requested editor/RHI/D3D12/Demo targets and
+  passed `33/33` focused tests.
+- Build result SHA-256: `2276b9fab0a978e0a5c6576be3ccd8b0252ada53ac24885cf1fb12c7b18eb480`
+- Debug CTest JUnit SHA-256: `399dce2adce60c7bddaddb08e11c1bc2054f6fc8daf5db0b22de8ee1e4797b80`
+- Release CTest JUnit SHA-256: `6247c78c2930670267fb25e2d473897b80967dfc11d3963b7949af46116ccbc1`
+- Fresh Debug Vulkan UI unfiltered completed with zero VUID,
+  `SYNC-HAZARD`, assertion, or device-lost marker; stdout SHA-256
+  `6f0557f4521fcdaae09e6ea664a8450ef329e877797538904d49a48a77b7da9b`.
+- Fresh Release Vulkan UI unfiltered completed and contained only the already
+  classified external `VUID-vkCmdDraw-None-09600`; stdout SHA-256
+  `7fd75ed40af4bef2ffe4eef7ac9b0100fa97ca722f4ece60b8180e55f0620caa`.
+- The same Release executable completed cleanly with the exact P6-91 message
+  filter; stdout SHA-256
+  `3c3b56ea562455c308a09587155bce2837833393a410afe80ffa3d65c77b8bba`.
+- Fresh D3D12 no-UI completed; stdout SHA-256
+  `46a92b3f961e89f1f8997199852ee64f42a08025b48399dfc477a6fe8fc5dede`.
+
+D3D12 native UI still reports unequal present-blit extents. It remains a
+non-blocking deferred runtime finding under locked R21 and the accepted G6-R1
+scope correction: this phase requires D3D12 public/object/compile contracts,
+not a complete D3D12 editor runtime.
+
+## Non-Claims
+
+This receipt has `role=reconciliation`, `gateEvent=null`, and no dependency
+replacement. It does not close V01/V02/V03/V04/V07, does not supersede failed
+G7, does not unblock P8, and does not claim product/release PASS.
+
+Fixed policy remains F42 `BLOCKED`, R24 `BLOCKED`, Metal `Not Verified`, and
+release/distribution `NOT PASS`.

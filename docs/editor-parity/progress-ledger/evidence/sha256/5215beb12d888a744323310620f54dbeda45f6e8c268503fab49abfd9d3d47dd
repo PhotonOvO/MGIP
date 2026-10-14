@@ -1,0 +1,146 @@
+# Gate P6 Independent Review
+
+**Verdict: GATE P6 FAIL/BLOCKED**
+
+This is an independent, read-only, repair-free review of the P6-90 candidate
+after the Windows MSVC validation. It is an engineering Gate only. It does not
+approve release or distribution, resolve F42/R24, or verify Metal.
+
+## Scope and identity
+
+- Repository: `G:\MGIF`
+- Evidence root: `G:\Temp\mgif-p6-independent-gate-20260831T143500Z`
+- Source identity: git head `6c36567625b305286755a734a66188a22df18e77`
+- Source dirty-diff SHA-256: `143c8e5d36646a8cde8c5299bf34a0290c468ba21f3db757500b09ed36d0f1e3`
+- Reference commit: `50373c7b0ff58078727af2c2aac70e29d5e74752`
+- Toolchain: CMake 4.1.2, Ninja, MSVC 19.44.35217.0 / toolset 14.38.33130, amd64
+- Host: Windows 11 build 26100; Vulkan SDK 1.4.328.1
+- Debug executable: 20,720,640 bytes, SHA-256 `9e3474aa3d7adffc488cee506b24ed9306ca9c4a72fb25a32eb6e71f64488608`
+- Release executable: 6,014,464 bytes, SHA-256 `adbb9e670050976fdad4d0080cb1b115be50331c7baa5be665b0a0d1f12c8755`
+
+WSL was used only to orchestrate the Windows-native runs and collate files.
+No Linux build or Linux runtime result is used for this decision. The source,
+progress pointer, and ledger were not modified during the independent review.
+
+## Decision
+
+The engineering Gate is **FAIL/BLOCKED**. The implementation contracts and
+the exercised P6 interaction slice pass, but the locked Gate P6 contract is not
+closed. In particular, a complete V01-V07 visual matrix is absent and the
+required D3D12 native-picking case is unsupported on the tested adapter. The
+missing/unsupported evidence is classified as blocked rather than inferred as
+PASS. Metal and release policy remain explicitly outside this Windows Gate.
+
+## Severity-ranked blockers
+
+### P0 - Required visual matrix is not closed
+
+The locked P6 Gate requires screenshot agreement between selection, highlight,
+Inspector, and the viewport. The specification also requires the V01-V07
+visual/runtime matrix; the independent root contains one UI/highlight window
+capture, but no complete V01 Grid, V02 Gizmo, V03 Parent-space, V04 Depth/X-ray,
+V05 Delta-edit, V06 Topology-swap, and V07 DPI/resize set with the required
+state and pixel assertions. The candidate acceptance report itself records
+`R23` and `F39` as `blocked` with the message that the all-requirement visual
+matrix is not closed. This is sufficient to prevent a Gate PASS.
+
+Evidence: `p6-90-acceptance-report.json` (109034 bytes, SHA-256
+`ba244aa9af3b642f97824c5d811b5d9e444d5b738f6a79c858b464b1855d7349`), and the
+locked Gate wording at `docs/gltf-scene-editor-parity-task.md:901` plus the
+V01-V07 obligations at `:1079-1085` and `:1426`.
+
+### P0 - D3D12 native picking is capability-blocked
+
+The Windows adapter reports no combined `r32Uint`/`d32` sampled attachment
+capability (`formats=0`). The native D3D12 `single-hit` run therefore exits 1
+and is classified `blocked-unsupported-r32uint-d32-capability`; public D3D12
+contracts and the production CSM smoke remain passing, but that does not prove
+native picking. This is an adapter capability limitation, not evidence to turn
+the case into PASS.
+
+Evidence from the sealed Windows run:
+
+- `runtime/native-d3d12/blocked-manifest.json`: 255 bytes, SHA-256
+  `ddaefb2157968348602a6d49e8e460db8b871365b96402fe8857aaba3c351506`
+- `runtime/native-d3d12/single-hit.log`: 7140 bytes, SHA-256
+  `a0bdc1d216ff684046dcc49814db1aa35297cdcbbf0d1aec907219e59e49d3a5`
+- `runtime/native-d3d12/capability-diagnostic.log`: 29192 bytes, SHA-256
+  `1443cdc240654210f27aa8ed27270633c603100b0c692b00dcd45f515f631926`
+
+These three files are from the sealed P6-90 Windows evidence root referenced
+by the independent acceptance report. The diagnostic contains the native
+format probe and the `formats=0` result; the failed process also emits the
+native-interaction-incomplete marker. The independent review does not claim a
+D3D12 native-picking success from the passing D3D12 CSM smoke.
+
+### P1 - Metal is not verified
+
+There is no macOS Metal artifact in this Windows-only review. The platform
+classification remains `Not Verified`/not run and is not converted to PASS.
+
+### P1 - License and release policy remain blocked
+
+F42 and R24 remain `BLOCKED`; release/distribution remains `NOT PASS`. The P0
+dependency logs explicitly retain the rights-reserved development policy and
+do not select an owner root license. This Gate cannot change those fixed
+policy values.
+
+## Passing independent evidence
+
+The following fresh Windows-native evidence was independently inspected and
+all reported zero exit status unless noted above:
+
+- 30 direct Debug/Release focused executables: `tests/direct-results.json`,
+  5779 bytes, SHA-256 `a4132fc5507e031985a0e78ea7b4a6a8c43a8d3eec90d2ac26346449514f4a86`.
+- CTest Debug: 33/33 passed, 0 failed; log SHA-256
+  `a121c877e3f1a5bb29f48be4e9dfa3e5707e7fa590b304b6f2794495804e76d4`.
+- CTest Release: 33/33 passed, 0 failed; log SHA-256
+  `61c6629835492efeb81600a2c1f0427b66631101b0355192587245df4a4f1ba2`.
+- Vulkan native matrix: eight cases (Debug/Release x single-hit,
+  same-primitive-toggle, blank-clear, double-focus), all exit 0; matrix
+  SHA-256 `290b69e26aea233c3a193891b9eb512171814ca144bf2b5c976a0b04e2e4bff0`.
+- Native Vulkan metrics show the expected one terminal per accepted request,
+  selection effects for hit/miss/toggle cases, and one camera effect for
+  double-focus in both configurations.
+- D3D12 production CSM smoke: Debug and Release each completed the 32-sample
+  stable window with `stable_recording_budget_met=true`, zero descriptor or
+  pipeline churn, and no reported validation failure.
+- Shader checks: four SPIR-V validations and six DXIL/DXC dumpbin checks, all
+  exit 0; `logs/shader-results.json` is 1088 bytes, SHA-256
+  `ec9db0b00cc039f728357605ebc42159ee0021ea86d2b48008c591f9421b88a3`.
+- P0 dependency/ImGui identity checks passed in both configurations; Android
+  viewer isolation contract passed.
+
+## Artifact identity anchors
+
+| Artifact | Bytes | SHA-256 |
+|---|---:|---|
+| `source-authority.json` | 16977 | `aea5204c3d7a558e53cb1e3034f3ffe4fe620041146560a8ec96102999403f1e` |
+| `p6-90-integration-report.md` | 4479 | `4e0fc69461218848613599ea1a07f0791234d05731eeb8bcd4fddd21621dc5ac` |
+| `runtime/native-matrix.json` | 1855 | `290b69e26aea233c3a193891b9eb512171814ca144bf2b5c976a0b04e2e4bff0` |
+| `logs/ctest-Debug.xml` | 9878 | `8e6e1f93cd83c54ea461f1bb869786f11daebed7422f144ef7bbbbe6287bf9fa` |
+| `logs/ctest-Release.xml` | 9889 | `2a3998db41e2c28198e639116900fd1e81071c967f21f1da731b7799e52cf2b8` |
+| `runtime/Debug-single-hit.metrics.json` | 1717 | `afd14e1467b48fb9b88fd8028da2c4449d3d22c859b9d061654dd93414d7d9fc` |
+| `runtime/Release-single-hit.metrics.json` | 1717 | `47f535db4e9a88da4fa4f0444e4406eec3f17c76250f94014f92813706f7d8c3` |
+| `runtime/Debug-double-focus.metrics.json` | 1718 | `eb17a3b603fbf151d645210b24b2fc208ae0dbfee6b5a2949f7d2c39fe0107c4` |
+| `runtime/Release-double-focus.metrics.json` | 1718 | `528b0f7a6780e47fbe64346979b88e3689742e90505e6a38e314c9e3f476107e` |
+
+The canonical candidate acceptance summary is `status=blocked`, with 24
+requirements (4 passed, 6 blocked), 42 features (4 passed, 4 blocked), 110
+edges (9 passed, 5 blocked), and five platform rows (three passed, one
+blocked, one not run). It reports zero unresolved waivers.
+
+## Required closure before a re-Gate
+
+1. Produce and independently validate the complete V01-V07 state, screenshot,
+   pixel, DPI/resize, and validation matrix at the locked viewport cases.
+2. Provide a Windows adapter/configuration that supports the combined D3D12
+   picking attachment, or change the contract through an explicit reviewed
+   capability path and rerun native picking; do not waive the failed case.
+3. Keep Metal as `Not Verified` until a macOS artifact exists, and retain F42,
+   R24, and release/distribution policy values unchanged.
+4. Rebuild and rerun the full independent Gate from a fresh evidence root after
+   any source or contract change.
+
+No source repair, progress edit, Orca operation, or Gate P6 PASS is claimed by
+this report.

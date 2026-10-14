@@ -1,0 +1,21 @@
+{
+  "beforeTaskSha256": "5e6516d939de39c504552df6f11ddfe2af476ebaad843c5866796af8569dc91b",
+  "decision": "completed",
+  "displayName": "P8-12",
+  "documentKind": "local-task-verdict",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "cb5ec4abb086dae20fb8b9e922c1ebf366272faf2dde5f210a831a6510db9cea",
+  "parentSnapshotSha256": "9c28aa9ae681cf5eabf720ad34f151b999397ab6cb32a59839f232d7a7c21d10",
+  "reportSha256": "0c86c6f91e01170ef8513a085ac118f14538b318dcadd3829a96dae311a50038",
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskId": "task_2c5f762c2290"
+}

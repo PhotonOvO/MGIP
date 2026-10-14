@@ -1,0 +1,288 @@
+# Gate P5 Independent Successor Review
+
+**Verdict: GATE P5 ENGINEERING PASS**
+
+This is a fresh, independent, read-only, repair-free Gate P5 review of the
+post-R4 source snapshot. It is an engineering gate only. It is not a release
+or distribution approval; F42 and R24 remain BLOCKED, and Metal remains Not
+Verified on Windows.
+
+## Scope and controls
+
+- Repository under review: `G:\MGIF`.
+- Evidence root used for this report: `G:\Temp\mgif-p5-r4-independent-g5-regate-20260828T182423244`.
+- The repository was not edited, staged, committed, reset, cleaned, or
+  repaired. Progress/ledger files were not edited.
+- The forbidden path `G:\MGIF\mgif build entrypoints kftx8g0b\` was not
+  intentionally enumerated, read, hashed, or built. Earlier broad tooling
+  reported access denied for that path; that output is treated as a boundary
+  limitation, not as evidence.
+- `TEMP` and `TMP` for the contained test runs were set to fresh G-drive
+  directories. No C-drive temporary path was required for the accepted
+  evidence.
+- This report does not claim implementation authorship, source repair, task
+  creation, ledger advancement, F42/R24 resolution, Metal verification, or
+  release/distribution PASS.
+
+## Authorities and hash chain
+
+The locked task, readiness authority, compatibility authority, R4 final
+manifest, current progress projection, and available P5 reports were read
+before the source review. Mandatory authority bytes were checked before use:
+
+| Input | Bytes | SHA-256 |
+|---|---:|---|
+| `C:\Temp\MGIF-P5-renderer-delta-readiness.md` | 68932 | `d7edd08f594fba2b05ff73108c17775ea6e04b77cd7874287049d59fe9c51940` |
+| `C:\Temp\MGIF-P5-compatibility-delta-task_9ff369a50b72.md` | 64425 | `b280100878c98467d2936f50630065bb8452a2c762686c734c1cc81c687a06b4` |
+| fresh readiness copy in `authorities/` | 68932 | `d7edd08f594fba2b05ff73108c17775ea6e04b77cd7874287049d59fe9c51940` |
+| fresh compatibility copy in `authorities/` | 64425 | `b280100878c98467d2936f50630065bb8452a2c762686c734c1cc81c687a06b4` |
+| R4 `FINAL-EVIDENCE-MANIFEST.json` | 36268 | `5c21505d9a632ca1b1713cc0e904fdd67fba08e144eac77f3e1666f26cdef08b` |
+| prior v3 validated five-case summary | 355576 | `588d5c97aecb4b7d7d41ab4b46d955917f739c1fc79e05c18fc76e7c32231063` |
+
+The R4 manifest contains exactly 118 records (50 source, 62 evidence
+artifact, and 6 authority records). Independent rehashing recorded 50/50
+source matches, 62/62 artifact matches, and 6/6 authority matches. The old
+G5 report remains historical (`53229abecf410e6311c42ad40666073dd615d720281197bd96526898bce76fee`)
+and is not reused as this verdict.
+
+The compatibility authority names the full successor blueprint at
+`C:\Temp\MGIF-P5-P10-successor-dag-blueprint-v2-20260824.md`, expected
+151486 bytes and SHA-256
+`1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84`.
+That exact historical file is absent from all permitted searched locations.
+The complete compatibility authority itself was available and hash-verified,
+so the Section 7.1 contract was audited from that authority; the missing
+historical blueprint is recorded as an input limitation, not fabricated or
+silently substituted.
+
+The ledger report inventory enumerated 15 P5 task/report references. Available
+reports and manifests were read and hash-checked from their recorded paths;
+historical C:\Temp references that no longer exist remain explicitly absent
+in `ledger-p5-task-reports.json` and were not replaced with nearby files.
+
+## Fresh commands and results
+
+The following are the exact contained commands/results used for this review.
+
+### Configuration and builds
+
+Fresh out-of-source Ninja/MSVC CMake configurations were performed in:
+
+```text
+G:\Temp\mgif-p5-r4-independent-g5-regate-20260828T170222144\build-debug
+G:\Temp\mgif-p5-r4-independent-g5-regate-20260828T170222144\build-release
+```
+
+Both configurations used C++20, `BUILD_TESTING=ON`, Slang from the fresh
+evidence toolchain, Vulkan and Windows D3D12 support, and disconnected
+FetchContent. Configure and build logs are in the primary evidence root.
+Targeted builds completed `342/342` and full target builds completed `94/94`
+for both Debug and Release. The production-editor dependency preflight passed
+in both configurations (`backend_include=0/0`, `vk_token=0/0`,
+`native_getter=0/0`). Existing MSVC C4819 encoding warnings were non-fatal;
+there were no compile or link failures.
+
+### P5-focused CTest selection
+
+The selection below was run with `TEMP=TMP` under the fresh root, once per
+configuration:
+
+```text
+ctest --test-dir G:\Temp\mgif-p5-r4-independent-g5-regate-20260828T170222144\build-debug -R "scene_editor\.(editor_transaction_smoke|editor_transaction_smoke_validator|editor_transaction_path|scene_change_set|scene_change_capture|scene_runtime_mapping|renderer_scene_publication|scene_delta_fake_rhi|rhi_contract|renderer_integration)$" --output-on-failure
+```
+
+```text
+ctest --test-dir G:\Temp\mgif-p5-r4-independent-g5-regate-20260828T170222144\build-release -R "scene_editor\.(editor_transaction_smoke|editor_transaction_smoke_validator|editor_transaction_path|scene_change_set|scene_change_capture|scene_runtime_mapping|renderer_scene_publication|scene_delta_fake_rhi|rhi_contract|renderer_integration)$" --output-on-failure
+```
+
+Results: Debug `10/10 passed`, exit `0`; Release `10/10 passed`, exit `0`.
+The named tests are the P5 change-set, capture, mapping, publisher, fake-RHI,
+renderer integration, RHI contract, transaction path, and transaction smoke
+coverage.
+
+### Full CTest and separate stale harness classification
+
+```text
+ctest --test-dir G:\Temp\mgif-p5-r4-independent-g5-regate-20260828T170222144\build-debug --output-on-failure
+ctest --test-dir G:\Temp\mgif-p5-r4-independent-g5-regate-20260828T170222144\build-release --output-on-failure
+```
+
+Both runs completed 62/63 CTest tests and exit `8`. The sole CTest failure is
+`scene_editor.progress_ledger_protocol` (test #44). Its Python suite ran 25
+cases and reported one assertion plus 26 errors because
+`tests/editor/progress_ledger_validator_tests.py` still assumes the retired
+v2 shape (`schemaVersion == 2`, list-style `tasks` and `gateHistory`,
+`runTaskIndex`, and `decisionGateHistory`), while the current ledger is v4
+with maps. Representative exact failures are `4 != 2`, `KeyError: 0`, and
+`KeyError: 'tasks'`. The current standalone v4 tests
+`scene_editor.progress_ledger_validator` and
+`scene_editor.progress_ledger_updater_check` both passed in Debug and Release.
+
+This is classified as a **separate MEDIUM protocol-test adaptation finding**,
+not a P5 renderer defect. It is not used to downgrade the engineering verdict
+under the coordinator's explicit direction. The full-suite logs are:
+
+```text
+logs/ctest-full-debug-current.log
+logs/ctest-full-release-current.log
+```
+
+### Direct P5 binaries and validators
+
+The direct Debug and Release summaries show exit `0` for every focused binary:
+
+```text
+scene_change_set_tests
+scene_change_capture_tests
+scene_runtime_mapping_tests
+renderer_scene_publication_tests
+scene_delta_fake_rhi_tests
+editor_renderer_integration_tests
+editor_rhi_contract_tests
+editor_transaction_smoke_tests
+editor_transaction_path_tests
+```
+
+The current v4 ledger validator, updater check, dependency boundary checks,
+Android viewer contract, and the independent transaction evidence validator
+also pass. Their captured logs and summaries are retained under the fresh
+primary evidence root.
+
+### Independent five-case Vulkan matrix
+
+The completed independent matrix is
+`G:\Temp\mgif-p5-r4-independent-g5-regate-20260828T174532\runtime\five-case-matrix-v3`.
+It used the Debug executable, Vulkan validation plus synchronization
+validation, `TEMP=TMP` inside the G-drive root, and the current Python
+validator. Aggregate validation is `status=pass`, `total=5`, `passed=5`,
+`failed=0`, exit `0`:
+
+| Case | Exit | Validator | Saved GLB bytes | Saved GLB SHA-256 |
+|---|---:|---:|---:|---|
+| `01-translate-no-post-no-ddgi` | 0 | pass | 132161620 | `d8277c66a0edf81452aee93f5f6acb04e0d9f4cf5cde7654fe626677f6d3435b` |
+| `02-rotate-no-post-no-ddgi` | 0 | pass | 132161620 | `d8277c66a0edf81452aee93f5f6acb04e0d9f4cf5cde7654fe626677f6d3435b` |
+| `03-translate-taa-no-ddgi` | 0 | pass | 132161620 | `d8277c66a0edf81452aee93f5f6acb04e0d9f4cf5cde7654fe626677f6d3435b` |
+| `04-rotate-taa-no-ddgi` | 0 | pass | 132161620 | `d8277c66a0edf81452aee93f5f6acb04e0d9f4cf5cde7654fe626677f6d3435b` |
+| `05-rotate-taa-ddgi` | 0 | pass | 132161620 | `d8277c66a0edf81452aee93f5f6acb04e0d9f4cf5cde7654fe626677f6d3435b` |
+
+Every case contained `scene-ready`, `automation-start`, `undo-observed`,
+`redo-observed`, `save-complete`, `frame-budget-complete`, and
+`automation-complete`. No validation error, sync hazard, device loss, or
+forbidden frame-40 marker was present. The five validated case records and
+the v3 summary are independently hash-bound in the evidence inventory.
+
+Before the requested scope-stop, a duplicate matrix copy was briefly started
+in this new root and terminated during dependency copying; it is explicitly
+excluded from all claims. The completed `...174532` matrix above is the only
+runtime matrix used for the verdict.
+
+## Section 7.1 contract audit
+
+The compatibility authority's complete Section 7.1 and Sections 7.2-8 were
+checked against source and tests. The result is summarized below; PASS means
+the contract is present in source and covered by the fresh focused tests or
+the authenticated matrix, while platform labels retain their required limits.
+
+| Contract area | Independent result and evidence |
+|---|---|
+| Four domains and nine classes | PASS. `DocumentMutation`, `SceneActivation`, `SceneRootState`, `FullSnapshot` and `Transform`, `MaterialParameters`, `MaterialBinding`, `Camera`, `Light`, `Visibility`, `Hierarchy`, `Topology`, `FullRebuild` are frozen in the scene-editor schema and exercised by change-set/capture tests. |
+| Action/value/remap/full-snapshot transport | PASS. Create/update/delete value rules, closed tagged values, immutable snapshot ownership, complete stable-ID remap, and owned request transport are validated before backend work. |
+| Source mutation fence and envelope | PASS. Adjacent revision/digest/token closure, activation/root-state separation, exact base/target fences, and pre-publication overflow checks are enforced in the canonicalizer/publisher. |
+| Canonical determinism | PASS. Canonical sorting/coalescing, dependency order, fixed-width encoding, SHA-256 digest binding, and canonical revalidation are covered by `scene_change_set_tests` and `scene_change_capture_tests`. |
+| Projection/renderer identity split | PASS. Projection `projectionIdentity`/compatibility `runtimeIndex` is not resolved as a live renderer handle; renderer snapshots carry typed generation-bearing handles and separate reverse lookup. |
+| Independent clocks | PASS. Scene activation epoch and root external-state serial are separate fence fields and mismatch classes; typed activation and root-state tests cover no-op/overflow behavior. |
+| Renderer-owned handles and generations | PASS. `RendererObjectHandle` contains kind, index, object generation, renderer generation, and device generation. `validateLiveHandles` performs bidirectional scene, camera, and light equality checks against the active concrete live-handle set. Negative forged scene/camera/light generation tests pass. |
+| Apply disposition/error taxonomy | PASS. The exhaustive dispositions are represented (`AcceptedIncremental`, `AcceptedFullSnapshot`, `AlreadyApplied`, `Rejected`, `FailedBeforeSubmit`, `FailedAfterSubmit`). Typed logical errors include fence, digest, authority, revision, mapping, renderer/device, generation, capability, allocation, descriptor, recording, submission, publication, and retirement classes; `SceneApplyResult` carries backend-neutral `rhi::RHIResult`. |
+| Exact identity replay | PASS. Same canonical identity/digest/bytes returns `AlreadyApplied` with no work; a different byte stream for the same identity is rejected as invalid state. Focused integration and fake-RHI tests cover both paths. |
+| Incremental effects | PASS. Transform updates derive parent-before-child world transforms and bounds; visibility updates effective subtree participation; material and binding updates preserve existing resources and classification; camera-from-view updates camera plus dependent node/world records; light updates recompute attached transforms. No all-live work-list substitution was found. |
+| Transaction visibility and descriptors | PASS. CPU/resource/descriptor staging remains private until one nonthrowing generation publication swap; prepublication validation blocks visible partial mappings. |
+| Queue-token retirement | PASS. Every successful submission token is captured and validated for queue uniqueness/order; superseded/orphan resources are journaled and retired against exact tokens. No device-wide idle is used by accepted incremental or rollback paths. |
+| Fault classes and rollback | PASS. Fake-RHI coverage injects CPU allocation, resource allocation, descriptor, recording, each submission, prepublication, reservation, and retirement-enqueue faults. Old active generation/fence/digest remain unchanged on failure and `partialPublicationCount` remains zero. |
+| Counters and zero-work rules | PASS. Monotonic counters expose received/applied/rejected/failure buckets, per-class operations, uploads, submissions, retirement, rollback, and idle reasons. Continuous edit assertions show zero full rebuild, geometry/texture upload calls/bytes, and device idle, including camera edits. |
+| Full snapshot behavior | PASS. Structural/topology/full rebuild paths carry an explicit reason, stage a candidate, retain the old generation until publication, reuse unchanged resources by identity, and roll back atomically. |
+| Android and Metal boundaries | PASS for required Windows-side contracts. Android viewer/closure tests are 3/3; no desktop editor symbols/workflow is introduced. Metal pre-mutation unavailable behavior is `Unsupported`; Metal runtime remains **Not Verified**. |
+| Public/backend boundary and target closure | PASS. Editor public headers expose MGIF/RHI-neutral values only; boundary and production target scans report zero backend-native getter/include/token findings and zero forbidden `nv*`/reference-helper dependencies. |
+
+Key source anchors reviewed include
+`render/editor/SceneRuntimePublisher.h:53-457`,
+`render/editor/SceneRuntimePublisher.cpp:262-459,930-1505`,
+`render/GPUDrivenRenderer.cpp:2005-2181,2915-3259,3711-4139,4471-4519`,
+`scene/editor/SceneChangeSet.cpp`,
+`scene/editor/SceneChangeCapture.cpp`,
+`scene/editor/SceneCommands.cpp`,
+`scene/editor/SceneRuntimeMapping.cpp`,
+`scene/editor/SceneProjection.cpp`, and the focused tests under
+`tests/editor/`.
+
+## Adversarial search results
+
+The requested explicit searches were bounded to owned source paths and were
+reviewed with context:
+
+- `beginSceneReplacement` and `waitForIdle`: no call occurs in an accepted
+  incremental transaction or rollback path. Remaining occurrences are legacy
+  initialization/reset/shutdown/full-upload lifecycle boundaries (including
+  `render/GPUDrivenRenderer.cpp:4453,4664,5543,6380-6385`) and are not hidden
+  P5 transaction work.
+- Active-resource overwrite/clear: candidate resources are checked for
+  diagnostic-ID and handle collision before descriptor staging
+  (`SceneRuntimePublisher.cpp:1253-1269`); active generation changes only at
+  the single publication swap.
+- Stale handle binding: forged index/kind/object, renderer, device, and source
+  generations are rejected; live mapping and camera/light equality are checked
+  in both directions (`GPUDrivenRenderer.cpp:2005-2181`).
+- Counter laundering: failure paths commit only rejection/failure/rollback
+  deltas; applied counters are committed after publication
+  (`SceneRuntimePublisher.cpp:1118-1195,1379-1465`).
+- Native escape/projection-handle escape: no editor public native device,
+  queue, command-buffer, descriptor, or backend getter path was found; FNV
+  projection identity is kept separate from renderer handles.
+- Android false desktop-editor path: current Android contract is a viewer-only
+  closure and passed; no `app/editor` desktop workflow is claimed for Android.
+- Missing world/bounds/camera/light effects: source lowering and negative
+  integration tests cover transform descendant/bounds updates and camera/light
+  attachment effects; all focused binaries pass.
+
+## Findings, ranked
+
+1. **MEDIUM - stale ledger protocol fixture (non-P5 renderer defect).**
+   `tests/editor/progress_ledger_validator_tests.py` is still a v2 protocol
+   suite and fails against the current v4 map-shaped ledger. This produces the
+   one full-CTest failure (exit 8) in both configurations. It must be adapted
+   separately; it does not invalidate the independently passing P5 contract
+   binaries, v4 validators, or Vulkan matrix and is therefore not a Gate P5
+   engineering blocker under the explicit review direction.
+2. **LOW - unavailable historical successor blueprint input.** The exact
+   blueprint named by the compatibility authority is absent at its expected
+   path and could not be rehashed. The hash-verified compatibility authority
+   contains the complete implementation-ready Section 7.1 contract used here;
+   no replacement blueprint was generated and no source claim depends on an
+   unverified copy.
+3. **INFO - platform/release residuals.** Metal has no Windows runtime
+   verification, F42/R24 have no root-license decision, and release/distribution
+   status is explicitly NOT PASS. These are deliberate non-claims, not hidden
+   Gate P5 failures.
+
+No severity-ranked P5 renderer/source defect was found in the reviewed
+snapshot. In particular, the former stale-generation concern is closed by the
+current bidirectional scene/camera/light checks and passing negative tests.
+The separate mapping-vs-private-registry namespace is documented by the source
+as an ownership boundary; no public registry-handle alias or stale binding was
+demonstrated.
+
+## Final disposition
+
+The accepted P5 engineering scope is independently demonstrated by fresh
+Debug and Release focused suites, direct fault/contract binaries, current v4
+validators, authenticated source/artifact hashes, and a 5/5 Vulkan validation
+matrix. The stale v2 ledger protocol test is carried as a separate medium
+follow-up and is not a renderer gate failure. Therefore this review returns
+exactly:
+
+```text
+GATE P5 ENGINEERING PASS
+```
+
+The sibling `gate-verdict.json` and the Orca worker attestation carry the final
+SHA-256 values for this report and verdict after sealing. Those hashes are not
+embedded recursively in this file, so the byte identity remains stable.

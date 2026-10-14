@@ -1,0 +1,31 @@
+{
+  "completedAtUtc": "2026-08-28T10:50:44.566Z",
+  "dispatchId": "ctx_026fcab5e833",
+  "documentKind": "gate-receipt",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "gateScope": "engineering",
+  "gateTaskId": "task_bd6e62faa588",
+  "gateVerdict": "GATE P5 ENGINEERING PASS",
+  "inputFingerprintSha256": "0193ce58cea1f352569669a3a80140e48081a1bcce9f2a309da35710b3aa6c1d",
+  "phase": "P5",
+  "report": {
+    "bytes": 18703,
+    "path": "G:\\Temp\\mgif-p5-r4-independent-g5-regate-20260828T182423244\\GATE-P5-INDEPENDENT-SUCCESSOR-REPORT.md",
+    "sha256": "2658f7b688cf93c844e821c422af6390e8e0ece501bb7e570d9f7a9c057c6069"
+  },
+  "reviewExecutionOutcome": "succeeded",
+  "runId": "run_ede89c4421e9",
+  "schemaVersion": 2,
+  "supersedesReceiptSha256": "c54ac4bfec9dd72471a291c39682a698e66e4ba80aaea0519eedb0e31a218595",
+  "verdictArtifact": {
+    "bytes": 487,
+    "path": "G:\\Temp\\mgif-p5-r4-independent-g5-regate-20260828T182423244\\gate-verdict.json",
+    "sha256": "b608ec8383d9e83319c17a5c2d3e6f6935cdb48aeb22cdac199953b6ecd87636"
+  },
+  "workerMessageId": "msg_7a580f399454"
+}

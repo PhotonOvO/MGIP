@@ -1,0 +1,95 @@
+# P6-90 Integration Report
+
+## Scope and disposition
+
+P6-90 integrates the frozen P6-00, P6-10, and P6-20 contracts through the
+MGIF-owned projection, renderer facade, GPU picking/readback, selection,
+highlight, clipboard, camera, and host input boundaries. This report is a
+candidate engineering integration record. It does not claim Gate P6,
+release/distribution approval, Metal verification, or a root-license decision.
+
+The authoritative source state is the final `build/authority-source-manifest.json`
+and the two fresh Windows build roots named in `build/machine-identity.json`.
+The three frozen read-only paths match their rebind preimages exactly.
+
+## Source changes closed
+
+- Canonical material descriptor layout and renderer-owned sampler are borrowed
+  by transaction tables; no incompatible Vulkan descriptor layout is created.
+- Transaction vertex/index uploads use explicit `Undefined -> TransferDst ->
+  General` buffer barriers.
+- Vulkan picking targets are created/retired at frame boundaries and resized
+  without recording a stale attachment.
+- D3D12 sparse vertex locations use declaration-order fallback after DXIL
+  reflection compaction.
+- Picking uses a double-sided pipeline so backend Y-flip cannot hide the
+  fixture solely through winding.
+- `EditorViewportRuntime::coherentPickPublication()` binds fence, occurrence
+  generation, projection identity, raw scene epoch, viewport generation, and
+  view revision; stale hit/miss/double-focus terminals have zero side effects.
+- Host input no longer sends the live `io.MousePos` move into Runtime while a
+  native case is active, so delayed samples retain their injected coordinates.
+- A native double-focus result is not overwritten by the fixed automation pose
+  later in the same frame.
+- `RendererFacade::editorPickFence()` exposes the required backend-neutral
+  optional fence accessor while retaining the full publication API.
+
+## Windows verification
+
+All authoritative builds used native Windows Visual Studio 2022 MSVC amd64
+(19.44.35217.0, toolset 14.38.33130), CMake 4.1.2, and Ninja. WSL was used
+only for orchestration and evidence collation.
+
+- Fresh Debug and Release target builds completed successfully.
+- Focused CTest completed `33/33` in both configurations, including selection,
+  picking, integration, RHI, projection, transaction, Vulkan, D3D12, and
+  Android contract tests.
+- Debug and Release direct integration/RHI/D3D12 smoke executables returned
+  zero.
+- SPIR-V validation passed for both generated editor shaders in both
+  configurations; six DXIL entrypoints passed Slang/DXC generation and
+  dumpbin validation.
+- Vulkan CSM production smoke completed 40 frames with empty stderr,
+  `stable_recording_budget_met=true`, and zero counted `VUID-` or
+  `SYNC-HAZARD` diagnostics.
+- D3D12 CSM production smoke completed 40 frames with the same stable budget
+  and empty stderr.
+
+## Native interaction matrix
+
+The final Debug and Release Demo binaries each passed the four Vulkan cases:
+
+| Case | Submitted | Terminals | Selection effects | Camera effects | Highlight occurrence |
+|---|---:|---:|---:|---:|---:|
+| `single-hit` | 1 | 1 | 1 | 0 | 1 |
+| `same-primitive-toggle` | 2 | 2 | 2 | 0 | 1 |
+| `blank-clear` | 2 | 2 | 2 | 0 | 1 |
+| `double-focus` | 1 | 1 | 0 | 1 | 0 |
+
+Every case reported `completed=true`; the final view/selection revisions
+match the expected single-effect transitions. The window-cropped PNG is
+non-empty (`1936x1119`, non-zero mean and standard deviation) and visibly
+contains the Scene Browser, Inspector primitive context, and selection
+outline.
+
+## Explicit limitations
+
+The current Windows adapter reports the combined `r32Uint`/`d32` sampled
+attachment capability as unsupported for D3D12 (`formats=0`). Accordingly,
+the D3D12 native-picking case is recorded as **BLOCKED**, not PASS. D3D12
+public/RHI contracts and production CSM smoke still pass. Metal has no
+macOS artifact and remains **Not Verified / not_run**. F42/R24 and
+release/distribution remain blocked by the locked license policy.
+
+## Evidence map
+
+The companion `p6-90-acceptance-report.json` binds every declared artifact by
+SHA-256. The key records are:
+
+- `build/ctest-Debug.xml`, `build/ctest-Release.xml`
+- `runtime/native-debug/` and `runtime/native-release/`
+- `runtime/vulkan-csm.metrics.json`, `runtime/d3d12-csm.metrics.json`
+- `shaders/shader-validation-manifest.json`
+- `runtime/visual/ui-single-hit-highlight-window.png`
+- `runtime/native-d3d12/blocked-manifest.json`
+

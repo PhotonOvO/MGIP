@@ -1,0 +1,33 @@
+{
+  "beforeTaskSha256": "432921519f86c4add42bab01fa957e04ea9715a966878a5eedf5b04891f179a5",
+  "completedAtUtc": "2026-09-04T19:58:10.553Z",
+  "displayName": "P8-10",
+  "documentKind": "local-task-transition-receipt",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "fromStatus": "ready",
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "a93fc6d3526a781594cbd024f261a3545ec20f8f9154de65265de45338420341",
+  "parentSnapshotSha256": "1bd6c1e5911c834c109221845a948f383658da8c9790b87fd1394c6d51a6107d",
+  "previousTransitionSha256": "39d25102b117ac876dd7aeeb524b092eae0a40ab5356de9a67a0b15ee1986dd3",
+  "report": {
+    "bytes": 2088,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/ef0fb1bdd7750c52ce777e07efa7bfb30d3ea7acf27020d4e75762bcda20e957",
+    "sha256": "ef0fb1bdd7750c52ce777e07efa7bfb30d3ea7acf27020d4e75762bcda20e957"
+  },
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskId": "task_469ac0bc570d",
+  "toStatus": "completed",
+  "verdictArtifact": {
+    "bytes": 794,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/1c9023e4a41ec7ac13462d7ffae43fd194c9738d62c7a41cfd60320ca109593f",
+    "sha256": "1c9023e4a41ec7ac13462d7ffae43fd194c9738d62c7a41cfd60320ca109593f"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "authorization": {
+    "authority": "project-owner-standing-authorization-plus-local-automatic-review",
+    "normalizedInstruction": "Continue under the accepted local contract without repeated authorization prompts; use automatic review.",
+    "scope": "Replace obsolete missing P6-20 paths with the already materialized single picking/router implementation paths; do not expand integration scope."
+  },
+  "authorizedAtUtc": "2026-08-29T01:38:30.000Z",
+  "dependencyEvidence": {
+    "editorPickingTypesSha256": "d8f566959e8b8e7a8a0703164e625bcb16e7deb271f67a74ff43deb314694004",
+    "editorSelectionTypesSha256": "e61645ef7b3daa1043adc4c89e3f2b6002a18ea162a3abc4c4a4ffe9dd6c1ff8",
+    "editorViewportMetricsSha256": "daffc513756e4a71ef8734e87234627bbfc8d7cb0788119d15ff48c5355227aa",
+    "o06ReportSha256": "8d8d35c3aae38e7ad08b1fe7502383027218ad5cbcf1f26172f10ad614a1c456",
+    "p600ReceiptSha256": "06bc686ba941e3e69825460366aad3cefdba5335c90e84402764549f002c34bc",
+    "p610ReceiptSha256": "5db1193abb4b0ba55bb40a0e07da8ca2dab595c2215758a4e048697a4bd00c36",
+    "p610ReportSha256": "d01d7b451593f5ff017c78a06883400f096c81a1d265b1165abd19a6070d6726"
+  },
+  "displayName": "P6-20",
+  "documentKind": "local-task-write-set-rebind",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "gitHead": "6c36567625b305286755a734a66188a22df18e77",
+  "ledgerId": "mgif-editor-parity",
+  "newWriteSet": [
+    {
+      "bytes": 6351,
+      "path": "scene/editor/include/mgif/scene_editor/EditorPicking.h",
+      "sha256": "371a37924fd60f15366388766078cadc17dde96d8b16796c40b69b3e37b5b5ee",
+      "state": "existing"
+    },
+    {
+      "bytes": 13260,
+      "path": "scene/editor/EditorPicking.cpp",
+      "sha256": "15843a9073c1616468304cde86fdcbb7c7074383c66ffb9f9b3dcf6751b29a64",
+      "state": "existing"
+    },
+    {
+      "bytes": 8341,
+      "path": "scene/editor/include/mgif/scene_editor/EditorInputRouter.h",
+      "sha256": "c76e4855c14bf6f21e79429519bd4d87e9a5e6b1fea777915c6baf4f6e282512",
+      "state": "existing"
+    },
+    {
+      "bytes": 23297,
+      "path": "scene/editor/EditorInputRouter.cpp",
+      "sha256": "3f6ddb88fb3ca56345a95ea2a6bcc89489217d6c684bcde3506d067ac8ca2cce",
+      "state": "existing"
+    },
+    {
+      "bytes": 21433,
+      "path": "tests/editor/editor_picking_contract_tests.cpp",
+      "sha256": "f7d3c66aba20dd2766d26309d556776c888096eccb331be0f09202cb401c6ddd",
+      "state": "existing"
+    },
+    {
+      "bytes": 24456,
+      "path": "tests/editor/editor_input_router_tests.cpp",
+      "sha256": "8c4a18f1edc8483ae01ed24a1536d614995fabb8447b9123811def96e4b66c4c",
+      "state": "existing"
+    }
+  ],
+  "oldWriteSet": [
+    "app/editor/EditorClickClassifier.h",
+    "app/editor/EditorClickClassifier.cpp",
+    "app/editor/EditorPickingController.h",
+    "app/editor/EditorPickingController.cpp",
+    "app/editor/EditorInputRouter.h",
+    "app/editor/EditorInputRouter.cpp",
+    "app/editor/EditorCameraBridge.h",
+    "app/editor/EditorCameraBridge.cpp",
+    "app/editor/SceneBrowserFocusAdapter.h",
+    "app/editor/SceneBrowserFocusAdapter.cpp",
+    "tests/editor/editor_click_classifier_tests.cpp",
+    "tests/editor/editor_picking_controller_tests.cpp",
+    "tests/editor/editor_input_router_tests.cpp"
+  ],
+  "pathMappings": [
+    {
+      "newPaths": [
+        "scene/editor/include/mgif/scene_editor/EditorPicking.h",
+        "scene/editor/EditorPicking.cpp"
+      ],
+      "oldRoles": [
+        "EditorClickClassifier",
+        "EditorPickingController",
+        "EditorCameraBridge interface",
+        "SceneBrowserFocusAdapter interface"
+      ]
+    },
+    {
+      "newPaths": [
+        "scene/editor/include/mgif/scene_editor/EditorInputRouter.h",
+        "scene/editor/EditorInputRouter.cpp"
+      ],
+      "oldRoles": [
+        "EditorInputRouter"
+      ]
+    },
+    {
+      "newPaths": [
+        "tests/editor/editor_picking_contract_tests.cpp",
+        "tests/editor/editor_input_router_tests.cpp"
+      ],
+      "oldRoles": [
+        "click classifier tests",
+        "picking controller tests",
+        "input router tests"
+      ]
+    }
+  ],
+  "reason": {
+    "duplicateAuthorityRisk": "Creating the old missing app paths would introduce a second classifier/router beside the already used scene/editor implementation.",
+    "publicTypeConflict": "The current EditorPicking header duplicates request/result names now frozen by P6-10 and must be replaced in place rather than layered.",
+    "repositoryDrift": "The implementation materialized before the recovered successor blueprint under scene/editor paths; production runtime integration subsequently grew in P6-90-owned app paths."
+  },
+  "requirements": [
+    "Consume the frozen P6-00 selection and viewport contracts and the P6-10 terminal picking contract read-only.",
+    "The controller emits effects for the single SceneSelection authority and does not own selection state.",
+    "Second press emits double immediately; single emits only when elapsed is strictly greater than the configured threshold and samples current pointer/metrics.",
+    "Commit terminal results in serial order while cancellation/error releases head-of-line.",
+    "Implement owner-bound O06 whole-batch arbitration: both same-batch Escape/release orders are no-history; a prior-frame ordinary release commits once.",
+    "Camera and Browser focus remain fakeable effects; Browser reveal never changes the active tab.",
+    "Do not edit runtime, UI, controller, facade, renderer, CMake, history, ledger, or locked parity documents in P6-20."
+  ],
+  "reservedForP690": [
+    "app/editor/EditorViewportRuntime.h",
+    "app/editor/EditorViewportRuntime.cpp",
+    "app/editor/SceneEditorUi.h",
+    "app/editor/SceneEditorUi.cpp",
+    "app/editor/EditorController.h",
+    "app/editor/EditorController.cpp",
+    "app/MinimalLatestApp.h",
+    "app/MinimalLatestApp.cpp",
+    "render/RendererFacade.h",
+    "render/RendererFacade.cpp",
+    "render/GPUDrivenRenderer.h",
+    "render/GPUDrivenRenderer.cpp",
+    "CMakeLists.txt"
+  ],
+  "revisionSha256": "06f2d2ba35d77604012b4488e00afcd089fb954bb2637b904046aac452989f8e",
+  "schemaVersion": 1,
+  "selectedParent": {
+    "bundleId": "e5f2c2ace1e85efe2972123cd8df1855f7a347b2bd417015747289b998e549c8",
+    "pointerSha256": "e26a1097cdb5640173711e5f03922ddf33519b76739a5c8f548f172bc6822c72",
+    "snapshotSha256": "bf3bade267d830c03b93ca26caaa61e015e03691958f5d07390bad87e9902260",
+    "transitionHeadSha256": "e6b8aa65967b3afb19f8fce76c830f1317a5ecc0fb7ce4c709c14da2053b3701"
+  },
+  "taskId": "task_4f88b986a42c"
+}

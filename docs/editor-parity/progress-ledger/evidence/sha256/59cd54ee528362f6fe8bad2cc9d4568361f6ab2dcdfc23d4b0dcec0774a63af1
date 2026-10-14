@@ -1,0 +1,45 @@
+# P7-VISUAL-R2 Recovery Report
+
+Decision: follow-up bounded visual integration recovery completed.
+Role: integration; this receipt does not declare Gate P7.
+
+Parent bundle: 6850b93b4458d9440fad554440bc5734507a1b75107b0ee555a4c3734377ab4b
+Parent snapshot: ac08c53778a8103c9af7b1b4e15a6baa12c6184985482ab51c5d27055f06c0ef
+Previous transition: 56a83330bf7d9a45aa217cddae05e2884c67bd5aded6815e3c8e76c33be72ee7
+Task definition SHA-256: 862fa025403ba36922277295a493effd27328b079cc5c8d06cf3509f0ce08bbb
+Authority artifact: 572 bytes, b376f352c5f3c149161393d3cb0a6183ec55ca8dea2ac23dcc50d6bb1db1c530
+
+Bounded write set (exactly four paths):
+app/MinimalLatestApp.h; bytes=285973; sha256=409560d90f69bd73dfa91cc65b5512609bf6fbdf1e803b30d3d11f646ffd8b9c
+app/MinimalLatestApp.cpp; bytes=12965; sha256=4bcbb5c5531b96fec68f5e5b84be2ca1c6a0e4d8d09a7e1113159d7c086da5c8
+tools/editor_visual_capture.ps1; bytes=33862; sha256=da97506dacd6eac6834ca246079df56be40d9a09d1144fef1ed91363f5dc6588
+tests/editor/editor_visual_capture_contract_tests.py; bytes=2760; sha256=795a327e2dcba2d008a965ef5718a5b423ee44f521aa479b97387d0a8658e910
+Combined source identity: 02c981241ec09ec1f91009f7db8bc36e20b70e7c6393960a5ebed7e62abb90ec
+The only post-R1 source change is the local runtime-pointer indirection that preserves the desktop overlay call while satisfying the Android source contract scanner. No ledger, .codex, locked spec/manifest, or RHI scope-reconciliation path was modified.
+
+Release executable: G:\Temp\mgif-p6-90-msvc-20260831T134500Z-Release\Demo.exe; sha256=01aa86e118c69e5d7c6ea2bf1c86f3c34f7db4389b68fefde74671ae1b32857d
+Debug executable: G:\Temp\mgif-p6-90-msvc-20260829T151147Z-Debug\Demo.exe; sha256=4ea5e0110f0d06035884c17fc3eba564f50f2c1fa5e95ccccdf96b85b29cd6ce
+Release evidence manifest sha256: 4157f2715e58063f857474a3c004b620e222a2c93181a27326113bb72241bdb1
+Debug evidence manifest sha256: fd4be6b0ba7050d35a7f3353657b50fff0bf5c4d1336ae5390c612e26645f418
+
+Release cases:
+V01-grid: PNG 960x540; markers=6; metrics=904; stderr=0
+V02-gizmo-components: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+V03-parent-space: PNG 960x540; markers=6; metrics=906; stderr=0; hover=[2]; active=[2]
+V04-depth-xray: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+V07-dpi-resize: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+
+Debug cases:
+V01-grid: PNG 960x540; markers=6; metrics=904; stderr=0
+V02-gizmo-components: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+V03-parent-space: PNG 960x540; markers=6; metrics=906; stderr=0; hover=[2]; active=[2]
+V04-depth-xray: PNG 960x540; markers=6; metrics=909; stderr=0; hover=[2]; active=[2]
+V07-dpi-resize: PNG 960x540; markers=6; metrics=905; stderr=0; hover=[2]; active=[2]
+
+Windows MSVC Release and Debug rebuilds and focused Gizmo tests exited 0. Windows RHI boundary guard reported 0/0/0; Android viewer contract tests passed 9/9; visual contract tests passed 4/4. Final Release V07 DPI/viewport roots passed for 125/150/200 percent and 1280x720/1920x1080/2560x1440 requests.
+
+The visual harness records VK_LAYER_MESSAGE_ID_FILTER=VUID-vkCmdDraw-None-09600 as the P6-91 external-capture exception; this remains separate from unfiltered RHI reconciliation.
+
+Non-claims: gateEvent is null and dependencyReplacements is empty. G7 remains FAIL/BLOCKED and P8/P9/P10 remain blocked. Full normative visual sub-variants, Escape reconciliation, P0/D20 residuals, and three-path RHI reconciliation are not reclassified. Fixed policy remains F42 BLOCKED, R24 BLOCKED, Metal Not Verified, release/distribution NOT PASS.
+
+This receipt only records the follow-up visual integration leaf and does not supersede the failed Gate event.

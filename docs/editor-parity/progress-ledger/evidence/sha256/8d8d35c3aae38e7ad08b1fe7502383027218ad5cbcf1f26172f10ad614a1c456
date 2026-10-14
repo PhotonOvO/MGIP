@@ -1,0 +1,78 @@
+# O06-BIND Local Contract Binding Report
+
+## Result
+
+`O06-BIND` is completed under the post-Orca local progress contract. This is
+an evidence and disposition binding task, not an implementation change. The
+local result permits `P6-00` to become runnable after deterministic receipt
+replay; it does not claim a P6 engineering Gate, Metal verification, license
+clearance, or release approval.
+
+## Execution Boundary
+
+- Repository: `G:\MGIF`
+- Executor: `local-automatic-review`
+- Repository files modified by this task: none
+- Legacy Orca pointer and its selected bundle were read as a frozen origin;
+  no orchestration command, runtime query, dispatch, worker identity, or
+  synthetic Orca result was used.
+- Durable local artifacts use repository-relative content-addressed paths.
+
+## Authority identities
+
+| Authority | Bytes | SHA-256 |
+|---|---:|---|
+| Recovered successor blueprint (`C:\Temp\MGIF-P5-P10-successor-dag-blueprint-v2-20260824.md`) | 151486 | `1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84` |
+| Recovered P6 readiness (`C:\Temp\MGIF-P6-selection-picking-readiness.md`) | 50844 | `5912fb9b0d0adadac122249a6698bf4a603592e474346e8d18c10c41a4f6578c` |
+| Recovered P7 readiness (`C:\Temp\MGIF-P7-gizmo-grid-readiness.md`) | 74408 | `1e2ce3ac038e8ead39f5634caeda1fc22a4c3e1a8ac383d915130b5c462616ac` |
+| Blueprint recycle-bin metadata | 146 | `b5c861645fb13e09a82564ea9c8d919fe9d1fabcdd46eaaf91e22d900ed8f617` |
+| P6 readiness recycle-bin metadata | 122 | `447ac3c384e499632229e334a02986de55218624b722841030dae852a328970e` |
+| P7 readiness recycle-bin metadata | 108 | `cbaabd5184414c2c7eeb47154826318e03d5d9264604b15e66d0408c1eaaab42` |
+
+The three recovered bodies and their recycle-bin path metadata were copied
+byte-for-byte into the repository evidence CAS. The two older independent
+audit/P4 integration inputs named by the historical contract remain absent;
+they are recorded as historical debt rather than replaced by guesses.
+
+## O06 disposition
+
+The native evidence in `docs/editor-parity/reference-traces/UI-SEMANTIC-REPORT.md`
+and `ui-semantic-index.json` establishes the following visible result for both
+event orders in one renderer frame:
+
+1. Escape then left-button release clears selection, retains the last preview
+   transform, detaches the gizmo, and leaves Undo disabled.
+2. Left-button release then Escape produces the same visible result.
+3. A normal release in a separate frame remains the ordinary single commit.
+
+The private callback ordering and direct history memory are intentionally
+bounded debt. The manifest's existing `disposed_with_debt` and
+`observed_behavior_authoritative` disposition is retained; it is not upgraded
+to an unconditional parity claim.
+
+## Local-contract decision
+
+The current implementation/test disagreement about same-frame commit is
+outside O06's write scope. It is carried to the P6/P7 integration work, where
+the runtime router and renderer transaction must be reconciled with the
+observed native result. No source, test, locked task, manifest, or edge file
+was edited here. Under the local contract, O06 is nevertheless a completed
+binding receipt because the authority and observable result are fully
+identified and the remaining implementation conflict is explicitly assigned
+to its owning phase.
+
+## Dependency result
+
+The frozen origin contains `G5=completed` and `P4=completed`; the O06 task is
+`ready` and its declared dependencies are satisfied. The local resolver will
+therefore set `O06-BIND=completed` and derive `P6-00=ready` without creating a
+dispatch or worker record.
+
+## Fixed policy
+
+- `F42=BLOCKED`
+- `R24=BLOCKED`
+- `Metal=Not Verified`
+- `release/distribution=NOT PASS`
+
+This report does not change those values.

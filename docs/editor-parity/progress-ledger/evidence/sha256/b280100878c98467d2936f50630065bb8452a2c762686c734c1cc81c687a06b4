@@ -1,0 +1,824 @@
+# MGIF P5 Compatibility Delta and Rebind Blueprint
+
+Task: `task_9ff369a50b72`  
+Date: 2026-08-24 (Asia/Shanghai)  
+Disposition: **BOUNDED CORRECTIONS REQUIRED**  
+Scope: planning and compatibility audit only; no repository edit, build, task creation, dispatch, or Gate claim.
+
+## 1. Executive disposition
+
+The accepted P5-P10 v2 successor graph remains the structural base. It must not be replaced by a competing DAG. Its 39 logical nodes, 60 dependency entries, 26 engineering/Gate waves, integration ownership, ledger ordering, and every non-root dependency remain authoritative unless this report names a bounded amendment.
+
+The frozen v2 artifact set is not materializable as written. It binds the failed Gate P4 task `task_c346ebff90f2` as its sole Gate P4 identity, while the only permissible fresh re-Gate identity is now `task_d73712d125c5`. That defect reaches the blueprint, manifest, validator, materializer, embedded task specs, and rehearsal report. None of those frozen artifacts may be edited in place.
+
+Current post-P4 source also proves four bounded P5 contract corrections:
+
+1. Exact change capture needs ownership of the actual mutation/result producer surfaces. `MutationResult.changedIds` still expands to all live resolved IDs, and the post-P4 command wrappers discard the remaining mutation evidence while converting to `CommandResult`.
+2. Projection identity and renderer identity must be split. `SceneRuntimeMapping` is a document-to-SceneAsset projection map; the renderer, not the editor projection, must own actual generation-bearing renderer/RHI handles.
+3. Scene activation and root preview are two different non-document clocks. Add a document-owned scene-activation epoch and retain the existing per-scene `externalStateSerial` as the root-preview fence.
+4. Android desktop-editor lifecycle work is outside locked P5 scope. P5 must preserve Android build isolation and the existing viewer path, but a new Android surface-lifecycle architecture is not a Gate P5 requirement.
+
+These corrections do not authorize P5. The start condition remains a fresh independent **GATE P4 ENGINEERING PASS** from `task_d73712d125c5`, followed by a fresh independent audit of the rebound successor artifacts and explicit coordinator authorization. This report does not claim P5 readiness, Gate P5 PASS, release PASS, distribution PASS, Metal verification, or F42/R24 resolution.
+
+## 2. Authority and frozen identities
+
+### 2.1 Required authorities
+
+All three required authorities were read in full before this disposition was produced.
+
+| Authority | Bytes | SHA-256 |
+|---|---:|---|
+| `G:\MGIF\docs\gltf-scene-editor-parity-task.md` | 165772 | `BFD4B5FFE8D73B9BB887047A8CAD5AD96C7184D182EEB752AA47028B05BD679E` |
+| `G:\MGIF\docs\gltf-scene-editor-parity-progress.md` | 20185 | `E6C0770B8059CAC05F4B2991D17AB340B1B98A33159B7F67628F5DE1E26903C9` |
+| `C:\Temp\MGIF-P5-renderer-delta-readiness.md` | 68932 | `D7EDD08F594FBA2B05FF73108C17775EA6E04B77CD7874287049D59FE9C51940` |
+
+Precedence used here is: locked parity task and coordinator Gate identity, then current source, then readiness/audit planning artifacts. A planning artifact cannot turn a failed Gate task into a successful predecessor.
+
+### 2.2 Accepted successor artifacts
+
+| Artifact | Bytes | SHA-256 | Compatibility status |
+|---|---:|---|---|
+| `C:\Temp\MGIF-P5-P10-successor-dag-blueprint-v2-20260824.md` | 151486 | `1C3B4A6AC53AD51D74B388894E52A3BD739E6FCA53DAF44D0F47712247818D84` | Structurally accepted; stale Gate root |
+| `C:\Temp\mgif-p5-p10-v2-independent-audit-20260824-02\p5-p10-v2-independent-audit.md` | 33585 | `B3432BF592AC48C7BEB673CEC6D587B6FBD5F3A8C8E47A97DE6A3699E8A4D81A` | Valid audit of the frozen v2 identity; cannot audit a rebound successor |
+| `C:\Temp\mgif-p5-p10-dag-materialization-20260824-152420-91e6c23e\manifest.json` | 166897 | `17F13C306BDB72A1B85CC91E70EBBEF1133E393F1E25D2A01E55CAEF516ECCA7` | Incompatible until regenerated |
+| `C:\Temp\mgif-p5-p10-dag-materialization-20260824-152420-91e6c23e\validate.ps1` | 23944 | `17F6EBA4AC4440CA6BBE59983E324DD3CF2C65B5E4A6E6E6D1EB469AD29F4875` | Incompatible until regenerated |
+| `C:\Temp\mgif-p5-p10-dag-materialization-20260824-152420-91e6c23e\materialize-after-gate.ps1` | 17912 | `AEF102603AB805B0E789C916CCD1133D59F6E521AAF4B748A65FF4CD6725E26B` | Incompatible until regenerated |
+| `C:\Temp\mgif-p5-p10-dag-materialization-20260824-152420-91e6c23e\report.md` | 4365 | `9DA6C198678D463CAB411650494D978F0256600CDD8B54C6452009B1AA9A2006` | Historical rehearsal only |
+
+The historical rehearsal passed 2527 checks over 39 nodes, 60 dependencies, 26 waves, 32 repeated paths, 93 ordered same-path owner pairs, and zero unordered writers. Those results prove the original graph mechanics, not compatibility with the new Gate root or the post-P4 producer surfaces.
+
+### 2.3 Current post-P4 source findings
+
+Only exact source paths cited by the authorities were inspected. No repository-root recursive discovery or Git assumption was used.
+
+| Finding | Current evidence | P5 consequence |
+|---|---|---|
+| Stable IDs already carry kind, document authority, slot, and generation. | `scene/editor/include/mgif/scene_editor/EditorObjectId.h` | Reuse or losslessly wrap them; do not invent index identity. |
+| Camera-from-view is now atomic in source. | `scene/editor/SceneCommands.cpp:6276` defines `setCameraFromView`. | Include camera property and node transform effects in one captured transaction, but treat the repair as ungated until fresh P4 re-Gate PASS. |
+| Generic mutation capture is still imprecise. | `scene/editor/SceneCommands.cpp:1279-1287` appends every resolved live ID; the same pattern exists at `3982-3987` and `4415-4420`. | Replace all-live output with typed exact fields or an explicit reason-coded full snapshot. |
+| Post-P4 history exists. | `scene/editor/include/mgif/scene_editor/commands/EditorHistory.h` exposes execute/undo/redo and `HistoryResult`. | The readiness statement that production history is absent is obsolete. |
+| History loses mutation evidence. | `scene/editor/include/mgif/scene_editor/commands/EditorCommand.h` gives `CommandResult` only status/error/policy/revisions/selection/message. `TransformCommands.cpp:68-79` and analogous property/hierarchy converters move only those fields. | `CommandResult`, and therefore embedded `HistoryResult.command`, must preserve typed changes, token, and remap so Undo/Redo publish ordinary forward deltas. |
+| Scene selection has no independent clock. | `scene/editor/GltfDocument.cpp:982` changes the active scene without advancing revision or a scene epoch. | Add a checked monotonic scene-activation epoch; do not fabricate a document edit. |
+| Root preview already has a suitable separate clock. | `scene/editor/GltfDocument.cpp:696`, `1001-1010`, and `1021-1026` maintain per-scene `externalStateSerial`. | Reuse it as the root-state fence rather than conflating it with scene activation. |
+| Projection mapping is not a renderer handle map. | `SceneRuntimeMapping.h:20-58` stores document ID, asset index, and `runtimeIndex`; `SceneProjection.cpp:21-31` derives runtime identity with FNV. | Rename/interpret this as projection identity. Actual renderer handles belong in a renderer-owned snapshot. |
+| Facade has no transaction contract. | `render/RendererFacade.h:39-54` exposes legacy full commit, transform updates, runtime sync, and public idle. | Add backend-neutral apply/result/fence APIs; no native backend escape hatch. |
+| Full commit is destructive before success. | `render/GPUDrivenRenderer.cpp:2146-2177` enters `beginSceneReplacement`; current replacement idles and clears active state. | Both incremental and full snapshot paths require candidate staging, atomic publication, rollback, and deferred retirement. |
+| Full upload can look partially successful. | `render/RenderDevice.cpp:5863-6375` asserts plan validation and can skip unsupported/failed required resources; `RenderTypes.h:431-473` has vectors but no status/fences. | Required-resource failure rejects the candidate; optional placeholder policy must be explicit in result and counters. |
+| Registry/RHI foundations are useful. | `render/GPUSceneRegistry.*`, `rhi/RHIDebugCounters.h`, and cited Vulkan/D3D12 device paths already model generation-safe handles, dirty ranges, submission dependencies, and deferred destruction. | Reuse MGIF-owned abstractions. Do not add native backend access or reference helpers. |
+
+The progress ledger still records the old independent Gate as FAIL/BLOCKED. It is not proof of the repaired snapshot and must not be rewritten by this task. The fresh task identity and its future evidence bundle are the only admissible successor root.
+
+## 3. Explicit contradiction resolution
+
+| Apparent contradiction | Resolution used by the rebound P5 contract |
+|---|---|
+| Readiness says no production Undo/Redo stack; source now contains `EditorHistory`. | History mechanics exist, but renderer-change evidence is not preserved through `CommandResult`. P5 fixes evidence transport and tests execute/undo/redo as separate forward revisions. |
+| Readiness and v2 place actual renderer handles inside `SceneRuntimeMapping`. | Split the layers. Projection owns stable-ID-to-asset mapping and projection identity. Renderer owns stable-ID-to-live-handle mapping plus renderer/device generations. |
+| V2 says one scene/view epoch; current source has scene selection plus per-scene root preview serial. | Use two clocks: `sceneActivationEpoch` for active-scene changes and existing `externalStateSerial` for root preview/reset. Both are carried independently in fences. |
+| Readiness asks for Android surface/device redesign; locked task says Android has no desktop editor UI. | Gate P5 requires Android compile/link isolation and no desktop editor symbols. It does not require an Android incremental editor queue or surface-lifecycle redesign. |
+| Readiness sketches geometry/texture replacement deltas. | Geometry-content authoring is outside the locked editor scope. P5 full snapshots must still upload atomically and account bytes, but specialized geometry/texture authoring deltas are not added as a P5 Gate prerequisite. |
+| Historical full rebuild allowed idle-and-clear as an admitted limitation. | The requested P5 contract requires candidate generation, nonthrowing atomic swap, failure rollback, and token-based deferred destruction. A normal topology/full snapshot cannot clear the active generation first. |
+| V2 structural validation was PASS. | It was PASS relative to the old task identity and old write corpus. Rebinding and the bounded P5-10 ownership additions require regeneration and a new independent audit; the old PASS cannot be inherited. |
+
+## 4. Stale-root incompatibility and TEMP-only replacement
+
+### 4.1 Incompatibility matrix
+
+| Frozen component | Stale binding | Required replacement behavior |
+|---|---|---|
+| V2 header/preconditions | Declares `task_c346ebff90f2` the fresh Gate P4 predecessor. | Declare only `task_d73712d125c5`. |
+| Dependency registry | P5-00 and X-O06 directly depend on the old task. | Preserve exactly two Gate-root edges, both to the new task. |
+| Copy-ready specs | P5-00/X-O06 text forbids replacing the old ID. | Regenerate specs with the new ID and new evidence-bundle contract. |
+| `manifest.json.rootCondition` | `taskId` and `bundleMustEqual` use the old task. | Both must equal the new task; schema remains version 1. |
+| Manifest nodes/spec hashes | P5-00 and X-O06 embed the old ID; P5 specs embed old contract text. | Regenerate from the rebound blueprint; recompute every affected full-spec hash. |
+| `validate.ps1` | `$GateP4TaskId` is the old task and all reachability checks use it. | Bind the new task and dynamically recompute the corrected write corpus. |
+| `materialize-after-gate.ps1` | Bundle equality, dependency resolution, and state use the old task. | Bind the new task everywhere and fail closed on any other bundle ID. |
+| Old independent audit | Normalizes the old task to G4 and calls it the sole root. | Preserve as history; create a fresh independent rebound audit. |
+| Rehearsal report | Calls the old task the sole Gate root. | Create a new report after rebound validation and negative dry runs. |
+
+The old task ID must never be the asserted PASS identity in a replacement bundle, root condition, task dependency, materialization state, or Gate report metadata. Historical artifacts may mention it only as a failed predecessor and are never accepted as new Gate evidence.
+
+### 4.2 Replacement artifact layout
+
+Create a unique TEMP-only root such as:
+
+```text
+C:\Temp\mgif-p5-p10-rebound-task_d73712d125c5-<UTC timestamp>-<nonce>\
+  successor-blueprint-rebound.md
+  blueprint-independent-audit.md
+  manifest.json
+  validate.ps1
+  materialize-after-gate.ps1
+  materialization-independent-audit.md
+  rehearsal-report.md
+```
+
+Do not overwrite, rename, or delete any frozen v2 file. Do not write under `G:\MGIF` during rebind/audit/rehearsal.
+
+### 4.3 Regeneration sequence
+
+1. Re-read and byte/hash verify all authorities and frozen inputs by their explicit paths. Stop on any mismatch.
+2. Generate a new blueprint copy in the unique TEMP root. Replace the Gate lineage only with `task_d73712d125c5`, then apply only the bounded P5 amendments in Sections 6-9 of this report. Do not alter any other dependency edge, wave, ledger rule, downstream phase contract, or owner authorization rule.
+3. Have a worker who did not author the rebound blueprint independently reconstruct the graph, audit the P5 amendments, and write `blueprint-independent-audit.md`. It must not repair the blueprint.
+4. Generate `manifest.json` from the closed rebound blueprint, never by editing the old manifest. Recompute embedded specs, source lines, spec SHA-256 values, write ownership, repeated-path pairs, and artifact identities.
+5. Generate new validator and materializer scripts that bind the closed rebound blueprint and fresh independent audit by exact path, bytes, and SHA-256. The literal Gate root is only `task_d73712d125c5`.
+6. Run the new validator. Required structural invariants remain 39 nodes, 60 dependency entries, 26 waves, 58 successor-internal dependencies, exactly two direct Gate-root entries, 39/39 reachability, zero cycles, zero unknown dependencies, zero same-wave collisions, and zero unordered same-path writers. The amended ownership corpus is expected to contain 251 owner/path entries and 197 case-folded unique paths: the old 243/189 corpus plus eight currently unowned P5-10 producer paths. The 32 repeated paths and 93 ordered owner pairs are expected to remain unchanged. The validator must derive and compare these values from the rebound blueprint rather than inherit historical constants.
+7. Have another independent reviewer audit the complete rebound set and write `materialization-independent-audit.md`. This review must verify identities, scripts, Gate schema, negative tests, no task creation, and the amended P5 contract. It must not repair artifacts.
+8. Only after fresh P4 evidence exists, execute the materializer without `-Execute`. Write a new `rehearsal-report.md` that records the exact command, stdout/stderr, exit code, artifact identities, negative tests, missing state path, and zero created tasks.
+9. A dry-run PASS still does not authorize `-Execute`. Explicit coordinator authorization is required after both independent audits and the fresh Gate bundle pass.
+
+### 4.4 Structural invariants preserved
+
+```text
+task_d73712d125c5
+  -> P5-00
+       -> P5-10 ----\
+       -> P5-20 -----+-> P5-90 -> G5
+
+task_d73712d125c5 + G5 -> X-O06 (owner-authorized, delayed, unchanged)
+```
+
+All non-root dependency arrays remain byte-for-byte equivalent after placeholder normalization. W0 is P5-00; W1 is the collision-free parallel pair P5-10/P5-20; W2 is exclusive integration P5-90; W3 is independent G5. X-O06 remains W4 and does not become a P5 implementation task.
+
+## 5. Fresh Gate P4 evidence contract
+
+### 5.1 Required schema version 1 bundle
+
+The replacement materializer accepts one exact, closed JSON document of this shape:
+
+```json
+{
+  "schemaVersion": 1,
+  "taskId": "task_d73712d125c5",
+  "taskOutcome": "succeeded",
+  "engineeringVerdict": "GATE P4 ENGINEERING PASS",
+  "successorWorkPermitted": true,
+  "implementationSnapshotDrifted": false,
+  "gateP4Report": {
+    "path": "C:/Temp/<fresh-gate-root>/gate-p4-report.md",
+    "bytes": 1,
+    "sha256": "<64 uppercase hexadecimal characters>"
+  },
+  "p4IntegrationReport": {
+    "path": "C:/Temp/<fresh-integration-root>/p4-integration-report.md",
+    "bytes": 1,
+    "sha256": "<64 uppercase hexadecimal characters>"
+  },
+  "p4PostEditManifest": {
+    "path": "C:/Temp/<fresh-integration-root>/p4-post-edit-manifest.json",
+    "bytes": 1,
+    "sha256": "<64 uppercase hexadecimal characters>"
+  }
+}
+```
+
+The illustrative byte values must be replaced with the exact positive byte counts. The three normalized paths must be distinct, fresh, outside the repository, and hash-bound to the supplied bytes. The materializer recomputes every identity from bytes and rejects metadata-only assertions.
+
+The Gate report must contain exact structured metadata for `task_d73712d125c5` and the exact engineering verdict. A historical mention of `task_c346ebff90f2` is allowed only if explicitly labeled failed/obsolete; any assertion that it is the passing task fails closed. The integration report and post-edit manifest must bind the exact repaired implementation snapshot reviewed by the Gate report.
+
+### 5.2 Mandatory fail-closed checks
+
+Before producing any plan, the replacement materializer must reject:
+
+- schema version other than integer 1;
+- any `taskId` other than `task_d73712d125c5`;
+- outcome other than exact `succeeded`;
+- verdict other than exact `GATE P4 ENGINEERING PASS`;
+- a non-Boolean or false `successorWorkPermitted`;
+- a non-Boolean or true `implementationSnapshotDrifted`;
+- missing, empty, duplicate, repository-resident, forbidden-path, byte-mismatched, or hash-mismatched artifacts;
+- a Gate report whose structured PASS identity is the old task;
+- a manifest whose root, blueprint identity, independent-audit identity, node count, dependency count, wave count, or specs do not match the rebound set;
+- any unresolved dependency placeholder needed for the selected materialization scope;
+- an existing state produced from a different manifest or Gate bundle.
+
+### 5.3 Exact rehearsal commands
+
+Validator:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass `
+  -File C:\Temp\<rebound-root>\validate.ps1 `
+  -ManifestPath C:\Temp\<rebound-root>\manifest.json
+```
+
+Dry-run materializer, deliberately without `-Execute`:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass `
+  -File C:\Temp\<rebound-root>\materialize-after-gate.ps1 `
+  -ManifestPath C:\Temp\<rebound-root>\manifest.json `
+  -GateP4EvidenceBundlePath C:\Temp\<fresh-gate-bundle>.json `
+  -GateP4EvidenceBundleSha256 <64-hex-sha256> `
+  -StatePath C:\Temp\<rebound-root>\dry-run-state.json
+```
+
+Required dry-run result:
+
+- exact bundle, blueprint, independent audit, manifest, and scripts verify;
+- a complete topological plan is emitted;
+- no `orca orchestration task-create` invocation occurs;
+- `dry-run-state.json` does not exist before or after;
+- no task, dispatch, worker, repository byte, or frozen artifact changes;
+- stdout explicitly says dry run and zero task creation.
+
+Negative stale-root rehearsal:
+
+1. Create a TEMP-only schemaVersion 1 bundle identical in shape except `taskId` is `task_c346ebff90f2`.
+2. Run the same command without `-Execute` and with a unique missing state path.
+3. Require nonzero exit, an exact task-ID mismatch diagnostic, no plan treated as executable, no state file, no Orca mutation, and no repository change.
+
+Also rehearse wrong bundle hash, duplicate artifact paths, `implementationSnapshotDrifted: true`, missing exact verdict, an old-task PASS assertion in report metadata, and a manifest bound to the frozen v2 blueprint. Every case must fail before task creation.
+
+Only after an explicit coordinator decision may the validated command add `-Execute`. Even then the script may call only `orca orchestration task-create`; it must create no dispatch or worker. It writes a TEMP-only resumable state after each returned task ID, recording `dispatchesCreated: 0` and `workersStarted: 0`.
+
+## 6. Bounded P5 ownership amendments
+
+### 6.1 P5-00 contract owner
+
+Keep the accepted exact P5-00 write set unchanged:
+
+- `scene/editor/include/mgif/scene_editor/SceneChangeSet.h`
+- `scene/editor/SceneChangeSet.cpp`
+- `scene/editor/include/mgif/scene_editor/SceneChangeCanonicalizer.h`
+- `scene/editor/SceneChangeCanonicalizer.cpp`
+- `tests/editor/scene_change_set_tests.cpp`
+- `tests/editor/header_self_containment/scene_change_set_header.cpp`
+
+P5-00 freezes the value schema, canonical error vocabulary, field taxonomy, canonical bytes, and digest algorithm. Downstream owners do not edit these files.
+
+### 6.2 P5-10 exact capture and projection owner
+
+Retain all eight accepted P5-10 paths and add only these post-P4 producer surfaces:
+
+- `scene/editor/include/mgif/scene_editor/GltfDocument.h`
+- `scene/editor/GltfDocument.cpp`
+- `scene/editor/include/mgif/scene_editor/SceneCommands.h`
+- `scene/editor/SceneCommands.cpp`
+- `scene/editor/include/mgif/scene_editor/commands/EditorCommand.h`
+- `scene/editor/commands/TransformCommands.cpp`
+- `scene/editor/commands/PropertyCommands.cpp`
+- `scene/editor/commands/HierarchyCommands.cpp`
+
+Why this is necessary: no accepted successor node owns these paths, yet exact producer evidence and Undo/Redo evidence transport cannot be implemented solely in `SceneChangeCapture.*`. Adding them to P5-10 creates no W1 collision with P5-20 and no unordered writer. The regenerated validator must confirm that every later owner, if any, remains a descendant.
+
+The accepted P5-10 paths remain:
+
+- `scene/editor/include/mgif/scene_editor/SceneChangeCapture.h`
+- `scene/editor/SceneChangeCapture.cpp`
+- `scene/editor/include/mgif/scene_editor/SceneRuntimeMapping.h`
+- `scene/editor/SceneRuntimeMapping.cpp`
+- `scene/editor/include/mgif/scene_editor/SceneProjection.h`
+- `scene/editor/SceneProjection.cpp`
+- `tests/editor/scene_change_capture_tests.cpp`
+- `tests/editor/scene_runtime_mapping_tests.cpp`
+
+P5-10 must not edit P5-00, renderer/RHI, app, CMake, progress, or planning files.
+
+### 6.3 P5-20 renderer transaction owner
+
+Keep its accepted eight-path set unchanged. Define `RendererSceneMappingSnapshot` in `render/editor/SceneRuntimePublisher.h/.cpp`; do not push renderer handles into the editor projection mapping.
+
+P5-20 owns the standalone transaction engine, resource journal, renderer mapping snapshot, counters, and fake-RHI tests. It does not edit facade/device/integration files.
+
+### 6.4 P5-90 exclusive integration owner
+
+Keep the accepted P5-90 path set and exclusive W2 position. It integrates frozen P5-00/P5-10/P5-20 APIs through SceneUploadPlan, RendererFacade, registry, renderer, device, counters, tests, and CMake.
+
+`app/AndroidNativeApp.cpp` remains in the ownership set only for a narrowly demonstrated Android build-isolation regression. P5-90 is not authorized to implement a new Android desktop-editor queue or full surface-lifecycle redesign. If no isolation change is needed, it leaves the file byte-identical.
+
+### 6.5 G5 independent reviewer
+
+G5 has no repository write set. It uses a fresh unique `C:\Temp\mgif-p5-independent-gate-*` root, is read-only and repair-free, and must be run by a worker who did not implement or integrate P5. A finding routes back to the owning leaf or P5-90 through a separately authorized retry; G5 never patches source.
+
+### 6.6 Shared-worktree protocol
+
+The current worktree contains existing scene/editor files that may be untracked. No worker may infer ownership, freshness, or absence from Git. Before editing, each implementation owner records exact path, existence/missing sentinel, byte count, and SHA-256 for every owned path, and binds predecessor reports/manifests. It rechecks those identities immediately before its first write. An unexpected change is a STOP, not permission to overwrite, reset, clean, checkout, or delete.
+
+Workers edit only their declared write set plus a fresh task-specific TEMP evidence root. Integration starts after both W1 workers stop. It consumes their closed APIs and reports a leaf mismatch rather than editing leaf files.
+
+### 6.7 Expected file modes against the inspected snapshot
+
+These are planning-time `NEW`/`MODIFY` expectations from exact-path existence checks, not Git status. A worker must bind the live path again before editing; an unexpected mode is STOP.
+
+| Owner | NEW | MODIFY |
+|---|---|---|
+| P5-00 | `scene/editor/include/mgif/scene_editor/SceneChangeSet.h`; `scene/editor/SceneChangeSet.cpp`; `scene/editor/include/mgif/scene_editor/SceneChangeCanonicalizer.h`; `scene/editor/SceneChangeCanonicalizer.cpp`; `tests/editor/scene_change_set_tests.cpp`; `tests/editor/header_self_containment/scene_change_set_header.cpp` | None |
+| P5-10 | `scene/editor/include/mgif/scene_editor/SceneChangeCapture.h`; `scene/editor/SceneChangeCapture.cpp`; `tests/editor/scene_change_capture_tests.cpp`; `tests/editor/scene_runtime_mapping_tests.cpp` | `scene/editor/include/mgif/scene_editor/GltfDocument.h`; `scene/editor/GltfDocument.cpp`; `scene/editor/include/mgif/scene_editor/SceneCommands.h`; `scene/editor/SceneCommands.cpp`; `scene/editor/include/mgif/scene_editor/commands/EditorCommand.h`; `scene/editor/commands/TransformCommands.cpp`; `scene/editor/commands/PropertyCommands.cpp`; `scene/editor/commands/HierarchyCommands.cpp`; `scene/editor/include/mgif/scene_editor/SceneRuntimeMapping.h`; `scene/editor/SceneRuntimeMapping.cpp`; `scene/editor/include/mgif/scene_editor/SceneProjection.h`; `scene/editor/SceneProjection.cpp` |
+| P5-20 | `render/editor/SceneRuntimePublisher.h`; `render/editor/SceneRuntimePublisher.cpp`; `render/editor/SceneDeltaCounters.h`; `render/editor/SceneDeltaCounters.cpp`; `render/editor/SceneDeltaResourceJournal.h`; `render/editor/SceneDeltaResourceJournal.cpp`; `tests/editor/renderer_scene_publication_tests.cpp`; `tests/editor/scene_delta_fake_rhi_tests.cpp` | None |
+| P5-90 | `tests/editor/editor_renderer_integration_tests.cpp` | `scene/SceneUploadPlan.h`; `scene/SceneUploadPlanner.cpp`; `render/RenderTypes.h`; `render/RendererFacade.h`; `render/RendererFacade.cpp`; `render/GPUSceneRegistry.h`; `render/GPUSceneRegistry.cpp`; `render/GPUDrivenRenderer.h`; `render/GPUDrivenRenderer.cpp`; `render/RenderDevice.h`; `render/RenderDevice.cpp`; `rhi/RHIDebugCounters.h`; `app/AndroidNativeApp.cpp` only if isolation evidence requires it; `tests/editor/editor_rhi_contract_tests.cpp`; `tests/editor/android_viewer_contract_tests.py`; `CMakeLists.txt` |
+
+No other repository path is authorized by this P5 amendment.
+
+## 7. Implementation-ready P5 contracts
+
+### 7.1 Logical schema
+
+P5-00 should freeze a backend-neutral schema equivalent to the following. Names may follow MGIF style, but field meaning and serialization are fixed before W1.
+
+```cpp
+struct StableSceneId {
+  EditorObjectKind kind;
+  EditorDocumentAuthority authority;
+  uint32_t slot;
+  uint32_t generation;
+  auto operator<=>(const StableSceneId&) const = default;
+};
+
+enum class SceneChangeDomain : uint8_t {
+  DocumentMutation,
+  SceneActivation,
+  SceneRootState,
+  FullSnapshot
+};
+
+enum class SceneChangeClass : uint8_t {
+  Transform,
+  MaterialParameters,
+  MaterialBinding,
+  Camera,
+  Light,
+  Visibility,
+  Hierarchy,
+  Topology,
+  FullRebuild
+};
+
+enum class SceneChangeAction : uint8_t { Create, Update, Delete };
+
+struct SourceMutationFence {
+  uint64_t baseDocumentRevision;
+  uint64_t targetDocumentRevision;
+  MutationToken mutationToken;
+  Digest256 baseDocumentDigest;
+  Digest256 targetDocumentDigest;
+};
+
+struct SceneChangeHeader {
+  uint32_t schemaVersion;
+  SceneChangeDomain domain;
+  EditorDocumentAuthority authority;
+  uint64_t baseDocumentRevision;
+  uint64_t targetDocumentRevision;
+  uint64_t baseSceneActivationEpoch;
+  uint64_t targetSceneActivationEpoch;
+  uint64_t baseRootExternalStateSerial;
+  uint64_t targetRootExternalStateSerial;
+  std::optional<StableSceneId> baseActiveScene;
+  std::optional<StableSceneId> targetActiveScene;
+  std::optional<MutationToken> mutationToken;
+  uint64_t firstMutationSerial;
+  uint64_t lastMutationSerial;
+  Digest256 baseDocumentDigest;
+  Digest256 targetDocumentDigest;
+  Digest256 baseProjectionDigest;
+  Digest256 targetProjectionDigest;
+  Digest256 canonicalChangeSetDigest;
+  std::vector<SourceMutationFence> sourceMutations;
+};
+
+struct SceneFieldChange {
+  StableSceneId target;
+  SceneChangeClass changeClass;
+  SceneChangeAction action;
+  SceneField field;
+  uint64_t mutationSerial;
+  std::optional<SceneFieldValue> beforeValue;
+  std::optional<SceneFieldValue> afterValue;
+};
+
+struct StableIdRemapEvidence {
+  std::optional<StableSceneId> oldId;
+  std::optional<StableSceneId> newId;
+};
+
+struct FullSnapshotReference {
+  FullRebuildReason reason;
+  Digest256 targetSnapshotDigest;
+  ImmutableSceneSnapshotRef immutableTarget;
+  std::vector<StableIdRemapEvidence> stableIdRemap;
+};
+
+struct SceneChangeSet {
+  SceneChangeHeader header;
+  std::vector<SceneFieldChange> canonicalChanges;
+  std::optional<FullSnapshotReference> fullSnapshot;
+};
+```
+
+`SceneFieldValue` is a closed tagged value union, never `void*`, callback, document reference, native handle, or mutable span. It contains final immutable values for node local TRS/matrix mode; local visibility; material scalar/vector/alpha/double-sided/extension fields; material texture/sampler/UV binding; primitive material/variant binding; camera parameters/attachment; light type/color/intensity/range/cones/attachment; hierarchy parent and attachment; and topology create/delete metadata. Full snapshot references own or reference immutable MGIF content by verified digest.
+
+`ImmutableSceneSnapshotRef` is an owning immutable value or a hash-addressed ID in an MGIF-owned content store whose lifetime covers deferred apply. It is not a pointer into `GltfDocument`, `SceneProjection`, or a caller stack. The stable-ID remap is complete for Compact/Merge/topology changes: an absent old ID means create, an absent new ID means delete, and both present means identity remap. Its canonical order is the same stable-key order used for field changes.
+
+For a `Create`, `beforeValue` is absent and `afterValue` is complete; for `Update`, both are present; for `Delete`, `beforeValue` is complete and `afterValue` is absent. The document mutation token is required for `DocumentMutation` and its source chain and absent for a pure activation/root-state transition. Optional active-scene IDs represent the explicit no-active-scene state, not an invalid fabricated ID.
+
+`FullRebuildReason` is a stable enum containing at least `SceneSwitch`, `GlobalMerge`, `Compact`, `StructuralTopology`, `GeometrySchema`, `TextureSchema`, `AccelerationStructureTopology`, `MappingMismatch`, `MissedRevision`, `DeviceRecovery`, `UnsupportedIncrementalCapability`, and `ExplicitCallerRequest`.
+
+Envelope rules are exact:
+
+- Document mutation: one unbatched source step has target revision = base + 1. A coalesced request may span several revisions only when `sourceMutations` contains every adjacent step from the header base to target, with matching intermediate document digests and no duplicate/missing revision. Scene-activation epoch is unchanged; root serial changes only if the committed operation freezes/replaces root external state.
+- Scene activation: document revision and root serial are unchanged; activation epoch is base + 1; active scene changes.
+- Scene root state: document revision and activation epoch are unchanged; active scene is unchanged; root serial is base + 1.
+- Full snapshot: target revision may advance by more than one, but complete immutable target projection and all target digests are mandatory.
+- Every checked increment rejects overflow before publication.
+
+P5-10 adds a typed activation API while retaining any required compatibility wrapper:
+
+```cpp
+enum class SceneActivationStatus : uint8_t {
+  Changed,
+  Unchanged,
+  InvalidScene,
+  EpochExhausted
+};
+
+struct SceneActivationResult {
+  SceneActivationStatus status;
+  std::optional<SceneId> beforeScene;
+  std::optional<SceneId> afterScene;
+  uint64_t baseEpoch;
+  uint64_t targetEpoch;
+};
+
+SceneActivationResult activateCurrentScene(std::optional<SceneId>) noexcept;
+uint64_t sceneActivationEpoch() const noexcept;
+```
+
+All new P5 callers use the typed API. An unchanged activation does not increment the epoch or emit a change set; invalid input and epoch exhaustion publish nothing.
+
+### 7.2 Exact changed-field capture
+
+P5-10 adds `SceneMutationEvidence` to `MutationResult`. It is produced inside the same candidate transaction and published only by the existing no-throw document commit callback. Rejection clears evidence, remaps, and target digests.
+
+`SceneMutationEvidence` is a raw, immutable pre-canonical value declared by P5-00 in `SceneChangeSet.h`; it contains exact field changes and one `SourceMutationFence`. This placement lets `SceneCommands.h` carry the value without a dependency cycle. P5-10 may combine several returned evidence values only through the contiguous-chain rule above.
+
+Required producer behavior:
+
+- Single-field setters emit exactly one local field plus deterministic derived-effect declarations; they never enumerate every live ID.
+- `setCameraFromView` emits the camera fields and the node local transform under one mutation token/revision.
+- Snapshot setters compare before/final canonical records and emit only changed material/light fields.
+- Visibility records the edited local visibility; descendant effective visibility is derived later in deterministic hierarchy order.
+- Variant selection canonicalizes to final primitive-material bindings.
+- Hierarchy/topology operations emit exact create/delete/remap evidence when complete; otherwise they emit one explicit full-snapshot request with a reason. They never masquerade all-live IDs as precision.
+- Root preview/reset uses the per-scene external-state serial and does not advance document revision.
+- Scene selection increments `sceneActivationEpoch` only on an actual successful change.
+
+`CommandResult` gains the lossless fields below, and every Transform/Property/Hierarchy converter moves them from `MutationResult`:
+
+```cpp
+SceneMutationEvidence changes;
+MutationRemap remap;
+MutationToken transactionToken;
+```
+
+`HistoryResult` already embeds `CommandResult`; it therefore preserves evidence without a second representation. Execute, Undo, and Redo each commit a new forward document revision and return a new canonical transition to the resulting state. No GPU inverse command is stored or replayed.
+
+`changedIds`, if retained for compatibility, becomes the sorted unique set derived from exact field changes and remap entries. Renderer code and tests must never consume it as the work list.
+
+`SceneChangeCapture::finalize()` validates raw evidence against immutable before/after projection snapshots, fills target digests, derives permitted effects, and calls the P5-00 canonicalizer. If evidence is incomplete for a structurally changed candidate, it returns a reason-coded `FullSnapshot`, not a guessed incremental set.
+
+### 7.3 Canonicalization and coalescing
+
+The canonicalizer is pure CPU and deterministic:
+
+1. Validate schema, authority, the complete contiguous source-revision/digest/token chain, epoch/serial envelope, object kind, slot/generation, tagged value type, payload size/range, immutable content hash, and full-snapshot completeness.
+2. Resolve convenience variant selections into final primitive-material bindings.
+3. Group by `(StableSceneId, SceneField)` and order writes by mutation serial. Input container order is never a tiebreaker.
+4. Keep the first `beforeValue` and last `afterValue`; reject discontinuous intermediate chains; drop a final equality as idempotent.
+5. Fold create + updates into one final create. Cancel create + delete only when the object was never published and no survivor references it. Update + delete becomes delete. Delete + create at a new generation remains two operations, ordered old delete then new create.
+6. Reject duplicate creates, same-serial conflicting values, cross-authority references, generation ambiguity, non-closed hierarchy references, or two different canonical byte streams for one mutation token.
+7. Derive parent-before-child transform/visibility work. Derive child-before-parent removals and reverse dependency retirement. Material/texture backing precedes bindings; detach precedes material/object deletion.
+8. Sort by dependency phase, then object kind, authority, slot, generation, action, field, binding/subresource/range key.
+9. Serialize fixed-width integers in one declared byte order, enum tags by frozen numeric value, lengths before byte strings, and IEEE values in canonical bit form. Normalize no semantic values implicitly; reject non-finite values where the document contract rejects them.
+10. Compute SHA-256 over schema-tagged canonical bytes and store it in the header. Re-canonicalizing canonical input produces identical bytes and digest.
+
+When `FullSnapshot` is selected, the canonical set retains the reason, target fences/digests, and immutable snapshot reference. Incremental renderer operations are not silently attempted first.
+
+### 7.4 Identity and mapping split
+
+There are three non-interchangeable layers:
+
+| Layer | Owner | Identity and lifetime |
+|---|---|---|
+| Document | scene editor | kind + authority + slot + generation; stable across index reorder |
+| Projection | `SceneRuntimeMapping` | document ID to SceneAsset kind/index plus deterministic projection identity; valid for one authority/revision/active scene/activation epoch/root serial/projection digest |
+| Renderer | `RendererSceneMappingSnapshot` | document ID to generation-bearing GPUSceneRegistry/RHI-facing object handles; valid for one renderer/device/mapping generation |
+
+P5-10 removes the implication that FNV `runtimeIdentity` is a live renderer handle. Rename the field/API to `projectionIdentity` where source compatibility permits, or document a temporary deprecated alias that renderer code is forbidden to resolve.
+
+P5-20 publishes an immutable renderer-owned value equivalent to:
+
+```cpp
+struct RendererSceneMappingSnapshot {
+  EditorDocumentAuthority authority;
+  uint64_t appliedDocumentRevision;
+  StableSceneId activeScene;
+  uint64_t sceneActivationEpoch;
+  uint64_t rootExternalStateSerial;
+  Digest256 projectionDigest;
+  uint64_t mappingEpoch;
+  RendererInstanceId rendererInstance;
+  DeviceInstanceId deviceInstance;
+  uint32_t deviceGeneration;
+  std::vector<RendererSceneMappingEntry> stableOrderedEntries;
+  // Exact reverse lookup is part of the immutable snapshot.
+};
+```
+
+Each renderer entry contains the stable ID, projection coordinate/identity, typed generation-bearing renderer object handle, and optional immutable resource content/schema identity. Native Vulkan/D3D12/Metal objects and backend headers do not appear in this public value. RHI ownership remains behind MGIF-owned renderer/RHI APIs.
+
+Mapping snapshots are prepared completely, validated for one-to-one live handles and reverse lookup, then published with the active scene generation in one nonthrowing swap. Stale authority/kind/slot/generation, mapping epoch, renderer identity, or device generation rejects before any RHI call.
+
+### 7.5 RendererFacade request/result/error contract
+
+Add backend-neutral entry points conceptually equivalent to:
+
+```cpp
+SceneApplyResult applySceneChanges(const ApplySceneChangeRequest&) noexcept;
+SceneApplyResult applyFullSceneSnapshot(const ApplyFullSceneSnapshotRequest&) noexcept;
+RendererSceneStateSnapshot activeSceneState() const noexcept;
+SceneDeltaCounterSnapshot sceneDeltaCounters() const noexcept;
+```
+
+The request values are equivalent to:
+
+```cpp
+struct ApplySceneChangeRequest {
+  RendererTargetFence expectedTarget;
+  SceneChangeSet changes;
+  ApplyPolicy policy;
+};
+
+struct ApplyFullSceneSnapshotRequest {
+  RendererTargetFence expectedTarget;
+  SceneChangeSet fullSnapshotTransition;
+  SceneUploadPlan candidatePlan;
+  ImmutableResourceReuseManifest reusableResources;
+  RequiredResourcePolicy requiredResourcePolicy;
+};
+```
+
+The full request owns immutable data for the call/deferred execution lifetime. It contains no caller-provided RHI command buffer. `RequiredResourcePolicy` names every required mesh/texture/material and any explicitly allowed placeholder; absence or failure of a required item fails the entire candidate.
+
+`SceneUploadPlan` remains a validated transient lowering for a full snapshot, not scene identity. Its header duplicates the target authority, revision, active scene, activation epoch, root external-state serial, and projection digest from the request, and validation requires exact equality. Every mesh, texture, material, transform, instance, cull, descriptor, and draw record carries its stable source ID in parallel with any dense candidate index. Indices are bounds-checked coordinates inside that one candidate and never cross the facade boundary as durable identity. `SceneUploadPlanValidationResult` becomes a typed value with the failing stable ID/record index and error; `commitSceneUploadPlan` does not rely on assertions or silently skip a required record.
+
+`RendererTargetFence` binds backend capability, renderer instance, device instance/generation, mapping epoch, authority, applied document revision, scene activation epoch, root external-state serial, active scene, and active projection digest.
+
+`SceneApplyDisposition` is exhaustive: `AcceptedIncremental`, `AcceptedFullSnapshot`, `AlreadyApplied`, `Rejected`, `FailedBeforeSubmit`, `FailedAfterSubmit`. `SceneApplyError` is a P5-owned typed logical error that includes invalid schema/digest/payload, authority, stale revision, revision gap, scene activation mismatch, root serial mismatch, projection mismatch, mapping mismatch, renderer mismatch, device mismatch/loss, stale object generation, unsupported capability, allocation, descriptor staging, recording, submission, publication invariant, and retirement enqueue. `SceneApplyResult` also carries the existing backend-neutral `rhi::RHIResult` for an RHI failure; public code does not translate it into native backend status.
+
+`SceneApplyResult` returns:
+
+- disposition and typed error/message;
+- canonical change-set digest;
+- old and resulting fences (resulting fence is present only for accepted/already-applied work);
+- exact queue submission tokens;
+- created, logically retired, and eventually destroyed handle counts/IDs suitable for diagnostics;
+- per-transaction counter before/after/delta snapshots;
+- optional reason requesting a separately validated full snapshot;
+- explicit placeholder-resource use, which is zero unless policy opted in before staging.
+
+Validation errors are values, not assertions. A stale delta is rejected and may request a snapshot; it is never silently upgraded into an immediate rebuild. Metal returns `Unsupported` before renderer mutation while unavailable. The facade provides no native device, queue, command buffer, descriptor, or backend-specific escape hatch.
+
+For a document batch, the active revision/digest must equal the first source step, every adjacent source step must close exactly, and the resulting fence must equal the last step. Missing intermediate evidence is `RevisionGap`; target revision greater than base is not by itself a gap when the complete chain is present. Scene-activation and scene-root-state changes are not folded into a document batch; they remain separately ordered requests or a complete full snapshot.
+
+The legacy full-upload API may remain internally while migration completes, but P5 acceptance paths go through the new transaction. `waitForIdle()` is never reached by an accepted incremental transaction or rollback path.
+
+### 7.6 Incremental effect policy
+
+| Logical operation | Required P5 lowering | Forbidden work |
+|---|---|---|
+| Node local transform | Recompute affected world transforms parent-before-child; update instance transform, previous/current draw transform, cull bounds/sphere, and attached camera/light derived records. | Full rebuild, geometry/texture upload, device idle |
+| Local visibility | Recompute effective subtree visibility; update instance/draw/cull participation and backend-neutral AS visibility model. | Geometry/texture upload, device idle |
+| Material scalar/vector | Update exact packed material range; atomically update draw classification only when alpha/double-sided/pipeline key changes. | Geometry/texture upload, device idle |
+| Existing texture/sampler binding | Resolve existing live resource generations, stage descriptor generation, publish after dependencies. | Uploading texture pixels, geometry upload, device idle |
+| Primitive material/variant binding | Publish the final existing material handle to every raster/AS consumer and update bucket/classification. | Reference-path asymmetry, geometry/texture upload, device idle |
+| Camera property or camera-from-view | Update camera record and, for atomic camera-from-view, the node/world dependent records in the same transaction. | Geometry/texture upload, device idle |
+| Light property | Update exact packed light range; recompute position/direction from attached node if affected. | Geometry/texture upload, device idle |
+| Instance add/remove | Incremental only after atomic registry/mapping publication and fault tests pass; otherwise `StructuralTopology` full snapshot. | Partial dense-remap publication |
+| Hierarchy add/delete/reparent, attach/detach, split/merge | Initial P5 uses an explicit `StructuralTopology` full snapshot. | Silent incremental fallback |
+| Scene switch | `SceneSwitch` full snapshot with activation epoch +1 and unchanged document revision. | Fabricated revision, clear-first replacement |
+| Global Merge/Compact | Candidate document/projection plus `GlobalMerge`/`Compact` full snapshot. | Partial in-place publication |
+| Geometry/texture schema/content change | Reason-coded full snapshot unless a separately scoped immutable replacement API already exists and passes the same transaction tests. | Expanding locked editor authoring scope merely to satisfy P5 |
+
+Accepted continuous Transform, Material, Light, Visibility, Camera, and binding edits must report zero full rebuilds, zero geometry upload calls/bytes, zero texture upload calls/bytes, and zero device-idle calls.
+
+### 7.7 Candidate generation, publication, and rollback
+
+Both incremental and full snapshot paths use one state machine:
+
+1. Validate all logical and renderer fences, IDs, capabilities, hashes, required-resource policy, and dependency closure with zero RHI side effects.
+2. Stage copy-on-write CPU mirrors, actual-handle mapping, dirty ranges, draw/cull/light/camera records, descriptor generation, and resource journal. Active pointers remain unchanged.
+3. Reuse immutable mesh/texture generations only after content hash, schema, owner, and device generation match. Topology rebuild does not imply re-uploading unchanged geometry or textures.
+4. Allocate candidate resources and record work through MGIF RHI. A required failure rejects/fails the whole candidate; no partial-looking `SceneUploadResult` is accepted.
+5. Submit work and capture every relevant queue token. Descriptor visibility is not published before dependencies are established.
+6. Perform one nonthrowing atomic swap of active generation, renderer mapping, descriptors, revision/epochs, and digests. There is no sequence of publicly observable partial vector mutations.
+7. Logically invalidate superseded handles and defer physical destruction against exact submission tokens. No rollback uses device-wide idle.
+8. Commit applied counters/result only after publication.
+
+Failure invariants:
+
+- Validation failure: only exact rejection counter changes; zero allocation/record/submit/descriptor/retirement/idle.
+- Pre-submit failure: destroy unpublished resources immediately; active generation and all fences/digests remain byte-identical.
+- Post-submit/prepublication failure: retain the old active generation; orphan candidate resources retire by captured tokens.
+- Retirement-enqueue failure: publication has not occurred; the resource journal retains ownership and retries enqueue without exposing handles. It may not leak, publish partially, or idle the device.
+- Publication is designed `noexcept`. Any invariant failure before the swap rolls back the whole candidate. `partialPublicationCount` remains zero.
+- Device loss invalidates its generation; recovery creates a new device generation and requires a separately validated full snapshot.
+
+Normal topology/full-snapshot validation must be Vulkan Validation and synchronization-validation clean. Shutdown/device-loss drains may idle under an explicit reason counter; ordinary editing, normal full snapshots, and rollback do not.
+
+### 7.8 Counters
+
+Use monotonic `uint64_t` counters and return transaction-local deltas. At minimum:
+
+- received, already-applied, accepted-incremental, accepted-full-snapshot, rejected, failed-before-submit, failed-after-submit;
+- rejection buckets for schema, digest, authority, revision stale/gap, activation epoch, root serial, projection, mapping, renderer, device, generation, unsupported, payload;
+- operations received/coalesced/applied by Transform, MaterialParameters, MaterialBinding, Camera, Light, Visibility, Hierarchy, Topology;
+- geometry/texture/other upload calls, bytes, ranges/subresources, and submissions;
+- resources created, logically retired, physically destroyed, orphaned, and retirement backlog;
+- full snapshot count by reason;
+- rollback, allocation failure, recording failure, submission failure, publication failure, retirement-enqueue failure, and `partialPublicationCount`;
+- `deviceIdleCalls` by shutdown, device loss, surface teardown, and forbidden/other reason;
+- current authority, revision, activation epoch, root serial, mapping epoch, renderer/device generation, projection digest, and active-generation digest.
+
+Rejected and rolled-back work cannot increment applied work. `partialPublicationCount` is a sentinel whose accepted value is always zero.
+
+## 8. Tests, commands, and evidence
+
+### 8.1 Leaf evidence
+
+| Owner | Required direct evidence | STOP condition |
+|---|---|---|
+| P5-00 | Canonical shuffled permutations; last-write chains; create/update/delete algebra; generation-changing recreate; invalid authority/kind/revision/epoch/root serial/hash/range; duplicate/idempotent input; self-contained public header; N11/backend token negatives. | Any nondeterministic byte/digest, ambiguous coalescing, public dependency leak, or frozen API mismatch. |
+| P5-10 | Exact one-field capture; camera-from-view two-field atomicity; scene activation epoch; root external serial; transform/visibility derived effects; material/variant binding; hierarchy full-snapshot reason; slot reuse; mapping determinism; execute/undo/redo forward revisions with preserved evidence; failed candidate zero evidence. | All-live capture, evidence loss through `HistoryResult`, renderer handles in projection, or source pre-image drift. |
+| P5-20 | No-call fake RHI for every fence mismatch; fake renderer/RHI success for every incremental class; injected CPU/RHI allocation, descriptor, record, each submit, prepublish, and retirement-enqueue failure; exact journal/counters; zero partial publication/idle. | Staged handle discoverable, active fence/digest changes on failure, false applied counter, leak, or idle. |
+
+Each leaf report records exact commands, exit codes, test counts, pre/post path identities, artifact bytes/SHA-256, and any integration-only item. A passing leaf is not Gate P5 PASS.
+
+### 8.2 P5-90 contained integration
+
+P5-90 creates fresh Debug and Release roots under `C:\Temp`; it never builds through or inspects the forbidden repository path. Because this audit was not allowed to inspect build entrypoints, the exact generator/toolchain command line must be copied from the future hash-bound P4 re-Gate bundle and extended only with the named P5 targets. Inventing an unverified preset here is prohibited.
+
+The integration command transcript must show, at minimum:
+
+- configure and build in Debug and Release with the P5 test targets;
+- direct execution of `scene_change_set_tests`, `scene_change_capture_tests`, `scene_runtime_mapping_tests`, `renderer_scene_publication_tests`, `scene_delta_fake_rhi_tests`, `editor_renderer_integration_tests`, and `editor_rhi_contract_tests` (or final target names bound in the report);
+- relevant CTest selection with zero failed tests and no unexplained skip;
+- Vulkan runtime with validation layers and synchronization validation enabled for incremental success, every fault class, topology full snapshot, and generation retirement;
+- D3D12 public/object contract when supported by the bound host commands;
+- Metal contract returning Unsupported before mutation; Metal remains `Not Verified on Windows`;
+- Android build/target-closure proof that desktop editor UI/overlay symbols are absent; no new Android runtime editor workflow is required;
+- next-committable-frame digest capture and per-transaction counter dumps;
+- exact path-scoped public/transitive N11 scan.
+
+"Next committable frame" means the first frame whose declared submission dependencies permit the published candidate to be consumed. At that frame, the target document semantic digest, target projection digest, renderer active-generation digest, applied fences, and captured output-state digest must all match the transaction's expected target. No device-wide idle may be used to manufacture this observation.
+
+### 8.3 Exact acceptance metrics
+
+For every accepted continuous Transform, Material, Light, Visibility, Camera, and existing-resource binding edit:
+
+```text
+disposition = AcceptedIncremental
+fullRebuildCount delta = 0
+geometryUploadCalls delta = 0
+geometryBytesUploaded delta = 0
+textureUploadCalls delta = 0
+textureBytesUploaded delta = 0
+deviceIdleCalls delta = 0
+partialPublicationCount delta = 0
+next committable frame digests = exact target document/projection/renderer digests
+```
+
+For hierarchy/topology/full snapshot:
+
+```text
+explicit FullRebuildReason present
+old generation remains active until candidate publication
+required resource failure publishes nothing
+unchanged mesh/texture generations are reused when hashes/schema/device match
+partialPublicationCount delta = 0 at every fault point
+Vulkan Validation errors = 0
+Vulkan synchronization-validation errors = 0
+retired resources remain alive until all captured queue tokens complete
+```
+
+For N11:
+
+```text
+approved exceptions = 0
+public/direct findings = 0
+production target include/link/wrapper/re-export findings = 0
+production transitive closure findings = 0
+```
+
+The fail-closed token/target vocabulary includes `nvcore`, `nvpro`/`nvpro*`, `nvapp`, `nvgui`, every `nvvk*` including `nvvkhl`, `nvvkgltf`, `vk_gltf_renderer`, and reference Vulkan helpers. The scan covers explicit allowlisted `scene/editor`, `app/editor`, `render/editor`, public editor/RHI headers, CMake target declarations, generated-source lists, and production target closure. It excludes isolated external reference evidence and does not use a repository-root recursive search. Existing unrelated `NVVK_SEMAPHORE_DEBUG` outside editor scope is neither imported nor modified.
+
+### 8.4 G5 independent Gate
+
+G5 independently re-hashes every input and reruns the strongest contained tests. It specifically audits:
+
+- all-live IDs hidden behind a renamed field;
+- `CommandResult` or history evidence loss;
+- FNV/projection identity treated as a renderer handle;
+- stale/gap requests silently triggering rebuild;
+- `beginSceneReplacement`, `waitForIdle`, or active clear on incremental/full candidate paths;
+- required resources skipped into a partial-looking result;
+- descriptors or mappings visible before upload dependencies;
+- old resources destroyed before all queue tokens;
+- transform descendant, bounds, visibility, camera, or light effects omitted;
+- counter laundering and `partialPublicationCount` nonzero;
+- native backend or N11 dependency escape through wrapper/transitive targets;
+- Android desktop editor symbols and false Metal verification.
+
+G5 returns exactly `GATE P5 ENGINEERING PASS` or `GATE P5 FAIL/BLOCKED`. Missing Debug/Release/Vulkan validation, unexplained skips, unavailable required evidence, source drift, or any nonzero finding is FAIL/BLOCKED, never a conditional PASS.
+
+## 9. Preserved Orca execution DAG
+
+No task is created by this report. After all Gate/rebind start conditions pass, the accepted shallow execution remains:
+
+Goal-backward coverage of the locked P5 tasks is explicit:
+
+| Locked obligation | Owning nodes | Proof needed at Gate |
+|---|---|---|
+| P5-T01 SceneChangeSet/RendererFacade, ordering, coalescing, errors | P5-00 freezes logical values; P5-10 produces them; P5-20 freezes renderer transaction values; P5-90 exposes the facade | Public/header contracts, canonical bytes/digests, exhaustive fence/error tests, N11 zero |
+| P5-T02 Transform/Light/MaterialParameters/Visibility fast paths | P5-10 exact evidence; P5-20 staged transaction; P5-90 renderer lowering | Next-committable-frame digest match and zero rebuild/geometry/texture/idle counters |
+| P5-T03 MaterialBinding/Hierarchy/Topology, draw classification, registry, bounds | P5-10 evidence/policy; P5-20 mapping/journal; P5-90 integration | Binding reaches all consumers; hierarchy/topology uses explicit atomic full snapshot until proven incremental; bounds/registry assertions |
+| P5-T04 candidate upload, fence-safe swap, rollback, deferred destruction | P5-20 transaction engine; P5-90 full device/renderer integration | Every fault point preserves active generation; no partial publication; exact queue-token retirement; validation clean |
+| P5-T05 debug counters | P5-20 defines/units tests; P5-90 wires common facade/RHI observability | Exact per-transaction deltas, reason buckets, zero-rule sentinels, no counter laundering |
+| Gate P5 | G5 only | Independent rebuild/test/audit with the exact Section 8 metrics and explicit verdict |
+
+| Node | Depends on | Responsibility | Evidence required before successor |
+|---|---|---|---|
+| P5-00 | `task_d73712d125c5` | Freeze logical schema and canonicalizer in exact Section 6.1 paths. | Closed API, CPU/header tests, post hashes, report. |
+| P5-10 | P5-00 | Exact producer capture, epochs, projection map, history evidence in exact amended Section 6.2 paths. | Capture/mapping/history tests, post hashes, report. |
+| P5-20 | P5-00 | Standalone renderer transaction, renderer mapping, journal, counters, fake RHI in exact accepted paths. | Fault matrix, counter/lifetime report, post hashes. |
+| P5-90 | P5-10 and P5-20 | Exclusive integration through facade/renderer/device/CMake; no leaf edits. | Debug/Release, Vulkan validation, contracts, digest/counter evidence, complete post-edit manifest. |
+| G5 | P5-90 | Fresh independent read-only, repair-free Gate. | Exact verdict, commands/results, findings, bytes/SHA-256. |
+
+P5-10 and P5-20 may run in parallel only after P5-00 stops. Their write sets are disjoint. P5-90 starts only after both workers stop and their reports/post hashes agree with its pre-edit binding. G5 starts only after P5-90 stops and cannot be assigned to a P5 implementer/integrator.
+
+Every worker spec preserves these boundaries:
+
+- no root-recursive Git/search/enumeration command;
+- no access, enumeration, search, stat, hash, or build through `G:\MGIF\mgif build entrypoints kftx8g0b\`;
+- no stage/commit/reset/clean/checkout and no `Demo.txt` edit;
+- no progress/locked-task/manifest edit by P5 engineering workers;
+- upstream Dear ImGui plus MGIF-owned adapters/RHI only;
+- no native backend escape hatch or forbidden production dependency;
+- exactly one worker completion message with exact report/artifact identities.
+
+## 10. Stop/go, rollback, and retry
+
+### 10.1 Global NO-GO conditions
+
+P5-00 and all successors remain stopped if any of the following is true:
+
+- `task_d73712d125c5` has no exact succeeded/PASS bundle satisfying Section 5;
+- its three fresh artifacts are missing, duplicate, mismatched, drifted, or do not bind the repaired snapshot;
+- rebound blueprint/materialization artifacts lack fresh independent PASS audits;
+- the replacement validator or any negative dry run fails;
+- any successor task definition already binds the old Gate task;
+- source pre-images differ from the task binding;
+- coordinator authorization to materialize/dispatch is absent.
+
+### 10.2 GO sequence
+
+1. Fresh P4 re-Gate bundle passes.
+2. Rebound blueprint audit passes.
+3. Regenerated manifest/scripts and materialization audit pass.
+4. Positive and negative dry runs pass with zero task creation.
+5. Coordinator explicitly authorizes task-definition creation.
+6. Materializer creates definitions only and records returned IDs in TEMP state; it dispatches nobody.
+7. Coordinator dispatches P5-00. Later waves follow dependency stops and evidence binding.
+
+### 10.3 Artifact retry
+
+On a rebind or validation failure, abandon the candidate TEMP root intact for diagnosis and create a new unique root. Never patch a frozen or failed candidate in place and then reuse its old audit/hash. Every content change invalidates downstream manifest, script, audit, and rehearsal identities.
+
+### 10.4 Materialization retry
+
+With `-Execute`, state is written after each successful `task-create`. A retry may resume only when manifest SHA-256, Gate bundle SHA-256, root task ID, scope, and every recorded symbolic-ID/task-ID receipt match exactly. If any identity changes, stop; do not create a mixed-lineage graph. The coordinator must disposition already-created task definitions before a fresh materialization attempt.
+
+### 10.5 Implementation retry
+
+On a leaf failure, the owning worker reports exact modified paths and evidence. It does not reset or revert the shared worktree. A retry rebinds live pre-images and remains within the same exclusive write set. If a frozen P5-00 contract must change after W1 starts, stop both W1 branches and create a separately authorized contract retry before resuming; P5-10/P5-20/P5-90 may not patch P5-00 opportunistically.
+
+On integration failure caused by a leaf contract defect, P5-90 stops without editing the leaf. The corresponding leaf owner receives a separately ordered retry; P5-90 then rebinds the new report/hashes. On G5 failure, G5 remains read-only and the same owner-routing rule applies. A fresh G5 run is required after every repair.
+
+### 10.6 Renderer runtime retry
+
+A rejected stale/gap/mapping/device delta has zero RHI side effects. The caller requests a new full snapshot anchored to current fences. A failed candidate retains the old active generation and may retry only from a freshly validated request; it cannot replay orphan command buffers or reuse a partially staged descriptor generation. Device loss increments generation and invalidates all old requests.
+
+## 11. Final acceptance and non-claims
+
+Gate P5 can pass only when all of the following are independently demonstrated:
+
+- next committable frame document/projection/renderer digests match exactly;
+- continuous edits have zero full rebuild, geometry upload, texture upload, device idle, and partial publication;
+- hierarchy/topology/full snapshot paths are candidate-staged, atomic, rollback-safe, deferred-retired, and Vulkan Validation/synchronization clean;
+- every fence mismatch and injected fault preserves the old active generation and exact fences/digests;
+- public/direct/wrapper/transitive N11 findings are zero with zero approved exceptions;
+- Debug and Release evidence is complete, Android desktop editor isolation holds, and Metal is reported honestly.
+
+F42/R24 remain BLOCKED pending the separate root-license decision. Metal remains `Not Verified on Windows`; an Unsupported-before-mutation contract result is not a Metal runtime verification. An engineering Gate P5 verdict, even if later achieved, is not release or distribution PASS.
+
+This compatibility report itself does not establish the fresh P4 Gate, does not certify the rebound artifacts, does not authorize Orca task creation or dispatch, and does not claim P5 readiness or Gate PASS.

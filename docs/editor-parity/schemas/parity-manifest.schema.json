@@ -1,0 +1,583 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mgif.local/schemas/gltf-editor-parity-manifest-v1.json",
+  "title": "MGIF glTF editor parity manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "status",
+    "specification",
+    "reference",
+    "target",
+    "dependencyBoundary",
+    "upstreamBuildIdentityContract",
+    "licensePolicy",
+    "evidenceGrades",
+    "decisionGates",
+    "oracleTraces",
+    "features"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "status": {
+      "enum": ["p0_in_progress", "p0_blocked", "p0_passed", "p1_ready", "p1_engineering_ready", "implementation_in_progress", "passed"]
+    },
+    "specification": { "$ref": "#/$defs/revision" },
+    "reference": { "$ref": "#/$defs/repositoryRevision" },
+    "target": { "$ref": "#/$defs/repositoryRevision" },
+    "dependencyBoundary": { "$ref": "#/$defs/dependencyBoundary" },
+    "upstreamBuildIdentityContract": { "$ref": "#/$defs/upstreamBuildIdentityContract" },
+    "licensePolicy": { "$ref": "#/$defs/licensePolicy" },
+    "evidenceGrades": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "decisionGates": {
+      "type": "object",
+      "required": ["D20"],
+      "properties": {
+        "D20": { "$ref": "#/$defs/decisionGate" }
+      },
+      "additionalProperties": false
+    },
+    "oracleTraces": {
+      "type": "array",
+      "minItems": 8,
+      "items": { "$ref": "#/$defs/oracleTrace" }
+    },
+    "features": {
+      "type": "array",
+      "minItems": 42,
+      "maxItems": 42,
+      "items": { "$ref": "#/$defs/feature" }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{64}$"
+    },
+    "gitCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "repositoryRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "commit"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "commit": { "$ref": "#/$defs/gitCommit" }
+      }
+    },
+    "upstreamBuildIdentityContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dearImGui"],
+      "properties": {
+        "dearImGui": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "repository",
+            "pinnedCommit",
+            "pinnedTree",
+            "sourceMode",
+            "repositoryCopyAllowed",
+            "sourceOverrideAllowed",
+            "targetName",
+            "compiledCoreSources",
+            "targetSourceVariants",
+            "compiledSourceVariants",
+            "resolvedIdentityArtifactKind",
+            "resolvedIdentityRequiredForP1",
+            "hashProofsRequired"
+          ],
+          "properties": {
+            "repository": { "const": "https://github.com/ocornut/imgui.git" },
+            "pinnedCommit": { "const": "fd13a1e8923a0a7077b404fc36fd063b25a0c0b5" },
+            "pinnedTree": { "const": "0c8986ccb662ea838c04f7bed4cc56d3379132ef" },
+            "sourceMode": { "const": "fetchcontent_git_outside_repository" },
+            "repositoryCopyAllowed": { "const": false },
+            "sourceOverrideAllowed": { "const": false },
+            "targetName": { "const": "imgui_demo" },
+            "compiledCoreSources": {
+              "type": "array",
+              "minItems": 5,
+              "maxItems": 5,
+              "items": { "enum": ["imgui.cpp", "imgui.h", "imgui_draw.cpp", "imgui_tables.cpp", "imgui_widgets.cpp"] },
+              "uniqueItems": true
+            },
+            "targetSourceVariants": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["android", "glfw"],
+              "properties": {
+                "android": { "type": "array", "minItems": 8, "maxItems": 8, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+                "glfw": { "type": "array", "minItems": 8, "maxItems": 8, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+              }
+            },
+            "compiledSourceVariants": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["android", "glfw"],
+              "properties": {
+                "android": { "type": "array", "minItems": 6, "maxItems": 6, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+                "glfw": { "type": "array", "minItems": 6, "maxItems": 6, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+              }
+            },
+            "resolvedIdentityArtifactKind": { "const": "mgif.editor-dependency-build-identity" },
+            "resolvedIdentityRequiredForP1": { "const": true },
+            "hashProofsRequired": {
+              "type": "array",
+              "minItems": 7,
+              "maxItems": 7,
+              "items": { "enum": ["resolvedGitCommit", "resolvedGitTree", "targetSourceRelativePaths", "targetSourceSha256", "compiledSourceRelativePaths", "compiledSourceSha256", "configuredBuildEvidence"] },
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+    "licensePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "selectedSpdxId", "selectedFile", "acceptedSha256", "approvedBy", "approvedAt", "developmentPolicy", "releaseGate", "validation"],
+      "properties": {
+        "status": { "enum": ["pending_user_selection", "development_rights_reserved", "selected"] },
+        "selectedSpdxId": { "type": ["string", "null"] },
+        "selectedFile": { "type": ["string", "null"] },
+        "acceptedSha256": { "type": ["string", "null"] },
+        "approvedBy": { "type": ["string", "null"] },
+        "approvedAt": { "type": ["string", "null"], "format": "date-time" },
+        "developmentPolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["distributionStatus", "engineeringImplementation", "upstreamApacheSourceCopied", "preserveThirdPartyNotices", "p1EngineeringReadinessIndependent"],
+          "properties": {
+            "distributionStatus": { "enum": ["unlicensed_rights_reserved", "licensed"] },
+            "engineeringImplementation": { "const": "original_clean_room_unless_provenance_ledger_says_otherwise" },
+            "upstreamApacheSourceCopied": { "const": false },
+            "preserveThirdPartyNotices": { "const": true },
+            "p1EngineeringReadinessIndependent": { "const": true }
+          }
+        },
+        "releaseGate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "blockedFeatureIds", "blockedRequirementIds", "passClaimAllowed"],
+          "properties": {
+            "status": { "enum": ["blocked_pending_owner_root_license_selection", "ready_with_selected_root_license"] },
+            "blockedFeatureIds": { "type": "array", "maxItems": 1, "items": { "const": "F42" }, "uniqueItems": true },
+            "blockedRequirementIds": { "type": "array", "maxItems": 1, "items": { "const": "R24" }, "uniqueItems": true },
+            "passClaimAllowed": { "type": "boolean" }
+          }
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["utf8Required", "nonWhitespaceRequired", "minimumBytes", "exactAcceptedDigestRequired"],
+          "properties": {
+            "utf8Required": { "const": true },
+            "nonWhitespaceRequired": { "const": true },
+            "minimumBytes": { "const": 256 },
+            "exactAcceptedDigestRequired": { "const": true }
+          }
+        }
+      }
+    },
+    "dependencyBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "requirements",
+        "productionEditorRoots",
+        "allowedUiFoundation",
+        "forbiddenDependencyFamilies",
+        "externalEvidencePolicy",
+        "exceptionApprovalRequirements",
+        "approvedExceptions",
+        "targetEvidence",
+        "allowedOutOfScopeSentinels"
+      ],
+      "properties": {
+        "status": { "const": "locked_no_exceptions" },
+        "requirements": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "enum": ["R21", "R24"] },
+          "uniqueItems": true
+        },
+        "productionEditorRoots": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "enum": ["scene/editor", "app/editor", "render/editor"] },
+          "uniqueItems": true
+        },
+        "allowedUiFoundation": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "enum": [
+              "repository_upstream_dear_imgui",
+              "mgif_owned_app_adapters",
+              "mgif_owned_rhi_adapters",
+              "mgif_owned_scene_adapters"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "forbiddenDependencyFamilies": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "enum": [
+              "nvpro_core",
+              "nvcore",
+              "nvapp",
+              "nvgui",
+              "nvvk",
+              "nvvkgltf",
+              "reference_vulkan_helpers"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "externalEvidencePolicy": { "type": "string", "minLength": 1 },
+        "exceptionApprovalRequirements": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "items": {
+            "enum": [
+              "prior_explicit_user_approval",
+              "minimality",
+              "alternatives_considered",
+              "platform_impact",
+              "license_impact",
+              "binary_size_impact",
+              "exact_symbols_and_targets",
+              "owned_dated_removal_plan"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "approvedExceptions": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "targetEvidence": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "enum": ["T-RHI-01", "T-RHI-02", "T-RHI-03", "T-LIC-01"] },
+          "uniqueItems": true
+        },
+        "allowedOutOfScopeSentinels": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "decisionGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "allowedResolutions", "selectedResolution", "blocks", "requiredTraceIds"],
+      "properties": {
+        "status": {
+          "enum": ["pending_executable_trace", "pending_user_decision", "resolved"]
+        },
+        "allowedResolutions": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "enum": ["exact_defect_parity", "mgif_safety_exception"] },
+          "uniqueItems": true
+        },
+        "selectedResolution": {
+          "type": ["string", "null"],
+          "enum": [null, "exact_defect_parity", "mgif_safety_exception"]
+        },
+        "blocks": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "requiredTraceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "approvedBy": { "type": ["string", "null"] },
+        "approvedAt": { "type": ["string", "null"], "format": "date-time" },
+        "approvalEvidenceText": { "type": "string", "minLength": 1 },
+        "approvalTimestampProvenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["originalUserMessageTimestamp", "durableCoordinatorAttestationAt", "note"],
+          "properties": {
+            "originalUserMessageTimestamp": { "type": "null" },
+            "durableCoordinatorAttestationAt": { "type": "string", "format": "date-time" },
+            "note": { "type": "string", "minLength": 1 }
+          }
+        },
+        "selectedPolicyContract": { "$ref": "#/$defs/selectedPolicyContract" },
+        "notes": { "type": "string" }
+      }
+    },
+    "selectedPolicyContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "resolution",
+        "sceneRouting",
+        "snapshotScope",
+        "occurrenceRouting",
+        "sharedNodeHandling",
+        "preflightRejections",
+        "rejectionTiming",
+        "traversal",
+        "uiParitySurface",
+        "boundOracleIds",
+        "acceptanceIds"
+      ],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "resolution": { "enum": ["exact_defect_parity", "mgif_safety_exception"] },
+        "sceneRouting": { "enum": ["reference_current_scene_state", "clicked_scene_id"] },
+        "snapshotScope": { "enum": ["reference_current_scene_only", "all_scenes"] },
+        "occurrenceRouting": { "enum": ["reference_current_occurrence", "clicked_scene_occurrence"] },
+        "sharedNodeHandling": { "enum": ["reference_observed", "preserve_shared_node_occurrence_consistency"] },
+        "preflightRejections": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "enum": ["cycle", "multiparent", "stale_occurrence"] },
+          "uniqueItems": true
+        },
+        "rejectionTiming": { "enum": ["reference_observed", "before_command_or_history_entry"] },
+        "traversal": { "enum": ["reference_recursive", "bounded_iterative"] },
+        "uiParitySurface": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "items": { "enum": ["entry", "label", "layout", "shortcut", "modal", "focus", "enablement", "history_description"] },
+          "uniqueItems": true
+        },
+        "boundOracleIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^O[0-9]{2}-.+$" },
+          "uniqueItems": true
+        },
+        "acceptanceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "oracleTrace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "behavior", "requiredEvidence", "status", "artifacts"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^O[0-9]{2}-.+$" },
+        "behavior": { "type": "string", "minLength": 1 },
+        "requiredEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "status": {
+          "enum": ["pending_executable", "source_provisional", "native_partial", "captured", "conflict", "not_applicable"]
+        },
+        "artifacts": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "p1Readiness": { "$ref": "#/$defs/oracleReadiness" },
+        "conflictDisposition": { "$ref": "#/$defs/conflictDisposition" },
+        "readinessDebt": { "$ref": "#/$defs/acceptanceDebt" },
+        "notes": { "type": "string" }
+      }
+    },
+    "acceptanceDebt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uiIds", "vulkanIds", "p10Ids"],
+      "properties": {
+        "uiIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^(T-UI-(0[1-9]|1[0-5])|U0[1-8]-.+)$" },
+          "uniqueItems": true
+        },
+        "vulkanIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^V0[1-7]-.+$" },
+          "uniqueItems": true
+        },
+        "p10Ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^P10-T0[1-6]$" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "oracleReadiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "coverageBinding", "nativeUiBinding", "coverageCeiling", "evidenceDebt"],
+      "properties": {
+        "status": { "const": "eligible_with_debt" },
+        "coverageBinding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifactPath",
+            "artifactSha256",
+            "matrixCellCount",
+            "executedCellCount",
+            "notExecutedCellCount",
+            "caseIdSetSha256"
+          ],
+          "properties": {
+            "artifactPath": { "type": "string", "minLength": 1 },
+            "artifactSha256": { "$ref": "#/$defs/sha256" },
+            "matrixCellCount": { "type": "integer", "minimum": 0 },
+            "executedCellCount": { "type": "integer", "minimum": 0 },
+            "notExecutedCellCount": { "type": "integer", "minimum": 0 },
+            "caseIdSetSha256": { "$ref": "#/$defs/sha256" }
+          }
+        },
+        "nativeUiBinding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifactPath", "artifactSha256", "actionPathCells", "numericExitCells", "fullVisibleHistoryCells", "exactSerializedTopologyCells", "exactSerializedTopologyCheckpoints"],
+          "properties": {
+            "artifactPath": { "type": "string", "minLength": 1 },
+            "artifactSha256": { "$ref": "#/$defs/sha256" },
+            "actionPathCells": { "const": 298 },
+            "numericExitCells": { "const": 298 },
+            "fullVisibleHistoryCells": { "const": 290 },
+            "exactSerializedTopologyCells": { "const": 7 },
+            "exactSerializedTopologyCheckpoints": { "const": 20 }
+          }
+        },
+        "coverageCeiling": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "realUiActionPathsCaptured",
+            "fullStateUiReplays",
+            "privateStateReadbacks",
+            "visibleOnlyCurrentSceneCells",
+            "visibleOnlySelectionCells",
+            "domainMatrixRelabeledAsUiReplays",
+            "referenceFailuresPreserved"
+          ],
+          "properties": {
+            "realUiActionPathsCaptured": { "const": 298 },
+            "fullStateUiReplays": { "const": 0 },
+            "privateStateReadbacks": { "const": 0 },
+            "visibleOnlyCurrentSceneCells": { "const": 298 },
+            "visibleOnlySelectionCells": { "const": 294 },
+            "domainMatrixRelabeledAsUiReplays": { "const": false },
+            "referenceFailuresPreserved": { "const": true }
+          }
+        },
+        "evidenceDebt": { "$ref": "#/$defs/acceptanceDebt" }
+      }
+    },
+    "conflictDisposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "observedBehavior", "targetBehavior", "disposition", "evidenceDebt"],
+      "properties": {
+        "status": { "const": "disposed_with_debt" },
+        "observedBehavior": { "type": "string", "minLength": 1 },
+        "targetBehavior": { "type": "string", "minLength": 1 },
+        "disposition": { "enum": ["target_behavior_authoritative", "observed_behavior_authoritative"] },
+        "evidenceDebt": { "$ref": "#/$defs/acceptanceDebt" }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grade", "status", "artifacts"],
+      "properties": {
+        "grade": { "enum": ["none", "source", "test", "executable"] },
+        "status": { "enum": ["pending", "provisional", "pass", "fail", "blocked", "not_implemented"] },
+        "artifacts": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "behavior",
+        "baselineStatus",
+        "baselineDetail",
+        "requirements",
+        "targetEvidence",
+        "referenceEvidence",
+        "mgifEvidence"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^F(0[1-9]|[1-3][0-9]|4[0-2])$" },
+        "behavior": { "type": "string", "minLength": 1 },
+        "baselineStatus": { "enum": ["existing", "existing_foundation", "partial", "missing", "mixed"] },
+        "baselineDetail": { "type": "string", "minLength": 1 },
+        "requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^R(0[1-9]|1[0-9]|2[0-4])$" },
+          "uniqueItems": true
+        },
+        "targetEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "referenceEvidence": { "$ref": "#/$defs/evidence" },
+        "mgifEvidence": { "$ref": "#/$defs/evidence" }
+      }
+    }
+  }
+}

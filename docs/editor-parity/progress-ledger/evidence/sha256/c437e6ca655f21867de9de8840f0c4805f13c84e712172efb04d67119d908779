@@ -1,0 +1,51 @@
+{
+  "authorityArtifact": {
+    "bytes": 572,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/550d069749cc18227627537a036d4c90efc13e12c3868953e347d5bdde17326c",
+    "sha256": "550d069749cc18227627537a036d4c90efc13e12c3868953e347d5bdde17326c"
+  },
+  "beforeTaskSha256": "f4e30924015e470cbd07666dcafdce9e1b732e57fa6cae1ebaed2b0582f904e4",
+  "completedAtUtc": "2026-09-04T06:18:34.000Z",
+  "dependencyReplacements": [],
+  "displayName": "P7-RHI-VISUAL-R3",
+  "documentKind": "local-task-transition-receipt",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "fromStatus": "ready",
+  "gateEvent": null,
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "403ea3cc760223e4fc182ab46dee516f726b977a2ad50c335b2a0b7f2bf5b32c",
+  "parentSnapshotSha256": "490510a775979f522a44a13a9ff4aeed74e392f95b2782ed95d01537fd6512d9",
+  "previousTransitionSha256": "4708d652b4da7de123bab2e0aeecfe6579422ee90409af9a776ae615a1b793b1",
+  "report": {
+    "bytes": 2829,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/d920c11842a00091da2918aa4ad77150cebea60f4661461ac93e93e323fed121",
+    "sha256": "d920c11842a00091da2918aa4ad77150cebea60f4661461ac93e93e323fed121"
+  },
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskDefinition": {
+    "createdAtUtc": "2026-09-04T06:18:04.000Z",
+    "dependencies": [
+      "task_p7_contract_reconciliation_20260903"
+    ],
+    "displayName": "P7-RHI-VISUAL-R3",
+    "phase": "P7",
+    "role": "integration",
+    "supersedesTaskId": "task_p7_contract_reconciliation_20260903",
+    "taskId": "task_p7_rhi_visual_r3_20260904"
+  },
+  "taskId": "task_p7_rhi_visual_r3_20260904",
+  "toStatus": "completed",
+  "verdictArtifact": {
+    "bytes": 1124,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/35905600b3e5943e16f57bff2eb2dbba0348eb42094a1c46fabe1cca166bdeb1",
+    "sha256": "35905600b3e5943e16f57bff2eb2dbba0348eb42094a1c46fabe1cca166bdeb1"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "authoritySha256": "9c53414328c41328c5497ae986467632e1a30656c71348287e5e29a0c0b1a607",
+  "beforeTaskSha256": "2ce130413349871e5e377a5706a24a44b59b0722acd625d5c0cd37fcf9f20e95",
+  "decision": "completed",
+  "dependencyReplacementsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "displayName": "P7-RHI-VISUAL-R4",
+  "documentKind": "local-task-verdict",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "gateEvent": null,
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "6563cc92f2053e5cf290c90006858f9e946e63037ed7395b08eae3f7603723e2",
+  "parentSnapshotSha256": "1ed5d632a5a44a9b7c4aee02f6034e108ba7c78b536558b26659fedd882286b4",
+  "reportSha256": "200d8e8d9dcd805f7e63486ba250fffc091dd68d96cb849813eed99c9419e7ad",
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskDefinitionSha256": "8db8593a99b064b4b04cf5371f4cd3570fbd0000b0f468747e60ec20ce7e2a67",
+  "taskId": "task_p7_rhi_visual_r4_20260904"
+}

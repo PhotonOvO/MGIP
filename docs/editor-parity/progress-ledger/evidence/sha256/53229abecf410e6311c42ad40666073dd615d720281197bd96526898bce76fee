@@ -1,0 +1,320 @@
+# Gate P5 Independent Adversarial Review
+
+## Verdict
+
+**GATE P5 FAIL/BLOCKED**
+
+This is an engineering-gate decision only. It is not an implementation claim,
+release PASS, distribution PASS, license clearance, or Metal verification. The
+fixed policy remains: `F42=BLOCKED`, `R24=BLOCKED`, `Metal=Not Verified`, and
+`release/distribution=NOT PASS`.
+
+The gate is blocked by two missing mandatory authorities, an independently
+replayed runtime invocation that cannot run under the coordinator's path
+boundary, and a source-level stale renderer-handle generation gap. No source,
+progress record, ledger, build output, or prior evidence byte was modified by
+this review.
+
+## Scope And Boundary
+
+- Task: `task_bd6e62faa588`
+- Dispatch: `ctx_ce23febf6608`
+- Run: `run_ede89c4421e9`
+- Repository: `G:\MGIF` (read-only)
+- Fresh evidence root: `G:\Temp\mgif-p5-independent-regate-5133878191f54f4698273d0bdc7220ab`
+- Verdict schema: `documentKind=gate-verdict`, `schemaVersion=2`
+- No Git command was run.
+- No recursive or top-level repository or `C:\Temp` enumeration was run.
+- The forbidden build-entrypoint paths, `G:\MGIF\Demo.txt`, and
+  `G:\MGIF\out\build` were not accessed.
+- No CMake/CTest configure or build was started in this dispatch. The
+  coordinator authorized only exact-file static review and the bounded runtime
+  replay described below; prior build/test records are treated as authenticated
+  historical evidence, not as fresh runs.
+- The successor blueprint was not read because its path was not among the
+  coordinator-authorized exact inputs. No replacement authority was inferred.
+
+## Input Identity
+
+The six exact repository/repair inputs were read and hashed before using their
+contents. All values below are lowercase SHA-256 and were rechecked against the
+recorded values.
+
+| Input | Bytes | SHA-256 |
+|---|---:|---|
+| `G:\MGIF\docs\gltf-scene-editor-parity-task.md` | 165772 | `bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e` |
+| `G:\MGIF\docs\gltf-scene-editor-parity-progress.md` | 6001 | `7ca17ea9375e872d11e7ae8ea93bff5764fcf0e1246f46812bf60c205ecc043d` |
+| `G:\MGIF\docs\editor-parity\progress-ledger-state.json` | 46934 | `017a59446a01237b6369cf9facc79fe98bf1d60239213125fb030d1321001ffc` |
+| `G:\Temp\mgif-p5-r3-production-repair-task_88ee1f6fe4b5-20260827T053449211\P5-R3-PRODUCTION-REPAIR-REPORT.md` | 16639 | `d66d905b63aa502c9d2af4aadd087a9b024c8f81900ab08bfa47b1bdc67a32c1` |
+| `G:\Temp\mgif-p5-r3-production-repair-task_88ee1f6fe4b5-20260827T053449211\final-evidence-manifest.json` | 28536 | `17fe9ab4ed7ae62383f2795a2ac591f390c890ce195709c7cfec99158ffa5e56` |
+| `G:\Temp\mgif-p5-r3-production-repair-task_88ee1f6fe4b5-20260827T053449211\evidence\source-bindings.json` | 2497 | `75dafcffeb3862115a5ef6aba5c42712a71ba2ffd0358643940d9c83c34b6106` |
+
+The current manifest's two predecessor inputs were also authenticated as
+manifest-listed records: the predecessor report is 24982 bytes with SHA-256
+`82f7e95c259b85b73af951e03bc6d6c62cfd88b53b090579bc78760ab0f53a02`, and the
+predecessor manifest is 7115 bytes with SHA-256
+`bc83d49a6be3d9abbdb9404b51ef89c1adb112759acd5231fe120bd4b0bcc256`.
+
+## Twelve Source Bindings
+
+The exact source-binding verification was completed before static inspection.
+`source-binding-audit.json` reports 12 declared, 12 checked, 12 matched, and
+zero mismatches (4702 bytes, SHA-256
+`e9dd60e5fbf42dd0f5f6468f7a70c46642e8fdc3b1fa9f5e691e6a1dd48ac464`). The
+independent recheck produced the same result.
+
+| Relative source path | Bytes | SHA-256 |
+|---|---:|---|
+| `app/MinimalLatestApp.h` | 217924 | `67de51923022725e62c2b16d3ab17ebf394e6e30d839f133e112d5789b3071db` |
+| `app/editor/EditorTransactionSmoke.h` | 18553 | `d7b12b74b49f3e4589d906af6688ad171ec3a5214c8a81cb2d511fd89d45a420` |
+| `render/GPUDrivenRenderer.cpp` | 422336 | `9c9456b3613e2dfbc47e44476bc677cc0a80599fe81ef3c6d0097d058f20085b` |
+| `render/GPUDrivenRenderer.h` | 73586 | `1aa45dc7a657877d1af97efa096e1bfda0e7d961dda3e6f768cde3db070d56ca` |
+| `render/editor/SceneRuntimePublisher.cpp` | 61806 | `571cf94b2ceefbb3127377dd0ed24bf3ed5615112c4ebe899a7615544dc75fe9` |
+| `render/editor/SceneRuntimePublisher.h` | 15785 | `bab3da6036d1ab762e61b29f8422b33c8285933a9ca709ffa01ef91e520208a8` |
+| `render/editor/SceneDeltaResourceJournal.cpp` | 9163 | `a9e52bef20afd11aadc556cece1650fc7cd775548e2bf5db548ad735a65a2d3d` |
+| `render/editor/SceneDeltaResourceJournal.h` | 4989 | `b2638e5c37cb1bae4595e1449f1909dd976dfce48d70584fbb3702de40511add` |
+| `tests/editor/editor_transaction_smoke_tests.cpp` | 14767 | `48b662f10d6cd0bc5ddfa86e119b872887a483d7109b2af32f36ff9b4ac3733a` |
+| `tests/editor/renderer_scene_publication_tests.cpp` | 35321 | `37f077b5332d2227a29c2d9a5843b6a641c04410291744787ea97950bc2c1348` |
+| `tests/editor/scene_delta_fake_rhi_tests.cpp` | 37176 | `77ee85e7154e6956c568db2bfb4287099d80b627c4870af4d428f0ab74bdc8b9` |
+| `tests/editor/editor_renderer_integration_tests.cpp` | 146622 | `7d292ac0592045d49de4ba01bfeb1da3ea0f9052d57db9c86af64da360389d03` |
+
+## Authenticated Evidence
+
+The final repair manifest was independently checked as 90/90 declared records,
+with zero size/hash mismatches. The audit artifact is 48863 bytes with SHA-256
+`b80c88e035fa584274c4cc34accd66317eb32746a6c50351145639e630ab34a7` and
+records manifest bytes 28536 and manifest SHA-256
+`17fe9ab4ed7ae62383f2795a2ac591f390c890ce195709c7cfec99158ffa5e56`.
+
+The two mandatory records below are absent at their exact declared paths. Their
+absence is a blocker; no nearby file was substituted.
+
+| Mandatory authority | Expected bytes | Expected SHA-256 | Observed |
+|---|---:|---|---|
+| `C:\Temp\MGIF-P5-renderer-delta-readiness.md` | 68932 | `d7edd08f594fba2b05ff73108c17775ea6e04b77cd7874287049d59fe9c51940` | absent |
+| `C:\Temp\MGIF-P5-compatibility-delta-task_9ff369a50b72.md` | 64425 | `b280100878c98467d2936f50630065bb8452a2c762686c734c1cc81c687a06b4` | absent |
+
+Other fresh evidence artifacts used in this bounded review:
+
+| Artifact | Bytes | SHA-256 | Result |
+|---|---:|---|---|
+| `runtime-preflight.json` | 53626 | `ffb4bde0043acda4411c9b7b742b6d8f2ceca5653722c3310500492a0b99ac43` | 54/54 declared runtime records matched |
+| `bounded-static-scan.json` | 496930 | `362abe7cd8b6c7ce4afec97379b02cc564af7480aa85c769603d5a38920d1d17` | exact 12-file scan completed |
+| `runtime-replay/summary.json` | 5519 | `acdb21ed61df3b393172cf1159a88aa36248d6251934a79daf82ee5244c602d7` | 5 started, 5 nonzero, 0 timeout |
+| `authenticated-evidence-audit.json` | 48863 | `b80c88e035fa584274c4cc34accd66317eb32746a6c50351145639e630ab34a7` | 90/90 present manifest records matched |
+| `evidence/bounded-dependency-scan.json` | 886 | `3d0e384b78ab25b48b28bbac8d1735ecc52c683e0e35249620cbaddb5dfcd9da` | forbidden dependency match count 0 |
+
+## Fresh Runtime Replay
+
+The coordinator authorized a contained replay using only the authenticated
+manifest's `Demo.exe`, `nvtt30205.dll`, and each case's declared source files.
+The runtime preflight copied and rechecked 52 case-source records plus the
+executable and DLL (54/54 matched before and after copy).
+
+Each exact case was launched with the original mode/behavior flags and only the
+executable and output directory paths changed. The command form was:
+
+```powershell
+& "G:\Temp\mgif-p5-independent-regate-5133878191f54f4698273d0bdc7220ab\runtime\Demo.exe" --automation=<mode> --fixed-dt=0.0166666667 --warmup-frames=8 --motion-frames=24 --hold-frames=8 --no-ui --auto-exit <behavior-flags> --editor-transaction-dir="G:\Temp\mgif-p5-independent-regate-5133878191f54f4698273d0bdc7220ab\runtime-replay\<case>"
+```
+
+The five substitutions were:
+
+| Case | Mode/flags | Exit | Duration (ms) |
+|---|---|---:|---:|
+| `01-translate-no-post-no-ddgi` | `csm-translate-stop --no-post --no-ddgi` | 1 | 76 |
+| `02-rotate-no-post-no-ddgi` | `csm-rotate-stop --no-post --no-ddgi` | 1 | 52 |
+| `03-translate-taa-no-ddgi` | `csm-translate-stop --taa --no-ddgi` | 1 | 43 |
+| `04-rotate-taa-no-ddgi` | `csm-rotate-stop --taa --no-ddgi` | 1 | 57 |
+| `05-rotate-taa-ddgi` | `csm-rotate-stop --taa` | 1 | 50 |
+
+All five processes started and none timed out. Every stderr log reports the
+same hard boundary failure, for example
+`runtime-replay/01-translate-no-post-no-ddgi/stderr.log`:
+
+```text
+--editor-transaction-dir must be a child of C:\Temp
+```
+
+The required workaround would create/use a `C:\Temp` transaction directory,
+which this dispatch explicitly forbids. Therefore these are invocation
+failures caused by the bounded environment, not transaction PASS records. The
+authenticated prior Vulkan r5 matrix (5/5) remains historical evidence only;
+it is not relabeled as a fresh result.
+
+## Severity-Ranked Findings
+
+### BLOCKER: mandatory P5 authorities are absent
+
+The authenticated final manifest declares both readiness and compatibility
+authorities above, but both exact files are absent. The successor blueprint was
+not in the coordinator-authorized path set, so this review cannot reconstruct
+the normative authority from a substitute. An authoritative engineering PASS
+cannot be issued while the required inputs are missing.
+
+### HIGH: fresh runtime evidence is blocked by a hard-coded `C:\Temp` requirement
+
+The five exact replay commands all returned exit code 1 within 76 ms or less;
+none reached the transaction harness. The stderr contract rejects every output
+directory outside `C:\Temp`. Creating a `C:\Temp` workaround would violate the
+strict boundary, so the required fresh driver-backed matrix is incomplete.
+This is recorded as a bounded environment/invocation limitation, not as a
+claim that the application transaction logic itself failed.
+
+### HIGH: caller-supplied renderer handle generations are not checked against live records
+
+The mapping validator checks each renderer handle's renderer/device generation
+against the mapping fence (`render/editor/SceneRuntimePublisher.cpp:648-675`),
+but does not compare the handle index/generation to the live concrete record.
+Stable-ID transition validation only compares whether entries exist before and
+after (`render/editor/SceneRuntimePublisher.cpp:413-425`).
+
+The live scene-object record does contain a typed generation-bearing handle
+(`render/GPUDrivenRenderer.cpp:1200-1207`), yet `validateLiveHandles()` checks
+only source-ID existence for scene objects (`render/GPUDrivenRenderer.cpp:1596-1607`).
+Camera and light checks verify kind and projected asset-index range only
+(`render/GPUDrivenRenderer.cpp:1633-1644`). The private generation used to
+construct candidate handles is derived from the caller mapping's maximum
+generation (`render/GPUDrivenRenderer.cpp:1375-1388`), so an update can carry a
+different object generation while retaining a valid fence generation. The
+candidate then copies the target mapping and publishes it
+(`render/GPUDrivenRenderer.cpp:1758-1786`), allowing a forged/stale generation
+to become the renderer-owned identity without a live-record equality check.
+
+The public concrete snapshot exposes mesh, texture, material, and scene-object
+handle vectors but no camera/light handle vectors
+(`render/GPUDrivenRenderer.h:303-335`). Positive camera/light effect tests do
+not provide a negative stale-generation case (`tests/editor/editor_renderer_integration_tests.cpp:3030-3162`).
+This leaves the Section 7.1 requirement for actual generation-safe renderer
+identity unproven and can bind a reused index to the wrong logical object.
+
+### No additional confirmed source defects in the bounded set
+
+The earlier retirement-before-validation and lost-invalid-token findings are
+repaired in the authenticated sources. Accepted-only retirement drain is at
+`render/GPUDrivenRenderer.cpp:833-847` and `:1031-1043`; the integration
+regression covers rejected-then-accepted completed retirement at
+`tests/editor/editor_renderer_integration_tests.cpp:3203-3269`. Token
+diagnostics and exact recovery are retained by
+`render/editor/SceneDeltaResourceJournal.cpp:122-139` and `:181-243`, with
+backend queue recovery at `render/GPUDrivenRenderer.cpp:2247-2319` and a
+focused invalid-token test at `tests/editor/editor_renderer_integration_tests.cpp:3466-3504`.
+
+## Section 7.1 Contract Matrix
+
+The dispositions below combine the exact 12-file static review with the
+authenticated prior repair evidence. A `PASS (authenticated)` entry is not a
+fresh CMake/CTest result in this dispatch. The stale-generation row is the
+independent negative finding above.
+
+| Contract | Disposition | Evidence / bounded note |
+|---|---|---|
+| Four complete domains and nine change classes, including `SceneRootState` and `Camera` | PASS (authenticated) | Prior manifest/test records enumerate the frozen domains/classes; no contradictory symbol or test evidence in the 12 bound files. |
+| Action/value/remap/full-snapshot immutability | PASS with scope limitation | Authenticated tests cover immutable value/snapshot ownership; remap completeness is not independently derivable from the 12 authorized source paths. |
+| Ordered source-mutation fence and digest chain | PASS (authenticated) | Prior canonical/fence validator records pass; source publisher binds canonical identity and fence before apply (`SceneRuntimePublisher.cpp:330-395`). |
+| Exact envelope and overflow rules | PASS (authenticated) | Prior Debug/Release validator records pass; bounded source checks fence, mapping epoch, submission count, and plan envelopes before staging. |
+| Canonical determinism | PASS (authenticated) | Prior normal and optimized validator records are 26/26 each; no source drift after binding. |
+| Exact change capture/history transport | PASS (authenticated) | Prior smoke and focused records pass; no repair was made in this review. |
+| Projection/renderer identity separation | PASS | `RendererProjectionCoordinate` and `RendererObjectHandle` are distinct fields (`SceneRuntimePublisher.h:94-118`); no projection-only map was found carrying an RHI handle. |
+| Both independent clocks | PASS (authenticated) | Prior focused records pass; fence carries document revision, scene activation epoch, and root serial (`SceneRuntimePublisher.h:57-63`). |
+| Immutable mapping and all fences | PASS with stale-generation gap | Fence and renderer/device generation checks exist (`SceneRuntimePublisher.cpp:648-675`), but live object-generation equality is missing as described above. |
+| Actual handle generations in renderer-owned snapshot | FAIL/HIGH | Candidate handle generation is derived from target mapping; concrete snapshot omits camera/light handle vectors (`GPUDrivenRenderer.cpp:1375-1388`, `GPUDrivenRenderer.h:303-335`). |
+| Exhaustive apply disposition and error taxonomy | PASS (authenticated) | `SceneApplyResult` carries disposition, typed error, backend-neutral `rhi::RHIResult`, fences, tokens, handles, counters, fallback reason, and placeholder count (`SceneRuntimePublisher.h:245-266`). |
+| Exact-identity `AlreadyApplied` no-work and different-bytes invalid-state rejection | PASS | Exact identity/bytes path returns `AlreadyApplied` with zero delta; differing bytes return `InvalidState` (`SceneRuntimePublisher.cpp:942-967`). |
+| Incremental operation effects | PASS (authenticated) | Transform, visibility, material, camera, and light paths are present (`GPUDrivenRenderer.cpp:2685-2834`, `:2836-2973`) and positive effects are asserted (`editor_renderer_integration_tests.cpp:3030-3162`). |
+| Transaction visibility | PASS (authenticated) | Candidate state is staged before the single active swap (`GPUDrivenRenderer.cpp:1695-1729`, `:1731-1787`). |
+| Descriptor ownership and publication | PASS (authenticated) | Public backend contract and prior descriptor-failure tests pass; candidate descriptor state is copied/staged before publication. |
+| Queue-token retirement | PASS after repair (authenticated) | Journal retains every returned token and unresolved ordinal (`SceneDeltaResourceJournal.cpp:122-139`); exact queue recovery and strict frontier checks are present (`:181-243`, `GPUDrivenRenderer.cpp:2247-2319`). |
+| Every fault class | PASS with coverage limitation | Authenticated fake-RHI records cover allocation, descriptor, recording, submission, prepublication, and retirement faults; no fresh test run was authorized here. |
+| Counters | PASS with historical qualification | Accepted/rejected counters and accepted-only retirement updates are source-consistent; fresh runtime did not reach counters. |
+| Zero idle/hot-path uploads, including camera | PASS (authenticated) | Prior focused records assert zero continuous uploads/idle; accepted-only maintenance is at `GPUDrivenRenderer.cpp:840-847`. |
+| Full-snapshot rollback | PASS with token-path qualification | Authenticated rollback records pass; token recovery implementation is present, but this dispatch did not rerun CTest. |
+| Android build isolation/viewer preservation | PASS (authenticated) | Prior dependency/Android contract is 3/3; no desktop-editor Android path was found in the bounded scan. |
+| Metal pre-mutation `Unsupported` | STATIC PASS; platform Not Verified | Initialization rejects non-Unsupported Metal capability (`GPUDrivenRenderer.cpp:650-662`); negative test is present (`editor_renderer_integration_tests.cpp:2899-2923`), but no Metal execution exists. |
+| Public/backend boundaries | PASS | Authenticated bounded dependency scan has zero forbidden dependency matches; `SceneTransactionBackend` exposes backend-neutral `rhi::RHIResult` (`SceneRuntimePublisher.h:274-308`). |
+| Configured target closure | PASS (authenticated) | Prior configured-boundary log reports the production-editor dependency preflight passed; no fresh configure was authorized. |
+| Zero forbidden dependencies | PASS | `evidence/bounded-dependency-scan.json` checked the 12 paths with `match_count=0`; artifact SHA-256 is recorded above. |
+| Fresh five-case driver-backed matrix | FAIL/BLOCKED | All five bounded launches exited 1 on the `C:\Temp` path precondition; no case produced transaction evidence. |
+
+## Explicit Adversarial Searches
+
+The fresh static scan is exactly 12-file bounded and is 496930 bytes (SHA-256
+`362abe7cd8b6c7ce4afec97379b02cc564af7480aa85c769603d5a38920d1d17`). Its
+heuristic counts are recorded here so broad symbol hits are not mistaken for
+defects:
+
+| Search | Match count | Disposition |
+|---|---:|---|
+| `beginSceneReplacement|waitForIdle` | 28 | Legacy upload/lifecycle/resize/shutdown/DDGI symbols; no transaction apply call before validation was found. |
+| Active-resource overwrite/publication symbols | 114 | Candidate-to-active swap is isolated at commit; no staging overwrite found. |
+| Handle/generation/stale-generation symbols | 85 | Positive typed checks exist, but the live-record equality gap is a HIGH finding. |
+| Counter/retirement mutation symbols | 118 | Accepted-only retirement drain is present; no separate counter laundering found. |
+| Native/Vulkan/backend heuristic tokens | 28 | Hits are profiling scopes/native dialog names; refined forbidden dependency scan is zero. |
+| Projection/renderer identity symbols | 195 | Identity and renderer handle fields remain distinct, with handles intentionally in renderer-owned snapshots. |
+| Android/viewer boundary symbols | 29 | No false desktop-editor Android path found. |
+| World/bounds/camera/light/material/visibility effect symbols | 2008 | Positive effect paths and tests are present; no missing effect was confirmed. |
+
+The refined dependency pattern was
+`(?i)(?<![A-Za-z0-9_])(?:nvcore|nvpro|nvapp|nvgui|nvvk|nvvkgltf)(?![A-Za-z0-9_])|reference[-_ ]?helper`
+and returned zero matches. No native getter, projection-handle escape, hidden
+transaction idle call, or false Android workflow was independently confirmed
+beyond the stale-generation finding.
+
+## Commands And Results
+
+The required initial coordinator check was run before file inspection:
+
+```powershell
+orca orchestration check --terminal term_ee513982-82f6-48c1-b9f4-149591833037
+```
+
+The coordinator response authorized the exact-file review and bounded replay,
+forbade fresh CMake/CTest configuration, and required that a zero-record
+summary not be accepted. The schema question was answered with the closed
+ten-field schema used by `gate-verdict.json`.
+
+The exact source-hash recheck used only the twelve paths in
+`evidence/source-bindings.json`:
+
+```powershell
+$b='G:\Temp\mgif-p5-r3-production-repair-task_88ee1f6fe4b5-20260827T053449211\evidence\source-bindings.json'
+$j=Get-Content -LiteralPath $b -Raw | ConvertFrom-Json
+foreach($r in $j.files){
+  $p=Join-Path 'G:\MGIF' $r.relative_path
+  Get-Item -LiteralPath $p
+  Get-FileHash -LiteralPath $p -Algorithm SHA256
+}
+```
+
+Result: 12/12 size and SHA-256 matches. The contained runtime preflight and
+replay results are recorded in the fresh artifacts listed above. No fresh
+CMake/CTest command was run under the coordinator's restriction; historical
+authenticated results remain exactly as reported by the repair manifest:
+core Debug 13/13, core Release/NDEBUG 7/7, focused Debug 5/5, token Debug 2/2,
+token Release 2/2, dependency/Android 3/3, and Python validator 26/26 in both
+normal and optimized modes.
+
+## Residual Platform And License Status
+
+- Windows/MSVC and RHI/Android results are historical authenticated evidence,
+  not fresh builds in this dispatch.
+- Fresh Vulkan replay was blocked before transaction startup by the required
+  `C:\Temp` child-directory check; the prior authenticated r5 matrix is not
+  promoted to fresh evidence.
+- Metal pre-mutation rejection is statically covered, but Metal execution is
+  unavailable. Metal remains **Not Verified**.
+- Android evidence is viewer/build isolation only; it is not a desktop-editor
+  queue or full Android incremental-editor claim.
+- `F42` remains **BLOCKED**.
+- `R24` remains **BLOCKED**.
+- Release/distribution remains **NOT PASS**.
+- No license clearance or distribution authorization is implied.
+
+## Final Disposition And Integrity
+
+The final disposition is **GATE P5 FAIL/BLOCKED**. This report is repair-free;
+the only newly written files are under the fresh gate root. The detached
+`integrity.json` records the finalized byte counts and lowercase SHA-256 values
+for this report and `gate-verdict.json`; the completion receipt repeats those
+two hashes exactly. `gate-verdict.json` contains only the coordinator-specified
+schema-v2 ten top-level fields and no additional fields.

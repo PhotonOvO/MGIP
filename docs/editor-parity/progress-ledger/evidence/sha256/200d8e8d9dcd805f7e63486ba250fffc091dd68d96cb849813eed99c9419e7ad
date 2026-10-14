@@ -1,0 +1,33 @@
+# P7-VISUAL-MATRIX-R4 Recovery Report
+
+Decision: complete bounded Windows visual integration matrix; this receipt does not declare Gate P7.
+
+Parent bundle: 6563cc92f2053e5cf290c90006858f9e946e63037ed7395b08eae3f7603723e2
+Parent snapshot: 1ed5d632a5a44a9b7c4aee02f6034e108ba7c78b536558b26659fedd882286b4
+Previous transition head: c437e6ca655f21867de9de8840f0c4805f13c84e712172efb04d67119d908779
+
+Source identity: cbb9c4d1ebe637cbfbf30b94aee40d63031c37f958560e7c54fcc91df769d102
+Debug Demo: 8f8a063d1d7ecebb25a0c91f4e17a69e36cb1d0c15edf9886ad4cfe2aba79beb (21230080 bytes)
+Release Demo: ad7307a22cd592044b45782099a6a7d9ea636506e73dc0f7422c57ebe622b291 (6191104 bytes)
+Aggregate manifest: G:\Temp\mgif-p7-visual-r4-20260904T223000Z\visual-v2-evidence-manifest.json; sha256=fba4a4c659da910e40796ca97f50323a76b5fdc8fc9b67e35d69daefc985bece
+
+## Matrix
+
+- Release: 24/24 base traces (V01 7 variants, V02 13 components, V03 parent-space, V04 xray/dither, V07 baseline).
+- Debug: 24/24 base traces with the same state/pixel/RHI assertions.
+- V07 extension: 16/16 traces across 960x540 at 125/150/200%, 1280x720, 1920x1080, 2560x1440, and 640x960, in both configurations.
+- Every trace has exit 0, complete marker sequence, four interaction stages where applicable, nonblank pixels, exact target component proof, and RHI overlay recorded/submitted counters with zero failures/native escape calls; V04 depth proof is established in the gizmo crop.
+
+## RHI And Runtime
+
+- Present acquire wait stage is `transfer`, covering the first swapchain transfer access.
+- Debug/Release final runtime matrix: 8/8 (validated case summaries, artifacts, exit codes, markers, metrics and classifications); Debug unfiltered/filtered clean; Release unfiltered only the authorized external `VUID-vkCmdDraw-None-09600`; exact-filter runs clean; no SYNC-HAZARD/assertion/device-lost.
+- V04 gizmo-crop audit: status=proven, diffPixels=135, crop=[337, 355, 392, 411]; RGB-only bbox is evaluated with threshold 8 and minimum 32 pixels.
+- Focused CTest: 15/15 in each configuration; visual contract 7/7; Present contract 4/4; P0 scaffold 42 features, 10 traces, 110 edges.
+
+## Non-Claims
+
+- No byte-for-byte reference-image equality is claimed; the existing reference screenshot package is retained as targeted provenance context only.
+- V04 whole-image differences are not used as proof; only the paired gizmo crop is authoritative for the depth claim.
+- This leaf does not supersede failed G7 or unblock P8; a separate role=gate recovery is required after all normative prerequisites are accepted.
+- F42/R24, Metal, release/distribution policy remain unchanged.

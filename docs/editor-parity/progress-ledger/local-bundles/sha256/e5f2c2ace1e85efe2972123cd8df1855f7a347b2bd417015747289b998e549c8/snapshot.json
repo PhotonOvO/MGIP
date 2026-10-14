@@ -1,0 +1,89 @@
+{
+  "base": {
+    "bundleId": "799241f0ff60eee1b37949b17c9118a1fa2fcda8f2f9f001a30bc336198d0eef",
+    "pointerSha256": "5bd098ee508b592a8230a856cef4e5fa7642ad787a578d6d60386a8cb3de3e1b",
+    "revisionSha256": "69d5704951677d35fb7e2925a04bd5b01a95729ded27338e772632c66455d7ac",
+    "snapshotSha256": "82d0c43caa88d8cd70d7c654aa305742e17f72ad57e4211e9f6465b22a3e5ae0",
+    "stateSha256": "31ca0ba7db488f46eb3f8483960e9410ea03db9dfaead4cf6cc9d8e953d17bca"
+  },
+  "consistencyMode": "frozen-origin-plus-receipt-chain",
+  "documentKind": "local-progress-snapshot",
+  "ledgerId": "mgif-editor-parity",
+  "parent": {
+    "bundleId": "8ec962fd1dacfb5324cb37e85ae5f5fa6239ed4c8f75e834ac4effd82b2dbc3b",
+    "snapshotSha256": "46178cce5a765c616291574b971269dcafabfe909bf57dc74c2847b88b8bc618",
+    "transitionHeadSha256": "5db1193abb4b0ba55bb40a0e07da8ca2dab595c2215758a4e048697a4bd00c36"
+  },
+  "revisionSha256": "61bae80344ad307a3d3e20c9c9f4cbf81c7b5ddc661b7353b41ec5ef9f69358b",
+  "schemaVersion": 1,
+  "sealedAtUtc": "2026-08-29T01:28:31.000Z",
+  "taskOverrides": {
+    "task_1040525304c0": {
+      "completedAtUtc": "2026-08-28T15:50:51.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "5db1193abb4b0ba55bb40a0e07da8ca2dab595c2215758a4e048697a4bd00c36",
+        "reportSha256": "d01d7b451593f5ff017c78a06883400f096c81a1d265b1165abd19a6070d6726",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "e00c2f1cd7edd498fcc53325f00fe374615b3b307370814e056e6b8d40cef23a"
+      },
+      "status": "completed"
+    },
+    "task_1254fa47b9b7": {
+      "completedAtUtc": "2026-08-28T14:56:35.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "06bc686ba941e3e69825460366aad3cefdba5335c90e84402764549f002c34bc",
+        "reportSha256": "7a8bcf776845d4fff563a0cdd60f38777b273c5993773f74bae91dce179c78b6",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "0441c80ef39a672a5c77835a65459cc9a99b05030c3d5c7d6a2aa5eb880f1b33"
+      },
+      "status": "completed"
+    },
+    "task_2ebaf90139c5": {
+      "completedAtUtc": "2026-08-28T11:00:00.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88",
+        "reportSha256": "8d8d35c3aae38e7ad08b1fe7502383027218ad5cbcf1f26172f10ad614a1c456",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "0bfd94be6214742bbc35c92054bc6aacf251675b482a35c3cb412eb0cd78e0cb"
+      },
+      "status": "completed"
+    },
+    "task_b59fd290ead0": {
+      "completedAtUtc": "2026-08-29T01:28:31.000Z",
+      "completionEvidence": {
+        "outcome": "succeeded",
+        "receiptSha256": "e6b8aa65967b3afb19f8fce76c830f1317a5ecc0fb7ce4c709c14da2053b3701",
+        "reportSha256": "0713b3cd1b6036aa59e5f4bf58c4ec1576379017bf3075042cea52ab8db13b97",
+        "sourceKind": "local-automatic-review",
+        "verdictSha256": "986c8fb0aab52b7081139f2be384120f17b2ccecce96a6698593acea967310a0"
+      },
+      "status": "completed"
+    }
+  },
+  "transitionHeadSha256": "e6b8aa65967b3afb19f8fce76c830f1317a5ecc0fb7ce4c709c14da2053b3701",
+  "transitionReceipts": [
+    {
+      "bytes": 1339,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88",
+      "sha256": "1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88"
+    },
+    {
+      "bytes": 1399,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/06bc686ba941e3e69825460366aad3cefdba5335c90e84402764549f002c34bc",
+      "sha256": "06bc686ba941e3e69825460366aad3cefdba5335c90e84402764549f002c34bc"
+    },
+    {
+      "bytes": 1398,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/5db1193abb4b0ba55bb40a0e07da8ca2dab595c2215758a4e048697a4bd00c36",
+      "sha256": "5db1193abb4b0ba55bb40a0e07da8ca2dab595c2215758a4e048697a4bd00c36"
+    },
+    {
+      "bytes": 1398,
+      "path": "docs/editor-parity/progress-ledger/evidence/sha256/e6b8aa65967b3afb19f8fce76c830f1317a5ecc0fb7ce4c709c14da2053b3701",
+      "sha256": "e6b8aa65967b3afb19f8fce76c830f1317a5ecc0fb7ce4c709c14da2053b3701"
+    }
+  ]
+}

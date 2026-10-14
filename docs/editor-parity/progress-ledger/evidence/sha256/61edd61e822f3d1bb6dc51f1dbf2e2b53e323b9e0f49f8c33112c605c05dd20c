@@ -1,0 +1,31 @@
+{
+  "documentKind": "gate-receipt",
+  "schemaVersion": 1,
+  "runId": "run_ede89c4421e9",
+  "phase": "P2",
+  "gateTaskId": "task_8261f1595760",
+  "dispatchId": "ctx_539e52156e31",
+  "workerMessageId": "msg_dae85c78b385",
+  "completedAtUtc": "2026-08-23T10:37:14.830Z",
+  "reviewExecutionOutcome": "succeeded",
+  "gateVerdict": "GATE P2 ENGINEERING PASS",
+  "gateScope": "engineering",
+  "supersedesGateTaskId": null,
+  "report": {
+    "path": "G:\\MGIF-p2-gate-report.md",
+    "bytes": 4577,
+    "sha256": "520ca1dcbb405755b1a328a510f791399e89f080a6d7ca8e3d88eb0090d23b1b"
+  },
+  "verdictArtifact": {
+    "path": "C:\\Temp\\mgif-progress-ledger-task_ab822a872485-20260825T043308623Z\\evidence\\verdict-03-p2-pass.json",
+    "bytes": 422,
+    "sha256": "f3504720823df0ac1c02ef720b4d1af2a1c7f28e13413a4b0cabff66a3dce541"
+  },
+  "inputFingerprintSha256": "cdd106f012be579ce4eb91bdda796ca872dd4bdbed907a97631939b4a006acc5",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "r24": "BLOCKED",
+    "metal": "Not Verified",
+    "releaseDistribution": "NOT PASS"
+  }
+}

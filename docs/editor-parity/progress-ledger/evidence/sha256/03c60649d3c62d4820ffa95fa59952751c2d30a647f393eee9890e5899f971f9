@@ -1,0 +1,31 @@
+{
+  "documentKind": "gate-receipt",
+  "schemaVersion": 1,
+  "runId": "run_ede89c4421e9",
+  "phase": "P3",
+  "gateTaskId": "task_958b7d42d0a2",
+  "dispatchId": "ctx_650d09db7f42",
+  "workerMessageId": "msg_999b7a9ace7e",
+  "completedAtUtc": "2026-08-23T15:33:30.096Z",
+  "reviewExecutionOutcome": "succeeded",
+  "gateVerdict": "GATE P3 FAIL/BLOCKED",
+  "gateScope": "engineering",
+  "supersedesGateTaskId": null,
+  "report": {
+    "path": "C:\\Temp\\mgif-gate-p3-ctx_650d09db7f42\\gate-p3-adversarial-review.md",
+    "bytes": 17843,
+    "sha256": "455c006dec87a74bc00986ad882b73380f9813539558a32a0435b879c4adea7f"
+  },
+  "verdictArtifact": {
+    "path": "C:\\Temp\\mgif-progress-ledger-task_ab822a872485-20260825T043308623Z\\evidence\\verdict-04-p3-fail.json",
+    "bytes": 418,
+    "sha256": "0eec553e84a4228c62222e2b343e55174cdf5698f277bea73e6342a6c63a7be9"
+  },
+  "inputFingerprintSha256": "dbd5b5a7a10ac744aa51671523cf5228da8d56c6277100ac6a1d14199950f5a8",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "r24": "BLOCKED",
+    "metal": "Not Verified",
+    "releaseDistribution": "NOT PASS"
+  }
+}

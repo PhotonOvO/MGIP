@@ -1,0 +1,47 @@
+{
+  "documentKind": "p5-authority-recovery",
+  "schemaVersion": 1,
+  "recoveredAt": "2026-08-28T00:33:36+08:00",
+  "recoveryEvidenceRoot": "G:/Temp/mgif-p5-r4-authority-recovery-20260828T003336+0800",
+  "historyPolicy": {
+    "rewritePriorManifest": false,
+    "rewritePriorGateVerdict": false,
+    "nextGateMustAppendSupersedingEvent": true
+  },
+  "authorities": [
+    {
+      "role": "renderer_delta_readiness",
+      "originalPath": "C:/Temp/MGIF-P5-renderer-delta-readiness.md",
+      "bytes": 68932,
+      "sha256": "d7edd08f594fba2b05ff73108c17775ea6e04b77cd7874287049d59fe9c51940",
+      "recycleData": {
+        "path": "C:/$RECYCLE.BIN/S-1-5-21-628921809-127329029-1934030757-1001/$RBR5G3D.md",
+        "bytes": 68932,
+        "sha256": "d7edd08f594fba2b05ff73108c17775ea6e04b77cd7874287049d59fe9c51940"
+      },
+      "recycleMetadata": {
+        "path": "C:/$RECYCLE.BIN/S-1-5-21-628921809-127329029-1934030757-1001/$IBR5G3D.md",
+        "bytes": 116,
+        "sha256": "cef7513a4e1bea5a50181795f51147b48e4f921f971c04e84b9e09e9b9aa4609"
+      },
+      "repositoryEvidencePath": "docs/editor-parity/progress-ledger/evidence/sha256/d7edd08f594fba2b05ff73108c17775ea6e04b77cd7874287049d59fe9c51940"
+    },
+    {
+      "role": "compatibility_delta",
+      "originalPath": "C:/Temp/MGIF-P5-compatibility-delta-task_9ff369a50b72.md",
+      "bytes": 64425,
+      "sha256": "b280100878c98467d2936f50630065bb8452a2c762686c734c1cc81c687a06b4",
+      "recycleData": {
+        "path": "C:/$RECYCLE.BIN/S-1-5-21-628921809-127329029-1934030757-1001/$RIF1WA7.md",
+        "bytes": 64425,
+        "sha256": "b280100878c98467d2936f50630065bb8452a2c762686c734c1cc81c687a06b4"
+      },
+      "recycleMetadata": {
+        "path": "C:/$RECYCLE.BIN/S-1-5-21-628921809-127329029-1934030757-1001/$IIF1WA7.md",
+        "bytes": 142,
+        "sha256": "0c976f56e96b9df7c7066b53592287b7d93832d9704585cdcfa563e4ccbe45b9"
+      },
+      "repositoryEvidencePath": "docs/editor-parity/progress-ledger/evidence/sha256/b280100878c98467d2936f50630065bb8452a2c762686c734c1cc81c687a06b4"
+    }
+  ]
+}

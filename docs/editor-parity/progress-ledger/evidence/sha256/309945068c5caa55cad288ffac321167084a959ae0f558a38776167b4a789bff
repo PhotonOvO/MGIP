@@ -1,0 +1,21 @@
+{
+  "beforeTaskSha256": "3159a5eb2b3a26455582a27b580391dc0b37827d9fa2b81bce6ecf476d61fff2",
+  "decision": "failed",
+  "displayName": "G6",
+  "documentKind": "local-task-verdict",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "failed",
+  "parentBundleId": "949b65f20b582eb3f1ff43a79cf979cba81b6e4760939b3fac2a595f92b1137f",
+  "parentSnapshotSha256": "fe7027533d96b7a78da62353e99f22e4b2699c62212f2da1245607c63783948f",
+  "reportSha256": "5215beb12d888a744323310620f54dbeda45f6e8c268503fab49abfd9d3d47dd",
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 1,
+  "taskId": "task_4af12cfad98a"
+}

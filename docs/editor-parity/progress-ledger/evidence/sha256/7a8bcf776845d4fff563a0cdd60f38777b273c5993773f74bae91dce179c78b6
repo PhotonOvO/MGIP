@@ -1,0 +1,259 @@
+# P6-00 Completion Report
+
+## Verdict
+
+P6-00 (`task_1254fa47b9b7`) is complete as a contract-freeze leaf.
+
+This report does not claim that integrated P6, Gate P6, release/distribution,
+Metal runtime verification, F42, or R24 has passed. It does not claim that the
+production application has cut over to the new selection authority. It does
+not claim that the O06 same-frame Escape/release runtime defect is fixed.
+
+Completed at: `2026-08-28T14:56:35.000Z`
+
+## Selected Parent
+
+- Ledger: `mgif-editor-parity`
+- Local pointer SHA-256: `586eba1cbe68f99171f5e66c6b3c68b39a507b5cdfbedc2608673ed94984297e`
+- Parent bundle: `a37685e50eace340cf0263b490d75e35456df144ac885f81e903c8c400afc5e4`
+- Parent snapshot SHA-256: `4d5b42f7ba9a57b43fe9c96c3db70cff8152cc68ac7b58df1aab19b29534e0ad`
+- Previous transition SHA-256: `1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88`
+- P6-00 before-task SHA-256: `cf9a68a5dc0e876646013c4d6018ca0483154c8c8a9e019b2dde84b183e3959d`
+- Before state: `ready`
+
+The selected parent was independently validated immediately before this
+report. No transaction lock or publication journal was present.
+
+## Bound Authorities
+
+- Planning specification: `docs/gltf-scene-editor-parity-task.md`, 165772
+  bytes, SHA-256
+  `bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e`.
+- Successor blueprint: 151486 bytes, SHA-256
+  `1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84`.
+- P6 readiness authority: 50844 bytes, SHA-256
+  `5912fb9b0d0adadac122249a6698bf4a603592e474346e8d18c10c41a4f6578c`.
+- P7 readiness authority: 74408 bytes, SHA-256
+  `1e2ce3ac038e8ead39f5634caeda1fc22a4c3e1a8ac383d915130b5c462616ac`.
+- O06 local report: SHA-256
+  `8d8d35c3aae38e7ad08b1fe7502383027218ad5cbcf1f26172f10ad614a1c456`.
+- O06 local verdict: SHA-256
+  `0bfd94be6214742bbc35c92054bc6aacf251675b482a35c3cb412eb0cd78e0cb`.
+- O06 local receipt: SHA-256
+  `1b8a94958e23df676453b1d74cf84bd8053524dc66f0699dde4d570121916f88`.
+- Gate P5 report: SHA-256
+  `2658f7b688cf93c844e821c422af6390e8e0ece501bb7e570d9f7a9c057c6069`.
+- Gate P5 successor event: SHA-256
+  `fb244d098c3ab7c5c5e654f9b136d80ebf18d53cced4317c3c168b8dc1c560a2`.
+
+The locked task, manifest, and edge registry were not modified. O06 remains a
+normative evidence binding: both same-input-batch Escape/release orders must
+clear selection, retain preview TRS, detach, and add no history; a normal
+release delivered in a preceding frame still commits once.
+
+## Pre-Edit Binding
+
+The post-Orca local execution did not synthesize legacy task, dispatch,
+message, or worker identities. Before the first P6-00 source addition, the
+coordinator and independent read-only auditors inspected the exact Section 6.3
+write set. Every path was absent. The bound missing-file sentinels were:
+
+| Path | State | Bytes | SHA-256 |
+|---|---|---:|---|
+| `scene/editor/include/mgif/scene_editor/EditorSelectionTypes.h` | missing | 0 | null |
+| `render/editor/EditorViewportMetrics.h` | missing | 0 | null |
+| `app/editor/SceneSelection.h` | missing | 0 | null |
+| `app/editor/SceneSelection.cpp` | missing | 0 | null |
+| `app/editor/MaterialClipboardCodec.h` | missing | 0 | null |
+| `app/editor/MaterialClipboardCodec.cpp` | missing | 0 | null |
+| `tests/editor/scene_selection_tests.cpp` | missing | 0 | null |
+| `tests/editor/material_clipboard_codec_tests.cpp` | missing | 0 | null |
+| `tests/editor/editor_viewport_metrics_tests.cpp` | missing | 0 | null |
+
+No empty placeholders were created for the preimage.
+
+## Final Write Set
+
+The P6-00 product leaf changed exactly the nine frozen paths below.
+
+| Path | Bytes | SHA-256 |
+|---|---:|---|
+| `scene/editor/include/mgif/scene_editor/EditorSelectionTypes.h` | 4543 | `e61645ef7b3daa1043adc4c89e3f2b6002a18ea162a3abc4c4a4ffe9dd6c1ff8` |
+| `render/editor/EditorViewportMetrics.h` | 16606 | `daffc513756e4a71ef8734e87234627bbfc8d7cb0788119d15ff48c5355227aa` |
+| `app/editor/SceneSelection.h` | 3762 | `a7ffa2a827b9b32a05e717eba092b4ffc58683a91bbb509db197a6e092f9eca9` |
+| `app/editor/SceneSelection.cpp` | 16208 | `f08f19b8dc9abf9eb83cb27e7bbe516da4fd2c2d2ab83c72781ea027e21ed450` |
+| `app/editor/MaterialClipboardCodec.h` | 2516 | `713d4cc7c685a16e951bd40726e4a823762e02a0066cd1d8a644abac0ddbef0b` |
+| `app/editor/MaterialClipboardCodec.cpp` | 4007 | `9d5890c535ea025ce7c01b2f7aef16c09101105cb26525f127cef795fad5a34e` |
+| `tests/editor/scene_selection_tests.cpp` | 23857 | `769628feb8b68e73d72c3d5f37b0cf6e831ba873afd24c5f9c34f0fc8397de4b` |
+| `tests/editor/material_clipboard_codec_tests.cpp` | 8918 | `c66ec18accbb0a8211f171200a4d2f3c7825e98e57b47b93be733e7e9cbbaae9` |
+| `tests/editor/editor_viewport_metrics_tests.cpp` | 13042 | `91cf83b5226db22c7c00a1883f9453d0423361ee0b4d33f12b2abde83b4ada6f` |
+
+## Implemented Contract
+
+Selection:
+
+- One backend-neutral seven-state value: none plus Node, exact Primitive
+  occurrence, Mesh, Material, Camera, and Light.
+- Primitive identity includes scene, node, primitive, and instance ordinal.
+- Viewport selection/toggle requires a current immutable occurrence lookup
+  bound to document revision, scene activation epoch, and mapping generation.
+- Unknown ordinal, stale lookup, foreign authority, reused generation, and
+  effective-hidden occurrence fail closed without selection effect.
+- Explicit remaps bind source/target authority, document revision, scene epoch,
+  and occurrence generation. Stale replay is a no-effect; ambiguous matching
+  evidence clears rather than guessing by vector index.
+- Accepted changes enqueue one ordered frame-end event and increment one
+  selection revision. Identical set and empty clear are idempotent. Event
+  allocation completes before the no-throw state commit.
+- Same-value identity remap or refreshed occurrence publication updates
+  internal fences without emitting a selection event.
+- Browser focus requests reveal and scroll with `selectTab=false`.
+
+Clipboard:
+
+- Copy emits exact ASCII `gltf_material:<unsigned decimal>` resolved against
+  the current document at copy time.
+- Parsing consumes the complete suffix, accepts leading zero input, rejects
+  signs, whitespace, junk, decimal points, non-ASCII digits, and checked
+  `uint64` overflow.
+- Canonical out-of-range input remains enabled but invalid and non-applicable.
+- Paste availability is resolved again from the OS clipboard and active
+  document on every click. No stable Material ID survives a document switch.
+- The codec has no history mutation or ImGui/RHI dependency.
+
+Viewport metrics:
+
+- Immutable logical half-open viewport, framebuffer logical origin,
+  non-uniform framebuffer scale, explicit color/depth physical rectangles,
+  color/depth attachment extents, viewport generation, projection/view
+  identities, and clip convention.
+- Color physical coordinates are the exact floor/ceil result of one DPI
+  conversion. Arbitrary full-attachment substitution is rejected.
+- Unequal color/depth targets use an explicit normalized depth rectangle and
+  `logicalToDepthPhysical()` mapping.
+- All eight D4 surface transforms have closed mapping semantics for color and
+  depth targets; unknown transforms fail closed.
+- Perspective and orthographic constant-logical-pixel scaling require finite
+  positive view depth and preserve logical size across DPI changes.
+- Public headers contain no ImGui, GLFW, renderer, RHI, native backend, dense
+  draw index, mutable document pointer, or forbidden reference helper type.
+
+## Windows MSVC Verification
+
+The Linux environment was used only for agent/file workflow. The completion
+decision uses Windows builds and execution.
+
+- Generator: Ninja.
+- Compiler: Microsoft Visual C++ 19.44.35217.0.
+- Full configured build root:
+  `G:/Temp/mgif-p6-00-msvc-full-20260828`.
+- Standalone output root:
+  `G:/Temp/mgif-p6-00-msvc-tests-20260828`.
+- Debug compile contract: C++20, `/permissive-`, `/W4`, `/WX`, `/MDd`, `/Od`.
+- Release compile contract: C++20, `/permissive-`, `/W4`, `/WX`, `/MD`, `/O2`,
+  `/DNDEBUG`.
+
+Final executable identities and native Windows results:
+
+| Test | Config | Bytes | SHA-256 | Result |
+|---|---|---:|---|---|
+| `scene_selection_tests.exe` | Debug | 5870080 | `bac48eb8ad284ff20f05dc61b6432f13a41a9a2f685a4e67d6190ee70aaf574c` | PASS |
+| `material_clipboard_codec_tests.exe` | Debug | 4207104 | `3f2884e7413a5ca9fabbfb6fbc4414be9978ac92353af9fa555b60f96f884a67` | PASS |
+| `editor_viewport_metrics_tests.exe` | Debug | 79872 | `1afa1e8fb1db0dc78473c543ad65f9d52cb999c5f8e0f19545458130997c158a` | PASS |
+| `scene_selection_tests_release.exe` | Release | 1055232 | `10299f98dc0842108e97fac585911376555cd078e9106a6ad02ea99477783817` | PASS |
+| `material_clipboard_codec_tests_release.exe` | Release | 820224 | `53d8efa18d8298405a692d9e846851444aa367bb9dbee23aed9ffae3df6bd1a0` | PASS |
+| `editor_viewport_metrics_tests_release.exe` | Release | 31744 | `17972bf778db03492c7020c5609a0b1fb1f32a93a0b4c2ff9283343902bf7012` | PASS |
+
+Public-header self-containment probes:
+
+| Probe | Bytes | SHA-256 | Result |
+|---|---:|---|---|
+| `editor_selection_types_header_probe.obj` | 1153 | `4a3f437ac87d8def05cd297461f58e100037dca98b3e6c2832de3356b66b1e60` | PASS |
+| `editor_viewport_metrics_header_probe.obj` | 920 | `e723fd6b2797d656c52fc242bd251cd9fd2d63d3d445f3ef111ff4e6ee7edc25` | PASS |
+
+Additional Windows gates:
+
+- Final configured production-editor dependency preflight: PASS.
+- P0 scaffold/dependency scan: PASS, 42 features, 10 traces, 110 edges.
+- P0 artifact validator normal: 164/164 PASS.
+- P0 artifact validator under `python -O`: 164/164 PASS.
+- Local ledger CTest selection: 3/3 PASS; protocol test contains 19 cases.
+- Local protocol under Windows `python -O`: 19/19 PASS.
+- Independent local pointer validator immediately before receipt: PASS.
+
+## Independent Review
+
+Three read-only review tabs independently examined the final result:
+
+- P6 contract review: no remaining P6-00 code or frozen-contract blocker.
+- O06/boundary review: no router, history, ContinuousEdit, runtime, locked task,
+  manifest, or edge-registry write occurred in the P6-00 leaf.
+- Local sidecar review: no remaining receipt-signing blocker after fixed
+  repository advisory guard, crash recovery, parent CAS, monotonic timestamps,
+  pointer commit-point, roll-forward, and guarded rollback changes.
+
+## Separately Authorized Infrastructure Work
+
+The following support changes are not counted as P6-00 product-leaf paths.
+They were required to make local automatic review safe and to restore the
+pre-existing CMake/validator identity after local ledger CMake insertion:
+
+| Path | Bytes | SHA-256 |
+|---|---:|---|
+| `tools/local_editor_progress_ledger.py` | 59818 | `36b641805d8c512b8670785879e79da7ee53b3ed7454ffb6b7cf6bba7fdb8afd` |
+| `tools/validate_editor_local_progress.py` | 29009 | `319581c7a1c0a25a71f2e87239b01b751debb6b6d87fc7325e160979bc9d4e30` |
+| `tests/editor/local_progress_ledger_tests.py` | 32353 | `6144e494283d57d62e174cec9806d5137c338cfe9e2bc9e715301d06db2bc798` |
+| `docs/editor-parity/LOCAL-PROGRESS-LEDGER.md` | 4534 | `767c9d030552ecca4cb15c271655ab2569b2fab2fd1f969e3bc3adbb79570d10` |
+| `docs/editor-parity/.progress-ledger-local.guard` | 40 | `1f8ab0907034b04f9822e8ce11eeda639345a189922f23629fd5b7f3fdedc9ff` |
+| `tools/validate_editor_p0_artifacts.py` | 405895 | `643b4c3fa2919338963e8b79e0aee043fbfc9e30702411bc0bceaa4afe4f3b19` |
+
+The P0 validator change only rebinds the same eight approved CMake custom
+target names from old origins
+`345/905/958/964/972/990/2200/2223` to current origins
+`345/922/989/995/1003/1021/2231/2254`, and the same OUTPUT/TARGET command
+forms to their current lines. It adds no wildcard, target, dependency family,
+exception, or P6 production source. Windows normal and optimized adversarial
+validator suites remained green.
+
+The local sidecar now uses a fixed repository OS advisory guard, binds the
+expected pointer inside the publisher to the selected parent, requires strict
+receipt time monotonicity, treats pointer replacement as the sole commit
+point, rolls forward committed journals, rolls back only precommit known
+hashes, and exercises real `os._exit` crash boundaries and simultaneous
+recovery. Non-cooperating manual edits are explicitly outside the advisory
+lock threat model and are not represented as an atomic filesystem CAS claim.
+
+`CMakeLists.txt` was not modified by the P6-00 leaf and still does not register
+the nine new files. Standalone contract compilation is intentional; production
+wiring belongs to P6-90.
+
+## Deferred Work
+
+1. P6-10 must implement the immutable one-to-many occurrence snapshot,
+   mapping lifetime, full pick fences, asynchronous producer, and exact Node
+   subtree/Primitive occurrence highlight inputs.
+2. P6-20 must implement the delayed controller/router/camera/focus consumer
+   and apply the owner-bound O06 whole-batch no-history semantics.
+3. P6-90 must cut production over from the existing `EditorSelectionState` to
+   this authority, prove no double authority, wire CMake/application/clipboard,
+   renderer picking/highlight, cancellation, DPI, and frame-end event delivery.
+4. P7-00/P7-10/P7-90 must consume the frozen viewport header read-only and
+   complete Gizmo/Grid/overlay/history integration.
+5. Gate P6 still requires cross-frame RHI, Vulkan validation, D3D12/Android
+   contracts, Inspector/highlight screenshots, and independent Gate evidence.
+6. The current production router still commits same-frame Escape/release in
+   paths reserved for P6-20/P6-90/P7-90. This report does not hide that debt.
+
+## Fixed Policy
+
+- F42: `BLOCKED`
+- R24: `BLOCKED`
+- Metal: `Not Verified`
+- release/distribution: `NOT PASS`
+
+## Local Review Decision
+
+The automatic local review decision is `completed` with outcome `succeeded`
+for P6-00 only. The deterministic successor projection is expected to make
+both `P6-10/task_1040525304c0` and `P7-00/task_b59fd290ead0` ready. P6-20,
+P6-90, G6, and Gate P6 remain pending/not run.

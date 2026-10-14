@@ -1,0 +1,51 @@
+{
+  "authorityArtifact": {
+    "bytes": 572,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/b376f352c5f3c149161393d3cb0a6183ec55ca8dea2ac23dcc50d6bb1db1c530",
+    "sha256": "b376f352c5f3c149161393d3cb0a6183ec55ca8dea2ac23dcc50d6bb1db1c530"
+  },
+  "beforeTaskSha256": "e66fb1db005dfa487f734d104207e7092bc1e12a7b8f52958d432a12474b9b6d",
+  "completedAtUtc": "2026-09-02T14:30:00.000Z",
+  "dependencyReplacements": [],
+  "displayName": "P7-VISUAL-R2",
+  "documentKind": "local-task-transition-receipt",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "metal": "Not Verified",
+    "r24": "BLOCKED",
+    "releaseDistribution": "NOT PASS"
+  },
+  "fromStatus": "ready",
+  "gateEvent": null,
+  "ledgerId": "mgif-editor-parity",
+  "outcome": "succeeded",
+  "parentBundleId": "6850b93b4458d9440fad554440bc5734507a1b75107b0ee555a4c3734377ab4b",
+  "parentSnapshotSha256": "ac08c53778a8103c9af7b1b4e15a6baa12c6184985482ab51c5d27055f06c0ef",
+  "previousTransitionSha256": "56a83330bf7d9a45aa217cddae05e2884c67bd5aded6815e3c8e76c33be72ee7",
+  "report": {
+    "bytes": 3737,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/59cd54ee528362f6fe8bad2cc9d4568361f6ab2dcdfc23d4b0dcec0774a63af1",
+    "sha256": "59cd54ee528362f6fe8bad2cc9d4568361f6ab2dcdfc23d4b0dcec0774a63af1"
+  },
+  "reviewAuthority": "local-automatic-review",
+  "reviewExecutionOutcome": "succeeded",
+  "schemaVersion": 2,
+  "taskDefinition": {
+    "createdAtUtc": "2026-09-02T14:20:00.000Z",
+    "dependencies": [
+      "task_0f3e7c8a6d21"
+    ],
+    "displayName": "P7-VISUAL-R2",
+    "phase": "P7",
+    "role": "integration",
+    "supersedesTaskId": "task_0f3e7c8a6d21",
+    "taskId": "task_0f3e7c8a6d22"
+  },
+  "taskId": "task_0f3e7c8a6d22",
+  "toStatus": "completed",
+  "verdictArtifact": {
+    "bytes": 1107,
+    "path": "docs/editor-parity/progress-ledger/evidence/sha256/6d7074567fa30256afb0a467075cd182efbb00eccbfa5184b6526c66b905e2b9",
+    "sha256": "6d7074567fa30256afb0a467075cd182efbb00eccbfa5184b6526c66b905e2b9"
+  }
+}

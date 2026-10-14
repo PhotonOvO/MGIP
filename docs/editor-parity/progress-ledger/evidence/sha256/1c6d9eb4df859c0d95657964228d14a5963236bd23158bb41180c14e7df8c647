@@ -1,0 +1,421 @@
+# MGIF P4 Fresh Independent Implementation Gate
+
+## Binary verdict
+
+**GATE P4 FAIL/BLOCKED**
+
+The fresh contained build and every required dynamic test command passed, but the
+authoritative blueprint is not fully implemented. Three non-waivable
+design/content defects remain: the required atomic `setCameraFromView(...)` public
+operation is absent, the required total release-build `HistoryPolicy` enumeration
+does not cover every overload category and input class, and the required anchored
+composer test matrix is incomplete. Section 16.9 states that any design or
+implementation blocker is reported as BLOCKED and that only a blocker-free P4-07
+report plus a fresh independent report can support PASS
+(`MGIF-P4-final-snapshot-blueprint-v2-20260824.md:3607-3609`).
+
+This is a read-only engineering review. No repository file was edited or repaired.
+No PASS compatibility bundle was produced.
+
+## Review identity and scope
+
+| Field | Value |
+|---|---|
+| Task | `task_c346ebff90f2` |
+| Dispatch | `ctx_9ce95ad9385d` |
+| Evidence root | `C:\Temp\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z` |
+| Evidence-root freshness | `true` before creation |
+| Review mode | fresh, independent, read-only, no repair |
+| Production dependency exceptions | exactly `0` |
+| Final gate | `FAIL/BLOCKED` |
+
+The prohibited path `G:\MGIF\mgif build entrypoints kftx8g0b\` was not accessed,
+enumerated, searched, hashed, or statted. Repository reads were limited to the
+locked authorities and explicit final paths. Generated files, build output,
+process temporary files, and Python cache-prefix output are contained below the
+evidence root.
+
+## Authority bindings
+
+Every authority below was read in full before the verdict was formed and was
+independently rebound by exact byte count and SHA-256.
+
+| Authority | Bytes | SHA-256 |
+|---|---:|---|
+| `G:\MGIF\docs\gltf-scene-editor-parity-task.md` | 165772 | `BFD4B5FFE8D73B9BB887047A8CAD5AD96C7184D182EEB752AA47028B05BD679E` |
+| `C:\Temp\MGIF-P4-final-snapshot-blueprint-v2-20260824.md` | 170238 | `E157CC347BF84B69F81A91BF3E15A5D9A15F6EB56F988082C5CF736009C0FD4F` |
+| `C:\Temp\mgif-p4-blueprint-v2-independent-audit-20260824\p4-blueprint-v2-independent-audit.md` | 33790 | `362202B94A03360FDC6534D2FEE41193EE7EA76967640D3F8C5D6E2DFF7C6FC9` |
+| `C:\Temp\mgif-p4-before-hashes-v2-20260824.json` | 9063 | `1197290ABBC14BA52FA1EC3857425C8542D634B766847F93C7DACFC59049E74F` |
+| P4-07 `p4-integration-report.md` | 24152 | `4A0B4C48B2EBC6DA89B613F33E8682B3978F55AE1FD9B7047E6AC29A76A0BD06` |
+| P4-07 `final-source-hashes.json` | 17493 | `DCBE4F6A9EFAFFD5C657AEDF5749BF6BCB769D3A7F252DD9453E609A36C550FC` |
+
+The frozen ordered 58-path-set digest is
+`D4C05803D67277BE87BC5462417345B30AD36EE74EFA4E7E8B1F17D229249E7C`.
+The P4-07 report itself says it is implementation evidence only and leaves the
+independent Gate pending (`p4-integration-report.md:5-7`).
+
+## Contained execution environment
+
+One PowerShell process established all containment variables before the first
+configure/build/CTest/Python descendant and launched all 35 recorded commands.
+`contained-environment.json` records:
+
+```text
+build=C:\Temp\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\build
+process-temp=C:\Temp\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\process-temp
+PYTHONDONTWRITEBYTECODE=1
+PYTHONPYCACHEPREFIX=C:\Temp\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\python-pycache-prefix
+TEMP=C:\Temp\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\process-temp
+TMP=C:\Temp\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\process-temp
+TMPDIR=C:\Temp\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\process-temp
+cwd=C:\Temp\mgif-p4-independent-gate-task_c346ebff90f2-20260824T083500Z\process-temp
+```
+
+The configure identified clang-cl 19.1.5 with the MSVC-like command line, used
+Ninja, `Debug`, `DEMO_EDITOR_CORE_ONLY=ON`, and `BUILD_TESTING=ON`:
+
+```text
+cmake -S G:\MGIF -B <evidence-root>\build -G Ninja
+  -DCMAKE_C_COMPILER=<VS2022 LLVM x64>\clang-cl.exe
+  -DCMAKE_CXX_COMPILER=<VS2022 LLVM x64>\clang-cl.exe
+  -DCMAKE_BUILD_TYPE=Debug
+  -DDEMO_EDITOR_CORE_ONLY=ON
+  -DBUILD_TESTING=ON
+```
+
+Result: exit `0`; configure and generation completed. The aggregate build was:
+
+```text
+cmake --build <evidence-root>\build
+  --target scene_editor_tests scene_editor_dependency_preflight --parallel 4
+```
+
+Result: exit `0`. The configured preflight was also rebuilt explicitly and
+printed `Final configured production-editor dependency preflight passed`.
+
+## Dynamic command results
+
+`command-results.json` records exactly 35 command invocations, their executable,
+full argument arrays, expected exit, actual exit, UTC start/end timestamps,
+duration, and log path. Its aggregate status is `PASS`, with zero unexpected
+exit codes.
+
+### CTest
+
+| Invocation | Result |
+|---|---:|
+| P0 label `^scene-editor-p0-scaffold$` | `6/6` |
+| P1 label `^scene-editor-p1-document$` | `7/7` |
+| P2 exact test `^scene_editor\.scene_projection$` | `1/1` |
+| P3 label `^scene-editor-p3-mutation$` | `4/4` |
+| P4 label `^scene-editor-p4-history$` | `6/6` |
+| Full core-only CTest | `22/22` |
+
+All six CTest invocations exited `0`; no required test was skipped.
+
+### Direct C++ execution
+
+The run executed 15 unique binaries in exactly 17 invocations. Every invocation
+exited `0`; the three invocations of `editor_history_core_tests` used the exact
+arguments `core`, `capacity-merge`, and `branch-clear`.
+
+| # | Executable | Invocation(s) |
+|---:|---|---|
+| 1 | `scene_editor_p0_support_tests` | no arguments |
+| 2 | `scene_editor_identity_tests` | no arguments |
+| 3 | `gltf_document_load_tests` | no arguments |
+| 4 | `gltf_document_roundtrip_tests` | no arguments |
+| 5 | `gltf_document_io_tests` | no arguments |
+| 6 | `gltf_validator_tests` | no arguments |
+| 7 | `gltf_accessor_payload_tests` | no arguments |
+| 8 | `p2_projection_cpu_tests` | no arguments |
+| 9 | `scene_editor_scene_commands_tests` | no arguments |
+| 10 | `scene_editor_mutation_tests` | no arguments |
+| 11 | `scene_editor_p3_regression_tests` | no arguments |
+| 12 | `editor_history_core_tests` | `core`; `capacity-merge`; `branch-clear` |
+| 13 | `editor_history_structural_tests` | no arguments |
+| 14 | `editor_history_property_tests` | no arguments |
+| 15 | `editor_continuous_edit_tests` | no arguments |
+
+`direct-executables.json` records the exact bytes and SHA-256 of every binary as
+well as all 17 invocation results.
+
+### Python and validators
+
+| Command | Result |
+|---|---:|
+| `python -B tests/editor/p0_artifact_validator_tests.py -v` | `145/145`, exit `0` |
+| `python -B tests/editor/editor_dependency_gate_integration_tests.py -v` | `12/12`, exit `0` |
+| `python -B tests/editor/acceptance_report_validator_tests.py -v` | `9/9`, exit `0` |
+| `python -B tests/editor/android_viewer_contract_tests.py -v` | `4/4`, exit `0` |
+| live `tools/validate_editor_p0_artifacts.py --repo-root G:\MGIF` | PASS, exit `0` |
+| configured `scene_editor_dependency_preflight` | PASS, exit `0` |
+
+The live validator printed `42 features, 10 traces, 110 edges` and passed schema,
+dependency-boundary, and corpus-semantics checks.
+
+## Exact production inventory and dependency gate
+
+The final inventory is exactly 40 unique entries: 22 public/private headers and
+18 compiled translation units. It matches the authoritative ordered lists at
+blueprint lines 2676-2745.
+
+### Ordered `scene_editor_document` list (16 entries; 7 compiled)
+
+```text
+loader/TinyGltfImplementation.cpp
+scene/editor/include/mgif/scene_editor/EditorLimits.h
+scene/editor/include/mgif/scene_editor/EditorObjectId.h
+scene/editor/include/mgif/scene_editor/EditorHistoryPolicy.h
+scene/editor/include/mgif/scene_editor/GltfDocument.h
+scene/editor/include/mgif/scene_editor/StructuralDelta.h
+scene/editor/include/mgif/scene_editor/SceneCommands.h
+scene/editor/include/mgif/scene_editor/GltfDocumentIO.h
+scene/editor/include/mgif/scene_editor/GltfSemanticCompare.h
+scene/editor/include/mgif/scene_editor/GltfValidator.h
+scene/editor/GltfDocument.cpp
+scene/editor/StructuralDelta.cpp
+scene/editor/SceneCommands.cpp
+scene/editor/GltfDocumentIO.cpp
+scene/editor/GltfSemanticCompare.cpp
+scene/editor/GltfValidator.cpp
+```
+
+### Ordered `scene_editor_core` list (24 entries; 11 compiled)
+
+```text
+scene/editor/include/mgif/scene_editor/EditorClock.h
+scene/editor/include/mgif/scene_editor/EditorFaultInjection.h
+scene/editor/include/mgif/scene_editor/EditorSelection.h
+scene/editor/include/mgif/scene_editor/testing/EditorStateInspector.h
+scene/editor/include/mgif/scene_editor/commands/EditorCommand.h
+scene/editor/include/mgif/scene_editor/commands/EditorHistory.h
+scene/editor/include/mgif/scene_editor/commands/HistoryLifecycle.h
+scene/editor/include/mgif/scene_editor/commands/TransformCommands.h
+scene/editor/include/mgif/scene_editor/commands/HierarchyCommands.h
+scene/editor/include/mgif/scene_editor/commands/PropertyCommands.h
+scene/editor/include/mgif/scene_editor/commands/ContinuousEdit.h
+scene/editor/include/mgif/scene_editor/EditorSession.h
+scene/editor/include/mgif/scene_editor/SceneEditor.h
+scene/editor/SceneEditorCore.cpp
+scene/editor/EditorSelection.cpp
+scene/editor/commands/EditorCommand.cpp
+scene/editor/commands/EditorHistory.cpp
+scene/editor/commands/HistoryLifecycle.cpp
+scene/editor/commands/TransformCommands.cpp
+scene/editor/commands/HierarchyCommands.cpp
+scene/editor/commands/PropertyCommands.cpp
+scene/editor/commands/ContinuousEdit.cpp
+scene/editor/EditorSession.cpp
+scene/editor/SceneEditor.cpp
+```
+
+The actual CMake lists, configured target properties, generator expectations,
+validator sets, File API codemodel, `compile_commands.json`, raw Ninja graph,
+and expanded Ninja graph passed exact equality. The omitted, hidden,
+target-property append, reordered, generator-expression, object-library,
+outside-target compilation, forbidden direct/transitive dependency, and other
+fail-closed negative fixtures passed through the `145/145` artifact and `12/12`
+dependency suites. Relevant implementation is in `CMakeLists.txt:119-173` and
+`:555-697`, and the equality/negative logic is in
+`tools/generate_editor_dependency_identity.py:1426-1765`.
+
+Key fresh configured artifacts:
+
+| Artifact | Bytes | SHA-256 |
+|---|---:|---|
+| `build/CMakeCache.txt` | 28452 | `E28D9A8618C6EBD87ABB4D51581E9B1E4B71036F59791A2570ED0361E822EDB6` |
+| `build/compile_commands.json` | 74265 | `210F14163933125EC63A328AC28742675630D1AA8647834AC3E6BCE06C5AB7BB` |
+| `build/build.ninja` | 172781 | `7E34FCFB232CF843B6B0BE435AD26E08C4C903537D6E9FFAD94097DC89705EF0` |
+| File API `index-2026-08-24T08-49-54-0032.json` | 1639 | `83219A5B17249E04F4C3EC78CD110AFAEA591DE1EFF6732E5A16808497943D75` |
+| File API `codemodel-v2-606dfc97a1da78180ec5.json` | 16096 | `4A74DD748EACD4AE6DD70FCE1CF416CA247E27872690E8F43DEB6FCE0F83CFE0` |
+| File API `cache-v2-e60d609814ea8608b345.json` | 49388 | `97115C444ED988B734C2E40149A2790D5D47B7FB43E268B80B0D404182B780FE` |
+| File API `toolchains-v1-98ce2d4e0b6cf7ed9ef3.json` | 1400 | `D20BFA20A02CE663EE2A12C29E9204D6929E2FACD03177654ADAD2AD1258DC1D` |
+| File API document target reply | 5011 | `A071B462B2B8EB18DD5A26245D441F877FF11AE9E5772CBC5335C453C4959F52` |
+| File API core target reply | 6030 | `2C8AD53900D399A78596475D14946ECCDA2317A26E1FD2E042F0AFBDAC89F8FE` |
+
+## Forbidden dependency and native-boundary scans
+
+The production scan used all 40 exact production entries, not a directory
+sample. It explicitly covered `nvcore`, `nvpro*`, `nvapp`, `nvgui`, `nvvk*`,
+`nvvkgltf`, the enumerated `nv*` helper families (`nvh`, `nvgl`, `nvmath`,
+`nvutils`, `nvshaders`, `nvpsystem`), and `vk_gltf_renderer`. Result: zero
+matches; `rg` exited `1`, the expected no-match exit.
+
+The native CPU boundary scan explicitly covered Vulkan include paths, `Vk*`,
+`VK_*`, `Vulkan`, RHI include paths, `rhi::`, and `RHI*`. Result: zero matches;
+`rg` exited `1`, the expected no-match exit. Approved production dependency
+exceptions remain exactly zero; none is created or implied by this report.
+
+## Source read and drift proof
+
+All 58 frozen final paths were read in full, without sampling, using
+`System.IO.File.ReadAllBytes` followed by UTF-8 decode. The receipt records
+58 files, 1,786,167 bytes, per-file byte count, SHA-256, character count, and
+line count.
+
+| Check | Result |
+|---|---|
+| Frozen P4-07 path-set digest | exact `D4C05803D67277BE87BC5462417345B30AD36EE74EFA4E7E8B1F17D229249E7C` |
+| Initial reviewer hash vs frozen P4-07 manifest | 58/58 exact |
+| Final reviewer hash vs frozen P4-07 manifest | 58/58 exact; mismatch count `0` |
+| Independent reviewer pre/post equality | 58/58 exact; mismatch count `0` |
+| Explicit unstaged `git diff --check` over 58 paths | exit `0` |
+| Explicit staged `git diff --cached --check` over 58 paths | exit `0` |
+| Reviewer repository writes | `0` |
+| Reviewer out-of-set repository writes | `0` |
+
+This proves no drift in the frozen review set and no repository mutation by the
+reviewer. The runner's only outputs are under the evidence root.
+
+## Blocking findings
+
+### P4-B01: required atomic `setCameraFromView(...)` operation is absent
+
+Severity: **BLOCKER**. Disposition: **FAIL/BLOCKED**.
+
+The blueprint's total operation table explicitly classifies both `setCamera`
+and atomic `setCameraFromView` as `nonHistory`
+(`MGIF-P4-final-snapshot-blueprint-v2-20260824.md:364-395`, specifically line
+387). The P4 mapping independently requires the exact new atomic surface
+`setCameraFromView(CameraId,NodeId,CameraProperties,NodeTransform,guard)` and one
+non-history candidate publication (blueprint line 2342).
+
+The final public mutation surface in
+`scene/editor/include/mgif/scene_editor/SceneCommands.h:435-615` contains
+`setCamera(CameraId, const CameraProperties&, guard)` at lines 576-578, but no
+`setCameraFromView`. The implementation contains only
+`SceneCommands::setCamera` at `scene/editor/SceneCommands.cpp:6229-6233`.
+Exact fixed-string searches over the final public header, implementation, and
+all P4 editor test sources found no `setCameraFromView` declaration,
+implementation, or test. This is missing required behavior, not a test-run
+failure, and cannot be waived.
+
+### P4-B02: total `HistoryPolicy` release enumeration is incomplete
+
+Severity: **BLOCKER**. Disposition: **FAIL/BLOCKED**.
+
+The blueprint requires a policy on every exit from every P4-visible
+`MutationResult` overload, with `unclassified` never returned (lines 355-367),
+and requires a table-driven release-build test that invokes every overload
+category with success where constructible plus invalid, stale, foreign, and
+unchanged inputs, failing on every `unclassified` result (lines 404-416).
+
+The replay table in `tests/editor/scene_commands_tests.cpp:614-715` enumerates
+36 replay operations and asserts the selected expected policy at lines
+1369-1371. It does not enumerate every authoritative overload category. Missing
+categories include structural prepare/commit/execute/restore paths, material and
+light snapshot setters, both compatibility split/merge overload categories,
+the distinct root-vs-child `addNode` policies, lifecycle result categories, and
+the absent `setCameraFromView`. It also does not systematically execute
+success/invalid/stale/foreign/unchanged partitions for every category.
+
+An exact search for `historyPolicy` across all seven final editor C++ test
+sources finds the replay assertion plus only limited focused assertions/fake
+result setup (`scene_editor_mutation_tests.cpp:72`,
+`scene_projection_tests.cpp:239`, `editor_history_core_tests.cpp:222,352,363,662`,
+`editor_history_structural_tests.cpp:141,195`, and
+`editor_history_property_tests.cpp:153`). Those focused checks do not complete
+the required all-overload release matrix. The production implementation may
+classify the exercised paths, but the authoritative release-proof contract is
+not implemented.
+
+`scene/editor/commands/EditorHistory.cpp:53-63` is not treated as a separate
+defect: its post-publication wrong-policy handling converts a command-contract
+violation into a tracked internal error rather than permissively accepting
+`unclassified`. P4-B02 is the missing total release enumeration, not that
+fail-safe.
+
+### P4-B03: anchored-composer test matrix is incomplete
+
+Severity: **BLOCKER**. Disposition: **FAIL/BLOCKED**.
+
+The blueprint mandates explicit coverage for two-anchor, predecessor-only,
+successor-only, no-anchor, same-boundary tie, missing-nearest/fallback anchor,
+reordered anchors, baseline foreign IDs, and later foreign IDs, explicitly
+binding Delete/Add/Duplicate/Add Light/Reparent (blueprint lines 2430-2434).
+
+The composer implementation has the relevant branches in
+`scene/editor/SceneCommands.cpp:1959-2068`: predecessor and successor resolution,
+two-anchor order rejection, zero-boundary no-anchor behavior, stable boundary
+buckets, and uniqueness checks. The final structural tests exercise no-anchor
+Add/foreign-tail behavior at
+`tests/editor/editor_history_structural_tests.cpp:300-378`, predecessor-only
+append-tail Reparent and later foreign records at lines 791-952, and two-anchor
+Delete plus reordered-anchor atomic rejection at lines 953-1013.
+
+Full-file inspection and exact targeted searches found no explicit
+successor-only, same-boundary deterministic tie, or missing-nearest/fallback
+anchor scenario. The mandated cross-operation binding matrix is therefore also
+not complete. Passing implementation branches do not substitute for the exact
+required matrix; this missing mandatory evidence is a Gate blocker.
+
+## Section 16.9 implementation-contract dispositions
+
+The following table reports every contract listed at blueprint lines
+3568-3605. `PASS` means the inspected implementation plus tests satisfy that
+contract within P4 scope; it does not override the binary Gate failure.
+
+| # | Contract | Disposition | Line-referenced evidence |
+|---:|---|---|---|
+| 1 | Total `HistoryPolicy`; no unclassified return | **FAIL/BLOCKED** | P4-B01 and P4-B02. Blueprint `355-416`; missing public API in `SceneCommands.h:435-615`; incomplete replay in `scene_commands_tests.cpp:614-715,1369-1371`. |
+| 2 | Fixed 100 stacks; checked 8 MiB/64 MiB budgets; no allocation after publication | PASS | `EditorHistory.h:44-45,69-72`; `EditorLimits.h:50-79`; admission/publication/move paths in `EditorHistory.cpp:85-105,108-215,218-247,281-327`; budget/capacity tests pass. |
+| 3 | Allocation-free typed material/light validation and execute/Undo/Redo/merge atomicity | PASS | Typed validators in `SceneCommands.h:524-543`; command validation/publication in `PropertyCommands.cpp`; failure paths and both sides of false second-merge candidates pass in `editor_history_property_tests.cpp` and `editor_history_core_tests.cpp`. |
+| 4 | Compile-visible continuous interface, value equality, strict `<500ms`, false-absorb safety, O05/O06/O07 | PASS | `ContinuousEdit.h:13-100`; `ContinuousEdit.cpp:69-258`; `EditorHistory.h:44-45`; arbitration and false-absorb tests at `editor_continuous_edit_tests.cpp:228-336,655-920`. |
+| 5 | Exact-generation resurrection, maxima/no-wrap, all 15 kinds, DDS/Draco, candidate validation before swaps | PASS | `GltfDocument.cpp:1390-1450,1452-1797,1935-2058`; maxima tests `editor_history_structural_tests.cpp:1370-1542`; all-15-kind reference matrix including DDS/Draco at lines 1801-1893. |
+| 6 | Anchored owned runs, four anchor cases/ties/reorder rejection, append-tail Reparent, extension composition, foreign preservation | **FAIL/BLOCKED** | Production composition exists at `SceneCommands.cpp:1959-2068`; name-based extension composition at `:2189-2212,4286-4317`; mandatory scenario matrix is incomplete per P4-B03. |
+| 7 | Per-scene external serial, frozen-root rebind, later current-scene/root-state preservation | PASS | `GltfDocument.cpp:992-1027,1721-1795`; `SceneCommands.cpp:4330-4370`; structural tests `:1295-1367`. |
+| 8 | Relationship-valid CPU selection and exact envelopes, including non-history root Add | PASS | `EditorSelection.cpp:65-124,164-199`; root Add envelope assertions at `editor_history_core_tests.cpp:570-760`. |
+| 9 | Complete material/light snapshots, extensions/extras, allocation-free comparison | PASS | Snapshot types in `SceneCommands.h:215-319`; property coverage at `editor_history_property_tests.cpp:296-574,1097-1290`. |
+| 10 | Real session replacement, same-bundle Merge/Compact timing, Save As metadata/clean revision | PASS | `EditorSession.cpp:16-77,92-124`; session/Save As tests `editor_history_core_tests.cpp:570-760`; lifecycle timing `HistoryLifecycle.cpp:7-15` and tests `editor_history_core_tests.cpp:1248-1270`. |
+| 11 | Delete preserves detached/orphaned light definitions | PASS | Exact structural assertions in `editor_history_structural_tests.cpp:657-718`; dynamic P4 suite passes. |
+| 12 | Every new public header first/include-alone; no mutable TinyGLTF/renderer/Vulkan/RHI/UI/platform surface | PASS | Include-alone source registration in `CMakeLists.txt:340-369`; aggregate build passes; 40-path native/dependency scans have zero findings. |
+| 13 | Exact ordered CMake/generator/validator/File API/compile database/Ninja inventories and all negative fixtures | PASS | Exact 40-entry inventory; `CMakeLists.txt:119-173,555-697`; `generate_editor_dependency_identity.py:1426-1765`; Python `145/145` and `12/12`; preflight PASS. |
+| 14 | Fresh contained roots/env and exact 58-path equality | PASS | `contained-environment.json`; `pre-review-hashes.json`; `post-review-hashes.json`; `full-read-receipt.json`; 58/58 initial/final/pre/post equality and zero reviewer repository writes. |
+
+## Evidence artifacts
+
+The authoritative exact byte/SHA-256 inventory for every root-level evidence
+file, plus this report and the machine-readable verdict, is the sibling
+`evidence-artifacts.json`. It is generated after this report is finalized so it
+can hash the report's final bytes. Embedding the report's own hash inside the
+report would change those bytes and is intentionally avoided; the external
+manifest is the non-self-referential binding.
+
+Key evidence bindings known before report finalization:
+
+| Artifact | Bytes | SHA-256 |
+|---|---:|---|
+| `command-results.json` | 40154 | `6D9A8D13A2AD1646E39DC1627E176BC102CF63A17FB123583150BB14FC9633A7` |
+| `direct-executables.json` | 7013 | `1713A59C7227A8DC156B2E8CFFC022F636F7CC821C3CBCE7F87186886F09EC80` |
+| `production-scans.json` | 2909 | `F51CD1D52E13AAFE85C6C4D7C5FCFDB3DD39DDBCCAB4F570F85EF29D57071A19` |
+| `contained-environment.json` | 1077 | `72C021B1BB4F710F4E5C505AE4AA05FBD91511932DF45C9DA01D6780E3008C91` |
+| `pre-review-hashes.json` | 20375 | `2017EF9D363F19D2FBB9DDFD277F6ECB9BB69D244D9C45FEA3010A57C0534369` |
+| `post-review-hashes.json` | 20816 | `9079A6260741CD5328F466FD6D5495811283910A863752E516705FC96FEF691E` |
+| `full-read-receipt.json` | 14480 | `DD49E4EA9EB8EFF9B5CBDD020407D4FF34C7DD388C0850E78049D2DDD3ED9931` |
+| `run-independent-gate.ps1` | 22232 | `3FBBFA3AB0630E85772A6040011D9D68FF887F6B9450FBE6BAB74B75FDAD0886` |
+
+## External blockers and release status
+
+This review does not alter the locked non-P4 statuses:
+
+- F42/R24 remains **BLOCKED** until the owner selects the repository root
+  license; no release or distribution gate is PASS
+  (`gltf-scene-editor-parity-task.md:516-520,1449-1451`;
+  blueprint `3657-3658`).
+- Metal remains **Not Verified** until the required macOS contract/compile
+  artifact exists (`gltf-scene-editor-parity-task.md:1108,1226`; blueprint
+  `3659-3660`).
+- Overall product/release/distribution readiness is not asserted.
+- Production dependency exception count remains exactly zero.
+
+## Final conclusion
+
+The independent clang-cl/Ninja build, all 22 CTests, all 17 direct invocations,
+all 170 Python tests across the four required suites, both validators, exact
+inventory checks, negative fixtures, dependency scans, and 58-path hash checks
+passed. Those results establish a clean and reproducible implementation snapshot,
+but they cannot satisfy the authoritative content requirements missing in
+P4-B01, P4-B02, and P4-B03. The only valid binary conclusion is:
+
+**GATE P4 FAIL/BLOCKED**

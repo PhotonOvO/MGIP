@@ -1,0 +1,17 @@
+{
+  "documentKind": "gate-verdict",
+  "schemaVersion": 2,
+  "runId": "run_ede89c4421e9",
+  "phase": "P5",
+  "gateTaskId": "task_bd6e62faa588",
+  "dispatchId": "ctx_ce23febf6608",
+  "gateVerdict": "GATE P5 FAIL/BLOCKED",
+  "gateScope": "engineering",
+  "supersedesReceiptSha256": null,
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "r24": "BLOCKED",
+    "metal": "Not Verified",
+    "releaseDistribution": "NOT PASS"
+  }
+}

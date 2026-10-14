@@ -1,0 +1,31 @@
+{
+  "documentKind": "gate-receipt",
+  "schemaVersion": 2,
+  "runId": "run_ede89c4421e9",
+  "phase": "P5",
+  "gateTaskId": "task_bd6e62faa588",
+  "dispatchId": "ctx_ce23febf6608",
+  "workerMessageId": "msg_ebb1a751fe74",
+  "completedAtUtc": "2026-08-27T00:47:40.587Z",
+  "reviewExecutionOutcome": "succeeded",
+  "gateVerdict": "GATE P5 FAIL/BLOCKED",
+  "gateScope": "engineering",
+  "supersedesReceiptSha256": null,
+  "report": {
+    "path": "G:\\Temp\\mgif-p5-independent-regate-5133878191f54f4698273d0bdc7220ab\\GATE-P5-INDEPENDENT-REPORT.md",
+    "bytes": 22276,
+    "sha256": "53229abecf410e6311c42ad40666073dd615d720281197bd96526898bce76fee"
+  },
+  "verdictArtifact": {
+    "path": "G:\\Temp\\mgif-p5-independent-regate-5133878191f54f4698273d0bdc7220ab\\gate-verdict.json",
+    "bytes": 421,
+    "sha256": "20e06a2fdf0a909fe7fcae2ed2a81171c4448373e0c9328f194880efb7f375ed"
+  },
+  "inputFingerprintSha256": "36c5488b11e5578c072939225461d81d544fa1dd83540dc4e29325d7115377a9",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "r24": "BLOCKED",
+    "metal": "Not Verified",
+    "releaseDistribution": "NOT PASS"
+  }
+}

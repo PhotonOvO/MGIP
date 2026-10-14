@@ -1,0 +1,1481 @@
+# MGIF P5-P10 Successor DAG Blueprint v2
+
+Status: planning artifact only. This document does not claim implementation, test execution, engineering Gate PASS, platform PASS, license clearance, or release/distribution approval.
+
+Date: 2026-08-24 (Asia/Shanghai)
+Repository under plan: `G:\MGIF`
+Required predecessor: `task_c346ebff90f2` (fresh Gate P4)
+
+## 1. Purpose and authority
+
+This v2 blueprint supersedes both the original successor blueprint and the pending P5-P10 implementation chains currently recorded in `run_ede89c4421e9`. The original blueprint and older tasks remain evidence, but their dependency roots, ownership granularity, failure contracts, evidence rules, and audited ordering defects are not the dispatch DAG defined here. This correction specifically serializes the P6 picking producer/consumer, freezes `EditorViewportMetrics` before either P6/P7 consumer starts, serializes all six ledger writers, and assigns the omitted P8 implementation surfaces to writable leaves.
+
+The successor DAG may start only after all of the following are true:
+
+1. `task_c346ebff90f2` has settled successfully and its report contains an explicit fresh **engineering** Gate P4 verdict that permits successor work.
+2. The Gate P4 report, the P4 integration report, and the P4 post-edit hash manifest have independently verified paths, byte lengths, and SHA-256 values.
+3. The coordinator records those three identities in every direct successor's pre-edit binding.
+4. No direct successor depends on an earlier or obsolete P4 task. The only permitted P4 task ID in successor dependency JSON is `task_c346ebff90f2`.
+5. A Gate P4 engineering verdict does not change Metal, license, provenance, distribution, or release status.
+
+If Gate P4 is FAIL/BLOCKED, has no hash-bound report, or its implementation snapshot has drifted, direct successors report BLOCKED without editing the repository.
+
+### 1.1 Bound planning inputs
+
+| Input | Bytes | SHA-256 |
+|---|---:|---|
+| `C:\Temp\MGIF-P5-P10-successor-dag-blueprint-20260824.md` | 130277 | `CB7DB210FFCEE34CFB992B3D2CB326DE0AFAEF38BC770A8D354442738EA2A574` |
+| `C:\Temp\mgif-p5-p10-successor-blueprint-independent-audit-20260824\p5-p10-successor-blueprint-independent-audit.md` | 32143 | `9E317526307C80E4918734ADD00E9658BD4019A909D07EE785E07AABA8BC4153` |
+| `G:\MGIF\docs\gltf-scene-editor-parity-task.md` | 165772 | `BFD4B5FFE8D73B9BB887047A8CAD5AD96C7184D182EEB752AA47028B05BD679E` |
+| `C:\Temp\MGIF-P5-renderer-delta-readiness.md` | 68932 | `D7EDD08F594FBA2B05FF73108C17775EA6E04B77CD7874287049D59FE9C51940` |
+| `C:\Temp\MGIF-P6-selection-picking-readiness.md` | 50844 | `5912FB9B0D0ADADAC122249A6698BF4A603592E474346E8D18C10C41A4F6578C` |
+| `C:\Temp\MGIF-P7-gizmo-grid-readiness.md` | 74408 | `1E2CE3AC038E8EAD39F5634CAEDA1FC22A4C3E1A8AC383D915130B5C462616AC` |
+| `C:\Temp\MGIF-P8-readonly-ui-parity-architecture-map.md` | 21650 | `C03AD07225B019A75641734013B7A8A697712F40910D3B98F2BE59D7AB835085` |
+| `C:\Temp\MGIF-P9-lifecycle-readiness.md` | 72361 | `7AADCECAB6D47542EE3276CED056B81B576FE71830055A3AFC9477867339F6E7` |
+| `C:\Temp\MGIF-P10-acceptance-readiness.md` | 49952 | `E57F03A42A524079FFEBDA084FEF91BA414900429FFEBC5CBA4615A89917D092` |
+
+The table records all nine immutable authoritative inputs used for v2. Any mismatch means the affected task must stop before editing and ask the coordinator whether a new blueprint is required. The only permitted locked-spec lineage change is an owner-authorized `X-O06` completion: tasks that depend transitively on `X-O06` bind both the planning-base identity above and the exact `X-O06` post-edit manifest/report, then treat that post-edit locked-spec hash as their effective specification. Every other locked-spec mismatch is unexplained drift and blocks before editing. A worker may never silently consume a revised readiness report, audit, blueprint, or specification.
+
+### 1.2 Existing tasks are evidence, not executable successors
+
+The following granular chain is superseded and must not be dispatched as the implementation path:
+
+`task_4cb8ee016191`, `task_0e48946f25f3`, `task_655b72181479`, `task_838fb8081135`, `task_4521fbe0eb6d`, `task_6e5799271207`, `task_a08f12648c10`, `task_84d82d2fcccd`, `task_c600f1903f5f`, `task_70d3d2614e29`, `task_d833fdbeb0c1`, `task_15efc19cac06`, `task_bf88889b3fa0`, `task_34cbff58a1ef`, `task_92b508dbb83e`, `task_7f0578eb9aab`, `task_855790d17544`, `task_a14108c37fb0`, and `task_1b6ba65ef09a`.
+
+The following monolithic chain is also superseded:
+
+`task_63ea8af55b1a`, `task_89bf581ecffd`, `task_e499c8151386`, `task_36f82082230d`, `task_1c31d0881c41`, and `task_35c940f72bc7`.
+
+Their full specs were read when preparing this blueprint. The successor specs retain their valid behavior, test, clean-room, platform, and failure requirements while replacing their obsolete P4 dependencies and overlapping ownership.
+
+## 2. Non-negotiable rules
+
+These rules apply to every task, integration owner, evidence runner, independent Gate, and ledger publisher.
+
+1. Production editor UI uses the repository-pinned upstream Dear ImGui API plus MGIF-owned app, scene, renderer, and RHI adapters only.
+2. Production has zero direct, public, wrapper, re-export, include, link, target, generated-source, or transitive dependency on `nvcore`, any `nvpro*`, `nvapp`, `nvgui`, any `nvvk*`, `nvvkgltf`, `vk_gltf_renderer`, or any reference Vulkan helper/framework. Neutral renaming is not an exception.
+3. Reference code and native dependencies remain evidence-only outside the MGIF production graph. New implementation is clean-room behavior work unless a provenance ledger explicitly records a copied/adapted file with all required notices.
+4. No task may access, enumerate, search, hash, stat, build through, or otherwise inspect `G:\MGIF\mgif build entrypoints kftx8g0b\`.
+5. No task runs repository-root recursive `git status`, `git diff`, `rg`, `rg --files`, directory enumeration, or hashing. All checks are constrained to the exact declared write set, exact dependency paths, and explicit configured build metadata.
+6. Workers do not reset, checkout, clean, stage, commit, or revert. They preserve unrelated and concurrent changes. Manual edits use `apply_patch`.
+7. Public editor/domain contracts expose no `Vk*`, `ID3D12*`, `MTL*`, VMA, native descriptor, native handle getter, ImGui ID, GLFW object, mutable document pointer, renderer dense index, or reference namespace.
+8. Windows Vulkan is the complete local runtime target. D3D12 is a Windows public/object contract target. Metal on Windows is exactly **Not Verified**, recorded as `not_run` with that message. It is never `pass` or `not_applicable` without a hash-bound macOS artifact.
+9. F42/R24 remain **BLOCKED** until the project owner chooses a root license and the accepted file/digest is recorded. No engineering Gate, evidence report, or ledger update may claim release/distribution PASS while that remains unresolved.
+10. Engineering Gate PASS, if earned, means only that phase's defined engineering acceptance is satisfied. It is not a release, distribution, license, or unsupported-platform PASS.
+11. `docs/gltf-scene-editor-parity-progress.md` is never in a leaf or integration task's initial write set. It may be edited only by a separate ledger task after that phase's integration owner and fresh independent Gate owner explicitly authorize the update.
+12. A source implementation task never edits `docs/editor-parity/manifest.json`, `edge-obligations.json`, or acceptance result status merely to make a test or count green.
+13. Each independent Gate is source read-only and repair-free. A reviewer reports findings and a binary engineering verdict; it never fixes its own findings.
+14. No task in this blueprint claims that implementation exists or that a future Gate has passed.
+
+## 3. Mandatory pre-edit hash binding
+
+Every repository-writing task must create a task-specific JSON binding under a fresh `C:\Temp\mgif-<logical-task>-<UTC>\` directory before its first edit. The JSON is an evidence artifact, not a repository file.
+
+Required fields:
+
+```json
+{
+  "schemaVersion": 1,
+  "logicalTask": "P5-00",
+  "taskId": "actual Orca task ID",
+  "dispatchId": "actual Orca dispatch ID",
+  "capturedAtUtc": "RFC3339 timestamp",
+  "repositoryRoot": "G:/MGIF",
+  "gitHead": "40 hex",
+  "planningLockedSpec": {"path": "...", "bytes": 165772, "sha256": "BFD4...679E"},
+  "effectiveLockedSpec": {
+    "path": "...",
+    "bytes": 0,
+    "sha256": "64 hex",
+    "authority": "planning-base or X-O06-authorized-post"
+  },
+  "authorizedReconciliations": [],
+  "readinessInputs": [{"path": "...", "bytes": 0, "sha256": "64 hex"}],
+  "gateP4": {
+    "taskId": "task_c346ebff90f2",
+    "reportPath": "resolved from task result",
+    "reportBytes": 0,
+    "reportSha256": "64 hex",
+    "integrationReportPath": "resolved from dependency evidence",
+    "integrationReportSha256": "64 hex",
+    "postEditManifestPath": "resolved from dependency evidence",
+    "postEditManifestSha256": "64 hex"
+  },
+  "writeSet": [
+    {"path": "relative/path", "state": "existing", "bytes": 0, "sha256": "64 hex"},
+    {"path": "relative/new/path", "state": "missing", "bytes": 0, "sha256": null}
+  ],
+  "pathScopedDiffSha256": "64 hex",
+  "forbiddenPathAccessed": false
+}
+```
+
+Binding rules:
+
+- Hash every exact write-set path individually. Record a missing sentinel; do not create an empty placeholder just to hash it.
+- Compute the path-scoped diff identity from only the exact write set, including untracked file bytes. Do not inspect the repository root.
+- Bind the relevant readiness reports by the hashes in Section 1.1. Integration tasks bind all leaf completion reports, their post-edit manifests, and the leaf final path hashes.
+- For tasks not downstream of `X-O06`, `planningLockedSpec` and `effectiveLockedSpec` are identical. Every task downstream of `X-O06` records its task ID, owner-authorization message ID, report path/hash, post-edit manifest path/hash, and resulting locked-spec bytes/hash in `authorizedReconciliations`; its `effectiveLockedSpec` must match that resulting identity exactly.
+- Recheck every write-set path immediately before the first edit. Any drift after capture requires a fresh binding and coordinator reconciliation.
+- After the final edit, write a post-edit JSON with the same path list, final hashes, command/test results, and a statement that no path outside the write set was edited by that task.
+- A missing Gate P4 artifact, mismatched hash, unexplained file drift, or inability to prove the exact write set is a pre-edit BLOCKED outcome.
+
+Read-only Gate tasks use the same identity model but replace `writeSet` with `reviewedSet` and write evidence only under their fresh `C:\Temp` root.
+
+## 4. Operational and runtime failure atomicity
+
+### 4.1 Shared-worktree task atomicity
+
+- Leaf tasks add or edit only their exact write sets. Shared wiring files belong exclusively to the phase integration task.
+- Leaf code that is not yet wired into production remains inert until integration. A leaf failure therefore cannot partially register an unfinished source into the production target.
+- A failed worker stops writing, records final hashes and failing commands, and reports failed. It does not revert anything in the shared worktree.
+- An integration task starts only after every dependency worker has stopped and all final hashes match its bound inputs. It performs the only shared CMake/facade/application wiring for that phase.
+- If integration fails, it does not update the progress ledger, evidence manifest, or Gate status. The last independently verified phase remains the authoritative engineering baseline. A later repair gets a new scoped task and a new pre-edit binding.
+- A Gate failure never causes automatic rollback, cleanup, or self-repair. The coordinator creates a bounded follow-up with a fresh write set.
+
+### 4.2 Product-state atomicity by phase
+
+- P5: validate all fences before side effects; stage CPU state/resources/descriptors; submit with exact queue tokens; publish one immutable renderer/mapping generation; retire superseded resources after dependencies. Pre-submit failure destroys staged resources, post-submit failure retires orphan resources, and active state remains unchanged. `partialPublicationCount` stays zero. Accepted incremental work has zero device-idle calls.
+- P6: selection is the sole authority; occurrence mappings are immutable; every accepted pick receives one terminal completion; stale authority/revision/projection/scene/device/viewport/view results have no effect. Old occurrence snapshots outlive or cancel all readbacks that reference them.
+- P7: invalid or non-finite math fails before preview mutation. A preview, draw packet, document revision, and renderer delta describe the same accepted state. Overlay replacement uses RHI logical handles and deferred retirement, never native escape hatches or device idle.
+- P8: UI emits intents only. `LoadingCandidate`, `Saving/Merging/Compacting`, and `Error` keep the last valid document and render generation visible; the other exact states are `NoDocument`, `ReadyClean`, `ReadyModified`, `GizmoHover`, `GizmoDragging`, and `Modal`. The legacy mutation path is removed only by the integration owner after controller and UI tests are wired.
+- P9: Merge and Compact mutate clones only; lifecycle candidates are invisible until document, projection, mapping, GPU generation, selection/history policy, and request epochs are ready for one no-throw publication. Save As stages in the target parent, flushes/closes, publishes immutable resources before the main file, atomically replaces the main file last, and uses a durable recovery journal. Failure preserves active CPU/GPU state, old target, history, selection, path, clean revision, and MRU except explicitly locked invalid-Recent cleanup.
+- P10: evidence roots are immutable and identity-bound. Validators run last. A failed, skipped, stale, mixed-SHA, missing-platform, license-blocked, or semantically unmapped result cannot be promoted to PASS. Acceptance execution does not repair source in the same task.
+
+## 5. Bounded DAG and parallel waves
+
+Logical IDs below are stable blueprint names, not pre-existing Orca task IDs. The coordinator creates each engineering/Gate task immediately before its W0-W25 wave, only after every dependency task ID has been returned, records the new task ID, and substitutes it in downstream dependency arrays; Section 8's presentation order is not dispatch order. Ledger tasks follow their separate serialized chain. `G4` is the already-created `task_c346ebff90f2`.
+
+```text
+G4 task_c346ebff90f2
+ |
+ +--> P5-00 contract/canonicalizer
+        |\
+        | +--> P5-10 exact change capture/mapping
+        +----> P5-20 renderer transaction modules
+                    \                  /
+                     P5-90 integration
+                            |
+                           G5 --------------------+
+                            |                     |
+      G4 ----------------> X-O06                  +--> L5
+                            |                           |
+                            v                           |
+                P6-00 selection + frozen               |
+                EditorViewportMetrics                  |
+                    /             \                    |
+          P6-10 picking        P7-00 CPU Gizmo/Grid    |
+               |                       |               |
+               v                       |               |
+          P6-20 classifier/router      |               |
+               |                       |               |
+          P6-90 integration            |               |
+               |                       |               |
+              G6 ----------------------+-----------> L6
+               |                                      |
+               +-----> P7-10 overlay RHI              |
+                          |                            |
+                     P7-90 integration                |
+                          |                            |
+                         G7 ------------------------> L7
+                          |                            |
+                     P8-00 UI/controller domains      |
+                       /      |       \                |
+                 P8-10     P8-11      P8-12           |
+                       \      |       /                |
+                        P8-90 integration              |
+                              |                        |
+                             G8 --------------------> L8
+                              |                        |
+                         P9-00 extension registry      |
+                           /       |       \            |
+                     P9-10      P9-11      P9-12       |
+                           \       |       /            |
+                         P9-90 integration             |
+                              |                        |
+                             G9 --------------------> L9
+                              |                        |
+                         P10-00 evidence contracts     |
+                          /                    \        |
+                   P10-10 perf/soak   P10-11 platform |
+                          \                    /        |
+                         P10-90 integration            |
+                              |                        |
+                         P10-EXEC candidate            |
+                              |                        |
+                             G10 -------------------> L10
+```
+
+The right-hand ledger line is the serialized chain `L5 -> L6 -> L7 -> L8 -> L9 -> L10`; each `L<N>` also has direct dependencies on its own integration and Gate as recorded in Section 9. The drawing omits some redundant direct edges for readability; Section 9 is authoritative.
+
+The DAG contains 33 engineering/Gate successor nodes plus six separately authorized ledger tasks, for 39 successor tasks total, plus the existing Gate P4 node. It has no automatic retry or repair loop. Any FAIL/BLOCKED outcome stops its descendants; a repair requires a separately approved bounded DAG with new hashes and exact ownership.
+
+### 5.1 Wave schedule
+
+| Wave | Concurrent tasks | Start condition | Join/stop condition |
+|---|---|---|---|
+| W0 | `P5-00` | `G4` successful and hash-bound | Contract/canonicalizer leaf stopped with post hashes |
+| W1 | `P5-10`, `P5-20` | `P5-00` complete | Both stopped with matching post hashes |
+| W2 | `P5-90` | W1 complete | Integration report and post manifest complete |
+| W3 | `G5` | `P5-90` complete | Explicit independent Gate P5 verdict |
+| W4 | `X-O06` | `G5` successful, `G4` still hash-bound, owner authorization exists, and no repository writer (including `L5`) is active | Effective locked-spec identity and exact post manifest complete; otherwise descendants BLOCKED |
+| W5 | `P6-00` | `X-O06` complete and `G5` successful | Selection and shared `EditorViewportMetrics` contracts frozen |
+| W6 | `P6-10`, `P7-00` | `P6-00` complete | Picking producer and independent CPU Gizmo/Grid consumer stopped; zero shared-file edits |
+| W7 | `P6-20` | `P6-10` complete and its report, post manifest, and picking contract hash-bound | Picking consumer stopped against the frozen producer contract |
+| W8 | `P6-90` | W7 complete | P6 integration report and post manifest complete |
+| W9 | `G6` | `P6-90` complete | Explicit independent Gate P6 verdict |
+| W10 | `P7-10` | `G6` successful and `P7-00` complete | Overlay leaf complete |
+| W11 | `P7-90` | W10 complete | P7 integration report and post manifest complete |
+| W12 | `G7` | `P7-90` complete | Explicit independent Gate P7 verdict |
+| W13 | `P8-00` | `G7` successful | Frozen controller/intent and animation/variant/scene-transform domains |
+| W14 | `P8-10`, `P8-11`, `P8-12` | `P8-00` complete | All UI implementation leaf owners stopped |
+| W15 | `P8-90` | W14 complete | UI integration report and post manifest complete |
+| W16 | `G8` | `P8-90` complete | Explicit independent Gate P8 verdict |
+| W17 | `P9-00` | `G8` successful | Extension registry frozen |
+| W18 | `P9-10`, `P9-11`, `P9-12` | `P9-00` complete | Merger/compactor/Save As leaves complete with no shared-file edits |
+| W19 | `P9-90` | W18 complete | P9 integration report and post manifest complete |
+| W20 | `G9` | `P9-90` complete | Explicit independent Gate P9 verdict |
+| W21 | `P10-00` | `G9` successful | Evidence schemas/runner core frozen |
+| W22 | `P10-10`, `P10-11` | `P10-00` complete | Both harness leaves complete |
+| W23 | `P10-90` | W22 complete | Acceptance harness integration report |
+| W24 | `P10-EXEC` | `P10-90` complete | Immutable candidate evidence root; honest status |
+| W25 | `G10` | `P10-EXEC` complete | Independent evidence verdict; release may remain BLOCKED |
+
+`L5` through `L10` are not ordinary wave members. Each is dispatched only after the corresponding integration and Gate owners authorize the exact factual ledger text through Orca messages, and `L6` through `L10` additionally wait for the immediately preceding ledger task. A ledger task can record PASS, FAIL, or BLOCKED, but cannot improve the verdict. Delayed authorization never relaxes this chain or permits a later ledger to overtake an earlier ledger.
+
+## 6. Exact ownership and write sets
+
+No two tasks in the same wave share a write path. Sequential integration owners may edit paths used by earlier phases only after binding the earlier Gate's final hashes. All paths are relative to `G:\MGIF` unless explicitly under `C:\Temp` or an acceptance evidence root.
+
+### 6.1 Cross-phase O06 reconciliation
+
+`X-O06` exact repository write set:
+
+- `docs/gltf-scene-editor-parity-task.md`
+- `docs/editor-parity/manifest.json`
+- `docs/editor-parity/edge-obligations.json`
+
+The task may be dispatched only after the project owner explicitly authorizes reconciliation. The intended reconciliation is not inferred by a worker: it must quote the authorized outcome. Current evidence says both same-input-batch event orders clear selection, retain preview TRS, detach, and leave transform history unchanged/Undo disabled. If the owner does not authorize that outcome, `X-O06` is BLOCKED and P6/P7 input acceptance remains blocked. The task changes no progress ledger, implementation, or test source.
+
+### 6.2 P5 ownership
+
+`P5-00` exact write set:
+
+- `scene/editor/include/mgif/scene_editor/SceneChangeSet.h`
+- `scene/editor/SceneChangeSet.cpp`
+- `scene/editor/include/mgif/scene_editor/SceneChangeCanonicalizer.h`
+- `scene/editor/SceneChangeCanonicalizer.cpp`
+- `tests/editor/scene_change_set_tests.cpp`
+- `tests/editor/header_self_containment/scene_change_set_header.cpp`
+
+`P5-10` exact write set:
+
+- `scene/editor/include/mgif/scene_editor/SceneChangeCapture.h`
+- `scene/editor/SceneChangeCapture.cpp`
+- `scene/editor/include/mgif/scene_editor/SceneRuntimeMapping.h`
+- `scene/editor/SceneRuntimeMapping.cpp`
+- `scene/editor/include/mgif/scene_editor/SceneProjection.h`
+- `scene/editor/SceneProjection.cpp`
+- `tests/editor/scene_change_capture_tests.cpp`
+- `tests/editor/scene_runtime_mapping_tests.cpp`
+
+`P5-20` exact write set:
+
+- `render/editor/SceneRuntimePublisher.h`
+- `render/editor/SceneRuntimePublisher.cpp`
+- `render/editor/SceneDeltaCounters.h`
+- `render/editor/SceneDeltaCounters.cpp`
+- `render/editor/SceneDeltaResourceJournal.h`
+- `render/editor/SceneDeltaResourceJournal.cpp`
+- `tests/editor/renderer_scene_publication_tests.cpp`
+- `tests/editor/scene_delta_fake_rhi_tests.cpp`
+
+`P5-90` exact write set:
+
+- `scene/SceneUploadPlan.h`
+- `scene/SceneUploadPlanner.cpp`
+- `render/RenderTypes.h`
+- `render/RendererFacade.h`
+- `render/RendererFacade.cpp`
+- `render/GPUSceneRegistry.h`
+- `render/GPUSceneRegistry.cpp`
+- `render/GPUDrivenRenderer.h`
+- `render/GPUDrivenRenderer.cpp`
+- `render/RenderDevice.h`
+- `render/RenderDevice.cpp`
+- `rhi/RHIDebugCounters.h`
+- `app/AndroidNativeApp.cpp`
+- `tests/editor/editor_renderer_integration_tests.cpp`
+- `tests/editor/editor_rhi_contract_tests.cpp`
+- `tests/editor/android_viewer_contract_tests.py`
+- `CMakeLists.txt`
+
+`G5` has no repository write set. Its evidence root is a fresh `C:\Temp\mgif-p5-independent-gate-*\` directory.
+
+### 6.3 P6 ownership
+
+`P6-00` exact write set:
+
+- `scene/editor/include/mgif/scene_editor/EditorSelectionTypes.h`
+- `render/editor/EditorViewportMetrics.h`
+- `app/editor/SceneSelection.h`
+- `app/editor/SceneSelection.cpp`
+- `app/editor/MaterialClipboardCodec.h`
+- `app/editor/MaterialClipboardCodec.cpp`
+- `tests/editor/scene_selection_tests.cpp`
+- `tests/editor/material_clipboard_codec_tests.cpp`
+- `tests/editor/editor_viewport_metrics_tests.cpp`
+
+`P6-10` exact write set:
+
+- `scene/editor/include/mgif/scene_editor/EditorPickingTypes.h`
+- `scene/editor/include/mgif/scene_editor/SceneRenderOccurrenceMapping.h`
+- `scene/editor/SceneRenderOccurrenceMapping.cpp`
+- `render/editor/ScenePicking.h`
+- `render/editor/ScenePicking.cpp`
+- `render/passes/EditorPickingPass.h`
+- `render/passes/EditorPickingPass.cpp`
+- `shaders/editor_picking.slang`
+- `tests/editor/scene_render_occurrence_mapping_tests.cpp`
+- `tests/editor/editor_picking_rhi_tests.cpp`
+
+`P6-20` exact write set:
+
+- `app/editor/EditorClickClassifier.h`
+- `app/editor/EditorClickClassifier.cpp`
+- `app/editor/EditorPickingController.h`
+- `app/editor/EditorPickingController.cpp`
+- `app/editor/EditorInputRouter.h`
+- `app/editor/EditorInputRouter.cpp`
+- `app/editor/EditorCameraBridge.h`
+- `app/editor/EditorCameraBridge.cpp`
+- `app/editor/SceneBrowserFocusAdapter.h`
+- `app/editor/SceneBrowserFocusAdapter.cpp`
+- `tests/editor/editor_click_classifier_tests.cpp`
+- `tests/editor/editor_picking_controller_tests.cpp`
+- `tests/editor/editor_input_router_tests.cpp`
+
+`P6-90` exact write set:
+
+- `scene/editor/include/mgif/scene_editor/SceneProjection.h`
+- `scene/editor/SceneProjection.cpp`
+- `scene/SceneUploadPlan.h`
+- `scene/SceneUploadPlanner.cpp`
+- `render/RenderTypes.h`
+- `render/RendererFacade.h`
+- `render/RendererFacade.cpp`
+- `render/GPUSceneRegistry.h`
+- `render/GPUSceneRegistry.cpp`
+- `render/GPUDrivenRenderer.h`
+- `render/GPUDrivenRenderer.cpp`
+- `app/editor/ImGuiClipboardAdapter.h`
+- `app/editor/ImGuiClipboardAdapter.cpp`
+- `app/MinimalLatestApp.h`
+- `app/MinimalLatestApp.cpp`
+- `tests/editor/editor_selection_picking_integration_tests.cpp`
+- `tests/editor/editor_rhi_contract_tests.cpp`
+- `tests/editor/android_viewer_contract_tests.py`
+- `CMakeLists.txt`
+
+`G6` writes only to a fresh `C:\Temp\mgif-p6-independent-gate-*\` evidence root.
+
+`P6-00` is the sole producer and freeze owner for the backend-neutral immutable `EditorViewportMetrics` contract. `P6-10`, `P6-20`, `P7-00`, and later integration tasks consume that header read-only. `P6-20` also consumes the frozen `EditorPickingTypes` and terminal-result contract owned by `P6-10`; it cannot start until the `P6-10` report, post manifest, and exact public-header identity have been bound.
+
+Exact audited cross-task contract read/bind set:
+
+| Consumer | Repository paths read-only | Producer evidence that must be bound |
+|---|---|---|
+| `P6-10` | `scene/editor/include/mgif/scene_editor/EditorSelectionTypes.h`; `render/editor/EditorViewportMetrics.h` | `P6-00` completion report and post manifest |
+| `P6-20` | `scene/editor/include/mgif/scene_editor/EditorSelectionTypes.h`; `render/editor/EditorViewportMetrics.h`; `scene/editor/include/mgif/scene_editor/EditorPickingTypes.h` | `P6-00` completion report/post manifest through the bound `P6-10` lineage, plus the direct `P6-10` completion report/post manifest |
+| `P7-00` | `render/editor/EditorViewportMetrics.h` | direct `P6-00` completion report and post manifest |
+
+These read-only paths are never added to a consumer's write set. The Section 9 dependencies and W5-W7 schedule make every producer stop before its consumer starts.
+
+### 6.4 P7 ownership
+
+`P7-00` exact write set:
+
+- `render/editor/GizmoGeometry.h`
+- `render/editor/GizmoGeometry.cpp`
+- `render/editor/TransformGizmo.h`
+- `render/editor/TransformGizmo.cpp`
+- `render/editor/GridModel.h`
+- `render/editor/GridModel.cpp`
+- `render/editor/EditorOverlayTypes.h`
+- `tests/editor/transform_gizmo_cpu_tests.cpp`
+- `tests/editor/grid_model_tests.cpp`
+
+`P7-10` exact write set:
+
+- `render/editor/EditorOverlayShaderInterop.h`
+- `render/passes/EditorOverlayPass.h`
+- `render/passes/EditorOverlayPass.cpp`
+- `shaders/editor_overlay.slang`
+- `tests/editor/editor_overlay_rhi_tests.cpp`
+
+`P7-90` exact write set:
+
+- `render/RenderTypes.h`
+- `render/RendererFacade.h`
+- `render/RendererFacade.cpp`
+- `render/GPUDrivenRenderer.h`
+- `render/GPUDrivenRenderer.cpp`
+- `render/PassExecutor.h`
+- `render/PassExecutor.cpp`
+- `render/FrameScheduler.h`
+- `render/FrameScheduler.cpp`
+- `app/editor/EditorInputRouter.h`
+- `app/editor/EditorInputRouter.cpp`
+- `app/MinimalLatestApp.h`
+- `app/MinimalLatestApp.cpp`
+- `tests/editor/editor_gizmo_integration_tests.cpp`
+- `tests/editor/editor_rhi_contract_tests.cpp`
+- `tests/editor/android_viewer_contract_tests.py`
+- `CMakeLists.txt`
+
+`G7` writes only to a fresh `C:\Temp\mgif-p7-independent-gate-*\` evidence root.
+
+### 6.5 P8 ownership
+
+`P8-00` exact write set:
+
+- `app/editor/EditorIntent.h`
+- `app/editor/EditorFrameSnapshot.h`
+- `app/editor/EditorController.h`
+- `app/editor/EditorController.cpp`
+- `app/editor/EditorCommandRegistry.h`
+- `app/editor/EditorCommandRegistry.cpp`
+- `scene/editor/include/mgif/scene_editor/AnimationPlayback.h`
+- `scene/editor/AnimationPlayback.cpp`
+- `tests/editor/editor_controller_state_tests.cpp`
+- `tests/editor/editor_command_registry_tests.cpp`
+- `tests/editor/animation_playback_tests.cpp`
+- `tests/editor/editor_animation_variant_controller_tests.cpp`
+- `tests/editor/editor_scene_transform_controller_tests.cpp`
+
+`P8-10` exact write set:
+
+- `app/editor/EditorShell.h`
+- `app/editor/EditorShell.cpp`
+- `app/editor/EditorMenuBar.h`
+- `app/editor/EditorMenuBar.cpp`
+- `app/editor/EditorToolbar.h`
+- `app/editor/EditorToolbar.cpp`
+- `app/editor/EditorTheme.h`
+- `app/editor/EditorTheme.cpp`
+- `app/editor/EditorGridSnapSettings.h`
+- `app/editor/EditorGridSnapSettings.cpp`
+- `tests/editor/editor_shell_tests.cpp`
+- `tests/editor/editor_menu_toolbar_tests.cpp`
+- `tests/editor/editor_grid_snap_settings_tests.cpp`
+
+`P8-11` exact write set:
+
+- `app/editor/SceneBrowserPanel.h`
+- `app/editor/SceneBrowserPanel.cpp`
+- `app/editor/SceneBrowserModel.h`
+- `app/editor/SceneBrowserModel.cpp`
+- `tests/editor/scene_browser_panel_tests.cpp`
+- `tests/editor/animation_variant_controls_tests.cpp`
+- `tests/editor/scene_transform_popup_tests.cpp`
+
+`P8-12` exact write set:
+
+- `app/editor/InspectorPanel.h`
+- `app/editor/InspectorPanel.cpp`
+- `app/editor/EditorPropertyTable.h`
+- `app/editor/EditorPropertyTable.cpp`
+- `app/editor/EditorDialogs.h`
+- `app/editor/EditorDialogs.cpp`
+- `tests/editor/inspector_panel_tests.cpp`
+- `tests/editor/editor_dialog_tests.cpp`
+
+`P8-90` exact write set:
+
+- `app/editor/EditorTestDriver.h`
+- `app/editor/EditorTestDriver.cpp`
+- `app/MinimalLatestApp.h`
+- `app/MinimalLatestApp.cpp`
+- `tests/editor/editor_ui_state_tests.cpp`
+- `tests/editor/editor_ui_action_tests.cpp`
+- `tests/editor/android_viewer_contract_tests.py`
+- `tools/validate_editor_p0_artifacts.py`
+- `tests/editor/p0_artifact_validator_tests.py`
+- `CMakeLists.txt`
+
+`G8` writes only to a fresh `C:\Temp\mgif-p8-independent-gate-*\` evidence root.
+
+Affirmative P8 implementation ownership is fixed as follows; neither `P8-90` nor `G8` may substitute acceptance hooks for these writable leaves:
+
+- `P8-00` owns the functional animation playback domain, variant-application intent/result and renderer-delta policy, animation-driven transform edit-conflict policy, and scene-root transform baseline/Reset/freeze controller result. Its focused tests own F04/F05, `T-ANIM-01`, `T-MAT-06`, and the controller half of `T-UI-02`/`T-UI-08`.
+- `P8-10` owns the Grid/Gizmo/Snap command state, exact View/Windows menu entries, viewport toolbar controls, `G`/`T` shortcuts, the single Grid & Snap settings window, bidirectional menu/toolbar/settings synchronization, exact numeric defaults/ranges, enabled/disabled and focus behavior, and MGIF-theme active/hover/disabled mapping. Its focused tests own `T-UI-09`.
+- `P8-11` owns the visible functional Animation and Material Variants controls and scene-root Transform popup/Reset surface, including exact layout, conditional visibility, labels, order, context-menu placement, enabled/disabled states, focus, interaction, emitted intent, and displayed result. Its focused tests own the UI half of F04/F05, `T-ANIM-01`, `T-MAT-06`, `T-UI-02`, and `T-UI-08`.
+- `P8-12` owns every Inspector/dialog context, context-menu/command enablement, widget and modal interaction, exact emitted intent/result, and MGIF-theme presentation within its writable surfaces.
+
+### 6.6 P9 ownership
+
+`P9-00` exact write set:
+
+- `scene/editor/include/mgif/scene_editor/KnownExtensionRegistry.h`
+- `scene/editor/KnownExtensionRegistry.cpp`
+- `tests/editor/known_extension_registry_tests.cpp`
+
+`P9-10` exact write set:
+
+- `scene/editor/include/mgif/scene_editor/SceneMerger.h`
+- `scene/editor/SceneMerger.cpp`
+- `tests/editor/scene_merger_tests.cpp`
+
+`P9-11` exact write set:
+
+- `scene/editor/include/mgif/scene_editor/SceneCompactor.h`
+- `scene/editor/SceneCompactor.cpp`
+- `tests/editor/scene_compactor_tests.cpp`
+
+`P9-12` exact write set:
+
+- `scene/editor/include/mgif/scene_editor/GltfDocumentIO.h`
+- `scene/editor/GltfDocumentIO.cpp`
+- `scene/editor/include/mgif/scene_editor/GltfValidator.h`
+- `scene/editor/GltfValidator.cpp`
+- `scene/editor/include/mgif/scene_editor/GltfSemanticCompare.h`
+- `scene/editor/GltfSemanticCompare.cpp`
+- `scene/editor/include/mgif/scene_editor/SaveAsJournal.h`
+- `scene/editor/SaveAsJournal.cpp`
+- `tests/editor/gltf_document_io_tests.cpp`
+- `tests/editor/save_as_journal_tests.cpp`
+
+`P9-90` exact write set:
+
+- `app/editor/EditorController.h`
+- `app/editor/EditorController.cpp`
+- `app/editor/EditorDialogs.h`
+- `app/editor/EditorDialogs.cpp`
+- `app/editor/EditorMenuBar.h`
+- `app/editor/EditorMenuBar.cpp`
+- `scene/ParallelSceneLoader.h`
+- `scene/ParallelSceneLoader.cpp`
+- `render/editor/SceneRuntimePublisher.h`
+- `render/editor/SceneRuntimePublisher.cpp`
+- `render/RendererFacade.h`
+- `render/RendererFacade.cpp`
+- `app/MinimalLatestApp.h`
+- `app/MinimalLatestApp.cpp`
+- `tests/editor/editor_lifecycle_tests.cpp`
+- `tests/editor/save_as_controller_tests.cpp`
+- `tests/editor/editor_file_command_ui_tests.cpp`
+- `tests/editor/renderer_scene_publication_tests.cpp`
+- `CMakeLists.txt`
+
+`G9` writes only to a fresh `C:\Temp\mgif-p9-independent-gate-*\` evidence root.
+
+### 6.7 P10 ownership
+
+`P10-00` exact write set:
+
+- `tools/run_editor_acceptance.ps1`
+- `tools/validate_editor_acceptance.py`
+- `docs/editor-parity/schemas/acceptance-report.schema.json`
+- `docs/editor-parity/schemas/id-evidence-registry.schema.json`
+- `docs/editor-parity/schemas/artifact-index.schema.json`
+- `tests/editor/editor_acceptance_validator_tests.py`
+
+`P10-10` exact write set:
+
+- `tools/run_editor_performance.ps1`
+- `tools/run_editor_soak.ps1`
+- `tests/editor/editor_performance_contract_tests.py`
+- `tests/editor/editor_soak_contract_tests.py`
+
+`P10-11` exact write set:
+
+- `tools/collect_editor_platform_evidence.ps1`
+- `tools/validate_editor_platform_evidence.py`
+- `tools/generate_editor_dependency_identity.py`
+- `tests/editor/editor_platform_evidence_tests.py`
+- `tests/editor/editor_dependency_gate_integration_tests.py`
+- `docs/editor-parity/LICENSE-SOURCES.md`
+
+`P10-90` exact write set:
+
+- `tools/run_editor_acceptance.ps1`
+- `tools/validate_editor_acceptance.py`
+- `tools/check_rhi_boundary.py`
+- `tools/check_rhi_boundaries.ps1`
+- `tools/validate_editor_p0_artifacts.py`
+- `tests/editor/p0_artifact_validator_tests.py`
+- `tests/editor/editor_acceptance_runner_tests.py`
+- `CMakeLists.txt`
+
+`P10-EXEC` writes no source or documentation. It exclusively owns one newly created `out/validation/gltf-editor-parity/<UTC>-<DemoSHA12>/` evidence root and fresh build roots under `C:\Temp`; it must not reuse or overwrite an existing evidence root. `G10` is repository read-only and writes only a fresh `C:\Temp\mgif-p10-independent-gate-*\` evidence root.
+
+### 6.8 Progress ledger ownership
+
+Each of `L5`, `L6`, `L7`, `L8`, `L9`, and `L10` has exactly one repository write path:
+
+- `docs/gltf-scene-editor-parity-progress.md`
+
+The shared path has one globally serialized ownership chain: `L5 -> L6 -> L7 -> L8 -> L9 -> L10`. `L5` depends on its phase integration and Gate; every later ledger depends on its own integration, its own Gate, and the immediately preceding ledger. This orders all 15 ledger-writer pairs even when an earlier authorization is delayed or a dispatch is retried. No ledger may be active while `X-O06` or any other repository writer is active.
+
+Before dispatch, the coordinator must have two durable authorization message IDs: one from the corresponding integration owner and one from the corresponding independent Gate owner. The ledger task binds those IDs, the exact proposed paragraph, the predecessor ledger report/post hash when applicable, and the current one-file pre-image bytes/SHA-256. Immediately before writing it must re-read and re-hash the ledger, recheck both authorizations and every dependency identity, and compare the live pre-image with the bound pre-image. Any change or inconsistency is BLOCKED with no write. A retry must create a fresh binding and repeat this compare-before-write protocol; it may return a no-op success only when the live file already contains the exact authorized paragraph and the prior successful task's exact pre/post images and report identity prove that same authorized write. It may never infer success from similar prose or rewrite from a stale pre-image. If a later ledger has already started, an earlier modifying retry is BLOCKED and must be replaced, if authorized, by a newly dependency-bound tail correction task outside this DAG.
+
+A ledger task may not modify the locked task, manifest, feature/edge results, source, tests, or CMake. It records engineering facts and remaining blockers, including F42/R24 BLOCKED, Metal Not Verified where applicable, and the statement that engineering status is not release/distribution status.
+
+## 7. APIs, contracts, tests, and acceptance
+
+### 7.1 P5 contracts
+
+`P5-00` freezes a backend-neutral logical transition surface. Exact names may be adjusted only within its write set before downstream tasks start; after `P5-00` completion downstream owners consume it without edits.
+
+Required value surface:
+
+- `StableSceneId { kind, authority, slot, generation }` or an equivalent lossless wrapper over the existing typed IDs.
+- `SceneChangeDomain { DocumentMutation, SceneActivation, FullSnapshot }`.
+- Eight externally reportable change classes: `Transform`, `MaterialParameters`, `MaterialBinding`, `Light`, `Visibility`, `Hierarchy`, `Topology`, `FullRebuild`.
+- `SceneChangeHeader` with schema, authority, base/target document revision, base/target scene epoch, active scene, mutation token/serial, base/target projection digest, and canonical change-set digest.
+- Immutable payload ownership; no raw pointer into mutable document/projection data.
+- Reason-coded `FullRebuildReason` including scene switch, global Merge, Compact, structural topology, geometry schema, texture schema, mapping mismatch, missed revision, device recovery, unsupported capability, and explicit request.
+- Pure CPU `canonicalizeSceneChanges()` with typed validation errors, deterministic serialization/digest, last-write-by-mutation-serial, create/update/delete algebra, parent-before-child derived work, reverse dependency removal, and exact stable-key ordering.
+
+`P5-00` tests:
+
+- shuffled logical input produces identical canonical bytes/digest/order;
+- repeated fields coalesce exactly, generation-changing delete/create never collapses;
+- invalid authority/kind/revision/payload/hash/range rejects without output;
+- empty/duplicate/idempotent cases are explicit;
+- public header self-containment and zero backend/native/reference tokens.
+
+`P5-10` implements exact producer and mapping behavior:
+
+- current all-live `changedIds` is never used as a precise delta;
+- typed before/after change capture produces minimal logical operations and an explicit conservative FullRebuild where precision is not yet supported;
+- immutable mapping snapshots bind authority, applied revision, active scene, scene epoch, projection digest, mapping epoch, renderer/device identity and generation, actual generation-bearing renderer handles, and reverse lookup;
+- stable ID, projection identity, and live renderer handle remain three distinct identity layers;
+- publication prepares complete next registries before a no-throw swap; stale generations reject before renderer calls;
+- scene selection/root preview use a distinct scene/view epoch rather than fabricating document revision.
+
+`P5-10` tests cover exact single-field capture, transform descendant effects, visibility inheritance, material/variant final bindings, scene activation, Undo/Redo forward revisions, stale generation, mapping determinism, missing/reused slots, and candidate rollback.
+
+`P5-20` implements the renderer transaction as a standalone module:
+
+- `RendererTargetFence` binds backend, renderer instance, device instance/generation, mapping epoch, applied revision, scene epoch, and projection digest;
+- `SceneApplyDisposition` distinguishes accepted incremental, accepted full rebuild, rejected, failed before submit, and failed after submit;
+- `SceneApplyResult` returns typed error, applied fences, queue submission tokens, created/retired handles, counters, and optional fallback reason;
+- `stageSceneGeneration`, `submitSceneGeneration`, `publishSceneGeneration() noexcept`, and `retireSceneGeneration` own unpublished resources and never mutate active registries during staging;
+- descriptor generations and mapping become visible only after upload dependencies are established;
+- pre-submit cleanup is immediate; submitted orphans retire by exact queue tokens; no device-wide idle is used for rollback.
+
+Required counters include received/accepted/rejected by reason, operations/coalesced, logical work by class, exact geometry/texture/other uploaded bytes and ranges, resources created/logically retired/physically destroyed, retirement backlog, rebuild reason buckets, rollback/failure/publication/partial-publication, device idle by reason, and current fences. Rejected/rolled-back work cannot appear applied.
+
+`P5-20` fault tests inject validation, CPU allocation, RHI allocation, descriptor staging, recording, each submission, prepublish, and retirement enqueue. They assert old active generation/fences/digest exact, no discoverable staged handles, correct orphan retirement, zero partial publication, and zero device idle.
+
+`P5-90` integrates without weakening the frozen modules. Initial operation policy is:
+
+| Operation | Required P5 result |
+|---|---|
+| node transform, visibility, material scalar/binding/variant, camera, light | incremental, exact minimal ranges, zero geometry/texture bytes unless the operation itself replaces those resources |
+| instance add/remove | incremental only after atomic registry/mapping publication is proven; otherwise reason-coded structural rebuild |
+| hierarchy add/delete/reparent, split/merge, schema changes | reason-coded transactional full snapshot initially |
+| scene switch, global Merge, Compact | reason-coded transactional full snapshot |
+| stale/gap/mapping/scene/device mismatch | reject with zero RHI side effects and request a separately validated snapshot; never silently rebuild from the stale delta |
+
+P5 integration tests run pure CPU suites, fake-RHI transaction suites, direct executables, Debug/Release public contracts, Vulkan validation/sync validation for incremental and generation swap, D3D12 object contracts, Metal capability rejection before mutation, Android surface loss/zero extent lifecycle, and dependency/RHI scans. Accepted incremental transactions must have `partialPublicationCount=0`, `fullRebuildCount=0`, `geometryBytesUploaded=0`, `textureBytesUploaded=0`, and `deviceIdleCalls=0` for transform/material/light/visibility parameter edits.
+
+`G5` independently rebinds all P5 paths and reruns the same gates from a fresh contained build/evidence root. It inspects hidden idle calls, old-resource overwrite, descriptor aliasing, false counters, stale-handle binding, incomplete world/bounds/light propagation, candidate publication, Android lifecycle, configured target closure, and all failure points. Gate P5 PASS requires all P5 tests/evidence and zero forbidden dependency/native finding; otherwise the verdict is FAIL/BLOCKED.
+
+### 7.2 P6 contracts
+
+`P6-00` freezes one selection authority and the shared immutable viewport contract before either picking or Gizmo/Grid work starts:
+
+- `SceneSelectionValue` contains none, Node, Primitive occurrence, Mesh, Material, Camera, or Light using authority/generation-safe IDs;
+- identical set and clearing empty are idempotent; same-Primitive viewport toggle is an explicit controller action, not a non-idempotent setter;
+- every accepted change increments one selection revision and emits one ordered end-of-frame event, including clear and mutation reconciliation;
+- explicit stable-ID remap is used when supplied; otherwise stale/deleted selection clears with no vector-index fallback;
+- hidden live selection remains inspectable but derives no highlight and cannot be newly picked;
+- browser reveal/scroll never forces a tab change;
+- clipboard codec emits exact `gltf_material:<unsigned document index>`, parses complete ASCII decimal with checked overflow, accepts leading zero input but never emits it, revalidates against the active document on click, preserves enabled-but-invalid canonical out-of-range behavior, and remains non-history.
+- `EditorViewportMetrics` is a backend-neutral immutable value containing the logical half-open viewport rectangle, physical attachment extent, framebuffer scale/DPI inputs, viewport generation, and projection/view identity needed for one checked logical-to-physical conversion and projection-aware constant logical-pixel sizing; it exposes no ImGui, RHI, or native backend type.
+
+`P6-10` freezes render occurrence and asynchronous pick contracts:
+
+- `PrimitiveOccurrenceKey { scene, node, primitive, instanceOrdinal }` distinguishes one definition reused by several nodes/instances;
+- immutable one-to-many occurrence snapshots map a generation-bearing `RenderOccurrenceId` to that key and visibility; framebuffer tokens index only the retained snapshot;
+- `EditorSceneFence` binds authority, document revision, projection revision, scene, scene epoch, and device generation;
+- `EditorPickFence` adds viewport generation and view revision;
+- requests carry serial, intent, sample, and world ray; results always terminate as hit/miss/error/cancelled and may complete out of order;
+- the controller commits terminal results in request serial order; cancellation releases head-of-line;
+- stale full fence is a no-effect discard; current-fence invalid/hidden/unknown/non-finite/non-positive single is blank/clear, while the same double is a no-op;
+- Node highlight expands visible subtree occurrences in document order; Primitive highlights exactly its occurrence.
+
+`P6-20` consumes the completed `P6-10` `EditorPickingTypes`/terminal-result contract and the `P6-00` `EditorViewportMetrics` contract read-only, then implements the strict delayed classifier and single-owner router:
+
+- states are IDLE, SINGLE_PENDING, DOUBLE, and DRAG;
+- first release waits; strict `elapsed > ImGui MouseDoubleClickTime` emits single at the then-current pointer/viewport; a recognized second press emits exactly one double with no preceding single; drag emits neither;
+- document/scene/viewport destruction resets pending physical intent;
+- input priority is modal/dialog, active or latched Gizmo, ImGui captured widget/text, eligible viewport picking, camera;
+- logical-to-pixel conversion uses the immutable half-open viewport rectangle and actual attachment extent with no double DPI multiplication;
+- camera double hit uses finite `origin + direction * distance`, navigation speed equals positive distance, keeps eye, updates one view revision; miss/stale changes neither selection nor camera.
+
+P6 focused tests include six selection kinds, event/revision exactness, authority/generation reuse, same primitive definition on two occurrences, classifier `T-epsilon/T/T+epsilon`, drag/takeover, all clipboard partitions and document switches, viewport edges at 100/125/150/200 percent DPI, out-of-order pick completion, every fence mismatch, occurrence deletion/hide/reuse, camera modeled `[1,2,-2]`/`5`, browser focus, and highlight fence handoff.
+
+`P6-90` wires projection occurrence metadata, upload planning, asynchronous readback, highlight, clipboard adapter, camera/focus adapters, and app input ordering through `RendererFacade`. No normal pick blocks or waits for idle. Device/projection replacement cancels old requests safely. Android excludes desktop picking/highlight orchestration while shared public contracts remain neutral.
+
+Gate P6 requires all entry points to observe one selection revision; exactly one terminal completion per accepted request; no stale alias; delayed single/double exactness; camera/focus/clipboard/highlight/UI agreement; high-DPI and resize correctness; one-owner input; zero forbidden dependency/native finding; and an `X-O06`-consistent Escape/release oracle. Missing visual/runtime evidence is BLOCKED, not a partial PASS.
+
+### 7.3 P7 contracts
+
+`P7-00` depends directly on `P6-00`, binds its completion report/post manifest and frozen `EditorViewportMetrics` identity, consumes that contract read-only, and implements clean-room CPU geometry and math only:
+
+- exactly 13 visible components: translate X/Y/Z and XY/XZ/YZ, rotate X/Y/Z, scale X/Y/Z and uniform; no local mode or screen-rotate handle;
+- deterministic MGIF-owned geometry/ranges/bounds with reference-calibrated dimensions, stable axis semantics, hit broad phase and closest/tie order;
+- projection-convention-aware rays for perspective/orthographic and reverse-Z, double-precision intersections/angles/parent conversion, finite/condition checks before preview;
+- world-oriented parent-space behavior, negative/nonuniform/sheared/singular parent partitions, no NaN or jump;
+- snap by nearest multiple, reference ranges/defaults, four-decade Grid model, deterministic LOD/fades/center;
+- projection-aware constant logical-pixel scale using the frozen `EditorViewportMetrics`;
+- output is immutable POD draw/action data, never document pointers, ImGui state, RHI/native handles, or history mutation.
+
+`P7-10` implements the RHI overlay:
+
+- pass order `FinalColor -> EditorOverlay -> Present -> ImGui`;
+- output is read-write ColorAttachment with load/store; scene depth is ShaderRead; helper depth is convention-aware cleared DepthStencilAttachment for Gizmo self-occlusion;
+- Grid uses additive blending and scene-depth rejection; axes use alpha-over and stay on top; Gizmo defaults to solid x-ray with optional checker dither; planes use approved checker coverage;
+- portable triangle-expanded lines, fixed pipeline families, frame-local uniforms, per-draw constants under 256 bytes, exact viewport/scissor from physical metrics;
+- logical RHI handles only; resize replaces helper depth via deferred retirement and never device idle; frame resources cannot be updated while pending GPU use.
+
+`P7-90` connects selection attachment, input capture, P4 preview/finalization, P5 transform deltas, and overlay snapshots. It consumes existing P4 APIs; if those APIs are insufficient, it blocks and requests a separately owned reconciliation rather than editing P4 paths. Only application-delivered release may commit. The owner-approved O06 rule is used exactly. Scene-root transform never enters the node Gizmo route.
+
+P7 tests cover geometry digests, every component and threshold, projection conventions, near-parallel cases, parent transforms, snap boundaries, constant size/DPI, O05/O06/O07 and ordinary/outside release, stale attachment, scene-root routing, fake-RHI resources/pipelines/tables/pass dependencies/draw order/resize/shutdown, Android exclusion, D3D12/Metal public contracts, and Windows Vulkan V01/V02/V03/V04/V07 state+PNG+pixel+validation evidence.
+
+Gate P7 independently requires nonblank/nonempty components, 2 logical-pixel center and 3 logical-pixel hit-region tolerances, correct depth/x-ray/Grid/axis behavior, exact input/history state, no overlay lifetime issue or idle, Windows Vulkan validation/sync-validation clean, neutral contracts, Android exclusion, and zero forbidden dependency. Metal without macOS evidence remains Not Verified and cannot be upgraded by this Gate.
+
+### 7.4 P8 contracts
+
+The exact P8 state vocabulary has nine and only nine locked values: `NoDocument`, `LoadingCandidate`, `ReadyClean`, `ReadyModified`, `GizmoHover`, `GizmoDragging`, `Modal`, `Saving/Merging/Compacting`, and `Error`. Every controller, shell, test, acceptance hook, and Gate reference uses these exact names; no collapsed `Loading`, `Ready`, `Gizmo`, or `Busy` substitute is valid.
+
+`P8-00` freezes the UI-to-controller intent and immutable frame snapshot. `EditorController` is the sole app authority for document, history, selection, projection/runtime publication, command state, lifecycle/error state, and scene switch. Panels can query snapshots and dispatch typed intents only; they cannot obtain mutable document/runtime containers or call `GPUDrivenRenderer`. The same leaf affirmatively implements and tests the animation playback state machine and results for clip select, play/pause, single-step, Reset, speed, and timeline scrub; global material-variant selection/application and exact renderer-delta result; the rule that editing an animation-driven transform pauses the corresponding playback or presents an explicit non-silent conflict state; and scene-root transform baseline, identity Reset, drift-free application, and hierarchy-change freeze/reset results. These are implementation obligations for F04/F05, `T-ANIM-01`, `T-MAT-06`, `T-UI-02`, and `T-UI-08`, not acceptance-only hooks.
+
+`P8-10` implements default dock shell; exact File/Edit/View/Windows/Tools menu order, labels, relative order, shortcuts, visibility, enabled/disabled states, tooltip and result; a fixed-dimension icon toolbar with stable layout; Settings `Multiple Scenes` placement/condition/order; and MGIF-theme normal/active/hover/disabled/focus/error mapping. It affirmatively owns Grid/Gizmo/Snap state and `T-UI-09`: View order is Grid, Gizmo, Snap, Grid & Snap Settings; Windows has the same Grid & Snap window; toolbar toggles share one controller state with both menus; `G` and `T` work only in eligible viewport context with text capture suppressed; settings entry deduplicates/focuses one window. Grid Unit and translation snap default to `1.0` with range `[0.001, 1000]`; rotation snap defaults to `45 deg` with range `[1, 180] deg`; scale snap defaults to `0.1` with range `[0.001, 10]`. Menu, toolbar, shortcut, and settings edits must update one another bidirectionally and preserve exact numeric results. It presents all exact nine UI states and preserves existing Settings, Model Loader, FlaxDebugUI, and profiler dockability. It adds no dirty badge, unsaved prompt, Compact confirmation, or visible transaction Cancel.
+
+`P8-11` implements Asset Info; functional conditional Animation and Material Variants sections above Release Graph/List tabs; Debug-build-only Debug tab; stable-ID iterative clipped hierarchy; exact document order; eight Scene List groups; display-only texture/image/animation list rules; expansion/focus without forced tab; exact context-menu order; stable drag payload; and D20 clicked-scene/occurrence routing. Animation controls expose clip selection, play/pause, single-step, Reset, speed, and timeline scrub with exact enabled/disabled and displayed playback/conflict results. Material Variants exposes the locked list/selection and global apply result. Each scene root owns the functional Scene Transform popup and Reset surface with exact menu/context placement, default focus, interaction, baseline/freeze observable state, identity Reset, and no Undo implication. Focused tests own F04/F05, `T-ANIM-01`, `T-MAT-06`, `T-UI-02`, and `T-UI-08` at the visible-control boundary.
+
+`P8-12` implements None/Node/Primitive/Mesh/Material/Camera/Light Inspector contexts; exact layout, property/extension order, context-menu order, labels/tooltips, enabled/disabled states, focus, widget interaction and displayed result; widget activation/preview/deactivation transactions; material assignment/clipboard tooltips; camera and light rules; and Rename/Delete/Assign workflows with exact default focus/Enter/Escape/Return behavior. It dispatches controller intents only and applies the MGIF-theme state mapping without creating another authority.
+
+`P8-90` removes the old direct node-index selection, direct SceneAsset/GltfModel TRS/light writes, recursive runtime mutation, destructive pre-candidate unload, pre-ImGui camera polling, and duplicate UI entry points from `MinimalLatestApp`. It integrates the completed leaf implementations and wires `EditorTestDriver` only in acceptance builds to expose action/state/screenshot hooks for T-UI-01..15 and U01..U08. It owns no missing functional control. Production driver code is off by default; Android remains viewer-only.
+
+Gate P8 checks, but does not implement, F04/F05, `T-ANIM-01`, `T-MAT-06`, `T-UI-02`, `T-UI-08`, and `T-UI-09`; the full command manifest; controller/UI result equality; all exact nine UI states; layout/menu/shortcut/context-menu order; enabled/disabled/focus/interaction/result semantics; MGIF-theme mapping; D20 routes; Browser/Inspector/dialog behavior; three resolutions by four DPI values; long Unicode clipping/tooltip; no overlap/blank/jump; no direct UI mutation or second authority; legacy cutover completeness; acceptance-driver isolation; pinned upstream Dear ImGui identity; Android exclusion; and zero forbidden dependency. Screenshots never substitute for state/document/runtime assertions.
+
+### 7.5 P9 contracts
+
+`P9-00` provides one typed extension registry shared by validator, Merge, and Compact. Each known extension declares owner types, validation, index edges, remap, reachability, and preservation rules. It includes meshopt, Draco, GPU instancing, punctual lights, variants, BasisU/WebP/AVIF/DDS as supported by the locked inventory, material texture extensions, animation pointers, and node visibility. It never recursively rewrites a key merely named `index`. Unknown required extensions fail; optional opaque extensions are preserved only when reindex safety is proven, otherwise the candidate fails atomically.
+
+`P9-10` builds a Merge candidate from immutable base/incoming inputs. It preflights every collection, edge/depth/occurrence/string/JSON/dependency/payload/upload/index limit including wrapper overhead before append; reserves before mutation; allocates fresh imported IDs; remaps all standard and registered edges; preserves base then incoming order; creates one wrapper with exact imported effective-scene root order; validates the complete result. It never commits active state.
+
+`P9-11` uses iterative typed reachability from every scene and registered root, per-collection visited sets, exact edge validation, ascending survivor remaps, stable survivor IDs/tombstones, deterministic geometry repack, and no high-level early return that misses geometry-only orphans. `changed=false` is a complete no-op; a second Compact preserves every document/projection/runtime/history/selection/counter digest.
+
+`P9-12` hardens Save As:
+
+- native dialog is outside domain and every command invocation opens it;
+- target-parent staging, bounded secure dependency reads, deterministic content-addressed `.gltf` resources or embedded `.glb`, flush/close of all files, staged reload/validation/semantic compare;
+- immutable resources publish before the main, main replaces atomically last on the same target volume, unsupported atomic replacement fails closed;
+- durable journal records new resource paths/hashes/preexistence and supports interruption recovery without deleting unowned data;
+- collision compares exact bytes; symlink/reparse/nonregular/URI traversal/absolute/scheme escapes reject;
+- active path/dependencies/clean revision and MRU are fully prepared before the irreversible replace and committed no-throw only after file success; history/selection/runtime/revision remain unchanged.
+
+`P9-90` implements one `ActiveEditorState` candidate publication, monotonic latest-wins replace requests, exclusive Save/Merge/Compact, controller/device epochs, close invalidation, staged renderer generation, one frame-safe no-throw swap, and exact lifecycle/history/selection/MRU matrix. No parse/project/upload failure clears or blanks the old scene. Changed Merge/Compact clear history once after publish; Compact no-op does not. Scene switch remains non-history and follows D20/P0 selection/Gizmo/camera/focus results.
+
+P9 tests execute full standard/extension remap matrices, 65,535/65,536/65,537 including wrapper, Unicode/multi-scene/wrapper cases, unknown extension policy, Compact orphan/survivor/idempotency, Save As glTF/GLB/resource/path/filesystem/collision/interruption matrix, deterministic A/B request schedules, close/unload/device epoch, every CPU/GPU/file fault point, exact before/after lifecycle snapshots, and the Open -> edits -> Undo/Redo -> Merge -> Compact -> second Compact -> Save As -> reload sequence.
+
+Gate P9 independently reruns these tests and verifies no in-place active mutation, recursion, index-name heuristic, destructive old-scene clear, partial file/GPU publication, stale callback, duplicate TinyGLTF/STB implementation, or forbidden dependency. Any data-loss or partial-publication risk is a blocker.
+
+### 7.6 P10 contracts
+
+`P10-00` implements schema version 1 candidate reporting with exact canonical R01-R24, F01-F42, and E001-E110 order; normalized requirement/feature/edge arrays; semantic `id-evidence-registry`; contained relative artifact paths; closed-world artifact index; file sizes/hashes/producers; identity binding; and validator-last sealing. It rejects count-only, generic-log mapping, missing semantic assertions, stale artifacts, path/reparse escape, mixed executable/diff/machine/config identity, unsupported platform false PASS, unreasoned skip/waiver, and forged totals.
+
+`P10-10` implements exact seeds `0..9`, 1,000 operations each, `state=seed+17`, per-step invariants and minimized replay; capacities 0/1/10k/65,535/65,536/65,537; RelWithDebInfo warm-up >=120 and raw samples >=300; nearest-rank p95 `sorted[ceil(.95*N)-1]`; locked CPU/GPU/counter/memory thresholds; and a >=30-minute deterministic U02-U07 soak with exact single markers `config`, `scene-ready`, `action-start`, `action-commit`, `settled`, `complete` plus failure replay.
+
+`P10-11` captures D3D12 contract, Android Gradle/NDK graph/final symbols, optional externally supplied macOS artifact, RHI/dependency configured closure, source/asset provenance, and root-license state. It never invents platform evidence. Metal on this Windows host is `not_run: Not Verified on Windows`; F42/R24 stay blocked until owner license selection.
+
+`P10-90` composes fresh Debug/validation, RelWithDebInfo/performance, RHI contract, and platform jobs; creates one immutable evidence root per identity; hashes artifacts after close; runs semantic validation last; and prevents old build/evidence reuse. The harness itself is tested with adversarial negative fixtures.
+
+`P10-EXEC` is evidence execution, not implementation or remediation. It runs all locally feasible layers and emits `runMode=candidate`. With no hash-bound macOS evidence or owner root license, its honest overall status is BLOCKED even if every feasible engineering test passes. Test failure ends the task with failed outcome and immutable failure evidence; source repair requires a new DAG.
+
+`G10` independently verifies goal evidence rather than task completion claims. It reruns at least one round-trip failure, one property/remap seed, one Gizmo visual, one FullRebuild fence case, validator negatives, configured dependency/RHI scans, artifact hashes/identities, and platform/license classification. It may issue engineering PASS only for a precisely named subset; final P10/release PASS requires the locked all-pass conditions and therefore remains BLOCKED while F42/R24 or Metal evidence is missing.
+
+## 8. Ready-to-copy successor task specs
+
+For each block, use the dependency JSON shown above it. Replace only downstream `<... task ID>` placeholders with the IDs returned by Orca task creation. Do not replace `task_c346ebff90f2` with another P4 task. Each worker must read this entire blueprint, the planning-base locked specification and, when downstream of X-O06, its authorized effective version, its phase readiness report, its dependency reports/manifests, and its exact current files before acting.
+
+### 8.1 Gate P4-bound successors
+
+Dependency JSON for `X-O06`:
+
+```json
+["task_c346ebff90f2","<G5 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+X-O06 owner-authorized normative reconciliation, exact three-file write scope. Work in shared G:\MGIF only after task_c346ebff90f2 and the fresh independent Gate P5 task have succeeded, every repository writer including L5 has stopped, and the Gate P4/P5 reports/integration/post-hash artifacts are independently hash-bound. Read C:\Temp\MGIF-P5-P10-successor-dag-blueprint-v2-20260824.md, the complete planning-base locked specification, P6/P7 readiness reports, Gate P5 evidence, and current manifest/edge registry. Before editing, create the Section 3 pre-edit binding for exactly the X-O06 paths in Section 6.1. Never access G:\MGIF\mgif build entrypoints kftx8g0b\ and never use root-recursive enumeration.
+
+This task requires a durable project-owner authorization message that names the final O06 same-input-batch history outcome. Quote and bind that message ID. If no such authorization exists, make no repository edit and report BLOCKED. If authorized to adopt the current native-visible oracle, reconcile every stale O06 statement in the locked task and its manifest/edge expectations so both Escape/release orders in one application input batch clear selection, retain preview TRS, detach, and leave transform history unchanged/Undo disabled; preserve ordinary prior-frame release as exactly one commit and retain bounded private-state evidence debt. Make no unrelated requirement, D20, scope, tolerance, feature-status, implementation, progress-ledger, license, or PASS change.
+
+Validate JSON, canonical IDs/counts, all O06 references, locked precedence/change-control language, and exact three-file path diff. Produce before/post manifests and a C:\Temp reconciliation report with bytes/SHA-256. Do not edit the progress ledger or claim implementation, engineering Gate PASS, release PASS, or distribution PASS. Finish with exactly one worker_done and list only the three authorized files if edited.
+```
+
+Dependency JSON for `P5-00`:
+
+```json
+["task_c346ebff90f2"]
+```
+
+Ready-to-copy spec:
+
+```text
+P5-00 backend-neutral SceneChangeSet and canonicalizer contract freeze. Work in shared G:\MGIF only after task_c346ebff90f2 has succeeded and its Gate P4 report/integration/post-hash artifacts are hash-bound. Read the full successor blueprint, locked specification, P5 readiness report, and final P4 public APIs. Own exactly the P5-00 paths in Section 6.2; edit nothing else. Complete the mandatory pre-edit binding in Section 3, including missing-file sentinels. Never touch the forbidden build-entrypoint path or run repository-root recursive scans.
+
+Implement the Section 7.1 value-only contracts: authority/generation-safe identities; DocumentMutation/SceneActivation/FullSnapshot domains; eight reportable change classes; complete revision/scene/projection/mutation envelope; immutable payload ownership; stable FullRebuildReason; deterministic canonicalization, serialization, digest, coalescing, create/update/delete algebra, parent/child dependency order, and typed errors. No ImGui, app, renderer, RHI, native backend, pointer into mutable state, dense runtime index, or reference helper may appear in the public surface.
+
+Add focused and self-containment tests for shuffled determinism, strict revision syntax, duplicate/idempotent input, generation-changing recreate, payload/range/hash errors, empty input, and backend/reference token absence. Run the strongest path-scoped standalone/core tests possible without changing CMake; report any integration-only compile item explicitly for P5-90. Record exact commands, results, and post hashes. Do not edit progress or claim phase implementation, Gate PASS, release PASS, or distribution PASS; preserve F42/R24 BLOCKED and Metal Not Verified. Finish with exactly one worker_done.
+```
+
+### 8.2 P5 tasks and Gate
+
+Dependency JSON for `P5-10`:
+
+```json
+["<P5-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P5-10 exact editor change capture and immutable runtime mapping. Read the complete successor blueprint, locked specification, P5 readiness report, Gate P4 evidence, and P5-00 completion report/post hashes. Bind all inputs before editing and own exactly the P5-10 paths in Section 6.2. Do not modify P5-00 contracts, CMake, renderer, app, progress, manifest, or any other path. Never touch the forbidden build-entrypoint path.
+
+Implement typed exact before/after change capture so current all-live changedIds is never treated as precise renderer work. Preserve candidate-copy/no-throw document publication. Emit minimal logical changes or an explicit reason-coded conservative snapshot, derive hierarchy/visibility effects deterministically, and distinguish document revision from scene/view epoch. Extend runtime mapping as immutable snapshots binding authority, applied revision, active scene/scene epoch, projection digest, mapping epoch, renderer/device identity and generation, actual generation-bearing renderer handles, and reverse lookup. Stable editor ID, projection index/identity, and runtime handle must never be conflated. Resolve every stable ID kind/authority/slot/generation before downstream calls.
+
+Add exact single-field, descendant transform, visibility inheritance, material/variant binding, scene activation, Undo/Redo forward revision, stale generation, mapping determinism, slot reuse, and prepublication rollback tests. No renderer/RHI/app/native/reference dependency is permitted. Run focused tests or compile probes possible within the write set, create post hashes and a report, and stop on any frozen P5-00 API mismatch rather than editing it. Do not edit progress or claim phase implementation, Gate PASS, release PASS, or distribution PASS; preserve Metal Not Verified and F42/R24 BLOCKED. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P5-20`:
+
+```json
+["<P5-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P5-20 standalone renderer scene transaction, resource journal, and counters. Read the successor blueprint, locked specification, P5 readiness report, Gate P4 evidence, and frozen P5-00 contract. Complete the pre-edit binding and own exactly the P5-20 files in Section 6.2. Do not edit RendererFacade, GPUDrivenRenderer, RenderDevice, RHI public files, CMake, or P5 domain files; P5-90 owns shared integration. Never touch the forbidden path.
+
+Implement an MGIF-owned backend-neutral staged-generation module with full RendererTargetFence validation, explicit accepted/rejected/failed dispositions, immutable active generation, staged CPU/resource/descriptor state, exact queue submission tokens, nonthrowing publication, and deferred retirement. Implement the complete Section 7.1 counter vocabulary with transaction snapshots and reason buckets. Validation occurs before RHI calls. Pre-submit failure destroys unpublished resources, submitted orphan failure retires by captured tokens, and active mapping/fences/digest remain exact. Publication cannot expose a partial descriptor/mapping generation. No rollback path may wait for device idle.
+
+Use recording/no-call fake RHI tests for every fence mismatch and injected failure at allocation, descriptor staging, recording, first/later submit, prepublish, and retirement enqueue. Assert partialPublicationCount zero, exact rollback/failure counters, old state identity, no active staged handle, no idle, and correct immediate/deferred cleanup. Keep public types free of native and forbidden dependencies. Report integration assumptions for P5-90 without modifying its files. Do not edit progress or claim phase implementation, Gate PASS, release PASS, or distribution PASS; preserve Metal Not Verified and F42/R24 BLOCKED. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P5-90`:
+
+```json
+["<P5-10 task ID>","<P5-20 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P5-90 exclusive P5 integration and Gate preparation. Start only after P5-10 and P5-20 have stopped. Read and hash-bind the successor blueprint, locked task, P5 readiness report, Gate P4 artifacts, P5-00/10/20 reports, pre/post manifests, and every current integration write-set file. Own exactly the P5-90 paths in Section 6.2. Do not edit the progress ledger, locked task, manifest, or leaf files. Reconcile only through frozen public APIs; any required leaf-contract change is a separate task.
+
+Wire canonical change sets, exact mapping/capture, transactional incremental apply and full snapshot through SceneUploadPlan, RendererFacade, GPUSceneRegistry, GPUDrivenRenderer, RenderDevice, common counters, Android lifecycle, tests, and CMake. Preserve transform/visibility/material/binding/camera/light fast paths; use reason-coded conservative snapshots for unsupported topology. Reject stale/gap/mapping/scene/device mismatch before side effects and never silently upgrade a stale delta. Accepted parameter edits must produce zero full rebuild, geometry bytes, texture bytes, and device idle. Full snapshots stage and publish one generation without clearing active state first. Android surface loss/zero extent is separate from document/device/scene identity. Metal capability rejects before mutation and remains Not Verified.
+
+Create one fresh contained C:\Temp integration root and run fresh Debug and Release/core builds, focused CPU/fake-RHI/fault suites, public-header contracts, exact direct tests, full relevant CTest, dependency/RHI negative scans, Vulkan validation/sync validation and D3D12/Android contracts feasible on the host. Record skips as blockers, never PASS. Generate a complete P5 integration report and exact phase post-edit hash manifest. Do not edit progress or claim phase implementation, Gate P5 PASS, release PASS, or distribution PASS; preserve Metal Not Verified and F42/R24 BLOCKED. Stop writing before exactly one worker_done.
+```
+
+Dependency JSON for `G5`:
+
+```json
+["<P5-90 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+Gate P5 fresh independent adversarial review, repository READ-ONLY and repair-free. Read the full successor blueprint, locked task, P5 readiness report, Gate P4 artifacts, all P5 reports/manifests, and every final P5 path. Verify all hashes before use. Never modify any byte under G:\MGIF, never touch the forbidden path, and write only to a fresh C:\Temp\mgif-p5-independent-gate-* evidence root.
+
+Run fresh contained builds/tests and independently inspect all Section 7.1 contracts: canonical determinism, exact change capture, immutable mapping and all fences, actual handle generations, incremental operation effects, transaction visibility, descriptors, queue-token retirement, every fault class, counters, zero idle/hot-path uploads, full-snapshot rollback, Android surface lifecycle, Metal pre-mutation Unsupported, public/backend boundaries, configured target closure, and zero forbidden dependencies. Search explicitly for hidden beginSceneReplacement/waitForIdle, active-resource overwrite, stale handle binding, counter laundering, native escape, and missing world/bounds/camera/light effects.
+
+Return explicit `GATE P5 ENGINEERING PASS` or `GATE P5 FAIL/BLOCKED` with severity-ranked file:line findings, exact commands/results, report bytes/SHA-256, and residual platform/license status. Engineering PASS is not release/distribution PASS; F42/R24 remain BLOCKED and Metal remains Not Verified. Do not edit progress or claim implementation or release/distribution PASS. Make no repairs. Finish with exactly one worker_done.
+```
+
+### 8.3 P6 tasks and Gate
+
+Dependency JSON for `P6-00`:
+
+```json
+["<G5 task ID>","<X-O06 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P6-00 sole selection authority, material clipboard, and shared EditorViewportMetrics contract freeze. Start only after the independent Gate P5 task has issued the required engineering verdict and X-O06 has published its owner-authorized effective-spec identity. Read the entire successor blueprint, effective locked specification, P6 and P7 readiness reports, Gate P5 and X-O06 reports/manifests, and current files in the P6-00 write set. Bind both planning-base and X-O06 effective-spec identities, then complete the Section 3 pre-edit hash binding for exactly the P6-00 paths in Section 6.3, including missing-file sentinels. Edit no other path, never access G:\MGIF\mgif build entrypoints kftx8g0b\, never run root-recursive scans, and do not edit the progress ledger.
+
+Implement the Section 7.2 backend-neutral selection value, authority/generation-safe identity, revision/event, mutation reconciliation, stable remap, visibility/highlight eligibility, Browser reveal, and canonical material clipboard contracts. One setter owns all selection change; accepted changes publish exactly one ordered end-of-frame event and one revision, while identical set and clearing empty are idempotent. Preserve the exact Primitive occurrence semantics and canonical `gltf_material:<unsigned document index>` codec, complete checked parsing, active-document revalidation, and non-history behavior. Also freeze the immutable backend-neutral `EditorViewportMetrics` value required by P6 and P7: logical half-open viewport rectangle, physical attachment extent, framebuffer scale/DPI inputs, viewport generation, and projection/view identity, with checked one-time logical-to-physical conversion and constant-logical-pixel inputs. Public contracts must contain no ImGui, app singleton, renderer, RHI, native backend, dense vector index fallback, forbidden nv/reference helper, or mutable document pointer.
+
+Add tests for every selection kind, authority and generation reuse, deletion/remap/clear, hidden selection, event order and exact revisions, Primitive occurrence identity, reveal without forced tab change, all clipboard grammar/overflow/range/document-switch partitions, viewport half-open boundaries, 100/125/150/200 percent scale, odd physical extents, zero/non-finite rejection, generation identity, and constant-size input stability. Include public-header self-containment for the frozen metrics contract. Run every focused standalone test or compile probe possible within this write set and record integration-only items for P6-90 rather than editing CMake. Produce exact post hashes and a report. Do not claim implementation of the phase, Gate PASS, release/distribution PASS, Metal verification, or resolution of F42/R24. Stop writing before exactly one worker_done.
+```
+
+Dependency JSON for `P6-10`:
+
+```json
+["<P6-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P6-10 immutable occurrence mapping and asynchronous picking RHI producer leaf. Read the entire successor blueprint, locked specification, P6 readiness report, Gate P5 evidence, P6-00 completion report/post hashes including the frozen EditorViewportMetrics identity, and every current P6-10 file. Bind exact pre-edit hashes as required by Section 3 and own only the P6-10 paths in Section 6.3. Do not edit selection authority, viewport/controller/router/app, facade, CMake, ledger, or any other path. Never access the forbidden build-entrypoint path or perform repository-root recursive enumeration.
+
+Implement and freeze the Section 7.2 `EditorPickingTypes` producer contract: `PrimitiveOccurrenceKey`, immutable one-to-many occurrence snapshot, generation-bearing render occurrence IDs, full editor/pick fences, serial requests, terminal result vocabulary and commit-relevant fields, retained snapshot lifetime, and asynchronous RHI picking pass. A framebuffer token may resolve only through the exact retained snapshot that produced it. Every accepted request must terminate exactly once; stale full-fence results have no effect. Current-fence invalid, hidden, unknown, non-finite, or non-positive hits return typed blank/miss results for the downstream controller policy. Node highlight expansion and Primitive exact-occurrence highlight must be deterministic. No normal pick may block, wait for idle, expose native objects, or import any forbidden nv/reference dependency. The completion report and post manifest must name the exact frozen public-header bytes/SHA-256 for P6-20.
+
+Add CPU/fake-RHI tests for definition reuse at multiple occurrences, occurrence deletion/hide/reuse, all fence mismatches, out-of-order completions, cancellation and lifetime, framebuffer encoding/decoding, attachment resize/generation, miss/error paths, highlight expansion, queue-token retirement, no-call rejection, and zero idle. Keep public headers backend neutral and self-contained. Record exact commands, results, post hashes, and integration assumptions; do not modify shared integration paths when an API mismatch is found. Do not edit progress or claim phase/Gate/release PASS; Metal on Windows remains Not Verified and F42/R24 remain BLOCKED. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P6-20`:
+
+```json
+["<P6-10 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P6-20 delayed click classifier, pick controller, input router, camera bridge, and Browser focus adapter. Start only after P6-10 has completed; through it, P6-00 and the owner-authorized X-O06 reconciliation are already complete. Read the entire successor blueprint, locked specification as reconciled by X-O06, P6 readiness report, Gate P5 evidence, P6-00 and P6-10 completion reports/post manifests, and all current P6-20 files. Verify and bind the exact frozen `EditorViewportMetrics` and `EditorPickingTypes` public-header bytes/SHA-256 plus the P6-10 terminal-result contract before creating the Section 3 pre-edit binding for exactly the P6-20 write set in Section 6.3. If any producer identity differs or is absent, stop BLOCKED; never edit the producer. Edit no other path, do not touch the forbidden build-entrypoint path, and do not edit the progress ledger.
+
+Implement Section 7.2 IDLE/SINGLE_PENDING/DOUBLE/DRAG classification with strict `elapsed > MouseDoubleClickTime`, the then-current release/pointer/viewport sample, exactly one terminal physical intent, and reset on document/scene/viewport destruction. Implement the sole input ownership order: modal/dialog, active or latched Gizmo, ImGui-captured widget/text, eligible viewport picking, camera. Convert immutable logical half-open viewport metrics to physical attachment pixels exactly once. Commit asynchronous terminal pick results in request serial order while cancellation releases head-of-line. Enforce all fence and single/double miss policies, finite camera focus, exact distance-derived navigation speed, and Browser focus without forced tab changes. Consume the owner-approved O06 outcome exactly; do not reinterpret it.
+
+Add deterministic tests at T-epsilon/T/T+epsilon, drag and ownership takeover, same-input-batch O06 Escape/release orders, ordinary prior-frame release, viewport edges at 100/125/150/200 percent DPI, out-of-order results/cancellation, every fence mismatch, current invalid hit single/double policies, modeled camera hit/miss, focus behavior, and destruction resets. Use adapters around upstream Dear ImGui only; production code may use MGIF-owned adapter/RHI abstractions but no vendored fork, private struct/layout assumption, native backend surface, or forbidden nv/reference helper. Report exact hashes/results. Do not claim phase/Gate/release PASS, edit progress, or upgrade Metal/F42/R24 status. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P6-90`:
+
+```json
+["<P6-10 task ID>","<P6-20 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P6-90 exclusive P6 integration and Gate preparation. Start only after P6-10 and P6-20 have stopped and their final manifests match. Read the full successor blueprint, locked specification, P6 readiness report, Gate P5 evidence, X-O06 report, P6-00/10/20 completion reports and hashes, and every current P6-90 file. Bind exact pre-edit hashes for the Section 6.3 P6-90 write set and edit only those paths. Do not edit leaf contracts, the locked specification/manifest, or the progress ledger; never touch the forbidden build-entrypoint path.
+
+Wire the one selection authority, projection occurrence metadata, upload planning, asynchronous picking/readback, highlight, clipboard adapter, camera/focus adapters, and application input order through existing MGIF controller/facade/RHI boundaries. Ensure each entry point observes one selection revision and every accepted request has exactly one terminal completion. Preserve immutable occurrence/pick snapshots until GPU/readback use completes; cancel on projection, viewport, device, document, or scene replacement. No normal path blocks or idles. Android remains viewer-only with desktop orchestration excluded while shared public contracts stay platform neutral. Use upstream Dear ImGui plus MGIF-owned adapter/RHI only; production configured closure must contain no nvcore/nvpro/nvapp/nvgui/nvvk/nvvkgltf or reference Vulkan helper.
+
+Create a fresh contained C:\Temp build/evidence root and run fresh relevant Debug/Release builds, pure CPU and fake-RHI suites, direct executables, public-header tests, full relevant CTest, high-DPI and resize tests, Vulkan validation/sync-validation, D3D12 and Android contracts, and configured dependency/RHI scans. Validate one-owner input and the X-O06 owner-approved oracle. Record unsupported runtime evidence as BLOCKED rather than PASS. Emit the P6 integration report and exact phase post-edit manifest. Do not claim Gate P6 or release/distribution PASS, do not edit progress, preserve Metal Not Verified and F42/R24 BLOCKED, and finish with exactly one worker_done.
+```
+
+Dependency JSON for `G6`:
+
+```json
+["<P6-90 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+Gate P6 fresh independent adversarial review, repository READ-ONLY and repair-free. Read the entire successor blueprint, locked specification, P6 readiness report, X-O06 reconciliation, Gate P5 evidence, every P6 report/manifest, and all final P6 paths. Recompute and verify bound hashes before testing. Modify no byte under G:\MGIF, never access G:\MGIF\mgif build entrypoints kftx8g0b\, do not edit progress, and write evidence only to a new C:\Temp\mgif-p6-independent-gate-* root.
+
+Independently run fresh contained builds/tests and inspect the Section 7.2 contracts: sole selection revision/event authority; generation-safe values; occurrence identity and retained snapshots; exactly one terminal asynchronous result; full fence rejection; strict delayed single/double/drag classification; O06 outcome; high-DPI conversion; camera/focus/clipboard/highlight/UI agreement; input priority and takeover; device/projection/scene/viewport cancellation; zero blocking/idle; neutral public boundaries; Android exclusion; and configured zero forbidden dependencies. Include adversarial stale alias, out-of-order completion, occurrence reuse, timeout boundary, invalid framebuffer, document switch, resize, and hidden-selection cases.
+
+Return an explicit `GATE P6 ENGINEERING PASS` or `GATE P6 FAIL/BLOCKED` only from the evidence, with severity-ranked file:line findings, exact commands/results, artifact bytes/SHA-256, and blockers. Engineering Gate is not release/distribution PASS. Missing visual/runtime evidence remains BLOCKED, Metal on Windows remains Not Verified, and F42/R24 remain BLOCKED. Make no repairs and claim no implementation. Finish with exactly one worker_done.
+```
+
+### 8.4 P7 tasks and Gate
+
+Dependency JSON for `P7-00`:
+
+```json
+["<P6-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P7-00 clean-room CPU Gizmo geometry/math and Grid model. Start only after P6-00 has completed; through it, independent Gate P5 and the owner-authorized X-O06 reconciliation are already complete. Read the entire successor blueprint, reconciled locked specification, P6/P7 readiness reports, P6-00 completion report/post manifest, final P4 preview/history APIs, and every P7-00 path. Bind and consume the frozen `EditorViewportMetrics` header bytes/SHA-256 read-only, then complete the Section 3 pre-edit hash binding and own exactly the P7-00 write set in Section 6.4. If the metrics identity is absent or differs, stop BLOCKED; do not edit P6 paths. Edit no P4/P5/P6/shared integration/CMake/progress path, never access the forbidden build-entrypoint path, and do not recursively enumerate the repository root.
+
+Implement the Section 7.3 MGIF-owned CPU-only geometry and math: exactly 13 visible components; deterministic ranges/bounds/digest and axis/tie order; perspective/orthographic/reverse-Z rays; double-precision intersection/angle/parent conversion with finite and conditioning checks; world-oriented parent-space transforms; snap/Grid/LOD/fade models; and constant logical-pixel scale from immutable viewport metrics. Outputs are immutable POD draw/action data and contain no document pointer, ImGui state, RHI/native handle, or history mutation. Derive behavior from the locked specification and public clean-room math, never by importing or adapting reference Vulkan helper code.
+
+Add tests for all 13 components, stable geometry digests, broad/closest hit order, projection conventions, near-parallel and singular/negative/nonuniform/sheared parents, snap boundaries, four-decade Grid behavior, constant size across viewport/DPI, non-finite rejection, and O05/O06/O07 action semantics at the CPU contract. Public source and configured dependencies must contain no nvcore/nvpro/nvapp/nvgui/nvvk/nvvkgltf/reference Vulkan helper. Run path-scoped tests/probes, report integration-only items for P7-90, emit post hashes, do not edit progress or claim phase/Gate/release PASS, and keep Metal/F42/R24 status unchanged. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P7-10`:
+
+```json
+["<P7-00 task ID>","<G6 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P7-10 MGIF-owned RHI editor overlay leaf. Start only after P7-00 and independent Gate P6 have completed. Read the entire successor blueprint, locked specification, P7 readiness report, both dependency reports/manifests, final P6 viewport/selection contracts, and all current P7-10 files. Verify dependency hashes and bind the exact Section 6.4 P7-10 write set before editing. Edit no CPU leaf, facade/app/scheduler/CMake/progress path and never touch or inspect the forbidden build-entrypoint directory.
+
+Implement Section 7.3 through MGIF logical RHI only: `FinalColor -> EditorOverlay -> Present -> ImGui`; color load/store; scene depth ShaderRead; convention-aware helper depth; additive depth-rejected Grid, alpha-over always-on-top axes, solid x-ray/dithered Gizmo, checker planes, portable triangle-expanded lines, fixed pipeline families, frame-local immutable inputs, sub-256-byte per-draw constants, and exact physical viewport/scissor. Resize replaces helper depth through captured queue-token retirement with no device idle. A frame resource cannot be written while pending GPU use. Public contracts expose no native Vulkan/D3D12/Metal type.
+
+Add recording/fake-RHI tests for resource and pipeline descriptors, barriers/layouts, load/store/depth conventions, draw and pass ordering, blend/depth modes, viewport/scissor, resize/surface loss/shutdown, frame reuse, deferred retirement, failure before/after submit, and zero idle/native escape. Add shader compile/contract checks. Production code may use upstream Dear ImGui and MGIF-owned adapters/RHI only, with zero forbidden nv/reference dependency. Record exact commands/results/post hashes and leave shared integration to P7-90. Do not edit progress or claim phase/Gate/release PASS; Metal remains Not Verified on Windows and F42/R24 remain BLOCKED. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P7-90`:
+
+```json
+["<P7-10 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P7-90 exclusive Gizmo/Grid overlay integration and Gate preparation. Start only after P7-10 has stopped; transitively bind P7-00, Gate P6, X-O06, and final P4/P5/P6 artifacts. Read the entire successor blueprint, locked specification, P7 readiness report, all dependency reports/manifests, and every current P7-90 file. Complete the Section 3 pre-edit binding for exactly the Section 6.4 P7-90 write set. Do not edit leaf modules, P4 history/document APIs, locked docs/manifest, or progress; never access the forbidden path.
+
+Connect selection attachment, input capture, P4 preview/finalization, P5 transform deltas, immutable overlay snapshots, RHI pass scheduling, viewport metrics, resize, and shutdown. Consume existing P4 contracts exactly. If insufficient, stop and request a separate bounded reconciliation; do not broaden this write set. Only application-delivered release may commit, the owner-approved O06 outcome applies exactly, ordinary prior-frame release commits exactly once, and scene-root transform never enters the node Gizmo route. Keep CPU/draw/document/runtime states on the same accepted revision/fence. Retire resources by exact GPU dependencies without device idle. Android excludes desktop overlay/Gizmo orchestration.
+
+Use a fresh contained C:\Temp root for Debug/Release builds, focused CPU/fake-RHI/integration/direct tests, shader contracts, public-header checks, relevant CTest, dependency/RHI scans, D3D12/Android contracts, and Windows Vulkan validation plus sync validation. Capture state+PNG+pixel evidence for required V01/V02/V03/V04/V07 cases with nonblank/nonempty checks, 2-logical-pixel center and 3-logical-pixel hit tolerances, depth/x-ray/Grid/axis behavior, input/history assertions, and failure/lifetime counters. Record missing macOS evidence as Metal Not Verified, not PASS. Emit integration report and post manifest, edit no progress, claim no Gate/release PASS, preserve F42/R24 BLOCKED, and finish with exactly one worker_done.
+```
+
+Dependency JSON for `G7`:
+
+```json
+["<P7-90 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+Gate P7 fresh independent visual, state, and RHI review, repository READ-ONLY and repair-free. Read the full successor blueprint, reconciled locked specification, P7 readiness report, all P7/P4-P6 dependency reports/manifests, and final P7 files. Recompute hashes before use. Modify no byte under G:\MGIF, never access the forbidden build-entrypoint directory, do not edit progress, and use only a fresh C:\Temp\mgif-p7-independent-gate-* evidence root.
+
+Independently rerun CPU math/geometry, fake-RHI, integration, shader, configured dependency/RHI, and Windows Vulkan validation/sync-validation suites. Recapture required visual states and verify nonblank components, logical-pixel tolerances, correct projection/parent/snap behavior, depth/x-ray/Grid/axis modes, exact O05/O06/O07 and ordinary/outside-release history state, stale attachment handling, scene-root exclusion, pass ordering, frame lifetime, resize/shutdown, zero idle/native escape, neutral D3D12/Metal public contracts, Android exclusion, and zero nvcore/nvpro/nvapp/nvgui/nvvk/nvvkgltf/reference Vulkan helper in production.
+
+Return `GATE P7 ENGINEERING PASS` or `GATE P7 FAIL/BLOCKED` only if supported by fresh evidence, with severity-ranked file:line findings, commands/results, and artifact bytes/SHA-256. Screenshots do not substitute for state assertions. Engineering Gate is not release/distribution PASS, Metal without macOS evidence stays Not Verified, and F42/R24 stay BLOCKED. Make no repair and claim no implementation. Finish with exactly one worker_done.
+```
+
+### 8.5 P8 tasks and Gate
+
+Dependency JSON for `P8-00`:
+
+```json
+["<G7 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P8-00 EditorController, immutable frame snapshot, typed intent, command registry, animation/variant behavior, and Scene Transform domain freeze. Start only after independent Gate P7 has issued the required engineering verdict. Read the entire successor blueprint, locked specification, P8 readiness architecture map, Gate P7 report/manifests, final P4-P7 public contracts, and every current P8-00 file. Complete the Section 3 pre-edit binding for exactly the Section 6.5 P8-00 write set, including missing-file sentinels. Edit no other path, never access G:\MGIF\mgif build entrypoints kftx8g0b\, do not run root-recursive scans, and do not edit the progress ledger.
+
+Implement Section 7.4 contracts so `EditorController` is the sole application authority for document, history, selection, projection/runtime publication, command state, lifecycle/error state, and scene switch. Freeze immutable frame snapshots and typed intents/results for every P8 command and panel action. UI consumers may query snapshots and dispatch intents only; they cannot receive mutable document/runtime containers, invoke `GPUDrivenRenderer`, or create a second selection/history/lifecycle authority. Freeze exact command labels, shortcuts, ordering, visibility, enablement, deduplication, state prerequisites, and failure results. The state vocabulary is exactly `NoDocument`, `LoadingCandidate`, `ReadyClean`, `ReadyModified`, `GizmoHover`, `GizmoDragging`, `Modal`, `Saving/Merging/Compacting`, and `Error`. Preserve P4-P7 identity/revision/fence semantics.
+
+Affirmatively implement F04/F05 behavior rather than leaving it to integration or Gate hooks: clip select, play/pause, single-step, Reset, speed, timeline scrub, deterministic playback result, global material-variant selection/application and renderer-delta result. Editing an animation-driven transform must pause the corresponding playback or return an explicit visible conflict state; it may not silently allow the next frame to overwrite the edit. Implement the Scene Transform controller policy for per-scene baseline, `sceneTRS * baselineLocal`, identity Reset, drift-free repeated interaction, hierarchy-change freeze into existing roots, popup TRS reset, new-root baseline, matrix preservation, and non-history result.
+
+Add pure controller/registry tests for all exact nine UI states, exact command manifest and transitions, command result equality, one-authority enforcement, scene switching, history/selection/lifecycle propagation, stale intent rejection, transaction/error retention of the last valid snapshot, and public-header self-containment. Add focused `T-ANIM-01`, `T-MAT-06`, and controller halves of `T-UI-02` and `T-UI-08`: clip/speed/timeline bounds and playback steps, pause/edit conflict partitions, variant list/selection/application/delta/preservation, multi-scene baselines, matrix roots, 1000 transform cycles, Reset, and add/delete/reparent freeze. Keep contracts platform/backend/ImGui neutral. Run focused tests/probes within the write set and record wiring-only work for P8-90. Emit exact post hashes and a report. Do not claim the visible UI/phase implemented, Gate or release/distribution PASS, edit progress, or alter Metal/F42/R24 status. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P8-10`:
+
+```json
+["<P8-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P8-10 dock shell, menu bar, icon toolbar, Grid/Gizmo/Snap settings, and theme implementation leaf. Read the full successor blueprint, locked specification, P8 readiness map, Gate P7 evidence, P8-00 completion report/post hashes, and every P8-10 path. Create the Section 3 pre-edit binding for exactly the Section 6.5 P8-10 write set. Edit no controller, Browser, Inspector, app, CMake, acceptance validator, or progress path; never access the forbidden build-entrypoint directory.
+
+Implement Section 7.4 using immutable snapshots and typed intents only: default dock shell; File/Edit/View/Windows/Tools ordering; exact labels, shortcuts, enablement, visibility, deduplication, tooltip, focus, and result presentation; fixed-dimension icon toolbar with stable layout; Settings `Multiple Scenes` placement/condition/order; and complete presentation of the exact nine states `NoDocument`, `LoadingCandidate`, `ReadyClean`, `ReadyModified`, `GizmoHover`, `GizmoDragging`, `Modal`, `Saving/Merging/Compacting`, and `Error`. Preserve existing Settings, Model Loader, FlaxDebugUI, and profiler dockability. Do not invent a dirty badge, unsaved prompt, Compact confirmation, visible transaction Cancel, second authority, or direct model/renderer mutation.
+
+Affirmatively implement F20 and `T-UI-09`. View menu order is `Grid`, `Gizmo`, `Snap`, `Grid & Snap Settings...`; Windows exposes the same deduplicated `Grid & Snap` window. The viewport toolbar has Grid/Gizmo/Snap icon buttons with stable dimensions, tooltips, active state, and controller result. `G` toggles Grid and `T` toggles Gizmo only with eligible viewport focus and no text capture; Snap has no default key. Menu checks, toolbar active states, shortcuts, and settings values are bidirectional views of one state. Grid Unit and translation snap default to `1.0`, range `[0.001, 1000]`; rotation snap defaults to `45 deg`, range `[1, 180] deg`; scale snap defaults to `0.1`, range `[0.001, 10]`. Reject/non-finite/out-of-range edits according to the locked numeric policy without displaying a value different from the controller result. Map normal, active, hover, disabled, focus, modal, transaction, and error presentation to MGIF theme tokens.
+
+Add deterministic snapshot/action tests for every command and exact state; toolbar dimensions; exact menu/shortcut order, label, tooltip, enablement and result; modal/transaction/error behavior; settings placement and single-window focus; all four Grid/Gizmo/Snap entry paths; bidirectional updates; exact defaults, endpoints, just-inside/outside values and non-finite input for all three numeric ranges; MGIF-theme token mapping; dockability; long labels; and multiple viewport/DPI constraints. Use pinned upstream Dear ImGui through MGIF-owned UI adapters; do not fork ImGui, depend on private internals/layout, expose native APIs, or introduce any forbidden nv/reference dependency. Record exact tests/results/post hashes and stop on P8-00 contract mismatch instead of editing it. Do not edit progress or claim phase/Gate/release PASS; preserve Metal Not Verified and F42/R24 BLOCKED. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P8-11`:
+
+```json
+["<P8-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P8-11 Scene Browser, functional Animation/Material Variants controls, and Scene Transform popup implementation leaf. Read the entire successor blueprint, locked specification, P8 readiness map, Gate P7 evidence, P8-00 report/post hashes, and all current P8-11 files. Bind exact pre-edit hashes for only the Section 6.5 P8-11 write set. Do not edit controller, shell, Inspector, app, CMake, validator, or progress paths, and never touch or inspect the forbidden build-entrypoint directory.
+
+Implement Section 7.4 from immutable frame snapshots and typed intents only: Asset Info; conditional functional `Animation` and `Material Variants` CollapsingHeaders above Release Graph/List tabs; Debug-build-only Debug tab; stable-ID iterative clipped hierarchy in exact document order; eight Scene List groups; display-only texture/image/animation list rules; expansion/reveal/focus without forced tab; exact context-menu ordering; stable drag payload; and D20 clicked-scene/occurrence routing. No recursion vulnerable to document depth, vector-index identity, direct selection mutation, direct document/runtime access, or renderer call is allowed.
+
+F04/F05, `T-ANIM-01`, and `T-UI-02` are visible implementation obligations here: render the exact conditional layout/order and functional clip select, play/pause, single-step, Reset, speed and timeline controls; expose exact enabled/disabled, playing/paused/conflict, selected clip/variant and intent-result state; and render the locked Material Variants list/selection/global apply control. For each scene root, implement the `Scene Transform` popup and `Reset` surface required by F18/`T-UI-08`, with exact context-menu placement/order, label, enabled/disabled state, default focus, transform interaction, identity Reset, non-history indication, baseline/freeze observable result, and MGIF-theme mapping. These controls dispatch the frozen P8-00 intents and display their returned result; they are not placeholders or acceptance-driver shims.
+
+Add model/panel tests for all conditional tabs and groups, deep hierarchy clipping, stable identity under mutation, exact order, expansion/focus, context actions, drag payload validation, D20 multi-scene/occurrence outcomes, Debug/Release visibility, missing data, long Unicode labels, tooltip/clipping, and controller-intent equality. Add focused F04/F05, `T-ANIM-01`, `T-MAT-06`, `T-UI-02`, and `T-UI-08` tests for conditional headers; every animation/variant control and state/result; conflict policy; popup/context ordering; enabled/disabled/default-focus behavior; 1000-cycle/reset/hierarchy-freeze observable state; and exact emitted intents/results. Use upstream Dear ImGui plus MGIF-owned adapter code only and zero forbidden nv/reference helper. Report commands/results/post hashes; leave wiring to P8-90. Do not edit progress or claim phase/Gate/release PASS; Metal/F42/R24 remain unchanged. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P8-12`:
+
+```json
+["<P8-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P8-12 Inspector, property table, and dialog leaf. Read the full successor blueprint, locked specification, P8 readiness map, Gate P7 evidence, P8-00 completion report/post hashes, and every P8-12 path. Complete the Section 3 pre-edit binding for exactly the Section 6.5 P8-12 write set. Edit no controller, shell, Browser, app, CMake, acceptance validator, or progress path; never access the forbidden build-entrypoint path.
+
+Implement Section 7.4 None/Node/Primitive/Mesh/Material/Camera/Light Inspector contexts, exact layout, property and extension ordering, exact context-menu and action ordering, and typed intent dispatch. Widget activation begins one preview transaction, edits preview without history spam, deactivation finalizes according to the frozen P4/O06 contracts, and cancellation/focus loss follows the approved matrix. Implement material assignment and canonical clipboard tooltips, camera/light rules, Rename/Delete/Assign workflows, exact enabled/disabled and validation/error presentation, default focus, Enter/Escape/Return behavior, displayed controller results, and MGIF-theme states. Panels and dialogs may not mutate SceneAsset/GltfModel/runtime state directly or access mutable controller internals.
+
+Add tests for all contexts/properties/extensions, layout and context-menu order, labels/tooltips, enabled/disabled/MGIF-theme states, widget activation-preview-deactivation boundaries, invalid/stale targets, material/clipboard rules, camera/light partitions, dialog validation/focus/key behavior, destructive-command enablement, Unicode/long-value clipping/tooltips, interactions, and exact emitted intents/displayed results. Use pinned upstream Dear ImGui through MGIF adapters only and no private/native/forbidden dependency. Record exact results/post hashes and report frozen-contract mismatches without editing dependencies. Do not edit progress or claim phase/Gate/release PASS; keep Metal Not Verified and F42/R24 BLOCKED. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P8-90`:
+
+```json
+["<P8-10 task ID>","<P8-11 task ID>","<P8-12 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P8-90 exclusive UI integration, legacy-authority cutover, and acceptance-driver isolation. Start only after all three P8 leaf owners have stopped and their post manifests match. Read the full successor blueprint, locked specification, P8 readiness map, Gate P7 evidence, P8-00/10/11/12 reports/manifests, and every current P8-90 path. Bind exact pre-edit hashes for only the Section 6.5 P8-90 write set. Do not edit frozen leaf/controller contracts, locked docs/manifest, or progress; never access the forbidden build-entrypoint directory.
+
+Wire the completed shell, Grid/Gizmo/Snap settings, Browser, animation/variant controls, Scene Transform popup, Inspector, dialogs, immutable snapshots, and typed intents through the sole `EditorController` authority. Remove the old direct node-index selection, direct SceneAsset/GltfModel TRS/light writes, recursive runtime mutation, destructive pre-candidate unload, pre-ImGui camera polling, and duplicate UI entry points from `MinimalLatestApp`. Preserve existing dockable tools. Add `EditorTestDriver` only behind acceptance-build configuration, disabled and absent from production behavior by default, with typed action/state/screenshot hooks for T-UI-01..15 and U01..U08, including exactly `NoDocument`, `LoadingCandidate`, `ReadyClean`, `ReadyModified`, `GizmoHover`, `GizmoDragging`, `Modal`, `Saving/Merging/Compacting`, and `Error`. This task integrates and exposes the leaf implementations; it is not an alternate implementation owner for F04/F05, `T-ANIM-01`, `T-UI-02`, `T-UI-08`, or `T-UI-09`. Keep Android viewer-only and desktop UI orchestration excluded.
+
+Run fresh contained Debug/Release builds and full controller/shell/Browser/animation/variant/Scene Transform/Grid/Gizmo/Snap/Inspector/dialog/action/state suites, direct executables, relevant CTest, acceptance-validator negative fixtures, dependency/RHI scans, and platform contracts. Exercise all exact nine UI states; F04/F05 and `T-ANIM-01`; `T-UI-02`, `T-UI-08`, and `T-UI-09`; three resolutions by four DPI values; exact numeric defaults/ranges; long Unicode; D20; dialog focus; layout/menu/shortcut/context-menu order; enabled/disabled/interaction/result and MGIF-theme behavior; no overlap/blank/jump; exact command manifest; one authority; legacy-path absence; and acceptance-driver isolation. Pin upstream Dear ImGui identity and verify production has only MGIF-owned adapters/RHI plus zero forbidden nv/reference dependency. Emit an integration report and exact post manifest. Do not edit progress or claim Gate/release PASS; screenshots do not replace state assertions; Metal and F42/R24 remain unresolved. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `G8`:
+
+```json
+["<P8-90 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+Gate P8 fresh independent UI architecture and visual review, repository READ-ONLY and repair-free. Read the entire successor blueprint, locked specification, P8 readiness map, all P8 dependency reports/manifests, and every final P8 path. Recompute hashes before use. Modify no byte under G:\MGIF, never access the forbidden build-entrypoint directory, do not edit progress, and write only to a fresh C:\Temp\mgif-p8-independent-gate-* evidence root.
+
+Independently run fresh builds/tests and verify the full command manifest, controller/UI result equality, sole document/history/selection/lifecycle authority, immutable snapshot/intent boundary, the exact nine states `NoDocument`, `LoadingCandidate`, `ReadyClean`, `ReadyModified`, `GizmoHover`, `GizmoDragging`, `Modal`, `Saving/Merging/Compacting`, and `Error`, D20 routes, Browser hierarchy/groups/tabs/context/drag/focus semantics, every Inspector context, widget transactions, dialogs, legacy-path removal, acceptance-driver isolation, Android exclusion, and configured production dependency closure. Verify functional leaf ownership and focused results for F04/F05, `T-ANIM-01`, `T-MAT-06`, `T-UI-02`, `T-UI-08`, and `T-UI-09`, including animation edit-conflict policy, variant application, Scene Transform Reset/freeze, Grid/Gizmo/Snap bidirectional state and exact ranges. Recapture T-UI-01..15 and U01..U08 across three resolutions/four DPI values with long Unicode and assert exact layout/menu/shortcut/context-menu order, enabled/disabled/focus/interaction/result and MGIF-theme behavior, with no overlap, blank panel, unstable layout, clipping without tooltip, or direct mutation. Verify pinned upstream Dear ImGui plus MGIF-owned adapter/RHI only and zero forbidden nv/reference dependency. Gate hooks and acceptance evidence do not count as implementation ownership.
+
+Return `GATE P8 ENGINEERING PASS` or `GATE P8 FAIL/BLOCKED` with severity-ranked file:line findings, exact commands/results, report bytes/SHA-256, and blockers. Screenshots never substitute for document/controller/runtime assertions. Engineering Gate is not release/distribution PASS; Metal on Windows stays Not Verified and F42/R24 stay BLOCKED. Make no repairs, claim no implementation, and finish with exactly one worker_done.
+```
+
+### 8.6 P9 tasks and Gate
+
+Dependency JSON for `P9-00`:
+
+```json
+["<G8 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P9-00 typed known-extension registry contract freeze. Start only after independent Gate P8 has issued the required engineering verdict. Read the entire successor blueprint, locked specification, P9 readiness report, Gate P8 report/manifests, current validator/IO/model extension representations, and every P9-00 path. Complete the Section 3 pre-edit binding for exactly the Section 6.6 P9-00 write set. Edit no validator/Merge/Compact/Save As/controller/CMake/progress path, never access G:\MGIF\mgif build entrypoints kftx8g0b\, and do not run repository-root recursive scans.
+
+Implement Section 7.5 as one backend-neutral typed registry shared by later validation, Merge, and Compact. Each known extension declares owner types, structural validation, every index edge, remap, reachability roots/edges, preservation rules, and deterministic ordering. Cover the locked inventory: meshopt, Draco, GPU instancing, punctual lights, variants, BasisU/WebP/AVIF/DDS, material texture extensions, animation pointers, and node visibility. Never rewrite arbitrary JSON keys named `index`. Unknown required extensions fail. Optional opaque extension data is preservable only with a proven no-reindex or registered-safe rule; otherwise candidate construction fails before active mutation.
+
+Add exhaustive table-driven tests for owner/type/edge validation, remap/reachability, malformed and overflow indices, duplicate declarations, deterministic lookup, all inventoried extensions, unknown required/optional partitions, and opaque nested `index` traps. Public headers must be self-contained and free of app/renderer/RHI/native/forbidden dependencies. Run path-scoped tests/probes and record integration-only work for P9-90. Emit exact post hashes. Do not edit progress or claim phase/Gate/release PASS; Metal Not Verified and F42/R24 BLOCKED remain. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P9-10`:
+
+```json
+["<P9-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P9-10 atomic candidate SceneMerger leaf. Read the full successor blueprint, locked specification, P9 readiness report, Gate P8 evidence, P9-00 completion report/post hashes, and every P9-10 path. Bind exact pre-edit hashes for only the Section 6.6 P9-10 write set. Do not edit the extension registry, validator/IO, compactor, controller/app, CMake, or progress; never access the forbidden build-entrypoint directory.
+
+Implement Section 7.5 Merge against immutable base/incoming inputs. Preflight every collection, standard/registered edge, depth, occurrence, string, JSON, dependency, payload, upload, and index limit, including wrapper overhead, before append. Reserve before mutation, allocate fresh imported stable IDs, remap all standard and registered extension edges, preserve base then incoming order, create one wrapper with exact imported effective-scene root order, and return a complete candidate for external validation. Never publish or mutate active state. Errors are typed, deterministic, and leave inputs/candidate publication unchanged.
+
+Add exhaustive tests for the standard/registered extension matrix, multi-scene/default/no-scene inputs, wrapper and root order, Unicode and payloads, missing/malformed/out-of-range edges, stable-ID collision avoidance, 65,535/65,536/65,537 including wrapper, every preflight limit, allocation faults, deterministic digest, unknown extension policy, and unchanged inputs on failure. Record tests/results/post hashes and any validator integration requirement without broadening the write set. Do not edit progress or claim phase/Gate/release PASS; preserve Metal/F42/R24 status. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P9-11`:
+
+```json
+["<P9-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P9-11 deterministic typed reachability SceneCompactor leaf. Read the entire successor blueprint, locked specification, P9 readiness report, Gate P8 evidence, P9-00 report/post hashes, and all current P9-11 files. Complete the Section 3 pre-edit binding for exactly the Section 6.6 P9-11 write set. Edit no registry, merger, validator/IO, controller/app, CMake, or progress path and never touch or inspect the forbidden build-entrypoint directory.
+
+Implement Section 7.5 iterative typed reachability from every scene and registered extension root, with per-collection visited sets, exact edge validation, deterministic ascending survivor remaps, stable survivor IDs/tombstones, and deterministic geometry/buffer repack. Do not recurse, use key-name heuristics, or return early before geometry-only orphan analysis. `changed=false` must be a complete no-op. A second Compact must preserve every document, projection, runtime, history, selection, counter, serialized, and semantic digest when consumed by integration.
+
+Add tests for every standard/registered edge, deep/cyclic graphs, multiple scenes, orphan definitions and geometry-only ranges, sparse survivors, stable IDs/tombstones, malformed indices, unknown extension policy, deterministic repack, allocation faults, unchanged input, no-op completeness, and second-run idempotency. Record commands/results/post hashes and leave lifecycle publication to P9-90. Do not edit progress or claim phase/Gate/release PASS; keep Metal Not Verified and F42/R24 BLOCKED. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P9-12`:
+
+```json
+["<P9-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P9-12 hardened validation, semantic compare, Save As IO, and durable journal leaf. Read the full successor blueprint, locked specification, P9 readiness report, Gate P8 evidence, P9-00 completion report/post hashes, current filesystem abstractions, and every P9-12 file. Bind exact pre-edit hashes for only the Section 6.6 P9-12 write set. Do not edit registry, merger/compactor, dialogs/controller/app, CMake, or progress; never access the forbidden build-entrypoint path.
+
+Implement Section 7.5 validation using the typed extension registry, structural/limit checks, and semantic compare. Implement Save As below the native-dialog boundary: target-parent staging; bounded secure dependency reads; deterministic content-addressed `.gltf` resources or embedded `.glb`; flush/close all files; staged reload/validation/semantic compare; immutable resources published before main; atomic same-volume main replacement last; fail closed when atomic replace is unsupported; and durable interruption recovery journal recording path/hash/preexistence without deleting unowned data. Reject traversal, absolute/scheme escape, symlink/reparse/nonregular input, unsafe URI, oversized/deep/cyclic data, byte-mismatched collision, and extension uncertainty before publication.
+
+Add glTF/GLB round-trip, resource naming/dedup/collision, Unicode/path/URI, filesystem capability, flush/close/replace, interruption at every journal step, recovery, preexisting/unowned preservation, extension validation, semantic mismatch, bounds/limits, dependency replacement, and allocation/IO fault tests. Prove active document/path/history/selection/runtime/MRU are outside this leaf and unchanged. Record exact commands/results/post hashes. Do not edit progress or claim phase/Gate/release PASS; preserve Metal Not Verified and F42/R24 BLOCKED. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P9-90`:
+
+```json
+["<P9-10 task ID>","<P9-11 task ID>","<P9-12 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P9-90 exclusive lifecycle/Merge/Compact/Save As integration and Gate preparation. Start only after P9-10, P9-11, and P9-12 have stopped and all post manifests match. Read the entire successor blueprint, locked specification, P9 readiness report, Gate P8 evidence, P9-00/10/11/12 reports/manifests, final P4-P8 controller/renderer contracts, and every P9-90 path. Complete the Section 3 pre-edit binding for exactly the Section 6.6 P9-90 write set. Do not edit leaf contracts, locked docs/manifest, or progress; never access the forbidden build-entrypoint directory.
+
+Implement one `ActiveEditorState` candidate publication, monotonic latest-wins replace requests, exclusive Save/Merge/Compact commands, controller/device epochs, close invalidation, staged renderer generation, and one frame-safe no-throw swap. Never clear or blank the old scene before candidate publication. Wire exact lifecycle/history/selection/MRU/path/clean-revision policies. Changed Merge/Compact clear history once only after publication; Compact no-op changes nothing. Every Save As invocation opens the native dialog outside the domain layer, and path/dependencies/clean revision/MRU are fully prepared before irreversible replace and committed no-throw after success. Scene switch remains non-history and follows D20/P0 selection/Gizmo/camera/focus outcomes.
+
+Run fresh contained Debug/Release builds and full standard/extension remap, limit, Compact orphan/idempotency, Save As filesystem/journal, lifecycle concurrency/epoch, CPU/GPU/file fault, renderer publication, UI command, direct executable, relevant CTest, dependency/RHI, D3D12/Android, and feasible Vulkan validation suites. Execute deterministic A/B schedules and the full Open -> edits -> Undo/Redo -> Merge -> Compact -> second Compact -> Save As -> reload sequence with exact before/after snapshots. Prove no active in-place mutation, recursion, key-name heuristic, stale callback, duplicate TinyGLTF/STB implementation, partial file/GPU publication, old-scene blanking, idle, or forbidden dependency. Emit integration report/post manifest. Do not edit progress or claim Gate/release PASS; preserve Metal/F42/R24 status. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `G9`:
+
+```json
+["<P9-90 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+Gate P9 fresh independent data-integrity, durability, and lifecycle review, repository READ-ONLY and repair-free. Read the full successor blueprint, locked specification, P9 readiness report, all P9 dependency reports/manifests, and every final P9 path. Recompute hashes before use. Modify no byte under G:\MGIF, never access the forbidden build-entrypoint directory, do not edit progress, and write only to a new C:\Temp\mgif-p9-independent-gate-* evidence root.
+
+Independently rerun extension, Merge, Compact, Save As, journal/recovery, lifecycle, renderer-publication, full-sequence, negative/fault, dependency/RHI, and platform contract tests in fresh contained roots. Inspect for in-place active mutation, recursion, arbitrary `index` rewriting, missing extension edges, destructive old-state clear, non-atomic file publication, unsafe paths/reparse points, deletion of unowned data, stale callbacks, partial GPU/file/controller publication, duplicate implementation macros, idle, native escape, and forbidden dependencies. Reproduce boundary sizes and interruption points and compare exact pre/post CPU/GPU/history/selection/path/MRU/file digests.
+
+Return `GATE P9 ENGINEERING PASS` or `GATE P9 FAIL/BLOCKED` with severity-ranked file:line findings, commands/results, report bytes/SHA-256, and data-loss risk classification. Any data-loss or partial-publication risk is a blocker. Engineering Gate is not release/distribution PASS; Metal remains Not Verified on Windows and F42/R24 remain BLOCKED. Make no repairs, claim no implementation, and finish with exactly one worker_done.
+```
+
+### 8.7 P10 tasks, execution, and Gate
+
+Dependency JSON for `P10-00`:
+
+```json
+["<G9 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P10-00 acceptance evidence contracts, schemas, semantic validator, and runner-core freeze. Start only after independent Gate P9 has issued the required engineering verdict. Read the entire successor blueprint, locked specification, P10 readiness report, Gate P9 report/manifests, current parity schemas/validators/runners, and every P10-00 path. Complete the Section 3 pre-edit hash binding for exactly the Section 6.7 P10-00 write set. Edit no performance/soak/platform/RHI/CMake/progress path, never access G:\MGIF\mgif build entrypoints kftx8g0b\, and do not perform repository-root recursive scans.
+
+Implement Section 7.6 schema version 1 candidate contracts with exact canonical R01-R24, F01-F42, and E001-E110 order; normalized requirement/feature/edge arrays; semantic `id-evidence-registry`; contained relative artifact paths; closed-world artifact index; size/SHA-256/producer identity; demo/source/diff/machine/config/executable binding; and validator-last sealing. Reject count-only or generic-log evidence, missing semantic assertions, stale/mixed identity, path or reparse escape, artifacts absent from the closed index, false platform PASS, unreasoned skip/waiver, incorrect order/totals, and post-seal mutation. The runner core creates candidate reports only and cannot promote itself to release PASS.
+
+Add positive and adversarial validator tests for every schema field, ID order/count/duplicate/omission, semantic mapping, artifact containment/index/hash/producer, mixed identities, executable/config/source mismatch, platform status, skip/waiver reasoning, path/reparse attacks, stale artifacts, forged totals, validation order, and mutation after sealing. Run focused Python/PowerShell/schema tests and record integration-only changes for P10-90. Emit exact post hashes. Do not edit progress or claim P10/Gate/release PASS; Metal on this Windows host is Not Verified and F42/R24 are BLOCKED. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P10-10`:
+
+```json
+["<P10-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P10-10 deterministic property, capacity, performance, and soak harness leaf. Read the full successor blueprint, locked specification, P10 readiness report, Gate P9 evidence, P10-00 completion report/post hashes, and all current P10-10 files. Complete the Section 3 pre-edit binding for exactly the Section 6.7 P10-10 write set. Edit no base runner/validator/schema, platform/provenance, RHI/CMake, production source, or progress path; never access the forbidden build-entrypoint directory.
+
+Implement Section 7.6 exact seeds 0..9, 1,000 operations per seed, `state=seed+17`, per-step invariants, deterministic failure serialization, and minimized replay. Cover capacities 0/1/10k/65,535/65,536/65,537. Implement RelWithDebInfo performance collection with warm-up >=120, raw samples >=300, nearest-rank p95 `sorted[ceil(.95*N)-1]`, locked CPU/GPU/counter/memory metrics and thresholds, identity binding, and no aggregate-only substitution. Implement >=30-minute deterministic U02-U07 soak with exactly one each of `config`, `scene-ready`, `action-start`, `action-commit`, `settled`, and `complete`, plus failure replay and all locked leak/lifetime/counter invariants.
+
+Add harness self-tests for seed/replay determinism, shrinking, capacity edges, raw-sample count/order, p95 boundaries, warm-up exclusion, threshold units, missing/duplicate markers, short soak, clock/sample corruption, failed invariant, identity mismatch, and nonzero exit propagation. Produce only candidate artifacts consumable by P10-90 and never manufacture unavailable runtime evidence. Record exact tests/results/post hashes. Do not edit progress or claim phase/Gate/release PASS; Metal and F42/R24 status remain unresolved. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P10-11`:
+
+```json
+["<P10-00 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P10-11 platform, configured dependency/RHI, provenance, and root-license evidence leaf. Read the entire successor blueprint, locked specification, P10 readiness report, Gate P9 evidence, P10-00 completion report/post hashes, current Android/D3D12/Metal/dependency/provenance inputs, and every P10-11 path. Bind exact pre-edit hashes for only the Section 6.7 P10-11 write set. Do not edit base/performance runners, RHI checkers, CMake, production source, root license, or progress; never access the forbidden build-entrypoint path.
+
+Implement Section 7.6 collectors/validators for D3D12 contract evidence, Android Gradle/NDK configured graph and final symbols, optionally supplied external macOS artifact, configured target closure for RHI/dependencies, source/asset provenance, upstream Dear ImGui identity, and root-license decision state. Evidence must be hash/producer/machine/config/source-bound and honestly classified. On this Windows host, Metal is `not_run: Not Verified on Windows` unless a separately supplied, cryptographically bound macOS artifact passes its own validator. F42/R24 remain BLOCKED until the project owner selects and installs the root license; this task must not choose or write that license. Production closure must contain upstream Dear ImGui plus MGIF-owned adapters/RHI only, with zero forbidden nv/reference dependency.
+
+Add collector/validator tests for supported/unsupported/missing platform evidence, forged or mixed macOS/D3D12/Android artifacts, configured-target omissions, transitive forbidden dependency, native-boundary escape, provenance hash/license mismatch, root-license absent/ambiguous states, and path/reparse attacks. Update only the owned `LICENSE-SOURCES.md` evidence inventory, never the root license or status ledger. Record tests/results/post hashes. Do not claim phase/Gate/release PASS or resolve Metal/F42/R24. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `P10-90`:
+
+```json
+["<P10-10 task ID>","<P10-11 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P10-90 exclusive acceptance-harness integration and adversarial self-validation. Start only after P10-10 and P10-11 have stopped and their post manifests match. Read the full successor blueprint, locked specification, P10 readiness report, Gate P9 evidence, P10-00/10/11 reports/manifests, all final P4-P9 Gate evidence, and every P10-90 path. Complete the Section 3 pre-edit binding for exactly the Section 6.7 P10-90 write set. Do not edit leaf-owned performance/platform files, production implementation beyond the listed integration paths, locked docs/manifest, root license, or progress; never access the forbidden build-entrypoint directory.
+
+Compose fresh Debug/validation, RelWithDebInfo/performance, RHI contract, platform, provenance, property, capacity, visual, UI/state, and soak jobs. The UI/state jobs must retain the exact nine-state vocabulary and semantic mappings for F04/F05, `T-ANIM-01`, `T-UI-02`, `T-UI-08`, and `T-UI-09`, including animation conflict policy, variant apply, Scene Transform Reset/freeze, and Grid/Gizmo/Snap bidirectional state/ranges; generic screenshots or Gate hooks cannot substitute for leaf interaction/result assertions. Create one immutable evidence root per exact source/diff/machine/config/executable identity, close/hash artifacts before indexing, and invoke semantic validation last. Refuse old build/evidence reuse, mixed identity, stale file, open or mutable artifact, missing semantic mapping, unsupported-platform PASS, unreasoned skip/waiver, and any closed-world index violation. Wire configured RHI/dependency scans including all production targets. Add adversarial harness fixtures that prove each rejection and ensure production contains upstream Dear ImGui plus MGIF adapters/RHI only with zero forbidden nv/reference dependency.
+
+Run fresh contained harness unit/integration tests, schemas, negative fixtures, runner dry/candidate modes, configured scans, and relevant CTest without starting the final source-read-only acceptance run. Emit a P10 harness integration report and exact post manifest. A clean harness test is not P10, engineering Gate, release, or distribution PASS. Metal on Windows remains Not Verified and F42/R24 remain BLOCKED. Do not edit progress or claim implementation completion. Stop writing before exactly one worker_done.
+```
+
+Dependency JSON for `P10-EXEC`:
+
+```json
+["<P10-90 task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+P10-EXEC source-read-only acceptance candidate execution. Read the full successor blueprint, locked specification, P10 readiness report, P10-90 integration report/post manifest, every P4-P9 Gate report, and all acceptance runner/schema inputs. Recompute and bind hashes before execution. Modify no source, documentation, CMake, progress ledger, root license, or git state. Never access G:\MGIF\mgif build entrypoints kftx8g0b\. Own only one newly created, nonexisting `out/validation/gltf-editor-parity/<UTC>-<DemoSHA12>/` candidate evidence root plus fresh contained C:\Temp build roots; never reuse or overwrite an evidence/build root.
+
+Run all locally feasible acceptance layers exactly as integrated: fresh Debug with validation/sync validation; Release and RelWithDebInfo contracts/performance; direct and CTest suites; property/capacity seeds; UI/state/visual evidence for exactly `NoDocument`, `LoadingCandidate`, `ReadyClean`, `ReadyModified`, `GizmoHover`, `GizmoDragging`, `Modal`, `Saving/Merging/Compacting`, and `Error`; focused F04/F05, `T-ANIM-01`, `T-UI-02`, `T-UI-08`, and `T-UI-09` interaction/result evidence; >=30-minute U02-U07 soak; D3D12 contract; Android configured graph/final-symbol contract; dependency/RHI/provenance/license collectors; artifact closure; and semantic validator last. Use `runMode=candidate`. Preserve raw outputs and exact failure artifacts. Do not remediate source, relax thresholds, rerun only successes, invent skips, or convert unsupported/missing evidence into PASS. Any test failure ends with failed outcome and immutable evidence; source repair requires a new bounded DAG.
+
+Report exact commands, identities, artifact index, report bytes/SHA-256, and honest per-ID/overall candidate statuses. Without a valid hash-bound macOS artifact, Metal is Not Verified on Windows. Without an owner-selected root license, F42/R24 remain BLOCKED. Therefore an otherwise clean locally feasible run still has honest overall BLOCKED, not release/distribution PASS. Do not claim implementation or Gate PASS and do not edit progress. Finish with exactly one worker_done.
+```
+
+Dependency JSON for `G10`:
+
+```json
+["<P10-EXEC task ID>"]
+```
+
+Ready-to-copy spec:
+
+```text
+Gate P10 fresh independent acceptance-evidence review, repository/source READ-ONLY and repair-free. Read the full successor blueprint, locked specification, P10 readiness report, all P10 reports/manifests, every prior phase Gate report, and the complete immutable P10-EXEC candidate evidence root. Recompute source/input/artifact hashes and identity bindings. Modify no byte under G:\MGIF, never access the forbidden build-entrypoint directory, do not edit progress or the candidate root, and write only to a fresh C:\Temp\mgif-p10-independent-gate-* evidence root.
+
+Independently verify goal evidence rather than worker claims. Rerun at least one round-trip failure, one property/remap seed, one Gizmo visual state+pixel assertion, one FullRebuild fence/fault case, and focused UI interaction/result assertions for the exact nine states plus F04/F05, `T-ANIM-01`, `T-UI-02`, `T-UI-08`, and `T-UI-09`; then rerun validator adversarial negatives and configured dependency/RHI scans and verify all artifact hashes/identities/semantic mappings, platform classification, provenance, and root-license state. Verify exact canonical ID order/counts, closed-world index, raw performance/soak data and p95 math, source/diff/machine/config/executable consistency, and validator-last sealing. Search for unsupported-platform false PASS, stale/mixed evidence, generic logs or screenshots substituted for semantic assertions, acceptance hooks substituted for implementation, post-seal mutation, path escape, waived failure, and forbidden production dependencies.
+
+Return an evidence-based `GATE P10 ENGINEERING PASS`, `GATE P10 FAIL`, or `GATE P10 BLOCKED` scoped precisely to what was verified, with severity-ranked findings, exact commands/results, and report bytes/SHA-256. A subset engineering PASS is not final P10, release, or distribution PASS. Overall release remains BLOCKED while F42/R24 or required Metal/macOS evidence is missing; Metal on Windows is Not Verified. Make no repairs, claim no implementation, and finish with exactly one worker_done.
+```
+
+### 8.8 Progress ledger tasks L5-L10
+
+Create each ledger task only after the corresponding integration and Gate workers have stopped, the coordinator has obtained both required durable authorization messages, and the predecessor ledger dependency (for `L6`-`L10`) has stopped successfully. Use these dependencies exactly:
+
+| Ledger | Dependency JSON | Required authorizations |
+|---|---|---|
+| `L5` | `["<P5-90 task ID>","<G5 task ID>"]` | P5 integration owner and Gate P5 owner |
+| `L6` | `["<P6-90 task ID>","<G6 task ID>","<L5 task ID>"]` | P6 integration owner and Gate P6 owner |
+| `L7` | `["<P7-90 task ID>","<G7 task ID>","<L6 task ID>"]` | P7 integration owner and Gate P7 owner |
+| `L8` | `["<P8-90 task ID>","<G8 task ID>","<L7 task ID>"]` | P8 integration owner and Gate P8 owner |
+| `L9` | `["<P9-90 task ID>","<G9 task ID>","<L8 task ID>"]` | P9 integration owner and Gate P9 owner |
+| `L10` | `["<P10-90 task ID>","<G10 task ID>","<L9 task ID>"]` | P10 harness integration owner and Gate P10 owner |
+
+Ready-to-copy spec; replace `<N>`, task IDs, message IDs, and the exact paragraph, but change nothing else:
+
+```text
+L<N> factual progress-ledger update, exact one-file write scope. Start only after the listed P<N> integration and Gate P<N> dependencies have stopped, the immediately preceding ledger dependency has stopped for N>5, no other repository writer is active, and the coordinator has supplied two durable Orca authorization message IDs: `<integration authorization message ID>` from the integration owner and `<Gate authorization message ID>` from the independent Gate owner. Read the entire successor blueprint, planning-base and currently effective locked specification, P<N> readiness report, both dependency reports/manifests, both authorization messages, the predecessor ledger report/post hash for N>5, and the current ledger. Verify all referenced hashes; if X-O06 has completed, bind its authorization/report/post manifest and effective-spec identity even for L5. Complete the Section 3 pre-edit binding for the sole write path `docs/gltf-scene-editor-parity-progress.md`, recording the exact current bytes/SHA-256 as the bound pre-image. Edit no other byte, never access G:\MGIF\mgif build entrypoints kftx8g0b\, and do not run repository-root recursive scans.
+
+The only authorized content is this exact paragraph: `<exact coordinator-approved factual paragraph>`. It must accurately record the integration result and independent Gate verdict without improving, generalizing, or converting them. Include remaining blockers and explicitly preserve `Metal: Not Verified on Windows`, `F42/R24 root license: BLOCKED`, and `engineering Gate status is not release/distribution PASS` wherever applicable. Do not alter the locked specification, manifest, feature/requirement/edge claims, source, tests, CMake, root license, or any other phase entry. Immediately before applying the one-file patch, re-read and re-hash the ledger, recheck the two authorizations, dependency reports, predecessor ledger identity, and proposed paragraph, then compare the live pre-image byte-for-byte and hash-for-hash with the bound pre-image. If any authorization, exact paragraph, dependency hash, verdict, predecessor identity, or pre-image is absent, changed, or inconsistent, make no edit and report BLOCKED.
+
+Validate the exact one-file diff and factual consistency, record before/post bytes and SHA-256, and state that no implementation or new Gate/release PASS is claimed. On retry, create a fresh binding and repeat every check; return no-op success only if the live ledger already contains the exact authorized paragraph and the prior successful ledger report proves identical authorization IDs and exact pre/post images. Similar text is insufficient. A modifying retry must be inserted into the serialized chain before any later ledger dispatch; if a later ledger has already started, stop BLOCKED and require a separately authorized tail correction task outside this DAG. Stop writing before exactly one worker_done and list only `docs/gltf-scene-editor-parity-progress.md` if edited.
+```
+
+## 9. Canonical dependency-edge registry
+
+The coordinator should store this logical registry beside the Orca task-ID mapping. Replace placeholders only after the referenced task has been created. `task_c346ebff90f2` is intentionally the only literal prior task ID and the only Gate P4 identity authorized by this blueprint.
+
+```json
+{
+  "X-O06": ["task_c346ebff90f2", "<G5 task ID>"],
+  "P5-00": ["task_c346ebff90f2"],
+  "P5-10": ["<P5-00 task ID>"],
+  "P5-20": ["<P5-00 task ID>"],
+  "P5-90": ["<P5-10 task ID>", "<P5-20 task ID>"],
+  "G5": ["<P5-90 task ID>"],
+  "L5": ["<P5-90 task ID>", "<G5 task ID>"],
+  "P6-00": ["<G5 task ID>", "<X-O06 task ID>"],
+  "P7-00": ["<P6-00 task ID>"],
+  "P6-10": ["<P6-00 task ID>"],
+  "P6-20": ["<P6-10 task ID>"],
+  "P6-90": ["<P6-10 task ID>", "<P6-20 task ID>"],
+  "G6": ["<P6-90 task ID>"],
+  "L6": ["<P6-90 task ID>", "<G6 task ID>", "<L5 task ID>"],
+  "P7-10": ["<P7-00 task ID>", "<G6 task ID>"],
+  "P7-90": ["<P7-10 task ID>"],
+  "G7": ["<P7-90 task ID>"],
+  "L7": ["<P7-90 task ID>", "<G7 task ID>", "<L6 task ID>"],
+  "P8-00": ["<G7 task ID>"],
+  "P8-10": ["<P8-00 task ID>"],
+  "P8-11": ["<P8-00 task ID>"],
+  "P8-12": ["<P8-00 task ID>"],
+  "P8-90": ["<P8-10 task ID>", "<P8-11 task ID>", "<P8-12 task ID>"],
+  "G8": ["<P8-90 task ID>"],
+  "L8": ["<P8-90 task ID>", "<G8 task ID>", "<L7 task ID>"],
+  "P9-00": ["<G8 task ID>"],
+  "P9-10": ["<P9-00 task ID>"],
+  "P9-11": ["<P9-00 task ID>"],
+  "P9-12": ["<P9-00 task ID>"],
+  "P9-90": ["<P9-10 task ID>", "<P9-11 task ID>", "<P9-12 task ID>"],
+  "G9": ["<P9-90 task ID>"],
+  "L9": ["<P9-90 task ID>", "<G9 task ID>", "<L8 task ID>"],
+  "P10-00": ["<G9 task ID>"],
+  "P10-10": ["<P10-00 task ID>"],
+  "P10-11": ["<P10-00 task ID>"],
+  "P10-90": ["<P10-10 task ID>", "<P10-11 task ID>"],
+  "P10-EXEC": ["<P10-90 task ID>"],
+  "G10": ["<P10-EXEC task ID>"],
+  "L10": ["<P10-90 task ID>", "<G10 task ID>", "<L9 task ID>"]
+}
+```
+
+This registry is acyclic. Ledger nodes form one serialized side chain and are never dependencies of engineering work; all 15 unordered pairs among six ledger writers become ancestor/descendant pairs. `X-O06` is a normative input dependency only where the reconciled event outcome is consumed. No successor may be silently reparented to a monolithic or obsolete P4 task.
+
+## 10. Coordinator dispatch and Gate checklist
+
+For every engineering or integration task, the coordinator must:
+
+1. Create the task with the exact dependency array from Section 9 after substituting already-returned task IDs.
+2. Paste the matching Section 8 task spec without weakening its read set, exact write set, forbidden-path rule, pre-edit binding, failure atomicity, tests, status language, or one-`worker_done` requirement.
+3. Record logical ID -> Orca task ID -> dispatch ID -> terminal handle -> worker outcome -> report path -> report bytes/SHA-256.
+4. Before dispatch, assert that no active same-wave worker owns an identical path, no semantic producer/consumer pair shares a wave, and every dependency worker has stopped. W1, W6, W14, W18, and W22 are the only engineering multi-worker waves; their write sets are pairwise disjoint by Section 6. In W6, `P6-10` and `P7-00` are independent consumers of the already frozen `P6-00` contracts; `P6-20` is deliberately in W7 after its `P6-10` producer.
+5. Require the worker's pre-edit JSON binding before accepting source edits. A missing file must use the sentinel; a changed dependency hash requires stop/replan, never silent rebasing.
+6. On failed/BLOCKED work, stop descendants and preserve evidence. Do not ask another worker to repair in the same ownership context; create a new bounded task with fresh hashes.
+7. Never dispatch `L5`-`L10` until both named authorization messages and the exact factual paragraph exist. A Gate task's completion alone is not ledger authorization. Enforce the dependency chain `L5 -> L6 -> L7 -> L8 -> L9 -> L10`, global single-ledger-writer exclusion, predecessor report/post-hash binding, immediate recheck, and byte/hash compare-before-write. Delayed authorization cannot permit overtaking. A retry gets a fresh binding; no-op is allowed only under the exact proof in Section 8.8, and a modifying retry is serialized before every later ledger. Once a later ledger has started, an earlier modifying retry is BLOCKED and can only become a separately authorized tail correction outside this DAG.
+8. Run `X-O06` with global repository-writer exclusion because it changes a bound planning input. If delayed P5 authorizations make `L5` start first, wait for it to stop before `X-O06`; if `X-O06` starts first, no ledger may start until it stops. `L5` binds the authorized effective-spec lineage whenever it starts after `X-O06`; every later ledger is necessarily downstream of completed X-O06 through the engineering chain and binds that lineage.
+9. Require `P6-20` to bind the completed `P6-10` report/post manifest and frozen `EditorPickingTypes` identity, and require both `P6-20` and `P7-00` to bind the `P6-00` `EditorViewportMetrics` identity. A transitive dependency does not waive explicit contract binding.
+10. Require affirmative leaf evidence from `P8-00`, `P8-10`, `P8-11`, and `P8-12` for F04/F05, `T-ANIM-01`, `T-UI-02`, `T-UI-08`, and `T-UI-09`. `P8-90` integration hooks and `G8` acceptance evidence cannot stand in for implementation. Reject any P8 report that collapses the exact nine UI states or omits layout/menu/shortcut/context-menu/enabled/disabled/interaction/result/MGIF-theme obligations and exact Grid/Gizmo/Snap ranges.
+
+Every Gate `G5`-`G10` must be a fresh independent dispatch to a worker that did not implement or integrate that phase. The Gate is repository read-only, uses a new contained build/evidence root, re-hashes all inputs, runs its own commands, examines source and configured dependency closure, and makes no repair. It reports explicit engineering PASS, FAIL, or BLOCKED only at the scope supported by evidence. Missing required evidence, a failed test, a hash/identity mismatch, a forbidden production dependency, native escape, partial-publication/data-loss risk, or an unresolved locked prerequisite cannot be converted to PASS.
+
+The following statements remain invariant across every task, report, Gate, and ledger update:
+
+- Production uses upstream Dear ImGui plus MGIF-owned adapter/RHI code only.
+- Production contains no `nvcore`, `nvpro*`, `nvapp`, `nvgui`, `nvvk*`, `nvvkgltf`, or reference Vulkan helper dependency, source, configured target, transitive closure, or native escape path.
+- Metal on this Windows host is `Not Verified`; only independently bound macOS evidence can change that classification.
+- F42 and R24 remain `BLOCKED` until the project owner selects and installs the root license.
+- An engineering Gate is not release/distribution PASS.
+- The progress ledger cannot be edited until both the phase integration owner and fresh independent Gate owner authorize the exact text.
+- This blueprint is planning only. It claims no implementation, engineering PASS, final P10 PASS, release PASS, or distribution PASS.
+
+## 11. Generation-time structural audit
+
+The following read-only checks were completed against this blueprint before delivery. They validate the plan's internal structure only; they are not implementation or engineering Gate results.
+
+| Check | Result |
+|---|---|
+| Canonical registry JSON | 39 successor tasks: 33 engineering/Gate nodes and six ledger nodes |
+| Dependency entries | 60 total: 58 successor-internal entries plus exactly two Gate P4 root entries |
+| Registry topology | Acyclic; zero unknown logical dependencies; every node occurs exactly once |
+| Schedule coverage | W0-W25 contain all 33 engineering/Gate nodes exactly once; the serialized ledger table contains all six ledger nodes exactly once |
+| Gate P4 lineage | Exactly two dependency entries contain literal `task_c346ebff90f2`: `P5-00` and delayed `X-O06`; no obsolete P4 ID occurs in a successor dependency |
+| Copy-ready coverage | 33 named engineering/Gate specs plus one parameterized exact-scope template for `L5`-`L10` |
+| Dependency block consistency | Every named Section 8 dependency array exactly matches Section 9 |
+| W1 ownership | `P5-10` + `P5-20`: 16 unique paths, zero collisions |
+| W6 ownership | `P6-10` + `P7-00`: 19 unique paths (`10 + 9`), zero collisions and no semantic producer/consumer relation |
+| W14 ownership | `P8-10` + `P8-11` + `P8-12`: 28 unique paths (`13 + 7 + 8`), zero collisions |
+| W18 ownership | `P9-10` + `P9-11` + `P9-12`: 16 unique paths (`3 + 3 + 10`), zero collisions |
+| W22 ownership | `P10-10` + `P10-11`: 10 unique paths (`4 + 6`), zero collisions |
+| Repeated write paths | 32 repeated exact paths and 93 owner pairs, including the 15 ledger pairs; every pair is ordered by reachability and all concurrent-wave exact collisions are zero |
+| Semantic contract ordering | `P6-10 -> P6-20` and `P6-00 -> P7-00`; no semantic producer/consumer pair shares a wave |
+| Ledger serialization | `L5 -> L6 -> L7 -> L8 -> L9 -> L10`; all 15 ledger-writer pairs are ordered, with bind/recheck/compare-before-write and retry rules |
+| UI coverage | Exact nine-state vocabulary and affirmative F04/F05, `T-ANIM-01`, `T-UI-02`, `T-UI-08`, `T-UI-09` leaf ownership; layout/menu/shortcut/context-menu/enabled/disabled/interaction/result/MGIF-theme obligations and exact ranges present |
+| Planning inputs | Original blueprint, independent audit, locked specification, and all six readiness reports re-hashed to the exact Section 1.1 byte/SHA-256 identities |
+| Character/fence structure | ASCII-only; all Markdown code fences balanced |
+
+The repository was read-only during blueprint generation. The forbidden path was not accessed, enumerated, searched, hashed, statted, or used as a build entrypoint. The only generated file is `C:\Temp\MGIF-P5-P10-successor-dag-blueprint-v2-20260824.md`; its final bytes and SHA-256 are reported externally after the file is closed.

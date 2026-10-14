@@ -1,0 +1,23 @@
+# P8-00 UI Integration Baseline Report
+
+Decision: completed bounded P8 entry/integration baseline; P8-10, P8-11, P8-12, P8-90 and G8 remain separate tasks.
+
+Parent bundle: 102798f38a4597d61c8c534991426a904583b3dc9d3cd2086b8749093eaff8df
+Parent snapshot: 3d8eee42c260f97a502e85ad9aa11cbd7152f71bdd61adc79a9b74f34f1b64d6
+Parent transition head: 3b1ecd7932afc9c76e60a97af05d7ff2313df3a6cb8559c0e04173a8424215ce
+Source identity: 6fb1a6166e082404dfaf6933f6630eb74d984f391429e3ec6ff5dcff01fbda8f
+Debug Demo SHA-256: f4e9b3cfe2c933244fafc5b69204a603967b28b47d60d4c1a64708202717316d
+Release Demo SHA-256: fc31f53dc57614c53a45a82dbee0859d34ba6335cdd3990df560fd777d73aa01
+
+## Windows Evidence
+
+Windows MSVC Vulkan is authoritative; WSL only orchestrated and read artifacts.
+Base visual matrix: Debug 24/24 and Release 24/24.
+V07 extension traces: 14/14; runtime matrix: 8/8.
+P8 controller/selection/renderer CTest: 14/14 in Debug and 14/14 in Release.
+Visual contract: 7/7; present layout contract: 4/4; P0 scaffold: 42 features, 10 traces, 110 edges.
+The current visual harness includes the clean editor shell with no legacy Runtime/Model Loader/Scene Graph duplicate entry points.
+
+## Scope Boundary
+
+This transition records the verified P8 entry baseline only. It does not claim full menu/Inspector/Browser ImGui action replay, all P8 feature rows, P9 persistence, P10 soak, Metal, release/distribution, F42 or R24.

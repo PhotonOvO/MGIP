@@ -1,0 +1,401 @@
+# P0 Fresh Post-Remediation Independent Adversarial Re-Audit
+
+Date: 2026-08-23 (Asia/Shanghai)
+
+Task: task_ba8ade72d3e9 / dispatch ctx_9b13deebb72e
+
+Repository: G:\MGIF
+
+Audited HEAD: 6c36567625b305286755a734a66188a22df18e77
+
+Evidence root:
+
+C:\Users\happyelements\AppData\Local\Temp\mgif-p0-post-remediation-audit-d07a3a2004bc4016a8049cbc1362b1be
+
+## Executive Disposition
+
+**P1 ENGINEERING READINESS: READY.**
+
+P1 engineering blockers: **none**. The three blockers in the prior independent
+audit were reproduced from fresh external build/fixture roots and are fixed.
+The complete current test/gate surface and the additional adversarial controls
+described below pass without a waiver or an auditor-approved exception.
+
+**RELEASE READINESS: BLOCKED.** The only release blocker is the deliberately
+unresolved owner root-license selection. The official release target fails only
+with "release readiness blocked: owner root-license selection is pending", as
+required by F42/R24. This expected release-only condition does not negate P1
+engineering readiness.
+
+Windows Metal remains **NOT VERIFIED** because this Windows host cannot compile
+or run the Apple Metal contract. No Metal PASS is inferred. Windows D3D12
+contract sources and tests did compile and pass in the fresh full build.
+
+## Independence, Freshness, and Read-Only Controls
+
+Both dependency tasks were complete before this audit began:
+
+- task_12f00023b657: File API/source-resolution remediation.
+- task_23a955fd8b96: Android include/Gradle remediation.
+
+The specification and prior report were read before execution:
+
+- G:\MGIF\docs\gltf-scene-editor-parity-task.md
+- C:\Users\happyelements\AppData\Local\Temp\mgif-p0-fresh-independent-audit-26f5c7b8d39f4b298d1c299638c16ed0\P0-FRESH-INDEPENDENT-ADVERSARIAL-AUDIT.md
+
+All audit scripts, fixtures, generated Gradle output, build products, and logs
+were created outside the repository. Fresh roots used by this audit were:
+
+| Purpose | Fresh external root |
+|---|---|
+| Core-only Ninja build | C:\Users\HAPPYE~1\AppData\Local\Temp\m0c07 |
+| Full Ninja build | C:\Users\HAPPYE~1\AppData\Local\Temp\m0f07 |
+| Android Ninja build | C:\Users\HAPPYE~1\AppData\Local\Temp\m0a07 |
+| Adversarial integration fixtures | C:\Users\HAPPYE~1\AppData\Local\Temp\m0d07 |
+| Generator-response TOCTOU fixture | C:\Users\HAPPYE~1\AppData\Local\Temp\m0d07t |
+| Generated Gradle project | <evidence-root>\generated-android |
+
+The repository started dirty with 83 porcelain-v2 records belonging to the
+existing shared worktree. Baseline and final status are exactly equal as line
+sequences: 83 before, 83 after, zero differences. HEAD and branch remain
+6c36567625b305286755a734a66188a22df18e77 and main. Eleven protected audit
+input hashes are unchanged. See repository-integrity-final.json,
+repo-status-before.txt, repo-status-final.txt,
+audit-input-hashes-before.txt, and audit-input-hashes-final.txt.
+
+## Prior Blocker Reproduction and Closure
+
+### Prior Blocker 1: legal add_subdirectory File API paths
+
+**FIXED.** A fresh real CMake/Ninja fixture built a target declared below
+add_subdirectory with all required legal source spellings. The File API,
+compile_commands.json, and Ninja graph each resolved exactly the same three
+physical sources:
+
+| Spelling class | File API spelling | Resolved source |
+|---|---|---|
+| Top-level relative | scene/editor/TopLevelRelative.cpp | <fixture>/source/scene/editor/TopLevelRelative.cpp |
+| Target-relative, normalized through paths.source=sub | sub/editor/TargetRelative.cpp | <fixture>/source/sub/editor/TargetRelative.cpp |
+| Absolute | render/editor/AbsoluteSpelling.cpp | <fixture>/source/render/editor/AbsoluteSpelling.cpp |
+
+Observed counts were File API 3, compile commands 3, and Ninja 3; the sets are
+exactly equal. Every object has a real scene_editor_dependency_preflight
+ancestor. Independent resolver probes also showed:
+
+- ordinary relative source -> top-level source root;
+- generated relative source -> top-level build root;
+- absolute source -> unchanged absolute path;
+- ../outside.cpp -> rejected for both source-root and generated/build-root
+  semantics.
+
+Primary evidence is file-api-replay-analysis.json and
+integration-replays-short\01-add-subdirectory-sources-use-codemodel-roots-with-exact-compile-ancestry.log.
+
+### Prior Blocker 2: Android viewer failed to compile
+
+**FIXED.** The checked-in translation unit includes
+<backends/imgui_impl_android.h> before using
+ImGui_ImplAndroid_HandleInputEvent. The direct fresh Android build completed
+all 162 Ninja steps and linked:
+
+C:\Users\happyelements\AppData\Local\Temp\m0a07\libDemoAndroid.so
+
+- Size: 49,290,608 bytes
+- SHA-256: 01C63464EA95B3B70A6AD3304F8F69F931A38182FD8AE69A74FC95F3A91AAFC3
+- Format: ELF64 little-endian AArch64 shared object
+- ABI/platform/STL: arm64-v8a / android-26 / c++_shared
+- NDK/compiler: 23.1.7779620 / Clang 12.0.8
+
+The final compile at step 159 compiled app/AndroidNativeApp.cpp; step 162
+linked libDemoAndroid.so. Evidence: android-configure.log,
+android-build.log, and android-isolation-analysis.json.
+
+### Prior Blocker 3: Gradle forwarded forbidden ImGui override
+
+**FIXED.** All three independently inspected surfaces contain zero occurrences
+of FETCHCONTENT_SOURCE_DIR_IMGUI:
+
+1. checked-in android/app/build.gradle;
+2. the template in tools/generate_android_gradle_project.ps1;
+3. the fresh generated <evidence-root>\generated-android\app\build.gradle.
+
+All three preserve exactly these seven conditional cache/header forwards and
+no others:
+
+Slang_ROOT, FETCHCONTENT_SOURCE_DIR_GLM,
+FETCHCONTENT_SOURCE_DIR_VOLK, FETCHCONTENT_SOURCE_DIR_TINYGLTF,
+FETCHCONTENT_SOURCE_DIR_MESHOPTIMIZER,
+FETCHCONTENT_SOURCE_DIR_VULKANMEMORYALLOCATOR, and
+DEMO_VULKAN_HEADER_DIR.
+
+The checked-in and freshly generated files have identical line sequences and
+identical normalized text. Their byte hashes differ only because the generator
+normalizes every line ending to CRLF while the checked-in file contains one LF
+boundary; this has no Gradle or forwarding semantic effect. Evidence:
+gradle-generator.log and gradle-forwarding-analysis.json.
+
+## Complete Verification Matrix
+
+| Control | Result | Evidence |
+|---|---|---|
+| Complete editor Python discovery | PASS, 165/165, 65.048s test time | editor-python-suite.log, editor-python-suite-summary.txt |
+| Fresh core configure/build | PASS; preflight visibly ran before both protected objects | core-configure.log, core-build-tests.log |
+| Fresh core CTest | PASS, 6/6, 105.48s | core-ctest.log |
+| Direct core configured graph gate | PASS | core-configured-gate.log |
+| Fresh full configure/build | PASS, 250 build steps | full-configure.log, full-build-p0.log |
+| Full target-integrated CTest | PASS, 19/19, 75.69s | full-build-p0.log |
+| Fresh direct full CTest | PASS, 19/19, 73.57s | full-ctest.log |
+| Direct full configured graph gate | PASS | full-configured-gate.log |
+| Official/direct P1 engineering gates | PASS | full-build-p0.log, engineering-gate-direct.log |
+| Official release target negative control | EXPECTED FAIL, license-only | release-target-negative-control.log |
+| Direct release validator negative control | EXPECTED FAIL, license-only | release-negative-control.log |
+| Direct scaffold validator | PASS, 42 features / 10 traces / 110 edges | direct-scaffold-validator.log, manifest-contract-summary.json |
+| Approved dependency exceptions | PASS, approvedExceptions=[] | manifest-contract-summary.json |
+| Fresh Android direct build | PASS, 162/162 and final .so | android-configure.log, android-build.log |
+| Android desktop-editor/dependency isolation | PASS, zero forbidden hits | android-isolation-analysis.json |
+| Checked-in/template/generated Gradle policy | PASS | gradle-forwarding-analysis.json |
+| Root-license negative inventory | PASS as a negative control; release remains blocked | root-license-inventory.json |
+| Repository integrity | PASS, exact status and hash equality | repository-integrity-final.json |
+| Windows D3D12 compile/tests | PASS in the full build | full-build-p0.log, full-ctest.log |
+| Apple Metal compile/runtime | NOT VERIFIED on Windows | Host platform limitation; no PASS inferred |
+
+## Adversarial Dependency-Gate Replays
+
+The preserved replay runner executed nine fresh cases under the short external
+fixture root. All nine passed:
+
+1. add-subdirectory source roots and exact compile ancestry;
+2. Ninja-owned response expansion;
+3. real external and nested hostile response files;
+4. same-basename masquerading compiler;
+5. compiler launcher;
+6. future targets, aliases, objects, deferred calls, and generated sources;
+7. build-time generated editor source rejection before generator/compiler;
+8. five hostile engineering configurations;
+9. core project-include injection.
+
+The five hostile configurations cover cache flags, environment CXXFLAGS, a
+deferred wrapper, generated traversal, and a late ImGui source mutation. The
+replay result is 9 PASS / 0 FAIL in
+integration-replays-short-summary.json. Per-command stdout, stderr, exit
+code, elapsed time, and relevant environment deltas are in
+integration-replays-short\*.log.
+
+A direct scan of all preserved execution logs for the hostile response,
+masquerading compiler, launcher, forced-header, reference-header, and protected
+compiler sentinels found exactly zero matches. Fixture source/header files
+retain the sentinel text by design, but no protected compiler sentinel reached
+execution output. See protected-sentinel-log-scan.json.
+
+The first preservation attempt used long case paths and hit CMake's Windows
+250-character object-path constraint. It is retained in
+integration-replays-summary.json and integration-replays\; it is an audit
+harness path-length failure, not a product failure. The same cases rerun under
+m0d07 passed and are authoritative.
+
+## Generator-Owned Response TOCTOU Replay
+
+The previously stopped post-preflight mutation case was completed in a fresh
+deterministic fixture. Its build ordering was:
+
+scene_editor_dependency_preflight -> response mutator -> protected scene_editor_core compile
+
+The mutator inserted a forced header that references the real
+F:\GitHub\nvpro_core2\nvvk\check_error.hpp and contains
+MGIF_AUDIT_PROTECTED_COMPILER_SENTINEL. Ninja then regenerated its owned
+response file immediately before compiler execution, replacing the mutation.
+
+Final observations:
+
+- preflight pass count: 1;
+- response mutation count: 1;
+- protected compiler sentinel count: 0;
+- real hostile header parsed count: 0;
+- protected object exists: true;
+- protected library exists: true;
+- build exit: 0;
+- final response SHA-256:
+  E9D28802C8748CEB1C961260FE1016F587331F597BF0EB28BCC43A8C11084620.
+
+The final response contains only the expected production define and compiler
+flags, not the forced header. Evidence: toctou-configure.log,
+toctou-precreate-rsp-02.log, toctou-build-02.log,
+toctou-summary-02.txt, and toctou-final-rsp.txt.
+
+An earlier preparatory build called the full manifest-dependent preflight from
+the minimal fixture and failed for the fixture's missing manifest. That
+non-product attempt is retained as toctou-build.log. The corrected fixture
+calls the configured graph validator appropriate to its isolated graph and is
+the authoritative -02 replay above.
+
+## Dear ImGui Identity and Input Closure
+
+The fresh full build generated the official schema-v2 configured identity and
+the gate consumed it successfully:
+
+- repository: https://github.com/ocornut/imgui.git;
+- commit: fd13a1e8923a0a7077b404fc36fd063b25a0c0b5;
+- tree: 0c8986ccb662ea838c04f7bed4cc56d3379132ef;
+- source mode: fetchcontent_git_outside_repository;
+- cache/CLI override: false;
+- environment override: false;
+- target: imgui_demo;
+- platform backend: glfw;
+- fetched Git worktree: clean.
+
+The full target contains exactly imgui.cpp, imgui.h, imgui_demo.cpp,
+imgui_draw.cpp, imgui_tables.cpp, imgui_widgets.cpp, and the GLFW backend
+.cpp/.h. The six expected compilation units appear in compile commands with
+hash-bound commands and source content. Evidence:
+C:\Users\HAPPYE~1\AppData\Local\Temp\m0f07\editor-dependency-build-identity.json,
+full-imgui-identity-summary.json, and imgui-git-identity.log.
+
+The independently parsed Android File API target contains the same six core
+inputs plus exactly the Android backend .cpp/.h; compile commands contain the
+six expected Android compilation units. Its fetched checkout has the same URL,
+commit, and tree, is clean, and has the empty
+FETCHCONTENT_SOURCE_DIR_IMGUI:PATH= cache entry. Evidence:
+android-imgui-identity-summary.json and android-imgui-git-identity.json.
+
+The desktop identity generator was also tried against the Android graph and
+correctly refused it because Android intentionally omits the desktop-only
+scene_editor_dependency_preflight utility target. That non-gating diagnostic
+is preserved in android-imgui-identity.log; the Android identity conclusion
+above instead comes directly from Git, CMake cache, File API target sources,
+and compile commands.
+
+## Android Isolation Proof
+
+compile_commands.json contains 107 commands: 81 repository commands and 26
+third-party/toolchain commands. It contains exactly one scene/editor command,
+the allowed domain-only scene/editor/SceneEditorCore.cpp, and zero
+app/editor, render/editor, desktop controller/panel/overlay, or desktop
+file-dialog commands.
+
+The compile graph, 208,979 extracted binary strings, and 6,266 demangled
+defined-symbol rows were each scanned with the production validator's forbidden
+families:
+
+- nvpro_core / nvpro_core2;
+- nvcore;
+- nvapp;
+- nvgui;
+- nvvk, nvvkhl, and nvvkgltf family forms;
+- reference helpers nvh, nvgl, nvmath, nvutils, nvshaders,
+  nvpsystem, and vk_gltf_renderer.
+
+Every family count is zero in compile commands, strings, and symbols. Desktop
+UI/orchestration marker counts are also all zero. ELF NEEDED entries are
+limited to libdl.so, libvulkan.so, libandroid.so, liblog.so, libm.so,
+libc++_shared.so, and libc.so; no unexpected or forbidden library is
+present. Full machine-readable evidence is in
+android-isolation-analysis.json; raw evidence is in
+android-binary-strings.txt, android-binary-symbols.txt, and
+android-binary-dynamic.txt.
+
+## Scaffold, Exceptions, and Release Boundary
+
+Direct scaffold validation printed:
+
+~~~text
+P0 scaffold validation passed: 42 features, 10 traces, 110 edges, schemas, dependency boundary, and corpus semantics
+~~~
+
+The manifest has dependencyBoundary.status=locked_no_exceptions and
+approvedExceptions=[]. The edge ledger declares and contains exactly 110
+obligations, all assigned and none unassigned. No waiver was created or
+inferred.
+
+No root LICENSE, LICENSE.txt, LICENSE.md, COPYING, COPYING.txt,
+NOTICE, or NOTICE.txt exists. The official release target first reran the
+configured preflight and all 19 CTests, regenerated the exact dependency
+identity, and then failed only at the owner root-license selection. This is the
+required release negative control, not an engineering blocker.
+
+## Exact Primary Commands
+
+Complete stdout/stderr and exit codes are retained in the named logs. The exact
+unabbreviated full and Android configure commands are the first COMMAND records
+in full-configure.log and android-configure.log. The primary commands were:
+
+~~~powershell
+python -B -m unittest discover -s tests/editor -p '*_tests.py' -v
+
+cmake -S G:\MGIF -B C:\Users\HAPPYE~1\AppData\Local\Temp\m0c07 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DDEMO_EDITOR_CORE_ONLY=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake --build C:\Users\HAPPYE~1\AppData\Local\Temp\m0c07 --target scene_editor_tests --parallel --verbose
+ctest --test-dir C:\Users\HAPPYE~1\AppData\Local\Temp\m0c07 -C Debug --output-on-failure --no-tests=error
+python -B G:\MGIF\tools\validate_editor_p0_artifacts.py --repo-root G:\MGIF --mode configured-dependency --configured-build-root C:\Users\HAPPYE~1\AppData\Local\Temp\m0c07 --config Debug
+
+cmake -S G:\MGIF -B C:\Users\HAPPYE~1\AppData\Local\Temp\m0f07 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DSlang_ROOT=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\SLANG-~1.1 -DFETCHCONTENT_SOURCE_DIR_GLFW=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\glfw-src -DFETCHCONTENT_SOURCE_DIR_GLM=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\glm-src -DFETCHCONTENT_SOURCE_DIR_VOLK=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\volk-src -DFETCHCONTENT_SOURCE_DIR_TINYGLTF=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\TINYGL~2 -DFETCHCONTENT_SOURCE_DIR_MESHOPTIMIZER=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\MESHOP~2 -DFETCHCONTENT_SOURCE_DIR_VULKANMEMORYALLOCATOR=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\VULKAN~2
+cmake --build C:\Users\HAPPYE~1\AppData\Local\Temp\m0f07 --target scene_editor_p0 --parallel --verbose
+ctest --test-dir C:\Users\HAPPYE~1\AppData\Local\Temp\m0f07 -C Debug --output-on-failure --no-tests=error
+python -B G:\MGIF\tools\validate_editor_p0_artifacts.py --repo-root G:\MGIF --mode configured-dependency --configured-build-root C:\Users\HAPPYE~1\AppData\Local\Temp\m0f07 --config Debug
+python -B G:\MGIF\tools\validate_editor_p0_artifacts.py --repo-root G:\MGIF --mode gate --resolved-build-identity C:\Users\HAPPYE~1\AppData\Local\Temp\m0f07\editor-dependency-build-identity.json
+cmake --build C:\Users\HAPPYE~1\AppData\Local\Temp\m0f07 --target scene_editor_release_gate --parallel --verbose
+
+cmake -S G:\MGIF -B C:\Users\HAPPYE~1\AppData\Local\Temp\m0a07 -G Ninja -DCMAKE_TOOLCHAIN_FILE=C:\Users\happyelements\AppData\Local\Android\Sdk\ndk\23.1.7779620\build\cmake\android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26 -DANDROID_STL=c++_shared -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DUSE_SLANG=ON -DDEMO_VULKAN_HEADER_DIR=C:\VulkanSDK\1.4.328.1\Include -DSlang_ROOT=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\SLANG-~1.1 -DFETCHCONTENT_SOURCE_DIR_GLM=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\glm-src -DFETCHCONTENT_SOURCE_DIR_VOLK=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\volk-src -DFETCHCONTENT_SOURCE_DIR_TINYGLTF=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\TINYGL~2 -DFETCHCONTENT_SOURCE_DIR_MESHOPTIMIZER=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\MESHOP~2 -DFETCHCONTENT_SOURCE_DIR_VULKANMEMORYALLOCATOR=C:\Users\HAPPYE~1\AppData\Local\Temp\MG631F~1\_deps\VULKAN~2
+cmake --build C:\Users\HAPPYE~1\AppData\Local\Temp\m0a07 --target DemoAndroid --parallel --verbose
+
+pwsh -NoProfile -File G:\MGIF\tools\generate_android_gradle_project.ps1 -OutputDir <evidence-root>\generated-android -SdkDir C:\Users\happyelements\AppData\Local\Android\Sdk -UpdateLocalProperties
+
+python -B <evidence-root>\run_integration_replays.py
+ninja -C C:\Users\HAPPYE~1\AppData\Local\Temp\m0d07t\build -d keeprsp -v scene_editor_core
+~~~
+
+No full or Android configure command supplied
+FETCHCONTENT_SOURCE_DIR_IMGUI; the environment override was explicitly
+removed before configuration. Every subordinate hostile-replay command,
+changed environment value, stdout, stderr, exit code, and elapsed time is
+recorded in integration-replays-short\*.log.
+
+## Hashes and Evidence Index
+
+Protected repository input hashes remained:
+
+| Input | SHA-256 |
+|---|---|
+| CMakeLists.txt | 86935B902EBC43CB363FD3E6C11A7EF7B11E8AC7D237CA0AC95EE8B765AF3C91 |
+| tools/generate_editor_dependency_identity.py | 07B8020DF1BC6C340B37F98DEF74C6BF81EE83416FBAA687899959934C21EEEF |
+| tools/validate_editor_p0_artifacts.py | 94ED7AB9572AEFF4C4CD3EFB01961CB40AE8F12C5461E9D4B525F21C01118B61 |
+| tests/editor/editor_dependency_gate_integration_tests.py | 320163F13DADF3E94EEB6F22CFBC948299988A92E8F4A34D59D377BF88901AAE |
+| app/AndroidNativeApp.cpp | 43213147EAE113900C3CAFD62D4FCA90238E15130AA979CB29208984D8A21401 |
+| android/app/build.gradle | ECC2E291D82F0C816A486DDFB448D7C8FB2DF424C682C774FD8C69C1C186DBFE |
+| tools/generate_android_gradle_project.ps1 | A02587F9897994D00A5366C0D756EB0E17B2CA3F424A7B04F5027F19C7B3BF8E |
+| tests/editor/android_viewer_contract_tests.py | 2AC5E43E2FCD149486EC05E7134A800A8BF70E1BEC126853C9F01A0AD6B8F848 |
+| docs/editor-parity/manifest.json | 6037E2BEB0EB4563EEB17043204FC56EE8650E5A7B5ED4F28EFDF36F8783C0D2 |
+| docs/editor-parity/edge-obligations.json | 617C4731C20FF1264D0BEFA36FD6347D94CBE22B8B30F09906F2A5A88CDE0F33 |
+| docs/gltf-scene-editor-parity-task.md | BFD4B5FFE8D73B9BB887047A8CAD5AD96C7184D182EEB752AA47028B05BD679E |
+
+Additional key hashes:
+
+- Android library:
+  01C63464EA95B3B70A6AD3304F8F69F931A38182FD8AE69A74FC95F3A91AAFC3
+- Android compile commands:
+  E064B47426C12DBC6D4EB51C27E9E60B4DEDC70C2225022675312A415E5CE7EE
+- Android binary strings evidence:
+  282EB6878042A47938AD4AF6DA14AD3DC236B58C2D04CC232B7CD307FE5438EC
+- Android symbol evidence:
+  03C88E4D24F7ADF8A2CF980B7A99B05A6C92AAB14027E99CA7AAED2F2D2495B4
+- Android dynamic-section evidence:
+  A3A7D088003EA89672189D3F82ACD0FC4D0349DEF6FB7007A46EE5846C2278EF
+- Full Ninja dependency dump, 18,794 lines:
+  5884ED1BE904DD574E27076B4D9DCF25C45EA62B5647D795E7A0FD7244D4BDD9
+- Final generator-owned response:
+  E9D28802C8748CEB1C961260FE1016F587331F597BF0EB28BCC43A8C11084620
+
+evidence-index.json contains the final relative path, byte size, and SHA-256
+for all 261 other retained evidence files under the external audit root, plus
+hashes for ten key artifacts in the external fresh build roots. The index
+necessarily excludes its own recursively unstable hash.
+
+## Final Verdict
+
+The legal File API source spellings, Android viewer build, and Android Gradle
+entrypoint failures from the prior audit are all fixed. All required fresh
+builds, tests, configured/engineering gates, hostile attacks, TOCTOU control,
+identity checks, isolation scans, scaffold counts, exception policy, and
+integrity comparisons pass.
+
+**P1 engineering: READY. Blockers: none.**
+
+**Release: BLOCKED only by the unresolved owner root-license selection.**

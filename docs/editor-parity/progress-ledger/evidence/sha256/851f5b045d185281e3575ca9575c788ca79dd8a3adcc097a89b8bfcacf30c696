@@ -1,0 +1,60 @@
+# Gate P7 Independent Review
+
+Verdict: GATE P7 FAIL/BLOCKED
+
+This is the independent Windows/MSVC Gate review for the materialized P7 implementation. WSL was used only to orchestrate and inspect files; build and runtime observations below were produced on Windows.
+
+## Bound Parent
+
+Evidence root: G:\Temp\mgif-p7-independent-gate-20260902T110000+0800
+Local parent bundle: e92bb671e6b8a24e59f35eaaedee5c4c25a634b3fdd6c5235cc925f5fcb383ab
+Parent snapshot: 1572866306ba9c5ef6cb192cce752c698eb00a908203c01ce29a30033a4a065f
+Parent state: 229ea04b526ba18e1f0b427ef0e817d7dbbe9c446ec4d45f776020bc8a491fcf
+Parent transition head (P7-90): 659a0a31a40b03b2b265007d02f8fdea0ee3dd51cbb13dd8adf2ae74875f576e
+G7 task before-hash: b0b57f62aa6d7bc10e2d303df56c7d80bb3b830892026cff15b1247bb73f1db8
+
+## Blocking Findings
+
+### 1. Required visual evidence is absent
+
+The fresh Gate root contains no required V01/V02/V03/V04/V07 screenshots, canvas-pixel checks, UI-rect captures, or full interactive state replay. Inventory:
+
+PNG=0, BMP=0, JPG=0, JPEG=0, WEBP=0
+Named V01/V02/V03/V04/V07 artifacts: 0
+Canvas/UI-rect/full interactive capture artifacts: 0
+
+This is a hard Gate prerequisite, not an optional presentation artifact. The bound P7-90 report explicitly deferred the visual debt to G7 (SHA 3224aea9b3459525b774d9892344aaaf157f5a8b3832aafecbc80c52dd4d4410).
+
+### 2. P7-90 broadened its write set without a separate authority artifact
+
+The P7-90 pre-edit binding declares a 17-path write set, while its post-hash manifest and completion report include these additional paths:
+
+- render/SceneResources.cpp
+- rhi/vulkan/VulkanDevice.h
+- rhi/vulkan/VulkanDevice.cpp
+
+No separate bounded authority or reconciliation artifact authorizes this scope expansion. The exact pre-edit binding is source/p7-90-preedit-binding.json; the post-hash manifest is source/p7-90-post-hash-manifest.json.
+
+### 3. Locked specification and manifest disagree on Escape plus release
+
+The locked task text still states that Escape plus same-frame mouse release commits one history entry (docs/gltf-scene-editor-parity-task.md, R16 and P7-T04). The authoritative O06 manifest disposition requires the native-visible no-history result. The implementation and tests currently follow no-history, so the normative contract remains unresolved and cannot support a PASS claim.
+
+### 4. Remaining prerequisite failures are retained
+
+The independent review retains the configured/scaffold P0 dependency validator failures recorded by the P7-90 evidence, and the prior report's D3D12 UI-path residual. Passing no-UI runtime checks does not erase those unverified surfaces.
+
+## Passing Observations (insufficient for Gate PASS)
+
+- Release P7 CTest: 8/8, exit 0.
+- Debug P7 CTest: 8/8, exit 0.
+- Android viewer contract: 9/9.
+- RHI boundary guard: 0 blocking findings.
+- SPIR-V validation/disassembly and three DXIL overlay entries: exit 0.
+- Vulkan UI runtime: exit 0; Vulkan debug runtime marker=complete.
+- D3D12 no-UI runtime: exit 0.
+
+These observations establish implementation progress but do not satisfy the missing visual or authority requirements.
+
+## Disposition
+
+G7 is recorded as FAIL/BLOCKED. P8 descendants must remain blocked by the failed Gate dependency. F42 remains BLOCKED, R24 remains BLOCKED, Metal remains Not Verified, and release/distribution remains NOT PASS.

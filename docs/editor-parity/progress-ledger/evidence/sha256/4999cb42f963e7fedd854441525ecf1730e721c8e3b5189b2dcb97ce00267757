@@ -1,0 +1,204 @@
+# P7-10 Completion Report
+
+## Verdict
+
+P7-10 (`task_1a40c0d302ae`) is complete as the isolated MGIF-owned RHI
+editor-overlay leaf.
+
+This is not integrated P7 and is not Gate P7. Renderer/app scheduling, input
+and history integration, CMake wiring, Android exclusion, and Vulkan runtime
+visual evidence remain P7-90 or Gate P7 work.
+
+Completed at: `2026-09-01T08:45:37.000Z`.
+
+## Selected Parent
+
+- Local pointer SHA-256 before this transition:
+  `3f233c7d003e4d769e62053e2487f3d2112cd586a5c7b667c23be3e642631b56`.
+- Parent bundle:
+  `820b47004da753ba7bfec2cc3119571ab901142eb4320e474ede5058ff2e7bed`.
+- Parent snapshot SHA-256:
+  `7e378b58e180a5fbfb8af4b2597c1cd04c1e652a1f7538bfd58eb9079212027b`.
+- Previous transition SHA-256:
+  `e96cb1cbd180100ec328a072e4aa9b381e820e13a402f4422fbd27f770c26c13`.
+- P7-10 before-task SHA-256:
+  `5621a743c7ab318d61fa777e1bf66f9068d3d3057e02ac0583d2bb653fd39a1d`.
+- Before state: `ready`.
+
+## Dependency Bindings
+
+- Locked task: `bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e`.
+- Successor blueprint:
+  `1c3b4a6ac53ad51d74b388894e52a3bd739e6fca53daf44d0f47712247818d84`.
+- P7 readiness authority:
+  `1e2ce3ac038e8ead39f5634caeda1fc22a4c3e1a8ac383d915130b5c462616ac`.
+- P7-00 report:
+  `0713b3cd1b6036aa59e5f4bf58c4ec1576379017bf3075042cea52ab8db13b97`.
+- P7-00 receipt:
+  `e6b8aa65967b3afb19f8fce76c830f1317a5ecc0fb7ce4c709c14da2053b3701`.
+- G6-R1 report:
+  `b3b3cee5214e493ae2675a38730a3d84363ec3ca48115995929b4d87b8250d8d`.
+- G6-R1 receipt:
+  `e96cb1cbd180100ec328a072e4aa9b381e820e13a402f4422fbd27f770c26c13`.
+
+The failed original G6 receipt/report remain immutable. G6-R1 supplies the
+active accepted-Gate dependency replacement that makes P7-10 ready.
+
+## Pre-Edit Binding
+
+The exact five-path write set was bound before editing as five missing
+sentinels. The binding is 4,564 bytes with SHA-256
+`07fb96a284b6674d56a584dce499c9f9339d566a8b7d2f9a299ecc4f418c5592`.
+No forbidden build-entrypoint path was accessed by the binding.
+
+## Final Write Set
+
+| Path | Bytes | SHA-256 |
+|---|---:|---|
+| `render/editor/EditorOverlayShaderInterop.h` | 6,256 | `bb2ec505f427c9d69676f096aacacaf089ce2b1d7ef607fa79947fd5f4aec989` |
+| `render/passes/EditorOverlayPass.h` | 9,369 | `e744d7c651ac15e047d4343d0a303b536a163443ae4e9a43c8008a6c28367438` |
+| `render/passes/EditorOverlayPass.cpp` | 59,522 | `ada9d0d6773e05c61290640972fac59efe5c7912f8ca25187f2efbf63257ea81` |
+| `shaders/editor_overlay.slang` | 8,230 | `89b28cac20c63af5c457ca11230b100652e4b58d93a614b19c9145041de9ddc2` |
+| `tests/editor/editor_overlay_rhi_tests.cpp` | 55,294 | `8b204f2c768c1a2c211d67bd5782e7aaf9209af56c8d66375b143091471c198f` |
+
+No CPU leaf, app, facade, scheduler, CMake, backend, ledger, or `.codex` path
+was edited by P7-10.
+
+The post-hash manifest is 3,307 bytes with SHA-256
+`7b6998ac88fe323b63b5c04f931bfaaa4f5875c8dfa1ebaa078388022efc559a`.
+
+## Implemented Contract
+
+- Consumes the authoritative P7-00 `GridDrawPacket`, `GridLinePacket`, and
+  `GizmoDrawPacket` together with frozen `EditorViewportMetrics`; it does not
+  adapt the older public `EditorOverlayFrame` contract.
+- Uses only logical RHI handles. It owns an immutable 4,116-vertex / 20,124-index
+  canonical Gizmo atlas, a scene-depth sampler, frame-local uniform/line
+  buffers and argument tables, helper depth, shader library, and eight fixed
+  pipeline variants.
+- Declares output as read-write `ColorAttachment` at `rasterColorOut`, scene
+  depth as fragment `ShaderRead`, and helper depth as write
+  `DepthStencilAttachment` at `rasterDepthOut/depthStencil`.
+- Records output load/store and helper clear/store. Grid is additive and scene
+  depth rejected, X/Z axes are alpha-over and always on top, and Gizmo uses
+  helper self-depth with solid x-ray, optional occlusion dither, and checker
+  planes. Draw order is Grid, axes, then the canonical 13 Gizmo components.
+- Expands lines into triangles in shader code. Homogeneous view-volume clipping
+  handles signed W plus zero-to-one and negative-one-to-one depth ranges before
+  division. Logical-space normals preserve line width under nonuniform DPI and
+  all D4 axis-swapping transforms.
+- Maps color fragment centers through color/depth physical rectangles without
+  an extra half-texel offset. Forward/reverse-Z scene comparison, helper clear,
+  and helper compare derive from the same viewport convention.
+- Uses explicit row vectors for row-major `OverlayMatrix4`. The frame ABI is
+  160 bytes, line instance 48 bytes, Gizmo vertex 24 bytes, and draw constants
+  96 bytes. Uniform backing capacity is 256 bytes for portable CBV alignment;
+  the bound ABI range remains 160 bytes.
+- Helper resize is transactional. Extent-only changes retain pipelines;
+  signature changes create a complete candidate family before swapping. Old
+  logical handles retire through RHI submission dependencies with no idle.
+- Frame tickets bind the queue head captured at prepare. Only the unique next
+  published graphics token is accepted; stale/future/intermediate tokens are
+  rejected. Queue progress forbids a `notSubmitted` disposition. A real submit
+  after recording failure conservatively enters submitted state and cannot be
+  reused until completion.
+- Completion-query and teardown exceptions fail closed instead of escaping
+  `noexcept`; descriptor poison rebuilds the frame table. Borrowed output and
+  scene-depth resources are never destroyed.
+- Multisampled scene depth is rejected because this leaf intentionally uses a
+  resolved `Sampler2D<float>` contract.
+
+## Windows MSVC Verification
+
+Windows native MSVC is authoritative. WSL was used only to orchestrate commands
+and collate hashes.
+
+- Visual Studio 2022 Developer Command Prompt, C++20, `/permissive-`, `/W4`,
+  `/WX`, `/utf-8`.
+- Debug: `/MDd /Zi /Od`.
+- Release: `/MD /O2 /DNDEBUG`.
+- Sources: `editor_overlay_rhi_tests.cpp`, `EditorOverlayPass.cpp`, and
+  `GizmoGeometry.cpp`.
+
+| Configuration | Bytes | SHA-256 | Result |
+|---|---:|---|---|
+| Debug | 833,024 | `5cdcff56232638aba1c8047bd0d3cfdd5b85079b7ccd0b67f2148e13a137cdee` | PASS |
+| Release | 178,688 | `fce0ce4f04710c9b65ba6ddb29b63f240f250065effcd0714f898aaec2415ae0` | PASS |
+
+Both executables printed `Editor overlay RHI tests passed`.
+
+The fake-RHI suite covers ABI, owned resource descriptors, 256-byte uniform
+capacity, the eight pipeline schemas, argument writes, exact dependencies,
+load/store and clear, nonzero physical viewport/scissor, draw order/ranges,
+forward/reverse-Z, pending frame slots, old/future tokens, queue-progress
+abandon rejection, completion exceptions, failed-recording submit retirement,
+viewport-only changes, helper resize, texture/view/pipeline candidate failure,
+map/flush failure and unmap, descriptor poison/rebuild, surface loss, borrowed
+ownership, stale generation, empty frames, shutdown, and zero idle/native
+escape.
+
+Public-header `/Zs` probes for `EditorOverlayShaderInterop.h` and
+`EditorOverlayPass.h` passed under the same `/W4 /WX` MSVC contract.
+
+## Shader Verification
+
+Windows Vulkan SDK 1.4.328.1 tools were used directly.
+
+- Slang SPIR-V 1.6 compile with the project's column-major/scalar-layout flags:
+  PASS.
+- `spirv-val --target-env vulkan1.4`: PASS.
+- SPIR-V disassembly contains all three entry points, descriptor set 3 binding
+  0/1, and the push-constant block.
+- Slang shader-model 6.6 DXIL compile: PASS.
+- DXC dump: PASS. It contains all three entry points, frame offsets
+  0/64/80/96/112/128/144, frame size 160, draw size 96, `cb0,space3`, and
+  `t1,space3`.
+
+| Artifact | Bytes | SHA-256 |
+|---|---:|---|
+| `editor_overlay.spv` | 14,944 | `11d072724a794cb99dce6e38664630ce95fa6d350905278ee73ba06c2fc5dc86` |
+| `editor_overlay.dxil` | 13,268 | `25c81d2eec27d0680623df2a372655748a233fc2e17aa902ee1e0fff348c143b` |
+| `editor_overlay.spvasm` | 45,272 | `9600db432a2e3f4f3cfac8a67337a7ea93665ba0e7692dab613de66846ab374c` |
+| `editor_overlay-dxil-dump.txt` | 74,088 | `444b1a5e18a0ed6434eb4a7075c9be3dd15579cab3cdbf074b35f568e736075a` |
+
+Production-file scans found no Orca, `waitIdle`, native handle, Vulkan,
+D3D12, Metal, or reference-helper token.
+
+## Final Review
+
+Three independent read-only reviews covered the locked task boundary, logical
+RHI lifecycle, and shader/test math. Their findings drove fixes for exact
+attachment stages/hazards, depth UV, homogeneous clipping, D4/nonuniform-DPI
+width, scene-depth sampling, queue token provenance, post-submit recording
+failure, completion exceptions, teardown exception safety, and transactional
+candidate coverage. Final RHI and shader re-reviews reported no remaining
+P7-10 blocker.
+
+## Deferred to P7-90
+
+1. Bind `viewProjection`, overlay packets, selection, and attachments to the
+   same accepted production revision/fence.
+2. Register the production order as
+   `FinalColor -> EditorHighlight -> EditorOverlay -> Present -> ImGui` and
+   remove the old ImGui overlay to avoid double rendering.
+3. Wire sources, shader packaging, tests/CTest, and Android desktop-editor
+   exclusion in the CMake-owned write set.
+4. Prove real Windows Vulkan validation/synchronization and V01/V02/V03/V04/V07
+   state, PNG, pixel, DPI, resize, depth, x-ray, Grid, axes, input, and history
+   behavior. Complete the D3D12 object contract; Metal remains Not Verified.
+5. Supply the exact FrameScheduler contract: prepare only after slot-ready,
+   exactly one graphics submit before resolve, use that submit token, and use
+   `notSubmitted` only after the command buffer is definitively abandoned.
+
+## Fixed Policy
+
+- F42: `BLOCKED`
+- R24: `BLOCKED`
+- Metal: `Not Verified`
+- release/distribution: `NOT PASS`
+
+## Local Review Decision
+
+The automatic local review decision is `completed` with outcome `succeeded`
+for P7-10 only. P7-90 becomes ready after this append-only transition. No P7,
+Gate P7, Metal, license, release, or distribution PASS is claimed.

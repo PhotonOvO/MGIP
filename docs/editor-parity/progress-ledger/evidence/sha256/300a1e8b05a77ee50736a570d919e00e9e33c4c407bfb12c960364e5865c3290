@@ -1,0 +1,344 @@
+# MGIF P4 Independent Post-Repair Re-Gate Report
+
+## Verdict
+
+**GATE P4 PASS**
+
+This is the fresh, independent, read-only implementation Gate required by
+Section 16.9 of the P4 final-snapshot blueprint. The repaired source snapshot
+satisfies every mandatory P4 contract and every former blocker under static
+inspection, a fresh contained Debug build, and a separate fresh contained
+Release/NDEBUG build. Non-waivable P4 findings: **none**.
+
+This verdict is deliberately limited to P4 engineering. F42 and R24 remain
+**BLOCKED**, Metal remains **Not Verified**, and release/distribution remains
+**NOT PASS**. This report does not assert completion or acceptance of P5-P10.
+
+## Review identity and hard boundary
+
+| Field | Value |
+|---|---|
+| Reviewer task | `task_d73712d125c5` |
+| Reviewer dispatch | `ctx_4d2387adadac` |
+| Coordinator | `term_419794c3-eb81-4c03-bffb-7b6fc058ab37` |
+| Evidence root | `C:\Temp\mgif-p4-independent-regate-task_d73712d125c5-20260824T114259Z` |
+| Repository authority | `G:\MGIF` |
+| Prohibited root | `G:\MGIF\mgif build entrypoints kftx8g0b` |
+| Repository files modified by reviewer | `0` |
+| Integration artifacts modified by reviewer | `0` |
+
+The prohibited root was rejected before repository filesystem access. Source
+inspection, hashing, and scans consumed only the validated 58-path frozen source
+list or the validated 40-path production list. No repository-root recursive Git,
+`rg`, `rg --files`, or `Get-ChildItem` operation was used. `Demo.txt` was
+not accessed or modified, and no stage, commit, reset, clean, or checkout was
+performed. All builds, logs, scripts, manifests, and reports are contained in
+this reviewer-specific TEMP root.
+
+## Dependency resolution and authority binding
+
+The integration report path was not guessed. Orca dispatch state for dependency
+`task_4154babfd00a` resolved dispatch `ctx_59da8d1e8960` in run
+`run_ede89c4421e9` as `completed` with failure count zero; its task result
+reported worker outcome `succeeded`, message `msg_6ef0925af894`, and
+`reportPath` equal to:
+
+`C:\Temp\mgif-p4-post-repair-integration-task_4154babfd00a-20260824T103425Z\p4-post-repair-integration-report.md`
+
+That report is 17,387 bytes, SHA-256
+`160CF6E84AE6326C1744929111C2AB7EFCD0FCEA2C36F49F75EB1537158951A6`.
+The exact resolution receipt is `manifests\dependency-resolution.json`.
+
+The controlling frozen source manifest is:
+
+`C:\Temp\mgif-p4-post-repair-integration-task_4154babfd00a-20260824T103425Z\source-manifest.json`
+
+It is 24,970 bytes, SHA-256
+`7BECE98C235FEC133774150134BE43B136DEED4BF4B6476CA1084C3146EBADCE`,
+with exactly 58 paths and path-set digest
+`D4C05803D67277BE87BC5462417345B30AD36EE74EFA4E7E8B1F17D229249E7C`.
+
+The reviewer read all required authorities and every dependency JSON in full.
+`manifests\authority-full-read-receipt.json` records 38 files, 1,264,347
+bytes, with every JSON parse successful; the receipt is 25,842 bytes, SHA-256
+`3F7A5E44095E5FEAB3340875736DBAFC2857F44E02AFE5E88320678FC51035D6`.
+Key immutable authorities were:
+
+| Authority | Bytes | SHA-256 |
+|---|---:|---|
+| `G:\MGIF\docs\gltf-scene-editor-parity-task.md` | 165,772 | `BFD4B5FFE8D73B9BB887047A8CAD5AD96C7184D182EEB752AA47028B05BD679E` |
+| `C:\Temp\MGIF-P4-final-snapshot-blueprint-v2-20260824.md` | 170,238 | `E157CC347BF84B69F81A91BF3E15A5D9A15F6EB56F988082C5CF736009C0FD4F` |
+| Original failed Gate report | 24,073 | `1C6D9EB4DF859C0D95657964228D14A5963236BD23158BB41180C14E7DF8C647` |
+| Corrected B01/B02 repair report | 9,142 | `2917921E4436BD3C91A1DEB9EF796C873E8004F849419AC88D7B3BE3C21E5EEB` |
+| Corrected B03 repair report | 12,297 | `CD610640879BA9FD28B055D14BA1398EA9DC6160EFB77100F9F594EF0C902BDE` |
+
+## Frozen-source proof
+
+All 58 manifest paths were validated before filesystem access and then read in
+full. `manifests\frozen-source-full-read-receipt.json` records 58 files and
+1,870,552 bytes with zero byte/hash mismatches; it is 31,719 bytes, SHA-256
+`2CFFB9DC6AA54BD144BE391262BACCDC63AC927E60DB98842555E806BD94A98F`.
+
+| Checkpoint | Match | Drift | Manifest bytes | Manifest SHA-256 |
+|---|---:|---:|---:|---|
+| Initial | 58/58 | 0 | 48,847 | `BC8C6625B7E136443FD138AB0F2D94B655F71D32ADFAE1A7FBE71ECFF058A252` |
+| Pre-execution | 58/58 | 0 | 48,853 | `EC9A3B1CEDF8A03C24A999352C63D726BDB084B6F1F6260B5C6F45BC4FFEE859` |
+| After all builds/tests | 58/58 | 0 | 48,845 | `EC9BB5DC1E1ADEA123273061EF7B08F5DD53CA6F8EF44E116A6983C82D4CD640` |
+
+A separate post-report rehash is generated after this report is finalized and
+bound in the machine-readable verdict/inventory. Any mismatch would invalidate
+this PASS before handoff.
+
+## Former blocker P4-B01: closed
+
+**Disposition: PASS.**
+
+`SceneCommands.h:579-584` declares the required atomic
+`setCameraFromView(CameraId, NodeId, CameraProperties, NodeTransform, guard)`
+surface. `SceneCommands.cpp:6276` implements it as exactly one
+`mutate(..., HistoryPolicy::nonHistory, ...)` transaction. Before candidate
+mutation it validates guard, camera authority/liveness, node
+authority/liveness, camera properties, finite transform components, and
+normalized rotation. It applies camera and transform to one candidate and
+publishes that candidate once.
+
+`scene_commands_tests.cpp:1751-1891` proves:
+
+- combined camera plus transform change publishes one revision;
+- camera-only and transform-only changes each publish one revision;
+- exact combined equality is the only no-op and leaves revision/history intact;
+- invalid camera leaves the requested transform untouched;
+- invalid transform leaves the requested camera untouched;
+- stale revision, stale token, foreign camera, foreign node, stale camera, and
+  stale node all reject atomically;
+- document identity, revision, token, all object records, and complete history
+  state remain unchanged on every rejected path.
+
+The same test executable passed directly in both Debug and Release/NDEBUG and
+inside both full CTest matrices. B01 is closed by production plus executable
+failure-atomicity evidence, not by repair prose.
+
+## Former blocker P4-B02: closed
+
+**Disposition: PASS.**
+
+`scene_commands_tests.cpp:1894-3182` defines the exhaustive total-policy
+release proof and is unconditionally invoked at `:4337-4338`; it is not
+guarded out in Release. Its operation enum and contract table contain exactly
+72 visible operation/overload rows, including structural
+prepare/commit/execute/restore, distinct compatibility overloads, root/child
+semantics, snapshots, `setCameraFromView`, and the SceneEditor root-add inner
+mutation.
+
+The operation matrix performs:
+
+| Partition | Executions |
+|---|---:|
+| Valid/success state | 72 |
+| Invalid token guard | 72 |
+| Stale revision guard | 72 |
+| Stale token guard | 72 |
+| Foreign token guard | 72 |
+| Constructible unchanged/no-op | 33 |
+| **Total operation executions** | **393** |
+
+Every execution asserts a non-`unclassified` policy, the exact locked policy,
+the expected state, the correct typed guard error where applicable, and the
+expected revision delta. The matrix includes all 33 constructible unchanged
+cases rather than inventing unchanged inputs for operations where no such state
+exists.
+
+The lifecycle table adds exactly nine rows: Merge, Compact, and Save As crossed
+with failed, no-op, and changed. The production lifecycle authority is a
+`void` state-transition API, so there is no runtime `MutationResult` from
+which to read a policy. The exhaustive table therefore freezes the required
+policy classification while calling the real `applyHistoryLifecycle` and
+asserting actual history counts, descriptions, clear/preserve behavior, and
+continuous-push time state. This is executable state evidence, not
+implementation prose.
+
+`manifests\ndebug-compile-records.json` proves exact `/DNDEBUG` absence in
+both Debug compile records and presence in both Release compile records for
+`scene_commands_tests.cpp` and `editor_history_structural_tests.cpp`. It is
+5,049 bytes, SHA-256
+`F4998300D31F3303F303C1AAFFA90AE1B7AB846FFD4C213A386E92BDE49004DC`.
+The exhaustive matrix passed under Release/NDEBUG through full CTest, P4 CTest,
+and direct execution. B02 is closed.
+
+## Former blocker P4-B03: closed
+
+**Disposition: PASS.**
+
+Production anchored composition is implemented at
+`SceneCommands.cpp:1959-2068`. The explicit matrix at
+`editor_history_structural_tests.cpp:992-1475` exercises all required cases:
+
+| Required case | Covered behavior |
+|---|---|
+| Two anchors | Insert owned run between valid predecessor and successor |
+| Predecessor only | Place after predecessor when successor is absent |
+| Successor only | Place before successor when predecessor is absent |
+| No anchor | Deterministic boundary placement with neither anchor |
+| Missing-nearest/fallback | Ignore missing nearest and select valid fallback |
+| Same-boundary tie | Stable deterministic tie order |
+| Reordered anchors | Reject atomically when predecessor follows successor |
+| Baseline/later foreign IDs | Preserve foreign IDs, records, and selection envelopes |
+| Append-tail Reparent | Preserve the reference append-tail Undo result |
+
+The matrix explicitly binds the composer to Delete (three scenarios), Add (two),
+Duplicate (one), Add Light (one), and Reparent (one). It asserts final order,
+records, exact selection envelopes, deterministic replay, foreign baseline and
+later records, and atomic rejection. The operation-binding counts and all nine
+required cases are machine-recorded in
+`manifests\static-contract-review-final.json`. Both Debug and Release direct
+structural executables passed. B03 is closed by the mandated cross-operation
+matrix.
+
+## Section 16.9 implementation-contract dispositions
+
+All fourteen mandatory independent-review contracts pass.
+
+| # | Contract | Disposition | Production/test evidence |
+|---:|---|---|---|
+| 1 | Total `HistoryPolicy`; no unclassified return | **PASS** | `SceneCommands.h:114-128,419-450`; exhaustive 72-row/393-execution matrix and nine lifecycle rows at `scene_commands_tests.cpp:1894-3182,4324-4342`; Release/NDEBUG direct pass. |
+| 2 | Fixed 100 stacks; checked 8 MiB/64 MiB budgets; no allocation after publication | **PASS** | `EditorHistory.h:42-87`; `EditorLimits.h:50-51`; `EditorHistory.cpp:85-315`; `editor_history_core_tests.cpp:765-1270`. |
+| 3 | Allocation-free typed material/light validation and execute/Undo/Redo/merge atomicity | **PASS** | `PropertyCommands.cpp:137-518`; `SceneCommands.cpp:5458-5729`; `editor_history_property_tests.cpp:270-1290`. |
+| 4 | Compile-visible continuous interface, strict merge timing, and arbitration safety | **PASS** | `ContinuousEdit.h:13-100`; `ContinuousEdit.cpp:69-288`; `EditorHistory.cpp:163-215`; `editor_continuous_edit_tests.cpp:228-987`. |
+| 5 | Exact-generation resurrection, maxima/no-wrap, all 15 kinds, DDS/Draco, candidate validation | **PASS** | `GltfDocument.cpp:1390-1797,1893-2051`; `editor_history_structural_tests.cpp:1834-2355`. |
+| 6 | Anchored owned runs, every anchor/tie/reorder case, operation bindings, foreign preservation | **PASS** | `SceneCommands.cpp:1959-2068,2189-2212,4286-4377`; explicit matrix `editor_history_structural_tests.cpp:992-1475`. |
+| 7 | Per-scene external serial, frozen-root rebind, later current-scene/root-state preservation | **PASS** | `GltfDocument.cpp:992-1027,1666-1795`; `SceneCommands.cpp:4330-4377`; structural tests `:1760-1828`. |
+| 8 | Relationship-valid CPU selection and exact envelopes, including non-history root Add | **PASS** | `GltfDocument.cpp:1200-1228`; `EditorSelection.cpp:65-199`; `SceneEditor.cpp:51-89`; core tests `:641-683`. |
+| 9 | Complete material/light snapshots, extensions/extras, allocation-free comparison | **PASS** | `SceneCommands.h:215-319,508-543`; `SceneCommands.cpp:3167-3290,5458-5729`; property tests `:296-574,1097-1290`. |
+| 10 | Real session replacement; Merge/Compact timing; Save As metadata/clean revision | **PASS** | `EditorSession.cpp:16-124`; `HistoryLifecycle.cpp:7-15`; core tests `:558-762,1248-1270`. |
+| 11 | Delete preserves detached/orphaned light definitions | **PASS** | `SceneCommands.cpp:1072-1117,4646-4734`; structural tests `:693-754`. |
+| 12 | Public headers include alone; no mutable TinyGLTF/renderer/native surface | **PASS** | `CMakeLists.txt:340-415`; fresh aggregate Debug and Release builds; exact 40-path scans. |
+| 13 | Exact CMake/generator/validator/File API/compile DB/Ninja inventories and negative fixtures | **PASS** | `CMakeLists.txt:119-177,555-697`; Python 145/145 and 12/12; both configured preflights. |
+| 14 | Fresh contained roots/environment and exact 58-path equality | **PASS** | Reviewer-specific TEMP root; contained command environment; initial/pre-execution/final/post-report 58-path manifests. |
+
+`manifests\static-contract-review-final.json` records 14/14 PASS, B01/B02/B03
+PASS, the exact counts above, and is 6,223 bytes, SHA-256
+`B71AC42451F412B294071A476EB58BB81AE0E8B214CDF0977FFD12FF230B948E`.
+
+## Fresh dynamic verification
+
+One contained verification sequence ran from
+`2026-08-24T11:59:39.2649867Z` through
+`2026-08-24T12:16:01.8349375Z`. It made 61 command invocations; all 61
+matched their expected exit codes, with zero verification-command retry and
+zero timeout. `manifests\command-results.json` is 77,648 bytes, SHA-256
+`254C7680457056D4CA3A2E7E2BB2B6EADDB80219F2FBA7539550EFA7BBC9373F`.
+
+Both configurations used Ninja, clang-cl, `DEMO_EDITOR_CORE_ONLY=ON`,
+`BUILD_TESTING=ON`, and exported compile commands.
+
+| Matrix | Debug | Release/NDEBUG |
+|---|---:|---:|
+| Configure | PASS | PASS |
+| Aggregate build | PASS | PASS |
+| Full CTest | 22/22 | 22/22 |
+| P4 CTest | 6/6 | 6/6 |
+| Direct C++ | 17/17, 15 unique | 17/17, 15 unique |
+| Configured dependency preflight | PASS | PASS |
+
+Debug additionally reran P0 6/6, P1 7/7, P2 1/1, and P3 4/4. The direct
+matrix ran all 15 unique binaries; `editor_history_core_tests` was invoked
+separately for `core`, `capacity-merge`, and `branch-clear`. Executable
+hashes were checked after execution with zero mismatch. The direct matrix
+receipts are:
+
+| Configuration | Manifest bytes | SHA-256 |
+|---|---:|---|
+| Debug | 6,808 | `C51C1D076847D510676EFF4011270DB7184BC4CBFB6002B6425B6250E808C5A6` |
+| Release | 6,840 | `64B3C9458F14079602C5A02FA889BB217AAC276C33F7C5D3CF72BDDDFBA032D4` |
+
+Python and live validation results:
+
+| Test/validator | Result |
+|---|---:|
+| Artifact validator tests | 145/145 |
+| Dependency gate integration tests | 12/12 |
+| Acceptance report validator tests | 9/9 |
+| Android viewer contract tests | 4/4 |
+| Live artifact validator | PASS: 42 features, 10 traces, 110 edges |
+
+The production inventory was validated as exactly 40 unique files: 22 headers
+and 18 compiled inputs. The forbidden dependency-family scan and native
+Vulkan/RHI boundary scan each found zero matches and returned the expected
+no-match exit code 1. Approved production dependency exceptions remain exactly
+zero.
+
+Fresh selected build metadata:
+
+| Artifact | Bytes | SHA-256 |
+|---|---:|---|
+| Debug `CMakeCache.txt` | 28,408 | `152BBA2C7F39ED1BB26750831839788B7057687F899CFF5E2224365F328BCE0B` |
+| Debug `compile_commands.json` | 76,345 | `6B20AC26BCEB62D93854698FF6675BC36E07681AA3BB51368DA20A32B40E1CEB` |
+| Debug `build.ninja` | 174,165 | `2D9B10A26CB427C4387F228A17050ED06EA8F4C6620636D82695C71CFBCCF9B2` |
+| Release `CMakeCache.txt` | 28,428 | `7E30381BC4BCABA53F30F208247D9DC4FC37A0C6A629AFECE777E7081D6C648A` |
+| Release `compile_commands.json` | 76,701 | `C78F6475BE7DF89CAF1065F03B572CD792882C5C4E363B106577CB2CB8B316DB` |
+| Release `build.ninja` | 174,663 | `00DF7ABEB0855DA7D81D35E36F1CEF9F7E7618839822AD205C8424298C2079EC` |
+
+`manifests\dynamic-results-summary.json` is 15,592 bytes, SHA-256
+`0365ECEF9DFB0018A03ED174B9B4D9EFEECDCBB48BB5174D877A5F5F2170DD5C`
+and records aggregate result PASS.
+
+## Independent audit of integration evidence
+
+The dependency integration evidence was independently rehashed rather than
+trusted by filename:
+
+- 298 declared artifacts observed, 298 matched, zero mismatches;
+- integration command ledger 54/54;
+- source snapshot 58/58 and production snapshot 40/40, zero drift;
+- Debug direct evidence 15 unique executables and 17 passing invocations;
+- Release evidence includes all six P4 executables plus scene-commands;
+- exact scan, NDEBUG, and selected-build claims validated;
+- 134 integration report-claim checks validated;
+- F42/R24, Metal, and release/distribution limitations retained.
+
+`manifests\integration-evidence-audit.json` is 154,145 bytes, SHA-256
+`BA6213A6C57C39166D8D5814F91449C0F03B11B1F15A9AD1B76FB183F6DCDF55`
+and records aggregate result PASS.
+
+## Transparent recorder disclosures
+
+No verification command was retried and no verification command timed out.
+`manifests\errors-and-retries.json` records six TEMP-only recorder issues:
+the first timestamp comparison used representation rather than tick equality;
+the initial runner bootstrap used an unsupported `New-Item -LiteralPath`
+combination before any verification command; the first integration audit used
+an overly narrow PASS-prefix assertion; the first static recorder used
+PowerShell parsing that did not preserve line-wrapped C++ message fragments;
+the first final-readback recorder used a nonexistent nested field name for the
+flat NDEBUG receipt and stopped before emitting an audit or inventory; and its
+next attempt used an overly literal single-line release-status assertion. The
+failed claim audit is retained.
+Each superseded artifact is retained. These issues changed no repository file,
+test, build result, source identity, or Gate conclusion. The disclosure manifest
+is 4,358 bytes, SHA-256
+`C87047CFDEAA89961BCC589C74331A4AC3BF0CF4F88163DF3133F9FFFE9333D1`.
+
+## External blockers and scope
+
+- F42/R24 remains **BLOCKED** until the owner selects the repository root
+  license. P4 engineering PASS does not waive licensing authority.
+- Metal remains **Not Verified** until the required macOS contract/compile
+  artifact exists. Windows inference is not Metal evidence.
+- Release/distribution remains **NOT PASS**.
+- Production dependency exception count remains exactly zero.
+- This decision establishes only Gate P4. It makes no P5-P10 implementation or
+  acceptance claim.
+
+## Final conclusion
+
+The exact dependency result, all authorities, all 58 frozen sources, all
+declared integration evidence, and all P4 production/test contracts were
+independently checked. Fresh Debug and Release/NDEBUG builds, full CTest, direct
+C++, Python, validator, preflight, scan, NDEBUG, and drift matrices all passed.
+P4-B01, P4-B02, and P4-B03 are closed with executable evidence, and all Section
+16.9 contracts are 14/14 PASS.
+
+**GATE P4 PASS**
+
+The sibling machine-readable verdict and evidence inventory bind this report's
+final byte count and SHA-256 without creating a self-referential hash.

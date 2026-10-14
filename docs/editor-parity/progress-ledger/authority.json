@@ -1,0 +1,200 @@
+{
+  "bootstrapEvents": [
+    {
+      "bodySha256": "bf5cea7512026eea8dead48f2ad3f4bb8ba6d5c37b10cfe27e9bd7cc61fabd85",
+      "completedAtUtc": "2026-08-23T03:41:42.845Z",
+      "dispatchId": "ctx_9b13deebb72e",
+      "gateScope": "engineering",
+      "gateVerdict": "P1 ENGINEERING READINESS: READY",
+      "phase": "P0",
+      "receiptSha256": "e25923b9f91633947c5bd2d44147572ca053b9662b3b4fdd669762fbd4ce2916",
+      "reportSha256": "63bcdefebf3853e35a3f7294d045271fd24e0e22761430e043db899788bcc201",
+      "reportedBy": "term_e15737d6-1fcc-4ba9-a9f8-0fa9eb7c1ef8",
+      "resultSha256": "9c752ee945963712c93e7e26c4a90f96b7a99c3447126f5bb008568a2b2d5993",
+      "subjectSha256": "2bf015aeb865bf3fc095e08295776da1483ac3979f1ee1935112740f6368d96e",
+      "supersedesGateTaskId": null,
+      "taskId": "task_ba8ade72d3e9",
+      "verdictSha256": "6027f365d8f5e7d6cdbc008408a0fb1e57139c6379e2c9e7ad5ea7dba64561c4",
+      "workerMessageId": "msg_e52d94131f2f"
+    },
+    {
+      "bodySha256": "ee663882be3687c8327620ff0b4efff95eab0977dd4fa6f582b537baf900e2a0",
+      "completedAtUtc": "2026-08-23T07:17:11.105Z",
+      "dispatchId": "ctx_f3f0d5f01b11",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P1 FAIL/BLOCKED",
+      "phase": "P1",
+      "receiptSha256": "e2c79fabc0a7bdc6f05436f816861556c587fb10241e988e864344770ac8259f",
+      "reportSha256": "f003fbbadbdd83ef58063e6a0ec807a9fd75f8c397f104100d0a62c4627d8f86",
+      "reportedBy": "term_1b17d76f-01dc-4f8e-b848-df6d68aae4b9",
+      "resultSha256": "bcab434b6ddd5d4a3e0c83ed4b36de79059aac600c34a8270a1c19a27c7fa771",
+      "subjectSha256": "00caad6baacecede2f7046bcaf9a34a9d50aba66c0a4338d54ef3b76be7531f7",
+      "supersedesGateTaskId": null,
+      "taskId": "task_92d30650c179",
+      "verdictSha256": "ab1511454780b51b9076b2ad99af679f34c9bb944dcb90a803d71b1fa5ed5a7f",
+      "workerMessageId": "msg_b5e6c373c0d0"
+    },
+    {
+      "bodySha256": "af6a2269c6f7bae5fedc7dce466c14a193694fefb892f27b7bfbcd9ab031e5f4",
+      "completedAtUtc": "2026-08-23T09:11:05.746Z",
+      "dispatchId": "ctx_265a270d4083",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P1 ENGINEERING PASS",
+      "phase": "P1",
+      "receiptSha256": "bca0371373446ea35d3b541610c04401e3963e86d9fad870a9c568296d24b33d",
+      "reportSha256": "cdb7d028b5d1293f9cb68e0a7f9755063b041752294baff01ae72ceec486d115",
+      "reportedBy": "term_eeafb57f-2bf6-4a3b-b8af-7bb8d73701b9",
+      "resultSha256": "d927124797f9749fa83fd8dab90edebc127e7c6950bca6b5a5d9e23a4ad2b646",
+      "subjectSha256": "cbb464f96587318243fb2526875a6343487f6098565360918d948bf49d9afacf",
+      "supersedesGateTaskId": "task_92d30650c179",
+      "taskId": "task_831f45f22072",
+      "verdictSha256": "6647f3d93c949b36231704e313eb64f270991069e15d91300c6be67231dee904",
+      "workerMessageId": "msg_99390f407e73"
+    },
+    {
+      "bodySha256": "09b3a8dfc534cac3b8c8aa8619f81e9a20a4d8aa1a01c6fc842582f4795436e9",
+      "completedAtUtc": "2026-08-23T10:37:14.830Z",
+      "dispatchId": "ctx_539e52156e31",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P2 ENGINEERING PASS",
+      "phase": "P2",
+      "receiptSha256": "61edd61e822f3d1bb6dc51f1dbf2e2b53e323b9e0f49f8c33112c605c05dd20c",
+      "reportSha256": "520ca1dcbb405755b1a328a510f791399e89f080a6d7ca8e3d88eb0090d23b1b",
+      "reportedBy": "term_26255e4b-2670-45dc-af72-6627677bea47",
+      "resultSha256": "b8869b981fa074fe95b1735f93a74f77992032485fd0d5372941b065f2fcf18f",
+      "subjectSha256": "76d850c5fd93183231276be0eb9d235eb5673e82201f8ae18dc43574769fa8e0",
+      "supersedesGateTaskId": null,
+      "taskId": "task_8261f1595760",
+      "verdictSha256": "f3504720823df0ac1c02ef720b4d1af2a1c7f28e13413a4b0cabff66a3dce541",
+      "workerMessageId": "msg_dae85c78b385"
+    },
+    {
+      "bodySha256": "342aca8b31d34dfbc6200e38e78232dc3f1cb7d6c43c276dac7f4c6aee9c792b",
+      "completedAtUtc": "2026-08-23T15:33:30.096Z",
+      "dispatchId": "ctx_650d09db7f42",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P3 FAIL/BLOCKED",
+      "phase": "P3",
+      "receiptSha256": "03c60649d3c62d4820ffa95fa59952751c2d30a647f393eee9890e5899f971f9",
+      "reportSha256": "455c006dec87a74bc00986ad882b73380f9813539558a32a0435b879c4adea7f",
+      "reportedBy": "term_585274f0-9aa2-41e0-b7fb-ceaff68c03e2",
+      "resultSha256": "5ae53f9025caaf7d0e7e39bd79b4cb8d1e154dfc7c1ba51b702f24063cd5207d",
+      "subjectSha256": "32afda2cbcf977bb07993f3fafff625901ef2ded3c576e22478d20675fac1f17",
+      "supersedesGateTaskId": null,
+      "taskId": "task_958b7d42d0a2",
+      "verdictSha256": "0eec553e84a4228c62222e2b343e55174cdf5698f277bea73e6342a6c63a7be9",
+      "workerMessageId": "msg_999b7a9ace7e"
+    },
+    {
+      "bodySha256": "7f571dca5afe9c05dbd209db8ef5ba89a5435050947883ef9016965681fa4c7b",
+      "completedAtUtc": "2026-08-23T21:09:13.237Z",
+      "dispatchId": "ctx_8ec615efdce5",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P3 ENGINEERING PASS",
+      "phase": "P3",
+      "receiptSha256": "9d78174715c8cd9a246c7e949570906d2f355cb82c1954cea4062fe868d1bcc6",
+      "reportSha256": "800be151ff3a38f765b722fda7cbabd245addcdfe730859899364d6eb12ef5ed",
+      "reportedBy": "term_143c75c6-893a-4a05-b5fe-17a8420b5675",
+      "resultSha256": "74802ef211bd7229f9e810fbca036eb2b3f92c4b7122bcb05f85c709b679ccbd",
+      "subjectSha256": "844e5e9e6531a30d0bc55da30a0bd4376eb675b1d25aab03cab21447abd66833",
+      "supersedesGateTaskId": "task_958b7d42d0a2",
+      "taskId": "task_a4832b5ed3e6",
+      "verdictSha256": "2d1af82dd8ed1fa8e15ea77b866f0990cb19f029ebbc98abcd00638326e93710",
+      "workerMessageId": "msg_ae4c303a7e0a"
+    },
+    {
+      "bodySha256": "975dafe3abb996a89918df83dc0814e85484f4ed0540151e05f0437e49b6759f",
+      "completedAtUtc": "2026-08-24T09:27:37.853Z",
+      "dispatchId": "ctx_9ce95ad9385d",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P4 FAIL/BLOCKED",
+      "phase": "P4",
+      "receiptSha256": "6d621e7cac4fab8d7b283ee3a4f014eb97042fe6ed6aa37dbf6f0ee8ba1ba792",
+      "reportSha256": "1c6d9eb4df859c0d95657964228d14a5963236bd23158bb41180c14e7df8c647",
+      "reportedBy": "term_2036ff30-e3c4-485e-9926-43add6e9991b",
+      "resultSha256": "1e912301b9c550ddd2a52314a6c21c57427bfd647510996f155619826e498de0",
+      "subjectSha256": "09e1519733e11e1698af7cb82f1909914ea3db8087afa232db5ece9e04c52937",
+      "supersedesGateTaskId": null,
+      "taskId": "task_c346ebff90f2",
+      "verdictSha256": "916d3514f10e0ae19720ce7c60ad13fee2ccbfc7a771eb550c862b7b94507eda",
+      "workerMessageId": "msg_9bcee099addf"
+    },
+    {
+      "bodySha256": "1788bf2960e2333e43938650e2d50fa25923f83cfc3a243dd527123c38fddf5a",
+      "completedAtUtc": "2026-08-24T12:40:36.303Z",
+      "dispatchId": "ctx_4d2387adadac",
+      "gateScope": "engineering",
+      "gateVerdict": "GATE P4 ENGINEERING PASS",
+      "phase": "P4",
+      "receiptSha256": "0b3fd547d871a2fd69945f3a4578ecd979d39be7b1c4e83c4b79228cc272bf34",
+      "reportSha256": "300a1e8b05a77ee50736a570d919e00e9e33c4c407bfb12c960364e5865c3290",
+      "reportedBy": "term_0b037987-7e53-46e8-b451-475c455f3316",
+      "resultSha256": "c6f0eba8b41227d86570d75a705732bb1d1cc597f8c076551422bf0f94ba9b8a",
+      "subjectSha256": "e8738412d748feabfb6fe6b2b5fe80fe92c1ccf5906ff31988e9c6e4c5dfa20b",
+      "supersedesGateTaskId": "task_c346ebff90f2",
+      "taskId": "task_d73712d125c5",
+      "verdictSha256": "58de94c9b78650960ef4cf76b6ad4477e0bff6d04342ecc698a833eda1381dad",
+      "workerMessageId": "msg_de66e012762d"
+    }
+  ],
+  "decisionGatePolicies": [
+    {
+      "acceptedResolutions": [
+        "mgif_safety_exception",
+        "exact_defect_parity"
+      ],
+      "gateId": "gate_ca804cbec712",
+      "ownerTaskId": "task_5e9fa075e9c5",
+      "rejectedResolutions": [],
+      "supersededResolutions": []
+    },
+    {
+      "acceptedResolutions": [
+        "accept_verified_r2f"
+      ],
+      "gateId": "gate_b66203c11b10",
+      "ownerTaskId": "task_8c29dd510a99",
+      "rejectedResolutions": [
+        "reject_or_repair"
+      ],
+      "supersededResolutions": []
+    }
+  ],
+  "documentKind": "progress-ledger-authority",
+  "materializedGateTasks": [
+    {
+      "displayName": "G5",
+      "phase": "P5",
+      "taskId": "task_bd6e62faa588"
+    },
+    {
+      "displayName": "G6",
+      "phase": "P6",
+      "taskId": "task_4af12cfad98a"
+    },
+    {
+      "displayName": "G7",
+      "phase": "P7",
+      "taskId": "task_3f216d250677"
+    },
+    {
+      "displayName": "G8",
+      "phase": "P8",
+      "taskId": "task_eb85190ed1ac"
+    },
+    {
+      "displayName": "G9",
+      "phase": "P9",
+      "taskId": "task_e6d16b19af18"
+    },
+    {
+      "displayName": "G10",
+      "phase": "P10",
+      "taskId": "task_04e52d906959"
+    }
+  ],
+  "runGeneration": 1,
+  "runId": "run_ede89c4421e9",
+  "runtimeId": "c08d3cea-461a-4e44-9bcf-7ecfa372dd83",
+  "schemaVersion": 2
+}

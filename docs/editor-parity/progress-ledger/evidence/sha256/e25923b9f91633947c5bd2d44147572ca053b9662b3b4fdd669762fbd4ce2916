@@ -1,0 +1,31 @@
+{
+  "documentKind": "gate-receipt",
+  "schemaVersion": 1,
+  "runId": "run_ede89c4421e9",
+  "phase": "P0",
+  "gateTaskId": "task_ba8ade72d3e9",
+  "dispatchId": "ctx_9b13deebb72e",
+  "workerMessageId": "msg_e52d94131f2f",
+  "completedAtUtc": "2026-08-23T03:41:42.845Z",
+  "reviewExecutionOutcome": "succeeded",
+  "gateVerdict": "P1 ENGINEERING READINESS: READY",
+  "gateScope": "engineering",
+  "supersedesGateTaskId": null,
+  "report": {
+    "path": "C:\\Users\\happyelements\\AppData\\Local\\Temp\\mgif-p0-post-remediation-audit-d07a3a2004bc4016a8049cbc1362b1be\\P0-POST-REMEDIATION-INDEPENDENT-ADVERSARIAL-AUDIT.md",
+    "bytes": 21846,
+    "sha256": "63bcdefebf3853e35a3f7294d045271fd24e0e22761430e043db899788bcc201"
+  },
+  "verdictArtifact": {
+    "path": "C:\\Temp\\mgif-progress-ledger-task_ab822a872485-20260825T043308623Z\\evidence\\verdict-00-p0.json",
+    "bytes": 429,
+    "sha256": "6027f365d8f5e7d6cdbc008408a0fb1e57139c6379e2c9e7ad5ea7dba64561c4"
+  },
+  "inputFingerprintSha256": "ad1e5afcdcfe00f72a4199f886fb6f9ff9e70c7418a751a4596f227bcfa7294b",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "r24": "BLOCKED",
+    "metal": "Not Verified",
+    "releaseDistribution": "NOT PASS"
+  }
+}

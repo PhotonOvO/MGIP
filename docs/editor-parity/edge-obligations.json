@@ -1,0 +1,1153 @@
+{
+  "schemaVersion": 1,
+  "specification": {
+    "path": "docs/gltf-scene-editor-parity-task.md",
+    "sha256": "bfd4b5ffe8d73b9bb887047a8cad5ad96c7184d182eeb752aa47028b05bd679e"
+  },
+  "status": "assigned",
+  "statusSemantics": {
+    "assigned": "The specification maps the obligation to concrete target evidence; no test execution or pass result is claimed.",
+    "executed_passed": "All mapped evidence has been produced and every stated oracle has passed on the recorded build and platform.",
+    "failed": "At least one mapped test or oracle was executed and did not satisfy the stated behavior.",
+    "blocked": "Execution cannot currently complete and the blocking condition is recorded in the acceptance report.",
+    "unresolved": "The obligation lacks an explicit test or oracle allocation; unresolved is forbidden for this locked registry."
+  },
+  "assignmentTally": {
+    "assigned": 110,
+    "unassigned": 0,
+    "executed": 0,
+    "passed": 0
+  },
+  "total": 110,
+  "categoryOrder": [
+    "adjacency",
+    "boundary",
+    "concurrency",
+    "empty",
+    "encoding",
+    "idempotency",
+    "ordering",
+    "precision"
+  ],
+  "categoryCounts": {
+    "adjacency": 16,
+    "boundary": 8,
+    "concurrency": 21,
+    "empty": 17,
+    "encoding": 3,
+    "idempotency": 21,
+    "ordering": 16,
+    "precision": 8
+  },
+  "requirementsWithNoProposedTaxonomyEdges": ["R21", "R23", "R24"],
+  "dependencyBoundaryBindings": {
+    "status": "assigned",
+    "executed": 0,
+    "requirements": {
+      "R21": ["T-RHI-01", "T-RHI-02", "T-RHI-03", "T-LIC-01"],
+      "R24": ["T-LIC-01"]
+    }
+  },
+  "obligations": [
+    {
+      "id": "E001",
+      "category": "adjacency",
+      "behavior": "A no-op save and reload preserves adjacent collection entries, their integer references, shared resources, and every scene root without index drift.",
+      "requiredEvidenceType": "round-trip-io",
+      "requirements": ["R01"],
+      "features": ["F01", "F02"],
+      "targetEvidence": ["T-DOC-01", "T-DOC-02"],
+      "status": "assigned"
+    },
+    {
+      "id": "E002",
+      "category": "adjacency",
+      "behavior": "Deleting or compacting an object next to another index never aliases the removed EditorObjectId to the adjacent survivor or to a later generation.",
+      "requiredEvidenceType": "property-model",
+      "requirements": ["R02"],
+      "features": ["F09", "F13"],
+      "targetEvidence": ["T-ID-01", "T-DOC-02", "T-SEL-01"],
+      "status": "assigned"
+    },
+    {
+      "id": "E003",
+      "category": "adjacency",
+      "behavior": "Adjacent hierarchy rows, scene roots, and grouped resource rows expose the exact document counts and preorder sequence while expand, scroll, and focus preserve selection.",
+      "requiredEvidenceType": "ui-semantic",
+      "requirements": ["R03"],
+      "features": ["F06", "F07"],
+      "targetEvidence": ["T-UI-03", "T-UI-04", "U08-large-unicode-dpi"],
+      "status": "assigned"
+    },
+    {
+      "id": "E004",
+      "category": "adjacency",
+      "behavior": "Same-parent and root-to-root drops keep collection order unchanged but record their exact command envelopes; a cross-parent drop and its Undo or Redo append at the destination tail rather than restoring an adjacent sibling slot.",
+      "requiredEvidenceType": "exact-unit-and-executable-trace",
+      "requirements": ["R05"],
+      "features": ["F16"],
+      "targetEvidence": ["T-EDIT-07", "U02-hierarchy", "O01-same-parent-move-noop", "O02-root-to-root-move-noop", "O03-reparent-undo-append-order"],
+      "status": "assigned"
+    },
+    {
+      "id": "E005",
+      "category": "adjacency",
+      "behavior": "Editing one material field, extension, or variant selection leaves adjacent material, texture, variant mapping, unknown-extension, and extras values unchanged while updating only the selected authored record.",
+      "requiredEvidenceType": "exact-unit-and-renderer-snapshot",
+      "requirements": ["R08"],
+      "features": ["F05", "F21", "F22", "F23"],
+      "targetEvidence": ["T-MAT-01", "T-MAT-02", "T-MAT-03", "T-MAT-04", "T-MAT-06", "V05-delta-edit"],
+      "status": "assigned"
+    },
+    {
+      "id": "E006",
+      "category": "adjacency",
+      "behavior": "Assign, Split, and Merge preserve primitive order and shared accessor or geometry relationships when neighboring primitives use the same or different materials.",
+      "requiredEvidenceType": "property-model",
+      "requirements": ["R09"],
+      "features": ["F24", "F25"],
+      "targetEvidence": ["T-MAT-05", "T-MAT-07", "U04-material"],
+      "status": "assigned"
+    },
+    {
+      "id": "E007",
+      "category": "adjacency",
+      "behavior": "Editing or applying one camera addresses the selected camera and node only; adjacent perspective and orthographic camera entries retain their authored values and order.",
+      "requiredEvidenceType": "exact-unit",
+      "requirements": ["R10"],
+      "features": ["F26", "F27"],
+      "targetEvidence": ["T-CAM-01", "T-CAM-02", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E008",
+      "category": "adjacency",
+      "behavior": "Creating, switching, or deleting one punctual light keeps adjacent light and node references valid, including multiple nodes that reference neighboring light definitions.",
+      "requiredEvidenceType": "property-model",
+      "requirements": ["R11"],
+      "features": ["F11", "F12", "F28"],
+      "targetEvidence": ["T-EDIT-02", "T-EDIT-03", "T-LIGHT-01", "T-LIGHT-02", "T-LIGHT-03", "V05-delta-edit"],
+      "status": "assigned"
+    },
+    {
+      "id": "E009",
+      "category": "adjacency",
+      "behavior": "For each adjacent parent-child pair, effective visibility is the conjunction of authored values along that exact ancestor chain and does not suppress an unrelated sibling branch.",
+      "requiredEvidenceType": "exact-unit-and-renderer-snapshot",
+      "requirements": ["R12"],
+      "features": ["F29"],
+      "targetEvidence": ["T-VIS-01", "T-DELTA-04", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E010",
+      "category": "adjacency",
+      "behavior": "Scene-level transform applies the frozen baseline independently to every adjacent root, including mixed TRS and matrix roots, without cross-scene contamination.",
+      "requiredEvidenceType": "exact-unit",
+      "requirements": ["R13"],
+      "features": ["F18"],
+      "targetEvidence": ["T-TRS-02", "T-UI-08"],
+      "status": "assigned"
+    },
+    {
+      "id": "E011",
+      "category": "adjacency",
+      "behavior": "Adjacent compatible commands coalesce only under the 500 ms contract, while an adjacent incompatible command remains a separate entry with exact Undo and Redo descriptions.",
+      "requiredEvidenceType": "fake-clock-unit",
+      "requirements": ["R14"],
+      "features": ["F30"],
+      "targetEvidence": ["T-CMD-01", "T-CMD-02", "T-CMD-03", "T-CMD-04", "T-CMD-05", "T-CMD-06"],
+      "status": "assigned"
+    },
+    {
+      "id": "E012",
+      "category": "adjacency",
+      "behavior": "Deltas for adjacent document revisions and neighboring objects retain valid source-target revision chains and update only their corresponding runtime records.",
+      "requiredEvidenceType": "renderer-integration",
+      "requirements": ["R15"],
+      "features": ["F31", "F32"],
+      "targetEvidence": ["T-DELTA-01", "T-DELTA-02", "T-DELTA-03", "T-DELTA-04", "T-DELTA-05", "V05-delta-edit"],
+      "status": "assigned"
+    },
+    {
+      "id": "E013",
+      "category": "adjacency",
+      "behavior": "Save As stages same-named and adjacent external resources without overwriting the wrong file, and the published glTF references each staged resource exactly.",
+      "requiredEvidenceType": "fault-injected-round-trip-io",
+      "requirements": ["R17"],
+      "features": ["F35"],
+      "targetEvidence": ["T-IO-01", "T-IO-02", "T-IO-03", "T-IO-04", "U06-merge-compact-save"],
+      "status": "assigned"
+    },
+    {
+      "id": "E014",
+      "category": "adjacency",
+      "behavior": "Merge and Compact remap every adjacent standard and known-extension index, preserve survivor relationships, and choose only a genuinely equivalent shared-mesh merge candidate.",
+      "requiredEvidenceType": "property-model",
+      "requirements": ["R18"],
+      "features": ["F34", "F36"],
+      "targetEvidence": ["T-MERGE-01", "T-MERGE-02", "T-MERGE-03", "T-COMPACT-01", "T-COMPACT-02", "T-COMPACT-03"],
+      "status": "assigned"
+    },
+    {
+      "id": "E015",
+      "category": "adjacency",
+      "behavior": "Switching between adjacent scene radio rows renders the selected scene exactly once while leaving defaultScene, document data, and UndoStack unchanged.",
+      "requiredEvidenceType": "ui-semantic-and-runtime-digest",
+      "requirements": ["R19"],
+      "features": ["F02", "F33"],
+      "targetEvidence": ["T-LIFE-01", "T-UI-15", "U01-empty-new-open", "O09-multi-scene-structural-matrix"],
+      "status": "assigned"
+    },
+    {
+      "id": "E016",
+      "category": "adjacency",
+      "behavior": "Node counts immediately below, at, and above the 65,536 limit accept 65,536 and atomically reject the 65,537th add or merge with all active hashes unchanged.",
+      "requiredEvidenceType": "performance-and-capacity-test",
+      "requirements": ["R22"],
+      "features": ["F41"],
+      "targetEvidence": ["T-PERF-03"],
+      "status": "assigned"
+    },
+    {
+      "id": "E017",
+      "category": "boundary",
+      "behavior": "TRS editing accepts finite positive, zero, and negative scale, preserves continuous Euler behavior across plus or minus 180 degrees, and atomically rejects NaN, infinity, or non-finite matrices.",
+      "requiredEvidenceType": "parameterized-boundary-unit",
+      "requirements": ["R06"],
+      "features": ["F17"],
+      "targetEvidence": ["T-TRS-01", "T-CMD-02", "U03-transform-gizmo"],
+      "status": "assigned"
+    },
+    {
+      "id": "E018",
+      "category": "boundary",
+      "behavior": "Gizmo hit and drag math remains finite for near-parallel rays, viewport-edge coordinates, negative parent scale, orthographic projection, and grid units 0.001, 1, and 1000.",
+      "requiredEvidenceType": "parameterized-math-and-vulkan-visual",
+      "requirements": ["R07"],
+      "features": ["F19", "F20"],
+      "targetEvidence": ["T-GIZMO-01", "T-GIZMO-02", "T-GIZMO-03", "T-GIZMO-04", "T-GIZMO-05", "V01-grid", "V03-parent-space", "V04-depth-xray", "V07-dpi-resize"],
+      "status": "assigned"
+    },
+    {
+      "id": "E019",
+      "category": "boundary",
+      "behavior": "Every exposed core and extension material numeric field is tested below, at, and above its legal endpoints; only valid min, mid, and max values commit and reload.",
+      "requiredEvidenceType": "parameterized-boundary-round-trip",
+      "requirements": ["R08"],
+      "features": ["F21", "F22", "F23"],
+      "targetEvidence": ["T-MAT-01", "T-MAT-02", "T-MAT-03", "T-MAT-04", "U04-material"],
+      "status": "assigned"
+    },
+    {
+      "id": "E020",
+      "category": "boundary",
+      "behavior": "Perspective and orthographic camera edits reject values at or beyond invalid plane and magnitude boundaries while preserving omitted perspective zfar and omitted aspectRatio semantics.",
+      "requiredEvidenceType": "parameterized-boundary-unit",
+      "requirements": ["R10"],
+      "features": ["F26", "F27"],
+      "targetEvidence": ["T-CAM-01", "T-CAM-02", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E021",
+      "category": "boundary",
+      "behavior": "Punctual light range 0 retains undefined or infinite meaning, and spot cones enforce 0 <= inner < outer <= pi/2 without NaN or an inverted cone at any edge.",
+      "requiredEvidenceType": "parameterized-boundary-unit",
+      "requirements": ["R11"],
+      "features": ["F28"],
+      "targetEvidence": ["T-LIGHT-01", "T-LIGHT-02", "T-LIGHT-03", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E022",
+      "category": "boundary",
+      "behavior": "Scene Transform identity and Reset return every root to its frozen baseline, while a non-decomposable root matrix remains safely authored as a matrix.",
+      "requiredEvidenceType": "parameterized-matrix-unit",
+      "requirements": ["R13"],
+      "features": ["F18"],
+      "targetEvidence": ["T-TRS-02", "T-UI-08"],
+      "status": "assigned"
+    },
+    {
+      "id": "E023",
+      "category": "boundary",
+      "behavior": "History tests distinguish 499, 500, and 501 ms coalescing cases and the 100th versus 101st command while preserving the exact surviving stack and descriptions.",
+      "requiredEvidenceType": "fake-clock-parameterized-unit",
+      "requirements": ["R14"],
+      "features": ["F30"],
+      "targetEvidence": ["T-CMD-01", "T-CMD-02", "T-CMD-03", "T-CMD-04", "T-CMD-05", "T-CMD-06"],
+      "status": "assigned"
+    },
+    {
+      "id": "E024",
+      "category": "boundary",
+      "behavior": "Capacity and responsiveness cover 0, 1, 10,000, 65,535, 65,536, and 65,537 nodes with exact accept or reject outcomes and the locked p95 budgets.",
+      "requiredEvidenceType": "performance-and-capacity-test",
+      "requirements": ["R22"],
+      "features": ["F41"],
+      "targetEvidence": ["T-PERF-01", "T-PERF-02", "T-PERF-03", "U08-large-unicode-dpi"],
+      "status": "assigned"
+    },
+    {
+      "id": "E025",
+      "category": "concurrency",
+      "behavior": "A background load, projection, or upload candidate cannot expose a partially parsed document over the active lossless model; only a complete matching candidate may publish.",
+      "requiredEvidenceType": "deterministic-scheduler-and-runtime-snapshot",
+      "requirements": ["R01"],
+      "features": ["F01", "F02"],
+      "targetEvidence": ["T-DOC-01", "T-DOC-02", "T-LIFE-02", "T-LIFE-03", "T-LIFE-04", "T-LIFE-05"],
+      "status": "assigned"
+    },
+    {
+      "id": "E026",
+      "category": "concurrency",
+      "behavior": "A pick, selection, command, or renderer handle captured before delete, Merge, Compact, or document replacement is rejected when its generation, document, or revision is stale.",
+      "requiredEvidenceType": "deterministic-property-model",
+      "requirements": ["R02"],
+      "features": ["F09", "F13"],
+      "targetEvidence": ["T-ID-01", "T-SEL-01", "T-SEL-02"],
+      "status": "assigned"
+    },
+    {
+      "id": "E027",
+      "category": "concurrency",
+      "behavior": "External focus, list scrolling, tab changes, and selection updates in one UI frame converge on one selected stable ID without forcing a Scene Browser tab switch.",
+      "requiredEvidenceType": "ui-semantic-event-trace",
+      "requirements": ["R03"],
+      "features": ["F06", "F07", "F08"],
+      "targetEvidence": ["T-UI-03", "T-UI-04", "T-UI-05", "U08-large-unicode-dpi"],
+      "status": "assigned"
+    },
+    {
+      "id": "E028",
+      "category": "concurrency",
+      "behavior": "Within the double-click window the picker emits exactly one delayed single-click action or one double-click camera action, and all selection consumers observe one end-of-frame revision.",
+      "requiredEvidenceType": "fake-clock-ui-and-executable-trace",
+      "requirements": ["R04"],
+      "features": ["F09", "F10"],
+      "targetEvidence": ["T-SEL-01", "T-SEL-02", "U03-transform-gizmo", "U05-camera-light-vis", "O08-viewport-click-classifier"],
+      "status": "assigned"
+    },
+    {
+      "id": "E029",
+      "category": "concurrency",
+      "behavior": "A hierarchy command whose object ID or document revision becomes stale between preflight and commit fails atomically with document, runtime, history, and selection unchanged.",
+      "requiredEvidenceType": "deterministic-scheduler-unit",
+      "requirements": ["R05"],
+      "features": ["F11", "F12", "F13", "F14", "F16"],
+      "targetEvidence": ["T-EDIT-01", "T-EDIT-02", "T-EDIT-03", "T-EDIT-04", "T-EDIT-05", "T-EDIT-07"],
+      "status": "assigned"
+    },
+    {
+      "id": "E030",
+      "category": "concurrency",
+      "behavior": "A continuous TRS edit and animation or frame projection update obey the locked edit-conflict policy and publish one internally consistent descendant, camera, light, and instance transform set.",
+      "requiredEvidenceType": "deterministic-scheduler-and-renderer-snapshot",
+      "requirements": ["R06"],
+      "features": ["F17"],
+      "targetEvidence": ["T-TRS-01", "T-ANIM-01", "T-DELTA-01", "U03-transform-gizmo"],
+      "status": "assigned"
+    },
+    {
+      "id": "E031",
+      "category": "concurrency",
+      "behavior": "Simultaneous Gizmo hover or drag, viewport picking, ImGui capture, and camera navigation yield one input owner and one transform preview for the frame.",
+      "requiredEvidenceType": "input-state-machine-and-vulkan-runtime",
+      "requirements": ["R07"],
+      "features": ["F19", "F20"],
+      "targetEvidence": ["T-GIZMO-01", "T-GIZMO-02", "T-GIZMO-03", "T-GIZMO-04", "T-GIZMO-05", "U03-transform-gizmo", "V02-gizmo-components"],
+      "status": "assigned"
+    },
+    {
+      "id": "E032",
+      "category": "concurrency",
+      "behavior": "Continuous material edits coalesce to the latest revision at a frame-safe boundary without full geometry or texture upload, device idle, or a partially updated material state.",
+      "requiredEvidenceType": "renderer-integration-with-counters",
+      "requirements": ["R08"],
+      "features": ["F21", "F22", "F23"],
+      "targetEvidence": ["T-MAT-01", "T-MAT-02", "T-MAT-03", "T-MAT-04", "T-DELTA-02", "T-PERF-02", "V05-delta-edit"],
+      "status": "assigned"
+    },
+    {
+      "id": "E033",
+      "category": "concurrency",
+      "behavior": "Clipboard Paste revalidates the canonical material index against the active document at click time, so a document switch cannot apply a stable ID or material from the previous document.",
+      "requiredEvidenceType": "ui-semantic-and-executable-trace",
+      "requirements": ["R09"],
+      "features": ["F24"],
+      "targetEvidence": ["T-MAT-05", "U04-material", "O10-material-clipboard"],
+      "status": "assigned"
+    },
+    {
+      "id": "E034",
+      "category": "concurrency",
+      "behavior": "Apply to Current View or Set from Current View uses one matching camera, node world transform, viewport, and document revision even if a scene or camera selection changes nearby.",
+      "requiredEvidenceType": "deterministic-ui-and-math-test",
+      "requirements": ["R10"],
+      "features": ["F26", "F27"],
+      "targetEvidence": ["T-CAM-01", "T-CAM-02", "T-UI-10", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E035",
+      "category": "concurrency",
+      "behavior": "Light create, type switch, edit, and delete publish a coherent CPU and GPU light record on the next frame and never leave a stale slot during an overlapping frame consume.",
+      "requiredEvidenceType": "renderer-integration-with-frame-schedule",
+      "requirements": ["R11"],
+      "features": ["F28"],
+      "targetEvidence": ["T-LIGHT-01", "T-LIGHT-02", "T-LIGHT-03", "T-DELTA-03", "V05-delta-edit"],
+      "status": "assigned"
+    },
+    {
+      "id": "E036",
+      "category": "concurrency",
+      "behavior": "Visibility edit and reparent publish authored hierarchy and effective draw flags as one revision, never exposing a frame with visibility computed from the old parent and topology from the new parent.",
+      "requiredEvidenceType": "renderer-integration-with-frame-schedule",
+      "requirements": ["R12"],
+      "features": ["F29"],
+      "targetEvidence": ["T-VIS-01", "T-DELTA-04", "V05-delta-edit"],
+      "status": "assigned"
+    },
+    {
+      "id": "E037",
+      "category": "concurrency",
+      "behavior": "Adding, deleting, or reparenting a root during a Scene Transform edit freezes the applied result, resets popup TRS, and installs the new baseline atomically.",
+      "requiredEvidenceType": "deterministic-matrix-state-test",
+      "requirements": ["R13"],
+      "features": ["F18"],
+      "targetEvidence": ["T-TRS-02", "T-UI-08", "U03-transform-gizmo"],
+      "status": "assigned"
+    },
+    {
+      "id": "E038",
+      "category": "concurrency",
+      "behavior": "A completed control deactivation or Gizmo release records one command at its defined event boundary; concurrent Undo, new-command branching, or history clear cannot observe a half command.",
+      "requiredEvidenceType": "fake-clock-event-sequence-unit",
+      "requirements": ["R14"],
+      "features": ["F30"],
+      "targetEvidence": ["T-CMD-01", "T-CMD-02", "T-CMD-03", "T-CMD-04", "T-CMD-05", "T-CMD-06", "U03-transform-gizmo"],
+      "status": "assigned"
+    },
+    {
+      "id": "E039",
+      "category": "concurrency",
+      "behavior": "Renderer consumption discards stale or duplicate deltas and swaps a FullRebuild candidate exactly once only after projection and GPU resources are complete, with old resources retained through their fence.",
+      "requiredEvidenceType": "deterministic-frame-scheduler-and-vulkan-runtime",
+      "requirements": ["R15"],
+      "features": ["F31", "F32"],
+      "targetEvidence": ["T-DELTA-01", "T-DELTA-02", "T-DELTA-03", "T-DELTA-04", "T-DELTA-05", "V06-topology-swap"],
+      "status": "assigned"
+    },
+    {
+      "id": "E040",
+      "category": "concurrency",
+      "behavior": "Escape-only, Escape plus release in one frame, focus loss with or without synthetic release, and a late release follow the exact mutually exclusive commit or no-history branches.",
+      "requiredEvidenceType": "input-state-machine-and-executable-trace",
+      "requirements": ["R16"],
+      "features": ["F10", "F19"],
+      "targetEvidence": ["T-SEL-02", "T-GIZMO-01", "T-GIZMO-02", "T-GIZMO-03", "T-GIZMO-04", "T-GIZMO-05", "U03-transform-gizmo", "O05-gizmo-escape-only", "O06-gizmo-escape-release-same-frame", "O07-gizmo-focus-loss"],
+      "status": "assigned"
+    },
+    {
+      "id": "E041",
+      "category": "concurrency",
+      "behavior": "A write, flush, close, rename, cross-volume publish, or process-interruption failure during Save As leaves the old target and active dirty, path, and history state intact.",
+      "requiredEvidenceType": "fault-injected-round-trip-io",
+      "requirements": ["R17"],
+      "features": ["F35"],
+      "targetEvidence": ["T-IO-01", "T-IO-02", "T-IO-03", "T-IO-04", "T-LIFE-02", "T-LIFE-03", "T-LIFE-04", "T-LIFE-05", "U07-modified-failures"],
+      "status": "assigned"
+    },
+    {
+      "id": "E042",
+      "category": "concurrency",
+      "behavior": "Merge or Compact commits only against the source document revision it validated; an invalid, over-limit, or stale background candidate cannot replace or partially mutate active state.",
+      "requiredEvidenceType": "deterministic-property-and-fault-injection",
+      "requirements": ["R18"],
+      "features": ["F34", "F36"],
+      "targetEvidence": ["T-MERGE-01", "T-MERGE-02", "T-MERGE-03", "T-COMPACT-01", "T-COMPACT-02", "T-COMPACT-03", "U07-modified-failures"],
+      "status": "assigned"
+    },
+    {
+      "id": "E043",
+      "category": "concurrency",
+      "behavior": "Rapid Open A then B, close during load, invalid recent paths, and candidate load or upload failures obey the controller queue or latest-request contract without a half lifecycle or use-after-free.",
+      "requiredEvidenceType": "deterministic-scheduler-and-ui-state-trace",
+      "requirements": ["R19"],
+      "features": ["F33", "F34", "F37"],
+      "targetEvidence": ["T-LIFE-01", "T-LIFE-02", "T-LIFE-03", "T-LIFE-04", "T-LIFE-05", "T-MERGE-01", "T-UI-12", "U01-empty-new-open", "U07-modified-failures"],
+      "status": "assigned"
+    },
+    {
+      "id": "E044",
+      "category": "concurrency",
+      "behavior": "Modal, busy transaction, text input, menu, toolbar, and shortcut routing consume each physical input event at most once and expose no reference-absent cancel or unsaved prompt.",
+      "requiredEvidenceType": "ui-semantic-event-trace",
+      "requirements": ["R20"],
+      "features": ["F37", "F38"],
+      "targetEvidence": ["T-UI-11", "T-UI-12", "T-UI-13", "T-UI-14", "U01-empty-new-open", "U07-modified-failures"],
+      "status": "assigned"
+    },
+    {
+      "id": "E045",
+      "category": "concurrency",
+      "behavior": "Background topology or FullRebuild preparation keeps large-list interaction bounded and the last valid scene usable until one frame-safe publish, without full-scene work on continuous edit frames.",
+      "requiredEvidenceType": "performance-with-deterministic-frame-schedule",
+      "requirements": ["R22"],
+      "features": ["F41"],
+      "targetEvidence": ["T-PERF-01", "T-PERF-02", "T-PERF-03", "V06-topology-swap"],
+      "status": "assigned"
+    },
+    {
+      "id": "E046",
+      "category": "empty",
+      "behavior": "A valid document with zero scenes, zero roots, or absent optional collections can load, no-op save, and reload without synthesizing authored objects or losing unknown data.",
+      "requiredEvidenceType": "explicit-empty-round-trip-fixture",
+      "requirements": ["R01"],
+      "features": ["F01", "F02"],
+      "targetEvidence": ["T-DOC-01", "T-DOC-02"],
+      "status": "assigned"
+    },
+    {
+      "id": "E047",
+      "category": "empty",
+      "behavior": "An empty ID registry and mapping table return typed absence for lookups, selection, and stale handles and never manufacture index zero as an object.",
+      "requiredEvidenceType": "explicit-empty-unit-fixture",
+      "requirements": ["R02"],
+      "features": ["F09"],
+      "targetEvidence": ["T-ID-01", "T-SEL-01"],
+      "status": "assigned"
+    },
+    {
+      "id": "E048",
+      "category": "empty",
+      "behavior": "With no document or with zero entries in any resource group, Scene Browser shows the reference empty state, exact zero counts, valid tabs, and no selectable display-only placeholder.",
+      "requiredEvidenceType": "ui-semantic-empty-state",
+      "requirements": ["R03"],
+      "features": ["F03", "F04", "F05", "F06", "F07", "F08"],
+      "targetEvidence": ["T-UI-01", "T-UI-02", "T-UI-03", "T-UI-04", "T-UI-05", "T-MAT-06", "U01-empty-new-open"],
+      "status": "assigned"
+    },
+    {
+      "id": "E049",
+      "category": "empty",
+      "behavior": "Hierarchy operations handle an empty scene root list and an empty rename string exactly: valid Add creates the first root, while an empty-name Rename is a no-op with focus restored.",
+      "requiredEvidenceType": "explicit-empty-unit-and-ui-script",
+      "requirements": ["R05"],
+      "features": ["F11", "F15"],
+      "targetEvidence": ["T-EDIT-01", "T-EDIT-02", "T-EDIT-06", "T-UI-07", "U02-hierarchy"],
+      "status": "assigned"
+    },
+    {
+      "id": "E050",
+      "category": "empty",
+      "behavior": "A material with no textures, optional extensions, or variant mappings preserves their absence, exposes the correct controls, and can add then remove each supported extension without disturbing siblings.",
+      "requiredEvidenceType": "explicit-empty-round-trip-fixture",
+      "requirements": ["R08"],
+      "features": ["F05", "F21", "F22", "F23"],
+      "targetEvidence": ["T-MAT-01", "T-MAT-02", "T-MAT-03", "T-MAT-04", "T-MAT-06", "U04-material"],
+      "status": "assigned"
+    },
+    {
+      "id": "E051",
+      "category": "empty",
+      "behavior": "No material, no equivalent merge candidate, and an empty clipboard each produce the specified disabled or informed no-op state without deleting resources or changing history.",
+      "requiredEvidenceType": "explicit-empty-unit-and-ui-trace",
+      "requirements": ["R09"],
+      "features": ["F24", "F25"],
+      "targetEvidence": ["T-MAT-05", "T-MAT-07", "U04-material", "O10-material-clipboard"],
+      "status": "assigned"
+    },
+    {
+      "id": "E052",
+      "category": "empty",
+      "behavior": "With no camera selection or no camera objects, camera Inspector and Apply or Set controls expose the reference empty and disabled state without altering the viewport or document.",
+      "requiredEvidenceType": "explicit-empty-unit-and-ui-state",
+      "requirements": ["R10"],
+      "features": ["F26", "F27"],
+      "targetEvidence": ["T-CAM-01", "T-CAM-02", "T-UI-10", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E053",
+      "category": "empty",
+      "behavior": "A document with no KHR_lights_punctual definition or light nodes can create the first point, directional, or spot light from each specified entry and reload it validly.",
+      "requiredEvidenceType": "explicit-empty-round-trip-fixture",
+      "requirements": ["R11"],
+      "features": ["F11", "F12", "F28"],
+      "targetEvidence": ["T-EDIT-02", "T-EDIT-03", "T-LIGHT-01", "T-LIGHT-02", "T-LIGHT-03", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E054",
+      "category": "empty",
+      "behavior": "A node with no KHR_node_visibility extension is effectively visible, displays Add Visibility, and preserves extension absence until the user explicitly authors it.",
+      "requiredEvidenceType": "explicit-empty-unit-fixture",
+      "requirements": ["R12"],
+      "features": ["F29"],
+      "targetEvidence": ["T-VIS-01", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E055",
+      "category": "empty",
+      "behavior": "A scene with zero roots has an empty baseline set; opening, resetting, or freezing Scene Transform does not create nodes, history, or a non-identity document mutation.",
+      "requiredEvidenceType": "explicit-empty-matrix-unit",
+      "requirements": ["R13"],
+      "features": ["F18"],
+      "targetEvidence": ["T-TRS-02", "T-UI-08"],
+      "status": "assigned"
+    },
+    {
+      "id": "E056",
+      "category": "empty",
+      "behavior": "Undo and Redo on empty stacks remain disabled and leave document hash, revisions, selection, stack sizes, and next descriptions unchanged.",
+      "requiredEvidenceType": "explicit-empty-fake-clock-unit",
+      "requirements": ["R14"],
+      "features": ["F30"],
+      "targetEvidence": ["T-CMD-01", "T-CMD-03", "T-UI-14"],
+      "status": "assigned"
+    },
+    {
+      "id": "E057",
+      "category": "empty",
+      "behavior": "An empty SceneChangeSet is accepted as a no-op, produces no GPU upload or rebuild, and does not advance projection or publish revision.",
+      "requiredEvidenceType": "renderer-integration-empty-delta",
+      "requirements": ["R15"],
+      "features": ["F31", "F32"],
+      "targetEvidence": ["T-DELTA-01", "T-DELTA-05"],
+      "status": "assigned"
+    },
+    {
+      "id": "E058",
+      "category": "empty",
+      "behavior": "Save As with no external resources stages only the target glTF or GLB, while a canceled native dialog leaves path, dirty state, history, target files, and recent files unchanged.",
+      "requiredEvidenceType": "explicit-empty-io-fixture",
+      "requirements": ["R17"],
+      "features": ["F35"],
+      "targetEvidence": ["T-IO-01", "T-IO-02", "T-LIFE-01"],
+      "status": "assigned"
+    },
+    {
+      "id": "E059",
+      "category": "empty",
+      "behavior": "Merge and Compact handle an incoming document with empty collections and an active document with no unreachable resources without invalid remaps or unintended deletion.",
+      "requiredEvidenceType": "explicit-empty-property-fixture",
+      "requirements": ["R18"],
+      "features": ["F34", "F36"],
+      "targetEvidence": ["T-MERGE-01", "T-MERGE-02", "T-MERGE-03", "T-COMPACT-01", "T-COMPACT-02", "T-COMPACT-03"],
+      "status": "assigned"
+    },
+    {
+      "id": "E060",
+      "category": "empty",
+      "behavior": "NoDocument, unload, close, and a valid document containing zero scenes transition through the specified lifecycle states without exposing a stale selection, Gizmo, camera, or render scene.",
+      "requiredEvidenceType": "ui-state-machine-empty-fixture",
+      "requirements": ["R19"],
+      "features": ["F02", "F33", "F37"],
+      "targetEvidence": ["T-DOC-02", "T-LIFE-01", "T-LIFE-02", "T-LIFE-03", "T-LIFE-04", "T-LIFE-05", "T-UI-13", "T-UI-15", "U01-empty-new-open"],
+      "status": "assigned"
+    },
+    {
+      "id": "E061",
+      "category": "empty",
+      "behavior": "The no-document UI has exact menu, shortcut, toolbar, panel, modal, and error enablement and does not show an invented dirty badge, unsaved prompt, or Compact confirmation.",
+      "requiredEvidenceType": "ui-semantic-empty-state",
+      "requirements": ["R20"],
+      "features": ["F37", "F38"],
+      "targetEvidence": ["T-UI-11", "T-UI-12", "T-UI-13", "T-UI-14", "U01-empty-new-open"],
+      "status": "assigned"
+    },
+    {
+      "id": "E062",
+      "category": "empty",
+      "behavior": "A zero-object document and empty visible-resource lists remain responsive, allocate bounded editor state, and perform no per-frame full-list rebuild or GPU upload.",
+      "requiredEvidenceType": "performance-empty-workload",
+      "requirements": ["R22"],
+      "features": ["F41"],
+      "targetEvidence": ["T-PERF-01", "T-PERF-02", "T-PERF-03"],
+      "status": "assigned"
+    },
+    {
+      "id": "E063",
+      "category": "encoding",
+      "behavior": "CJK, emoji, combining-character, empty, and very long UTF-8 object names display with intact document strings, deterministic rows, and ellipsis plus tooltip where clipping is required.",
+      "requiredEvidenceType": "utf8-round-trip-and-ui-visual",
+      "requirements": ["R03"],
+      "features": ["F03", "F06", "F07"],
+      "targetEvidence": ["T-UI-01", "T-UI-03", "T-UI-04", "U08-large-unicode-dpi"],
+      "status": "assigned"
+    },
+    {
+      "id": "E064",
+      "category": "encoding",
+      "behavior": "Rename accepts and round-trips CJK, emoji, and combining UTF-8 names without truncating the document value, while an empty name follows the reference no-op behavior.",
+      "requiredEvidenceType": "utf8-unit-round-trip-and-ui-script",
+      "requirements": ["R05"],
+      "features": ["F15"],
+      "targetEvidence": ["T-EDIT-06", "T-UI-07", "U02-hierarchy", "U08-large-unicode-dpi"],
+      "status": "assigned"
+    },
+    {
+      "id": "E065",
+      "category": "encoding",
+      "behavior": "Unicode and long names or paths remain legible across all locked DPI and viewport sizes, with correct Windows wide-character boundaries and no text overlap or document-string mutation.",
+      "requiredEvidenceType": "ui-visual-and-interaction-matrix",
+      "requirements": ["R20"],
+      "features": ["F15", "F38"],
+      "targetEvidence": ["T-UI-01", "T-UI-03", "T-UI-04", "T-UI-07", "T-UI-11", "T-UI-14", "U08-large-unicode-dpi"],
+      "status": "assigned"
+    },
+    {
+      "id": "E066",
+      "category": "idempotency",
+      "behavior": "Repeating load, no-op save, and reload on an unedited glTF or GLB preserves the same semantic digest, authored values, binary payload hashes, and active scene each time.",
+      "requiredEvidenceType": "repeated-round-trip-io",
+      "requirements": ["R01"],
+      "features": ["F01", "F02"],
+      "targetEvidence": ["T-DOC-01", "T-DOC-02"],
+      "status": "assigned"
+    },
+    {
+      "id": "E067",
+      "category": "idempotency",
+      "behavior": "Repeated lookup or use of the same stale EditorObjectId remains invalid and never rebinds after generation reuse, Undo restoration, Merge, or Compact.",
+      "requiredEvidenceType": "property-model-state-digest",
+      "requirements": ["R02"],
+      "features": ["F09", "F13"],
+      "targetEvidence": ["T-ID-01", "T-SEL-01"],
+      "status": "assigned"
+    },
+    {
+      "id": "E068",
+      "category": "idempotency",
+      "behavior": "Repeated external focus, expand, collapse, scroll-to, or display-only row actions do not create a new selection revision, force a tab switch, or alter document state.",
+      "requiredEvidenceType": "ui-semantic-state-digest",
+      "requirements": ["R03"],
+      "features": ["F06", "F07", "F08"],
+      "targetEvidence": ["T-UI-03", "T-UI-04", "T-UI-05", "U08-large-unicode-dpi"],
+      "status": "assigned"
+    },
+    {
+      "id": "E069",
+      "category": "idempotency",
+      "behavior": "Setting the same selection payload twice emits no redundant selection change, while the explicitly non-idempotent second viewport click on the unique same Primitive performs exactly one clear toggle.",
+      "requiredEvidenceType": "selection-event-unit-and-ui-trace",
+      "requirements": ["R04"],
+      "features": ["F09", "F10"],
+      "targetEvidence": ["T-SEL-01", "T-SEL-02", "U03-transform-gizmo", "O08-viewport-click-classifier"],
+      "status": "assigned"
+    },
+    {
+      "id": "E070",
+      "category": "idempotency",
+      "behavior": "Repeated invalid or stale hierarchy commands remain atomic no-ops; each reference-defined same-parent Move, root-to-root Move, or unique-root Delete keeps the document unchanged while applying only its exact selection, redo, and history envelope.",
+      "requiredEvidenceType": "exact-unit-and-executable-trace",
+      "requirements": ["R05"],
+      "features": ["F14", "F16"],
+      "targetEvidence": ["T-EDIT-05", "T-EDIT-07", "T-CMD-06", "T-UI-06", "U02-hierarchy", "O01-same-parent-move-noop", "O02-root-to-root-move-noop", "O04-unique-root-delete"],
+      "status": "assigned"
+    },
+    {
+      "id": "E071",
+      "category": "idempotency",
+      "behavior": "Submitting an unchanged valid TRS or repeating a rejected non-finite value leaves document revision, matrices, runtime digest, and history unchanged after the first outcome.",
+      "requiredEvidenceType": "state-digest-unit",
+      "requirements": ["R06"],
+      "features": ["F17"],
+      "targetEvidence": ["T-TRS-01", "T-CMD-02"],
+      "status": "assigned"
+    },
+    {
+      "id": "E072",
+      "category": "idempotency",
+      "behavior": "A second release, repeated Escape detach, or late release after a completed or detached Gizmo drag cannot add another transform command or change the retained final TRS.",
+      "requiredEvidenceType": "input-state-machine-state-digest",
+      "requirements": ["R07"],
+      "features": ["F19"],
+      "targetEvidence": ["T-GIZMO-01", "T-GIZMO-02", "T-GIZMO-03", "T-GIZMO-04", "U03-transform-gizmo", "O05-gizmo-escape-only", "O06-gizmo-escape-release-same-frame"],
+      "status": "assigned"
+    },
+    {
+      "id": "E073",
+      "category": "idempotency",
+      "behavior": "Setting a material field or active variant to its current value, adding an already-authored extension, or removing an absent extension produces no extra revision, delta, upload, or history entry.",
+      "requiredEvidenceType": "state-digest-unit-and-renderer-counters",
+      "requirements": ["R08"],
+      "features": ["F05", "F21", "F22", "F23"],
+      "targetEvidence": ["T-MAT-01", "T-MAT-02", "T-MAT-03", "T-MAT-04", "T-MAT-06", "T-DELTA-02"],
+      "status": "assigned"
+    },
+    {
+      "id": "E074",
+      "category": "idempotency",
+      "behavior": "Repeated Copy, invalid Paste, same-material assignment, or Merge with no equivalent candidate leaves document and Undo or Redo counts unchanged and never deletes a resource.",
+      "requiredEvidenceType": "state-digest-unit-and-ui-trace",
+      "requirements": ["R09"],
+      "features": ["F24", "F25"],
+      "targetEvidence": ["T-MAT-05", "T-MAT-07", "U04-material", "O10-material-clipboard"],
+      "status": "assigned"
+    },
+    {
+      "id": "E075",
+      "category": "idempotency",
+      "behavior": "Repeated Apply to Current View changes no document data, and repeating Set from an unchanged view introduces no numeric drift, authored optional field, or history entry.",
+      "requiredEvidenceType": "state-digest-and-camera-round-trip",
+      "requirements": ["R10"],
+      "features": ["F26", "F27"],
+      "targetEvidence": ["T-CAM-01", "T-CAM-02", "T-UI-10"],
+      "status": "assigned"
+    },
+    {
+      "id": "E076",
+      "category": "idempotency",
+      "behavior": "Repeating an unchanged light edit or retrying a stale delete does not duplicate light definitions, renderer slots, deltas, or history and preserves the node's local minus-Z direction.",
+      "requiredEvidenceType": "state-digest-unit-and-renderer-snapshot",
+      "requirements": ["R11"],
+      "features": ["F28"],
+      "targetEvidence": ["T-LIGHT-01", "T-LIGHT-02", "T-LIGHT-03", "T-DELTA-03"],
+      "status": "assigned"
+    },
+    {
+      "id": "E077",
+      "category": "idempotency",
+      "behavior": "Repeatedly applying the same authored visibility or recomputing the same ancestor chain leaves document revision and GPU resource handles unchanged and emits no redundant history entry.",
+      "requiredEvidenceType": "state-digest-unit-and-renderer-snapshot",
+      "requirements": ["R12"],
+      "features": ["F29"],
+      "targetEvidence": ["T-VIS-01", "T-DELTA-04"],
+      "status": "assigned"
+    },
+    {
+      "id": "E078",
+      "category": "idempotency",
+      "behavior": "Repeated Scene Transform Reset or identity application returns the same baseline digest, and 1,000 back-and-forth transforms do not accumulate additional drift or history.",
+      "requiredEvidenceType": "repeated-matrix-state-digest",
+      "requirements": ["R13"],
+      "features": ["F18"],
+      "targetEvidence": ["T-TRS-02", "T-UI-08"],
+      "status": "assigned"
+    },
+    {
+      "id": "E079",
+      "category": "idempotency",
+      "behavior": "Undo at the oldest state, Redo at the newest state, and repeated history clear remain no-ops with exact stack counts, next descriptions, revisions, selection, and document hash.",
+      "requiredEvidenceType": "fake-clock-state-digest-unit",
+      "requirements": ["R14"],
+      "features": ["F30"],
+      "targetEvidence": ["T-CMD-01", "T-CMD-03", "T-CMD-04", "T-CMD-05", "T-CMD-06"],
+      "status": "assigned"
+    },
+    {
+      "id": "E080",
+      "category": "idempotency",
+      "behavior": "A duplicate or already-consumed SceneChangeSet and a repeated publish of the same revision are ignored without another upload, rebuild, resource retirement, or projection revision.",
+      "requiredEvidenceType": "renderer-integration-state-digest",
+      "requirements": ["R15"],
+      "features": ["F31", "F32"],
+      "targetEvidence": ["T-DELTA-01", "T-DELTA-02", "T-DELTA-03", "T-DELTA-04", "T-DELTA-05"],
+      "status": "assigned"
+    },
+    {
+      "id": "E081",
+      "category": "idempotency",
+      "behavior": "After Escape-only detaches an active drag, repeated Escape and every repeated late release keep selection clear, preview TRS retained, and transform history unchanged.",
+      "requiredEvidenceType": "input-state-machine-and-executable-trace",
+      "requirements": ["R16"],
+      "features": ["F10", "F19"],
+      "targetEvidence": ["T-SEL-02", "T-GIZMO-01", "T-GIZMO-02", "T-GIZMO-03", "T-GIZMO-04", "T-GIZMO-05", "U03-transform-gizmo", "O05-gizmo-escape-only"],
+      "status": "assigned"
+    },
+    {
+      "id": "E082",
+      "category": "idempotency",
+      "behavior": "Repeating Save As to the same valid content produces a semantically equivalent reload, does not add history, and leaves no stale staging files or duplicate recent-file entry.",
+      "requiredEvidenceType": "repeated-fault-aware-round-trip-io",
+      "requirements": ["R17"],
+      "features": ["F35"],
+      "targetEvidence": ["T-IO-01", "T-IO-02", "T-IO-03", "T-IO-04", "T-LIFE-01"],
+      "status": "assigned"
+    },
+    {
+      "id": "E083",
+      "category": "idempotency",
+      "behavior": "A second Compact on the already compacted document is a complete no-op with identical document, mapping, render, selection, and history digests.",
+      "requiredEvidenceType": "property-model-state-digest",
+      "requirements": ["R18"],
+      "features": ["F36"],
+      "targetEvidence": ["T-COMPACT-01", "T-COMPACT-02", "T-COMPACT-03", "U06-merge-compact-save"],
+      "status": "assigned"
+    },
+    {
+      "id": "E084",
+      "category": "idempotency",
+      "behavior": "Selecting the already-current scene or repeating a completed unload or close produces no document mutation, defaultScene change, history entry, duplicate publish, or stale UI state.",
+      "requiredEvidenceType": "lifecycle-state-digest-and-ui-trace",
+      "requirements": ["R19"],
+      "features": ["F02", "F33", "F37"],
+      "targetEvidence": ["T-LIFE-01", "T-LIFE-02", "T-LIFE-03", "T-LIFE-04", "T-LIFE-05", "T-UI-15", "U01-empty-new-open"],
+      "status": "assigned"
+    },
+    {
+      "id": "E085",
+      "category": "idempotency",
+      "behavior": "Repeatedly opening or focusing Scene Browser, Inspector, or Grid and Snap reuses the same window state, and a repeated identical toggle never creates duplicate UI instances or dispatches.",
+      "requiredEvidenceType": "ui-semantic-state-digest",
+      "requirements": ["R20"],
+      "features": ["F20", "F37", "F38"],
+      "targetEvidence": ["T-UI-09", "T-UI-13", "T-UI-14"],
+      "status": "assigned"
+    },
+    {
+      "id": "E086",
+      "category": "idempotency",
+      "behavior": "Repeated attempts to exceed any resource limit are rejected in bounded time with identical document, projection, render, selection, and history hashes and no allocation growth.",
+      "requiredEvidenceType": "repeated-capacity-and-soak-test",
+      "requirements": ["R22"],
+      "features": ["F41"],
+      "targetEvidence": ["T-PERF-03"],
+      "status": "assigned"
+    },
+    {
+      "id": "E087",
+      "category": "ordering",
+      "behavior": "No-op round-trip preserves the exact order of scenes, roots, children, primitives, resources, skins, animations, and all integer reference arrays; unordered comparison is not accepted.",
+      "requiredEvidenceType": "exact-sequence-round-trip",
+      "requirements": ["R01"],
+      "features": ["F01", "F02"],
+      "targetEvidence": ["T-DOC-01", "T-DOC-02"],
+      "status": "assigned"
+    },
+    {
+      "id": "E088",
+      "category": "ordering",
+      "behavior": "After every randomized add, duplicate, delete, reparent, Undo, Redo, Merge, and Compact step, forward and reverse mappings enumerate objects in the same deterministic document and runtime order.",
+      "requiredEvidenceType": "property-model-exact-sequence",
+      "requirements": ["R02"],
+      "features": ["F09", "F13"],
+      "targetEvidence": ["T-ID-01", "T-DOC-02", "T-SEL-01"],
+      "status": "assigned"
+    },
+    {
+      "id": "E089",
+      "category": "ordering",
+      "behavior": "Asset headers, Release and Debug tabs, Scene Graph preorder, eight Scene List groups, and Multiple Scenes radios appear in the exact specified conditional order.",
+      "requiredEvidenceType": "ui-semantic-exact-sequence",
+      "requirements": ["R03"],
+      "features": ["F03", "F04", "F05", "F06", "F07", "F08"],
+      "targetEvidence": ["T-UI-01", "T-UI-02", "T-UI-03", "T-UI-04", "T-UI-05", "T-UI-15", "T-MAT-06", "U01-empty-new-open"],
+      "status": "assigned"
+    },
+    {
+      "id": "E090",
+      "category": "ordering",
+      "behavior": "Hierarchy execute, Undo, and Redo use reference append-only order for cross-parent moves, preserve no-op same-parent and root order, and save or reload the final exact sequence.",
+      "requiredEvidenceType": "exact-unit-and-executable-sequence-trace",
+      "requirements": ["R05"],
+      "features": ["F16"],
+      "targetEvidence": ["T-EDIT-07", "T-CMD-06", "U02-hierarchy", "O01-same-parent-move-noop", "O02-root-to-root-move-noop", "O03-reparent-undo-append-order"],
+      "status": "assigned"
+    },
+    {
+      "id": "E091",
+      "category": "ordering",
+      "behavior": "Material edits preserve material, texture, primitive, variant mapping, and extension-array order through Add, Remove, variant application, Undo, Redo, renderer update, save, and reload.",
+      "requiredEvidenceType": "exact-sequence-unit-and-round-trip",
+      "requirements": ["R08"],
+      "features": ["F05", "F21", "F22", "F23"],
+      "targetEvidence": ["T-MAT-01", "T-MAT-02", "T-MAT-03", "T-MAT-04", "T-MAT-06", "U04-material"],
+      "status": "assigned"
+    },
+    {
+      "id": "E092",
+      "category": "ordering",
+      "behavior": "Assign, Duplicate Material, Split, and Merge maintain exact primitive order, append new resources deterministically, and remap selection before any orphan resource is removed.",
+      "requiredEvidenceType": "property-model-exact-sequence",
+      "requirements": ["R09"],
+      "features": ["F24", "F25"],
+      "targetEvidence": ["T-MAT-05", "T-MAT-07", "U04-material"],
+      "status": "assigned"
+    },
+    {
+      "id": "E093",
+      "category": "ordering",
+      "behavior": "Camera list order and camera-to-node references remain exact after property edits, Apply, Set, save, and reload for mixed perspective and orthographic entries.",
+      "requiredEvidenceType": "exact-sequence-camera-round-trip",
+      "requirements": ["R10"],
+      "features": ["F26", "F27"],
+      "targetEvidence": ["T-CAM-01", "T-CAM-02", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E094",
+      "category": "ordering",
+      "behavior": "Light definitions, their nodes, and renderer slots follow deterministic append and removal order across all three creation entries, type switches, delete, Undo, Redo, and reload.",
+      "requiredEvidenceType": "exact-sequence-unit-and-renderer-snapshot",
+      "requirements": ["R11"],
+      "features": ["F11", "F12", "F28"],
+      "targetEvidence": ["T-EDIT-02", "T-EDIT-03", "T-LIGHT-01", "T-LIGHT-02", "T-LIGHT-03", "V05-delta-edit"],
+      "status": "assigned"
+    },
+    {
+      "id": "E095",
+      "category": "ordering",
+      "behavior": "Effective visibility traversal follows exact scene-root and child order after reparent, while hidden branches suppress draws without reordering surviving document or GPU resources.",
+      "requiredEvidenceType": "exact-sequence-unit-and-renderer-snapshot",
+      "requirements": ["R12"],
+      "features": ["F29"],
+      "targetEvidence": ["T-VIS-01", "T-DELTA-04", "V05-delta-edit"],
+      "status": "assigned"
+    },
+    {
+      "id": "E096",
+      "category": "ordering",
+      "behavior": "Scene Transform baseline capture, hierarchy freeze, and Reset iterate roots in document order and never reorder roots while applying sceneTRS times baselineLocal.",
+      "requiredEvidenceType": "exact-sequence-matrix-unit",
+      "requirements": ["R13"],
+      "features": ["F18"],
+      "targetEvidence": ["T-TRS-02", "T-UI-08"],
+      "status": "assigned"
+    },
+    {
+      "id": "E097",
+      "category": "ordering",
+      "behavior": "Execute, coalesce, Undo, Redo, branch, history clear, and clean-revision updates preserve the exact linear command order and matching menu description after every step.",
+      "requiredEvidenceType": "fake-clock-exact-sequence-unit",
+      "requirements": ["R14"],
+      "features": ["F30"],
+      "targetEvidence": ["T-CMD-01", "T-CMD-02", "T-CMD-03", "T-CMD-04", "T-CMD-05", "T-CMD-06", "T-UI-14"],
+      "status": "assigned"
+    },
+    {
+      "id": "E098",
+      "category": "ordering",
+      "behavior": "Deltas for different objects retain deterministic production and consumption order; FullRebuild publishes the candidate before old-resource retirement and never reverses that sequence.",
+      "requiredEvidenceType": "deterministic-frame-exact-sequence",
+      "requirements": ["R15"],
+      "features": ["F31", "F32"],
+      "targetEvidence": ["T-DELTA-01", "T-DELTA-02", "T-DELTA-03", "T-DELTA-04", "T-DELTA-05", "V06-topology-swap"],
+      "status": "assigned"
+    },
+    {
+      "id": "E099",
+      "category": "ordering",
+      "behavior": "Save As validates, prepares all resources, writes, flushes, closes, atomically replaces, and only then updates path, clean revision, and recent-file MRU order.",
+      "requiredEvidenceType": "fault-injected-operation-sequence",
+      "requirements": ["R17"],
+      "features": ["F35"],
+      "targetEvidence": ["T-IO-01", "T-IO-02", "T-IO-03", "T-IO-04", "T-LIFE-01", "U06-merge-compact-save"],
+      "status": "assigned"
+    },
+    {
+      "id": "E100",
+      "category": "ordering",
+      "behavior": "Merge appends incoming collections deterministically under the named root, and Compact preserves the relative order of all reachable survivors while remapping every reference chain.",
+      "requiredEvidenceType": "property-model-exact-sequence",
+      "requirements": ["R18"],
+      "features": ["F34", "F36"],
+      "targetEvidence": ["T-MERGE-01", "T-MERGE-02", "T-MERGE-03", "T-COMPACT-01", "T-COMPACT-02", "T-COMPACT-03", "U06-merge-compact-save"],
+      "status": "assigned"
+    },
+    {
+      "id": "E101",
+      "category": "ordering",
+      "behavior": "Open Recent remains MRU ordered, scene radios remain document ordered, and asynchronous lifecycle completions cannot publish an older request after the selected winning request.",
+      "requiredEvidenceType": "deterministic-lifecycle-and-ui-sequence",
+      "requirements": ["R19"],
+      "features": ["F02", "F33", "F37"],
+      "targetEvidence": ["T-LIFE-01", "T-LIFE-02", "T-LIFE-03", "T-LIFE-04", "T-LIFE-05", "T-UI-11", "T-UI-15", "U01-empty-new-open"],
+      "status": "assigned"
+    },
+    {
+      "id": "E102",
+      "category": "ordering",
+      "behavior": "A 10,000-row clipped list and a 65,536-node hierarchy retain exact document order through scrolling and incremental edits without traversal recursion changing visible-row sequence.",
+      "requiredEvidenceType": "performance-with-exact-sequence-oracle",
+      "requirements": ["R22"],
+      "features": ["F41"],
+      "targetEvidence": ["T-PERF-01", "T-PERF-03", "U08-large-unicode-dpi"],
+      "status": "assigned"
+    },
+    {
+      "id": "E103",
+      "category": "precision",
+      "behavior": "Quaternion-backed Euler edits preserve sign-equivalent normalized quaternions and local or world matrices within 1e-5, while edited document numerics reload within the specified 1e-9 tolerance.",
+      "requiredEvidenceType": "double-oracle-numeric-unit",
+      "requirements": ["R06"],
+      "features": ["F17"],
+      "targetEvidence": ["T-TRS-01", "T-CMD-02", "U03-transform-gizmo"],
+      "status": "assigned"
+    },
+    {
+      "id": "E104",
+      "category": "precision",
+      "behavior": "Axis, plane, ring, and uniform-scale Gizmo results meet TRS tolerance; projected handle centers are within 2 logical pixels and hit regions within 3 logical pixels of the reference baseline.",
+      "requiredEvidenceType": "double-oracle-and-vulkan-visual",
+      "requirements": ["R07"],
+      "features": ["F19", "F20"],
+      "targetEvidence": ["T-GIZMO-01", "T-GIZMO-02", "T-GIZMO-03", "T-GIZMO-04", "T-GIZMO-05", "V02-gizmo-components", "V03-parent-space", "V04-depth-xray", "V07-dpi-resize"],
+      "status": "assigned"
+    },
+    {
+      "id": "E105",
+      "category": "precision",
+      "behavior": "Edited material values reload within 1e-9, float32-derived color or extension values within 1e-6, and unedited numeric values remain IEEE exact or meet the documented 1e-12 fallback.",
+      "requiredEvidenceType": "numeric-round-trip-oracle",
+      "requirements": ["R08"],
+      "features": ["F21", "F22", "F23"],
+      "targetEvidence": ["T-MAT-01", "T-MAT-02", "T-MAT-03", "T-MAT-04"],
+      "status": "assigned"
+    },
+    {
+      "id": "E106",
+      "category": "precision",
+      "behavior": "Camera Apply and Set round-trip perspective or orthographic view and node transforms within matrix tolerance without manufacturing omitted zfar or aspectRatio values.",
+      "requiredEvidenceType": "double-oracle-camera-round-trip",
+      "requirements": ["R10"],
+      "features": ["F26", "F27"],
+      "targetEvidence": ["T-CAM-01", "T-CAM-02", "T-UI-10", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E107",
+      "category": "precision",
+      "behavior": "Light UI sRGB converts to document linear values within numeric tolerance, intensity units remain type-correct, and cone or range computations stay finite under transformed nodes.",
+      "requiredEvidenceType": "double-oracle-light-unit-and-renderer-snapshot",
+      "requirements": ["R11"],
+      "features": ["F28"],
+      "targetEvidence": ["T-LIGHT-01", "T-LIGHT-02", "T-LIGHT-03", "V05-delta-edit"],
+      "status": "assigned"
+    },
+    {
+      "id": "E108",
+      "category": "precision",
+      "behavior": "After 1,000 scene-transform cycles and return to identity, every decomposable root matches its frozen baseline within 1e-5 and every non-decomposable matrix remains semantically intact.",
+      "requiredEvidenceType": "double-oracle-drift-test",
+      "requirements": ["R13"],
+      "features": ["F18"],
+      "targetEvidence": ["T-TRS-02", "T-UI-08"],
+      "status": "assigned"
+    },
+    {
+      "id": "E109",
+      "category": "precision",
+      "behavior": "Execute, coalesce, Undo, and Redo restore numeric document, projection, render, and selection state within each domain tolerance without cumulative transform or material drift.",
+      "requiredEvidenceType": "numeric-state-digest-command-test",
+      "requirements": ["R14"],
+      "features": ["F30"],
+      "targetEvidence": ["T-CMD-01", "T-CMD-02", "T-CMD-03", "T-CMD-04", "T-CMD-05", "T-CMD-06", "U02-hierarchy", "U03-transform-gizmo", "U04-material", "U05-camera-light-vis"],
+      "status": "assigned"
+    },
+    {
+      "id": "E110",
+      "category": "precision",
+      "behavior": "Performance evidence uses the fixed machine and build identity, 120-frame warm-up, at least 300 samples, raw median, p95, and max values, exact counters, and the locked 4 ms, 2 ms, and 0.5 ms thresholds.",
+      "requiredEvidenceType": "reproducible-performance-measurement",
+      "requirements": ["R22"],
+      "features": ["F41"],
+      "targetEvidence": ["T-PERF-01", "T-PERF-02", "T-PERF-03"],
+      "status": "assigned"
+    }
+  ]
+}

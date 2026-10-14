@@ -1,0 +1,133 @@
+# MGIF P2 Gate Repair and Verification
+
+Date: 2026-08-23
+
+## Finding and repair
+
+The first isolated Clang/Ninja preflight failed on the protected
+`loader/TinyGltfImplementation.cpp` edge:
+
+```text
+compile_commands and raw Ninja arguments differ for protected edge
+(WindowsPath('G:/MGIF/loader/TinyGltfImplementation.cpp'),
+ 'cmakefiles/scene_editor_document.dir/loader/tinygltfimplementation.cpp.obj')
+```
+
+CMake's `compile_commands.json` used Windows backslashes in the `-o` and `-c`
+path arguments while Ninja 1.13.2 emitted forward slashes for the same paths.
+`tools/generate_editor_dependency_identity.py` now normalizes separators only
+for path-bearing compiler arguments during the cross-evidence comparison; the
+compiler identity, source identity, target census, preflight ancestry, and
+Ninja dependency database checks remain fail-closed and unchanged.
+
+The P2 CPU target also directly compiles code that includes GLM and TinyGLTF.
+GLM is now made available before the early core-only return, and only
+`p2_projection_cpu_tests` links `glm` and `tinygltf`; the locked
+`scene_editor_core` and `scene_editor_document` production source/link
+contracts are unchanged.
+
+`GltfDocument` retains the private `GltfLoader` friend because the decoder
+needs a read-only typed TinyGLTF view without exposing the third-party model as
+a public adapter. A focused regression loads a fixture, removes its source
+file, and verifies `GltfLoader::decode` still succeeds from the in-memory
+document authority. The P2 test also asserts `SceneCacheSerializer` version 13
+and `SceneAssetSerializer` version 10.
+
+## Files modified
+
+- `CMakeLists.txt`
+- `tools/generate_editor_dependency_identity.py`
+- `scene/editor/include/mgif/scene_editor/GltfDocument.h`
+- `tests/editor/scene_projection_tests.cpp`
+
+## Exact commands and results
+
+All builds used the out-of-repository Ninja tree `G:\MGIF-p2-ninja-gate` and
+the installed VS Clang 19.1.5 C++20 toolchain.
+
+1. Configure:
+
+   ```powershell
+   cmake -S G:\MGIF -B G:\MGIF-p2-ninja-gate -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\x64\bin\clang.exe" -DCMAKE_CXX_COMPILER="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\x64\bin\clang++.exe" -DDEMO_EDITOR_CORE_ONLY=ON -DBUILD_TESTING=ON
+   ```
+
+   Result: configure and generate passed.
+
+2. Reproducing preflight failure before the repair:
+
+   ```powershell
+   cmake --build G:\MGIF-p2-ninja-gate --target scene_editor_dependency_preflight -- -v
+   ```
+
+   Result before repair: failed on the TinyGltf compile edge because only
+   Windows path separators differed between CMake and raw Ninja evidence.
+
+3. Repaired preflight:
+
+   ```powershell
+   cmake --build G:\MGIF-p2-ninja-gate --target scene_editor_dependency_preflight -- -v
+   ```
+
+   Result: `Final configured production-editor dependency preflight passed`.
+
+4. Focused P2 build:
+
+   ```powershell
+   cmake --build G:\MGIF-p2-ninja-gate --target p2_projection_cpu_tests -- -v
+   ```
+
+   Result: compiled and linked successfully; the build ran the dependency
+   preflight first and reported it passed.
+
+5. Focused P2 CTest:
+
+   ```powershell
+   ctest --test-dir G:\MGIF-p2-ninja-gate -R "^scene_editor\.scene_projection$" --output-on-failure
+   ```
+
+   Result: 1/1 passed.
+
+6. Complete scene-editor test target and P1 label:
+
+   ```powershell
+   cmake --build G:\MGIF-p2-ninja-gate --target scene_editor_tests
+   ctest --test-dir G:\MGIF-p2-ninja-gate -L "scene-editor-p1-document" --output-on-failure
+   ```
+
+   Result: target built; 7/7 P1 document/projection tests passed.
+
+7. Post-build configured dependency gate with Ninja dependency records:
+
+   ```powershell
+   python tools\validate_editor_p0_artifacts.py --repo-root G:\MGIF --mode configured-dependency --configured-build-root G:\MGIF-p2-ninja-gate --config Debug
+   ```
+
+   Result: `Final configured production-editor dependency gate passed`.
+
+8. Dependency-gate integration regressions:
+
+   ```powershell
+   python tests\editor\editor_dependency_gate_integration_tests.py -v
+   ```
+
+   Result: 12/12 passed.
+
+9. P0 validator regressions:
+
+   ```powershell
+   python tests\editor\p0_artifact_validator_tests.py -v
+   ```
+
+   Result: 145/145 passed.
+
+10. Python syntax check:
+
+    ```powershell
+    python -m py_compile tools\generate_editor_dependency_identity.py
+    ```
+
+    Result: passed.
+
+No P3 target or implementation was started. The full renderer/Vulkan smoke
+path was not run in this focused core-only gate; it remains outside this P2
+CPU projection verification.

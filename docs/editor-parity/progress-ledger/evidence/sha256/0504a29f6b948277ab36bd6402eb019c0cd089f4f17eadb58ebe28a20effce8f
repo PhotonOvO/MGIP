@@ -1,0 +1,41 @@
+# P7-PRESENT-LAYOUT-R1 Recovery Report
+
+Decision: bounded Present layout/RHI repair completed.
+Role: repair; this receipt does not declare Gate P7.
+
+Parent bundle: 0c921a74649995d3a8b45433c50b19c04ff8c8dfd55a9a433c8db7c490c2b6f5
+Parent snapshot: f5f121cfca3afc4b363ae6452f0ac7b62b3daa4647de46cf29c5c61ae3311ae2
+Previous transition head: e2f94fc7b1d53e20ce856e229fab99e900448410a69062c947662cf129d927b0
+Task definition SHA-256: cc06ea8386ea851a4eddcaa32d4097f75b04692ab1bb4db7037304d9205b9599
+Authority artifact: 572 bytes, e3475db0149b08151ee475ab7fad729d0153841f1d5a4814514a4c9055ce07f1
+Evidence manifest: G:\Temp\mgif-p7-present-layout-repair-final-20260903T041500Z\evidence-manifest.json; SHA-256 95ec91a6026f2b675fa8555f27fd85ae67c0175697be8ee336971f4857bdeb06
+
+## Source and Build Binding
+
+- render/passes/GPUDrivenPresentPass.cpp; bytes=4508; sha256=0805f0687d260bbd68ee25cd7c2bdcc99158d28ce4526bf1fcc63551585cb84c
+- Contract: source General -> TransferSrc -> ShaderRead; swapchain Undefined -> TransferDst -> General; RHI-handle blit only.
+- Debug Demo.exe; bytes=21186048; sha256=287a99d2f762696a78f46af1a45c5c0e282253054a893e8ac0dbaa97ee0cc603
+- Release Demo.exe; bytes=6174720; sha256=ad2e4d2330bb298885c2d24389e35db34e6bd8e292f1b068f37a215009693df2
+- Debug PresentPass object; bytes=453692; sha256=caab5df6a79b1cebe555f79dcaa334e2fd6baa4a7109d1c7acfe3ffbff65f1aa
+- Release PresentPass object; bytes=21534; sha256=cac7c02b836f6108ba79a55b0d98e2c9c406ceefda5753f7ba2e452235b091b8
+
+## Windows Runtime Matrix
+
+All eight cases exited 0 and emitted exactly one config, scene-ready, start, last-moving, first-still, settled, and complete marker.
+- Debug: 4/4 clean across UI/no-UI and filtered/unfiltered runs; no VUID, Validation Error, SYNC-HAZARD, assertion, or device-lost diagnostics.
+- Release: 2/2 unfiltered runs contain only VUID-vkCmdDraw-None-09600 (20 VUID occurrences and 10 Validation Error occurrences each), with no synchronization, assertion, or device-lost diagnostics; both are classified as external NVIDIA capture/overlay injection by the existing P6-91 authority.
+- Release filtered: 2/2 clean after filtering that exact externally authorized message ID. This filtered result is retained as a diagnostic isolation check, not an unfiltered pass claim.
+- Every case met the stable recording budget and retained stdout, stderr, metrics, argv, environment, exit-code, and executable-hash artifacts.
+
+## Focused Verification
+
+- Windows MSVC Debug focused CTest: 7/7 passed.
+- Windows MSVC Release focused CTest: 7/7 passed.
+- Present layout static contract: 3/3 passed.
+- WSL is used only for orchestration/static checks; Windows MSVC/Vulkan is the build and runtime authority.
+
+## Non-Claims
+
+- This repair receipt does not supersede the failed G7 event and does not promote P7 to an engineering Gate pass.
+- Remaining P7 visual V01-V07 debt, full RHI reconciliation, and the acquire semaphore stage-mask question remain open.
+- P8, P9, and P10 remain blocked; F42/R24, Metal, and release/distribution policy remain unchanged.

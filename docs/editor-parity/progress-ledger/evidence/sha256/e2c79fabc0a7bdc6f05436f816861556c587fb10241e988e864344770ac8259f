@@ -1,0 +1,31 @@
+{
+  "documentKind": "gate-receipt",
+  "schemaVersion": 1,
+  "runId": "run_ede89c4421e9",
+  "phase": "P1",
+  "gateTaskId": "task_92d30650c179",
+  "dispatchId": "ctx_f3f0d5f01b11",
+  "workerMessageId": "msg_b5e6c373c0d0",
+  "completedAtUtc": "2026-08-23T07:17:11.105Z",
+  "reviewExecutionOutcome": "succeeded",
+  "gateVerdict": "GATE P1 FAIL/BLOCKED",
+  "gateScope": "engineering",
+  "supersedesGateTaskId": null,
+  "report": {
+    "path": "C:\\Users\\happyelements\\AppData\\Local\\Temp\\mgif-p1-review-2bba9259f9e44a1f8ee13e1afb84c396\\P1-INDEPENDENT-REVIEW.md",
+    "bytes": 15493,
+    "sha256": "f003fbbadbdd83ef58063e6a0ec807a9fd75f8c397f104100d0a62c4627d8f86"
+  },
+  "verdictArtifact": {
+    "path": "C:\\Temp\\mgif-progress-ledger-task_ab822a872485-20260825T043308623Z\\evidence\\verdict-01-p1-fail.json",
+    "bytes": 418,
+    "sha256": "ab1511454780b51b9076b2ad99af679f34c9bb944dcb90a803d71b1fa5ed5a7f"
+  },
+  "inputFingerprintSha256": "90aab6620631ce63b94dafd419e5d75fca532fe9b922a335a1fbd02aa05c54c2",
+  "fixedPolicy": {
+    "f42": "BLOCKED",
+    "r24": "BLOCKED",
+    "metal": "Not Verified",
+    "releaseDistribution": "NOT PASS"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "schema": "mgif.editor-parity.f39-renderer-repair-index",
+  "evidenceKind": "working-tree-executable-smoke",
+  "historicalBaseline": {
+    "commit": "6c36567625b305286755a734a66188a22df18e77",
+    "demoSha256": "92226d901a95d0e6b2abbcb5c33acc788f081473ae7dca11d45e8ababb1f08c8",
+    "passed": 0,
+    "caseCount": 5,
+    "failure": "SYNC-HAZARD-READ-AFTER-WRITE",
+    "waived": false
+  },
+  "currentRepair": {
+    "evidenceRoot": "out/validation/csm-vulkan-smoke-20260822-220652-789518c264c4",
+    "demoPath": "out/build/x64-debug/Demo.exe",
+    "demoSha256": "789518c264c43d8426345576e43a7c138082eed9c67466c37c8562c5d8e26f1a",
+    "summary": {
+      "path": "out/validation/csm-vulkan-smoke-20260822-220652-789518c264c4/summary.json",
+      "bytes": 6400,
+      "sha256": "a70b8f1ec6913644975ce48de07a096b9ff34bfd4e3b3fd919b2f4c40c4f5103"
+    },
+    "identity": {
+      "path": "out/validation/csm-vulkan-smoke-20260822-220652-789518c264c4/identity.json",
+      "bytes": 541,
+      "sha256": "5d98174227443004831c71101f88af1667ebf7e0328ee1e5c7f23509f79fa8e0"
+    },
+    "caseCount": 5,
+    "passed": 5,
+    "failed": 0,
+    "allExitZero": true,
+    "allRequiredMarkersExactlyOnce": true,
+    "allExecutableHashesStable": true,
+    "allStderrEmpty": true,
+    "allFailureMatchesEmpty": true
+  },
+  "coverageCeiling": "Focused Vulkan synchronization smoke repair only; full F39 editor screenshot and visual acceptance remains later work."
+}
