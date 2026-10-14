@@ -1,4 +1,5 @@
 #include "../render/CSMShadowResources.h"
+#include "../render/CSMShadowCache.h"
 #include "../render/ClipSpaceConvention.h"
 #include "../render/RenderTypes.h"
 #include "../render/GPUSceneRegistry.h"
@@ -3170,6 +3171,56 @@ namespace
 		expect(nearlyEqual(vulkanTransform[1][1], 0.5f, 0.0f),
 		       "shadow texture transform must map NDC Y with a positive half scale");
 	}
+
+	void testFramebufferCoordinatesMatchProjectionConvention()
+	{
+		using demo::clipspace::BackendConvention;
+		constexpr std::array backends{
+			BackendConvention::vulkan,
+			BackendConvention::d3d12,
+			BackendConvention::metal,
+		};
+		const glm::vec3 worldPoint(1.25f, 2.0f, -8.0f);
+		glm::vec2 referenceUv(0.0f);
+
+		for (size_t backendIndex = 0; backendIndex < backends.size(); ++backendIndex)
+		{
+			const BackendConvention backend = backends[backendIndex];
+			const auto convention = demo::clipspace::getProjectionConvention(backend);
+			const glm::mat4 projection = demo::clipspace::makePerspectiveProjection(
+				kFieldOfViewRadians, kAspectRatio, kNearPlane, kFarPlane, convention);
+			const glm::vec4 clip = projection * glm::vec4(worldPoint, 1.0f);
+			const glm::vec3 ndc = glm::vec3(clip) / clip.w;
+			const glm::vec2 uv = demo::clipspace::ndcToFramebufferUv(glm::vec2(ndc), backend);
+
+			if (backendIndex == 0u)
+			{
+				referenceUv = uv;
+			}
+			else
+			{
+				expect(nearlyEqual(uv.x, referenceUv.x, 1.0e-6f)
+				       && nearlyEqual(uv.y, referenceUv.y, 1.0e-6f),
+				       "backend projection mapped a world point to a different framebuffer UV");
+			}
+
+			const glm::vec2 reconstructedNdc = demo::clipspace::framebufferUvToNdc(uv, backend);
+			const glm::vec4 reconstructedHomogeneous = glm::inverse(projection)
+				* glm::vec4(reconstructedNdc, ndc.z, 1.0f);
+			const glm::vec3 reconstructedWorld = glm::vec3(reconstructedHomogeneous)
+				/ reconstructedHomogeneous.w;
+			expect(vectorsNearlyEqual(reconstructedWorld, worldPoint, 1.0e-4f),
+			       "framebuffer UV to NDC conversion did not reconstruct the original world point");
+		}
+
+		expect(!demo::clipspace::framebufferUvFlipsNdcY(BackendConvention::vulkan),
+		       "Vulkan unexpectedly flips framebuffer UV Y");
+		expect(demo::clipspace::framebufferUvFlipsNdcY(BackendConvention::d3d12),
+		       "D3D12 framebuffer UV Y flip is missing");
+		expect(demo::clipspace::framebufferUvFlipsNdcY(BackendConvention::metal),
+		       "Metal framebuffer UV Y flip is missing");
+	}
+
 	void testTinyCascadeResolutionClamp()
 	{
 		constexpr uint32_t minimumResolution =
@@ -3183,6 +3234,68 @@ namespace
 		       "minimum valid cascade resolution was changed");
 		expect(demo::CSMShadowResources::clampCascadeResolution(minimumResolution + 7u) == minimumResolution + 7u,
 		       "valid cascade resolution was unnecessarily changed");
+	}
+
+	void testCSMShadowCacheInvalidation()
+	{
+		demo::CSMShadowResources::FrameData frame{};
+		frame.cascadeCount = shaderio::LCascadeCount;
+		frame.lightDirection = glm::normalize(glm::vec3(0.3f, -1.0f, 0.2f));
+		frame.normalBiasWorld = 0.125f;
+		for (uint32_t cascadeIndex = 0; cascadeIndex < frame.cascadeCount; ++cascadeIndex)
+		{
+			frame.cascades[cascadeIndex].viewProjection =
+				glm::translate(glm::mat4(1.0f), glm::vec3(static_cast<float>(cascadeIndex), 0.0f, 0.0f));
+			frame.cascades[cascadeIndex].cullingViewProjection =
+				glm::scale(frame.cascades[cascadeIndex].viewProjection, glm::vec3(1.01f));
+		}
+
+		const demo::CSMShadowCacheIdentity identity{
+			.cascadeTexture = {1u, 1u},
+			.vertexBuffer = {2u, 1u},
+			.indexBuffer = {3u, 1u},
+			.shadowContentVersion = 7u,
+			.shadowMeshCount = 393u,
+			.opaqueShadowMeshCount = 300u,
+			.cascadeCount = frame.cascadeCount,
+		};
+		constexpr uint32_t allCascades = (1u << shaderio::LCascadeCount) - 1u;
+		demo::CSMShadowCache cache;
+		expect(cache.dirtyCascadeMask(frame, identity) == allCascades,
+		       "an empty CSM cache did not request every cascade");
+		cache.publish(frame, identity, allCascades);
+		expect(cache.dirtyCascadeMask(frame, identity) == 0u,
+		       "an unchanged CSM snapshot was not reused");
+		auto repartitioned = identity;
+		--repartitioned.opaqueShadowMeshCount;
+		expect(cache.dirtyCascadeMask(frame, repartitioned) == allCascades,
+		       "a changed opaque/alpha shadow partition did not invalidate every cascade");
+
+		auto movedFrame = frame;
+		movedFrame.cascades[2].viewProjection[3][0] += 1.0f / 1024.0f;
+		expect(cache.dirtyCascadeMask(movedFrame, identity) == (1u << 2u),
+		       "one changed CSM projection did not invalidate only its cascade");
+		cache.publish(movedFrame, identity, 1u << 2u);
+		expect(cache.dirtyCascadeMask(movedFrame, identity) == 0u,
+		       "a redrawn CSM cascade was not published to the cache");
+
+		auto changedContent = identity;
+		++changedContent.shadowContentVersion;
+		expect(cache.dirtyCascadeMask(movedFrame, changedContent) == allCascades,
+		       "shadow-caster content changes did not invalidate every cascade");
+		cache.publish(movedFrame, changedContent, allCascades);
+		auto changedBiasFrame = movedFrame;
+		changedBiasFrame.normalBiasWorld += 0.01f;
+		expect(cache.dirtyCascadeMask(changedBiasFrame, changedContent) == allCascades,
+		       "caster normal-bias changes did not invalidate every cascade");
+
+		auto unversioned = changedContent;
+		unversioned.shadowContentVersion = 0u;
+		expect(cache.dirtyCascadeMask(movedFrame, unversioned) == allCascades,
+		       "an unversioned external shadow source was incorrectly cached");
+		cache.invalidate();
+		expect(cache.dirtyCascadeMask(movedFrame, changedContent) == allCascades,
+		       "explicit CSM cache invalidation did not request every cascade");
 	}
 } // namespace
 
@@ -3222,7 +3335,9 @@ int main()
 		testNormalBiasSanitization();
 		testSafeLightDirectionSnapshot();
 		testShadowTextureTransformIsBackendIndependent();
+		testFramebufferCoordinatesMatchProjectionConvention();
 		testTinyCascadeResolutionClamp();
+		testCSMShadowCacheInvalidation();
 		testStableCascadeProjection();
 		testOffCenterProjection();
 		testOffCenterOrthographicProjection();

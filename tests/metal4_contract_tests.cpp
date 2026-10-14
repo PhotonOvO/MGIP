@@ -2,6 +2,7 @@
 #include "../rhi/metal/Metal4Contract.h"
 
 #include <cassert>
+#include <cstdint>
 #include <cstdio>
 
 int main()

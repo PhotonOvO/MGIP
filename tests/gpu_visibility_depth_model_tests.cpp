@@ -667,6 +667,46 @@ namespace
 		return model;
 	}
 
+	struct VisibilitySubmissionModel
+	{
+		VisibilitySortRecordingModel sort;
+		bool gbufferUsesRawCullingStream{false};
+		bool gbufferOpaqueAlphaPatchDispatched{false};
+		bool transparentPatchDispatched{false};
+	};
+
+	VisibilitySubmissionModel modelVisibilitySubmission(
+		uint32_t opaqueCount,
+		uint32_t alphaTestCount,
+		uint32_t transparentCount)
+	{
+		const bool hasCullingObjects = opaqueCount + alphaTestCount + transparentCount > 0u;
+		return VisibilitySubmissionModel{
+			.sort = modelVisibilitySortRecording(transparentCount),
+			.gbufferUsesRawCullingStream = hasCullingObjects,
+			.gbufferOpaqueAlphaPatchDispatched = false,
+			.transparentPatchDispatched = transparentCount > 0u,
+		};
+	}
+
+	struct RawIndirectStreamLayout
+	{
+		uint32_t opaqueOffset{0u};
+		uint32_t alphaTestOffset{0u};
+		uint32_t transparentOffset{0u};
+		uint32_t categoryCapacity{0u};
+	};
+
+	RawIndirectStreamLayout modelRawIndirectStreamLayout(uint32_t objectCount)
+	{
+		return RawIndirectStreamLayout{
+			.opaqueOffset = objectCount,
+			.alphaTestOffset = objectCount * 2u,
+			.transparentOffset = objectCount * 3u,
+			.categoryCapacity = objectCount,
+		};
+	}
+
 	enum class TombstoneCullCategory : uint8_t
 	{
 		opaque,
@@ -714,6 +754,7 @@ namespace
 	struct TombstoneCullModel
 	{
 		std::vector<TombstoneIndirectCommand> rawCommands;
+		std::vector<TombstoneIndirectCommand> indirectCommands;
 		uint32_t totalCount{0u};
 		uint32_t opaqueCount{0u};
 		uint32_t transparentCount{0u};
@@ -729,6 +770,7 @@ namespace
 	{
 		TombstoneCullModel model{};
 		model.rawCommands.assign(inputs.size(), staleIndirectCommand());
+		model.indirectCommands.assign(inputs.size() * 4u, staleIndirectCommand());
 		for (uint32_t drawIndex = 0u;
 		     drawIndex < static_cast<uint32_t>(inputs.size());
 		     ++drawIndex)
@@ -739,6 +781,7 @@ namespace
 				// Mirrors the shader's first branch: clear a potentially stale raw
 				// indirect slot and return before classification or any counter update.
 				model.rawCommands[drawIndex] = {};
+				model.indirectCommands[drawIndex] = {};
 				continue;
 			}
 
@@ -760,6 +803,7 @@ namespace
 				.firstInstance = drawIndex,
 			};
 			model.rawCommands[drawIndex] = command;
+			model.indirectCommands[drawIndex] = command;
 			if (!input.visible)
 			{
 				continue;
@@ -767,19 +811,23 @@ namespace
 
 			command.instanceCount = 1u;
 			model.rawCommands[drawIndex] = command;
+			model.indirectCommands[drawIndex] = command;
 			++model.visibleCount;
+			const uint32_t objectCount = static_cast<uint32_t>(inputs.size());
+			uint32_t compactIndex = 0u;
 			switch (input.category)
 			{
 				case TombstoneCullCategory::opaque:
-					++model.opaqueDrawCount;
+					compactIndex = objectCount + model.opaqueDrawCount++;
 					break;
 				case TombstoneCullCategory::alphaTest:
-					++model.alphaTestDrawCount;
+					compactIndex = objectCount * 2u + model.alphaTestDrawCount++;
 					break;
 				case TombstoneCullCategory::transparent:
-					++model.transparentDrawCount;
+					compactIndex = objectCount * 3u + model.transparentDrawCount++;
 					break;
 			}
+			model.indirectCommands[compactIndex] = command;
 			++model.totalDrawCount;
 		}
 		return model;
@@ -1147,6 +1195,28 @@ int main()
 		&& multiSort.bitonicDispatchCount == 3u,
 		"multi-element visibility sort pads, copies, and records every bitonic step");
 
+	const VisibilitySubmissionModel opaqueOnlySubmission =
+		modelVisibilitySubmission(393u, 0u, 0u);
+	passed &= expect(
+		opaqueOnlySubmission.sort.activeElementCount == 0u
+		&& opaqueOnlySubmission.sort.keyCopyCount == 0u
+		&& opaqueOnlySubmission.sort.bitonicDispatchCount == 0u
+		&& opaqueOnlySubmission.gbufferUsesRawCullingStream
+		&& !opaqueOnlySubmission.gbufferOpaqueAlphaPatchDispatched
+		&& !opaqueOnlySubmission.transparentPatchDispatched,
+		"opaque-only visibility consumes raw culling output without sort or patch work");
+
+	const VisibilitySubmissionModel transparentSubmission =
+		modelVisibilitySubmission(7u, 2u, 3u);
+	passed &= expect(
+		transparentSubmission.sort.activeElementCount == 3u
+		&& transparentSubmission.sort.paddedElementCount == 4u
+		&& transparentSubmission.sort.bitonicDispatchCount == 3u
+		&& transparentSubmission.gbufferUsesRawCullingStream
+		&& !transparentSubmission.gbufferOpaqueAlphaPatchDispatched
+		&& transparentSubmission.transparentPatchDispatched,
+		"transparent visibility retains depth sorting and its final patch only");
+
 	const TombstoneCullModel deletedBeforeFirstRender = modelTombstoneCull({
 		TombstoneCullInput{
 			.tombstone = true,
@@ -1213,6 +1283,7 @@ int main()
 		partiallyCulledLiveMeshlets, {3u}, 1u);
 	const TombstoneVisibilityPatchModel transparentPatch = modelTombstoneVisibilityPatch(
 		partiallyCulledLiveMeshlets, {4u, 5u}, 2u);
+	const RawIndirectStreamLayout rawLayout = modelRawIndirectStreamLayout(6u);
 	passed &= expect(
 		partiallyCulledLiveMeshlets.totalCount == 5u
 		&& partiallyCulledLiveMeshlets.opaqueCount == 3u
@@ -1224,6 +1295,15 @@ int main()
 		&& partiallyCulledLiveMeshlets.rawCommands[2].instanceCount == 0u
 		&& partiallyCulledLiveMeshlets.rawCommands[4].instanceCount == 0u,
 		"tombstone and partially culled live meshlets publish non-executable raw commands");
+	passed &= expect(
+		rawLayout.opaqueOffset == 6u
+		&& rawLayout.alphaTestOffset == 12u
+		&& rawLayout.transparentOffset == 18u
+		&& rawLayout.categoryCapacity == 6u
+		&& partiallyCulledLiveMeshlets.indirectCommands[rawLayout.opaqueOffset].firstInstance == 1u
+		&& partiallyCulledLiveMeshlets.indirectCommands[rawLayout.alphaTestOffset].firstInstance == 3u
+		&& partiallyCulledLiveMeshlets.indirectCommands[rawLayout.transparentOffset].firstInstance == 5u,
+		"raw culling stream stores compact opaque, alpha, and transparent commands at N, 2N, and 3N");
 	passed &= expect(
 		partiallyCulledLiveMeshlets.opaqueDrawCount == opaquePatch.patchedCommandCount
 		&& partiallyCulledLiveMeshlets.alphaTestDrawCount == alphaTestPatch.patchedCommandCount
